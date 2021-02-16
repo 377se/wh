@@ -1,0 +1,370 @@
+table.dataTable {
+	clear: both;
+}
+table.dataTable td,
+table.dataTable th {
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box;
+}
+table.dataTable td.dataTables_empty,
+table.dataTable th.dataTables_empty {
+	text-align: center;
+}
+table.dataTable.nowrap th,
+table.dataTable.nowrap td {
+	white-space: nowrap;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+	font-weight: normal;
+	text-align: left;
+	white-space: nowrap;
+}
+div.dataTables_wrapper div.dataTables_length select {
+	width: 64px;
+	display: inline-block;
+	border: 1px solid $border-color-light;
+	border-radius: 3px;
+}
+div.dataTables_wrapper div.dataTables_filter {
+	text-align: right;
+}
+div.dataTables_wrapper div.dataTables_filter label {
+	font-weight: normal;
+	white-space: nowrap;
+	text-align: left;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+	margin-left: 8px;
+	display: inline-block;
+	width: auto;
+	border: 1px solid $border-color-light;
+	border-radius: 3px;
+	transition: all 140ms $easing;
+	&:focus {
+		border-color: $input-on-color;
+		outline: none;
+	}
+}
+div.dataTables_wrapper div.row.uk-grid.dt-merge-grid {
+	margin-top: 16px;
+}
+div.dataTables_wrapper div.dataTables_info {
+	white-space: nowrap;
+	@include font-size(14px);
+	color: $text-color-secondary;
+}
+div.dataTables_wrapper div.dataTables_paginate {
+	margin: 0;
+	white-space: nowrap;
+	text-align: right;
+}
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+	margin: 2px 0;
+	white-space: nowrap;
+}
+div.dataTables_wrapper div.dataTables_processing {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	margin-top: -26px;
+	text-align: center;
+	padding: 1em 0;
+}
+div.dataTables_wrapper span.select-info,
+div.dataTables_wrapper span.select-item {
+	padding-left: 16px;
+	@include respond-below(medium) {
+		padding: 4px 0;
+		display: block;
+		text-align: center;
+	}
+	+ span.select-info,
+	+ span.select-item {
+		display: none;
+	}
+}
+
+table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > td.sorting_asc,
+table.dataTable thead > tr > td.sorting_desc,
+table.dataTable thead > tr > td.sorting {
+	padding-right: 30px;
+}
+table.dataTable thead > tr > th:active,
+table.dataTable thead > tr > td:active {
+	outline: none;
+}
+table.dataTable thead .sorting {
+}
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+	cursor: pointer;
+	position: relative;
+}
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before,
+table.dataTable thead .sorting_desc_disabled:after {
+	font-family: $mdFont;
+	position: absolute;
+	@include font-size(24px);
+	top: 4px;
+	right: 4px;
+	display: block;
+	color: rgba(0,0,0,0.4);
+	@include respond-below(medium) {
+		@include font-size(18px);
+		top: 9px;
+	}
+}
+table.dataTable thead .sorting:before {
+	content: '\f4ba';
+}
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before {
+	content: '';
+}
+table.dataTable thead .sorting_asc:after {
+	content: '\f4bc';
+	color: $text-color-primary;
+}
+table.dataTable thead .sorting_desc:after {
+	content: '\f4bd';
+	color: $text-color-primary;
+}
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc_disabled:after {
+	color: $muted-color;
+}
+
+div.dataTables_scrollHead table.dataTable {
+	margin-bottom: 0 !important;
+}
+
+div.dataTables_scrollBody table {
+	border-top: none;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+div.dataTables_scrollBody table thead .sorting:after,
+div.dataTables_scrollBody table thead .sorting:before,
+div.dataTables_scrollBody table thead .sorting_asc:after,
+div.dataTables_scrollBody table thead .sorting_asc:before,
+div.dataTables_scrollBody table thead .sorting_desc:after,
+div.dataTables_scrollBody table thead .sorting_desc:before {
+	display: none;
+}
+div.dataTables_scrollBody table tbody tr:first-child th,
+div.dataTables_scrollBody table tbody tr:first-child td {
+	border-top: none;
+}
+
+div.dataTables_scrollFoot table {
+	margin-top: 0 !important;
+	border-top: none;
+}
+
+@include respond-below(medium) {
+	div.dataTables_wrapper div.dataTables_length,
+	div.dataTables_wrapper div.dataTables_filter,
+	div.dataTables_wrapper div.dataTables_info,
+	div.dataTables_wrapper div.dataTables_paginate {
+		text-align: left;
+	}
+	div.dataTables_wrapper div.dataTables_info {
+		text-align: center;
+	}
+div.dataTables_wrapper {
+		.dt-uikit-header {
+			div + div {
+				margin-top: 8px;
+			}
+		}
+	}
+	div.dataTables_wrapper {
+		.dt-uikit-footer {
+			.uk-pagination {
+				justify-content: center;
+				margin-left: 0;
+				> * > * {
+					height: 24px;
+					min-width: 24px;
+					line-height: 26px;
+				}
+			}
+			div + div {
+				margin-top: 8px;
+			}
+		}
+	}
+}
+table.dataTable.uk-table-condensed > thead > tr > th {
+	padding-right: 20px;
+}
+table.dataTable.uk-table-condensed .sorting:after,
+table.dataTable.uk-table-condensed .sorting_asc:after,
+table.dataTable.uk-table-condensed .sorting_desc:after {
+	top: 6px;
+	right: 6px;
+}
+div.dt-buttons {
+	display: flex;
+	align-items: center;
+	.sc-button {
+		margin-right: 8px;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	@include respond-below(medium) {
+		display: flex;
+		flex-wrap: wrap;
+		margin-top: -8px;
+		.sc-button {
+			margin-top: 8px;
+		}
+	}
+}
+.dt-print-view {
+	h1 {
+		@include font-size(24px);
+		font-weight: 400;
+	}
+}
+
+// responsive
+@mixin control() {
+	display: block;
+	position: absolute;
+	color: $text-color-secondary;
+	font-family: $mdFont;
+	@include font-size(24px);
+	top: 50%;
+	left: 8px;
+	margin-top: -12px;
+	line-height: 1;
+}
+@mixin control-open() {
+	content: '\f416';
+}
+@mixin control-close() {
+	content: '\f375';
+}
+table.dataTable {
+	&.dtr-inline.collapsed > tbody {
+		> tr {
+			> td.child,
+			> th.child,
+			> td.dataTables_empty {
+				cursor: default !important;
+				&:before {
+					display: none !important;
+				}
+			}
+		}
+		> tr[role="row"] > td:first-child,
+		> tr[role="row"] > th:first-child {
+			position: relative;
+			padding-left: 40px;
+			cursor: pointer;
+			&:before {
+				@include control;
+				@include control-open;
+			}
+		}
+		> tr.parent {
+			> td:first-child:before,
+			> th:first-child:before {
+				@include control-close;
+			}
+		}
+	}
+	&.dtr-inline.collapsed.compact > tbody {
+		> tr > td:first-child,
+		> tr > th:first-child {
+			&:before {}
+		}
+	}
+	&.dtr-column > tbody {
+		> tr > td.control,
+		> tr > th.control {
+			position: relative;
+			&:before {
+				@include control;
+				@include control-open;
+			}
+		}
+		> tr.parent {
+			td.control:before,
+			th.control:before {
+				@include control-close;
+			}
+		}
+	}
+	> tbody > tr.child {
+		ul.dtr-details {
+			display: block;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			> li {
+				border-bottom: 1px solid #efefef;
+				padding: 8px 0;
+				&:first-child {
+					padding-top: 0;
+				}
+				&:last-child {
+					border-bottom: none;
+				}
+			}
+		}
+		span.dtr-title {
+			display: inline-block;
+			min-width: 80px;
+			font-weight: 500;
+			color: $text-color-secondary;
+		}
+	}
+}
+#dtr-uikit-modal {
+	.table.dtr-details {
+		@include font-size(14px);
+		tr {
+			td {
+				padding: 4px 8px;
+				&:first-child {
+					font-weight: 500;
+					color: $text-color-secondary;
+					white-space: nowrap;
+					width: 1%;
+					padding-left: 0;
+				}
+			}
+		}
+	}
+}
+
+// select
+table.dataTable tbody>tr.selected,
+table.dataTable tbody>tr>.selected {
+	background-color: $theme-color-bg-dark !important;
+}
+
+table.dataTable.hover tbody>tr.selected:hover,
+table.dataTable.hover tbody>tr>.selected:hover,
+table.dataTable.display tbody>tr.selected:hover,
+table.dataTable.display tbody>tr>.selected:hover {
+	background-color: $theme-color-bg-darker !important;
+}

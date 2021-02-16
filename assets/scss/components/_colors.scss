@@ -1,0 +1,29 @@
+@each $color-name, $color-variants in $material-colors {
+	@each $color-variant, $hex-value in $color-variants {
+		%color-#{$color-name}-#{$color-variant} {
+			color: #{$hex-value}
+		}
+		%bg-color-#{$color-name}-#{$color-variant} {
+			background-color: #{$hex-value}
+		}
+	}
+}
+@each $color-name, $color-variants in $material-colors {
+	@each $color-variant, $hex-value in $color-variants {
+		.md-color-#{$color-name}-#{$color-variant} {
+			color: #{$hex-value} !important
+		}
+		.md-bg-#{$color-name}-#{$color-variant} {
+			background-color: #{$hex-value} !important
+		}
+	}
+}
+.md-color-white {
+	color: #fff !important;
+}
+.md-bg-white {
+	background: #fff !important;
+}
+.md-color-black {
+	color: #222 !important;
+}

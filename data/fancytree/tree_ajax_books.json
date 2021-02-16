@@ -1,0 +1,246 @@
+[
+    {
+        "title": "Books",
+        "expanded": true,
+        "folder": true,
+        "icon": "mdi mdi-book-open-page-variant",
+        "children": [
+            {
+                "title": "Art of War",
+                "type": "book",
+                "author": "Sun Tzu",
+                "year": -500,
+                "qty": 21,
+                "price": 5.95,
+                "icon": "mdi mdi-book"
+            },
+            {
+                "title": "The Hobbit",
+                "type": "book",
+                "author": "J.R.R. Tolkien",
+                "year": 1937,
+                "qty": 32,
+                "price": 8.97,
+                "icon": "mdi mdi-book"
+            },
+            {
+                "title": "The Little Prince",
+                "type": "book",
+                "author": "Antoine de Saint-Exupery",
+                "year": 1943,
+                "qty": 2946,
+                "price": 6.82,
+                "icon": "mdi mdi-book"
+            },
+            {
+                "title": "Don Quixote",
+                "type": "book",
+                "author": "Miguel de Cervantes",
+                "year": 1615,
+                "qty": 932,
+                "price": 15.99,
+                "icon": "mdi mdi-book"
+            }
+        ]
+    },
+    {
+        "title": "Music",
+        "folder": true,
+        "icon": "mdi mdi-music-circle-outline",
+        "children": [
+            {
+                "title": "Nevermind",
+                "type": "music",
+                "author": "Nirvana",
+                "year": 1991,
+                "qty": 916,
+                "price": 15.95,
+                "icon": "mdi mdi-file-music"
+            },
+            {
+                "title": "Autobahn",
+                "type": "music",
+                "author": "Kraftwerk",
+                "year": 1974,
+                "qty": 2261,
+                "price": 23.98,
+                "icon": "mdi mdi-file-music"
+            },
+            {
+                "title": "Kind of Blue",
+                "type": "music",
+                "author": "Miles Davis",
+                "year": 1959,
+                "qty": 9735,
+                "price": 21.9,
+                "icon": "mdi mdi-file-music"
+            },
+            {
+                "title": "Back in Black",
+                "type": "music",
+                "author": "AC/DC",
+                "year": 1980,
+                "qty": 3895,
+                "price": 17.99,
+                "icon": "mdi mdi-file-music"
+            },
+            {
+                "title": "The Dark Side of the Moon",
+                "type": "music",
+                "author": "Pink Floyd",
+                "year": 1973,
+                "qty": 263,
+                "price": 17.99,
+                "icon": "mdi mdi-file-music"
+            },
+            {
+                "title": "Sgt. Pepper's Lonely Hearts Club Band",
+                "type": "music",
+                "author": "The Beatles",
+                "year": 1967,
+                "qty": 521,
+                "price": 13.98,
+                "icon": "mdi mdi-file-music"
+            }
+        ]
+    },
+    {
+        "title": "Electronics & Computers",
+        "expanded": true,
+        "folder": true,
+        "icon": "mdi mdi-cellphone-link",
+        "children": [
+            {
+                "title": "Cell Phones",
+                "folder": true,
+                "icon": "mdi mdi-cellphone",
+                "children": [
+                    {
+                        "title": "Moto G",
+                        "type": "phone",
+                        "author": "Motorola",
+                        "year": 2014,
+                        "qty": 332,
+                        "price": 224.99,
+                        "icon": "mdi mdi-cellphone-android"
+                    },
+                    {
+                        "title": "Galaxy S8",
+                        "type": "phone",
+                        "author": "Samsung",
+                        "year": 2016,
+                        "qty": 952,
+                        "price": 509.99,
+                        "icon": "mdi mdi-cellphone-android"
+                    },
+                    {
+                        "title": "iPhone SE",
+                        "type": "phone",
+                        "author": "Apple",
+                        "year": 2016,
+                        "qty": 444,
+                        "price": 282.75,
+                        "icon": "mdi mdi-cellphone-iphone"
+                    },
+                    {
+                        "title": "G6",
+                        "type": "phone",
+                        "author": "LG",
+                        "year": 2017,
+                        "qty": 951,
+                        "price": 309.99,
+                        "icon": "mdi mdi-cellphone-android"
+                    },
+                    {
+                        "title": "Lumia",
+                        "type": "phone",
+                        "author": "Microsoft",
+                        "year": 2014,
+                        "qty": 32,
+                        "price": 205.95,
+                        "icon": "mdi mdi-cellphone"
+                    },
+                    {
+                        "title": "Xperia",
+                        "type": "phone",
+                        "author": "Sony",
+                        "year": 2014,
+                        "qty": 77,
+                        "price": 195.95,
+                        "icon": "mdi mdi-cellphone-android"
+                    },
+                    {
+                        "title": "3210",
+                        "type": "phone",
+                        "author": "Nokia",
+                        "year": 1999,
+                        "qty": 3,
+                        "price": 85.99,
+                        "icon": "mdi mdi-cellphone-basic"
+                    }
+                ]
+            },
+            {
+                "title": "Computers",
+                "folder": true,
+                "icon": "mdi mdi-laptop",
+                "children": [
+                    {
+                        "title": "ThinkPad",
+                        "type": "computer",
+                        "author": "IBM",
+                        "year": 1992,
+                        "qty": 16,
+                        "price": 749.9,
+                        "icon": "mdi mdi-laptop-windows"
+                    },
+                    {
+                        "title": "C64",
+                        "type": "computer",
+                        "author": "Commodore",
+                        "year": 1982,
+                        "qty": 83,
+                        "price": 595,
+                        "icon": "mdi mdi-desktop-classic"
+                    },
+                    {
+                        "title": "MacBook Pro",
+                        "type": "computer",
+                        "author": "Apple",
+                        "year": 2006,
+                        "qty": 482,
+                        "price": 1949.95,
+                        "icon": "mdi mdi-laptop-mac"
+                    },
+                    {
+                        "title": "Sinclair ZX Spectrum",
+                        "type": "computer",
+                        "author": "Sinclair Research",
+                        "year": 1982,
+                        "qty": 1,
+                        "price": 529,
+                        "icon": "mdi mdi-desktop-classic"
+                    },
+                    {
+                        "title": "Apple II",
+                        "type": "computer",
+                        "author": "Apple",
+                        "year": 1977,
+                        "qty": 17,
+                        "price": 1298,
+                        "icon": "mdi mdi-desktop-classic"
+                    },
+                    {
+                        "title": "PC AT",
+                        "type": "computer",
+                        "author": "IBM",
+                        "year": 1984,
+                        "qty": 3,
+                        "price": 1235,
+                        "icon": "mdi mdi-desktop-classic"
+                    }
+                ]
+            }
+        ]
+    }
+]

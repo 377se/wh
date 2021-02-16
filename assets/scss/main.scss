@@ -1,0 +1,47 @@
+/*
+*	Scutum Admin
+*	author: tzd
+*
+*	Content:
+*	1. colors; variables/mixins; common styles
+*	2. UIkit custom styles
+*	3. partials (header,sidebars,top bar)
+*	4. custom components
+*	5. common plugins
+*
+*/
+
+/* 1. variables/mixins ======================== */
+	@import "common/md_colors";
+	@import "common/variables_mixins";
+	@import "common/common";
+
+/* 2. UIkit ========================================= */
+	@import "common/uikit_custom";
+
+/* 3. partials ====================================== */
+	@import "partials/top_bar";
+	@import "partials/header";
+	@import "partials/sidebar";
+	@import "partials/toolbar";
+
+/* 4. components ==================================== */
+	@import "components/colors";
+	@import "components/cards";
+	@import "components/forms";
+	@import "components/buttons";
+	@import "components/mdi";
+	@import "components/icons";
+	@import "components/maps";
+	@import "components/offcanvas";
+	@import "components/timeline";
+	@import "components/waves";
+	@import "components/user_profile";
+
+/* 5. common plugins ================================ */
+	@import "components/highlight_js";
+	@import "components/charts";
+
+/* 6. vuejs ========================================= */
+	@import "vue/common";
+	@import "vue/transitions";

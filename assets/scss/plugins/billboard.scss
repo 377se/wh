@@ -1,0 +1,275 @@
+@import "../common/variables_mixins";
+
+/*!
+ * Copyright (c) 2017 NAVER Corp.
+ * billboard.js project is licensed under the MIT license
+ *
+ * billboard.js, JavaScript chart library
+ * http://naver.github.io/billboard.js/
+ *
+ * @version 1.4.1
+ */
+/*-- Chart --*/
+.bb svg {
+	font: 11px $primaryFont,sans-serif;
+	-webkit-tap-highlight-color: transparent;
+	height: inherit;
+}
+
+.bb path, .bb line {
+	fill: none;
+	stroke: #000;
+}
+
+.bb text, .bb .bb-button {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.bb-axis.bb-axis-x,
+.bb-axis.bb-axis-y {
+	tspan {
+		fill: $text-color-secondary;
+	}
+	line {
+		stroke: rgba(0,0,0,.4);
+	}
+}
+
+.bb-legend-item-tile,
+.bb-xgrid-focus,
+.bb-ygrid,
+.bb-event-rect,
+.bb-bars path {
+	shape-rendering: auto;
+}
+
+.bb-chart-arc path {
+	stroke: #fff;
+}
+
+.bb-chart-arc text {
+	fill: #fff;
+	font-size: 13px;
+}
+
+/*-- Axis --*/
+/*-- Grid --*/
+.bb-grid line {
+	stroke: rgba(0,0,0,.2);
+}
+
+.bb-grid text {
+	fill: #aaa;
+}
+
+.bb-xgrid, .bb-ygrid {
+	stroke-dasharray: 3 3;
+}
+
+/*-- Text on Chart --*/
+.bb-text.bb-empty {
+	fill: #808080;
+	font-size: 2em;
+}
+
+/*-- Line --*/
+.bb-line {
+	stroke-width: 2px;
+}
+
+/*-- Point --*/
+.bb-circle._expanded_ {
+	stroke-width: 1px;
+	stroke: white;
+}
+
+.bb-selected-circle {
+	fill: white;
+	stroke-width: 2px;
+}
+
+/*-- Bar --*/
+.bb-bar {
+	stroke-width: 0;
+}
+
+.bb-bar._expanded_ {
+	fill-opacity: 0.75;
+}
+
+/*-- Focus --*/
+.bb-target.bb-focused {
+	opacity: 1;
+}
+
+.bb-target.bb-focused path.bb-line, .bb-target.bb-focused path.bb-step {
+	stroke-width: 2px;
+}
+
+.bb-target.bb-defocused {
+	opacity: 0.3 !important;
+}
+
+/*-- Region --*/
+.bb-region {
+	fill: steelblue;
+	fill-opacity: .1;
+}
+
+/*-- Zoom region --*/
+.bb-zoom-brush {
+	fill-opacity: .1;
+}
+
+/*-- Brush --*/
+.bb-brush .extent {
+	fill-opacity: .1;
+}
+
+/*-- Select - Drag --*/
+/*-- Legend --*/
+.bb-legend-item {
+	font-size: 14px;
+	font-family: $primaryFont,sans-serif;
+}
+
+.bb-legend-item-hidden {
+	opacity: 0.15;
+}
+
+.bb-legend-background {
+	opacity: 0.75;
+	fill: white;
+	stroke: lightgray;
+	stroke-width: 1;
+}
+
+/*-- Title --*/
+.bb-title {
+	font: 14px 'Roboto',sans-serif;
+}
+
+/*-- Tooltip --*/
+.bb-tooltip-container {
+	z-index: 10;
+	@include box-shadow(2);
+	background: $white;
+	background-color: $white;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+.bb-tooltip {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+.bb-tooltip tr {
+}
+
+.bb-tooltip th {
+	font-size: 14px;
+	font-family: $primaryFont,sans-serif;
+	padding: 4px 4px 0;
+	text-align: left;
+	color: $text-color-primary;
+}
+
+.bb-tooltip td {
+	font-size: 12px;
+	font-family: $primaryFont,sans-serif;
+	padding: 4px 4px;
+	vertical-align: middle;
+}
+
+.bb-tooltip td > span, .bb-tooltip td > svg {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin-right: 8px;
+	vertical-align: -1px;
+}
+
+.bb-tooltip td.value {
+	text-align: right;
+}
+
+/*-- Area --*/
+.bb-area {
+	stroke-width: 0;
+	opacity: 0.2;
+}
+
+/*-- Arc --*/
+.bb-chart-arcs-title {
+	dominant-baseline: middle;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: $primaryFont,sans-serif;
+}
+
+.bb-chart-arcs .bb-chart-arcs-background {
+	fill: #e0e0e0;
+	stroke: none;
+}
+
+.bb-chart-arcs .bb-chart-arcs-gauge-unit {
+	fill: #000;
+	font-size: 16px;
+}
+
+.bb-chart-arcs .bb-chart-arcs-gauge-max {
+	fill: #777;
+}
+
+.bb-chart-arcs .bb-chart-arcs-gauge-min {
+	fill: #777;
+}
+
+.bb-chart-arc .bb-gauge-value {
+	fill: #000;
+}
+
+/*-- Radar --*/
+.bb-chart-radars .bb-levels polygon {
+	fill: none;
+	stroke: rgba(0,0,0,.3);
+	stroke-width: .5px;
+}
+
+.bb-chart-radars .bb-levels text {
+	fill: rgba(0,0,0,.6);
+}
+
+.bb-chart-radars .bb-axis line {
+	stroke: rgba(0,0,0,.3);
+	stroke-width: .5px;
+}
+
+.bb-chart-radars .bb-axis text {
+	@include font-size(12px);
+	cursor: default;
+}
+
+.bb-chart-radars .bb-shapes polygon {
+	fill-opacity: .2;
+	stroke-width: 1px;
+}
+
+/*-- Button --*/
+.bb-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	.bb-zoom-reset {
+		@include font-size(12px);
+		border: solid 1px $border-color;
+		background-color: $white;
+		padding: 4px;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+}

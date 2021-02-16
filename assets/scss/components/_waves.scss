@@ -1,0 +1,100 @@
+/*!
+ * Waves v0.7.6
+ * http://fian.my.id/Waves
+ *
+ * Copyright 2014-2018 Alfiana E. Sibuea and other contributors
+ * Released under the MIT license
+ * https://github.com/fians/Waves/blob/master/LICENSE */
+
+@mixin waves-transition($transition){
+	transition: $transition;
+}
+@mixin waves-transform($string){
+	transform: $string;
+}
+@mixin waves-box-shadow($shadow){
+	box-shadow: $shadow;
+}
+.waves-effect {
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+	overflow: hidden;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	.waves-ripple {
+		position: absolute;
+		border-radius: 50%;
+		width: 100px;
+		height: 100px;
+		margin-top:-50px;
+		margin-left:-50px;
+		opacity: 0;
+		background: rgba(0,0,0,0.2);
+		@include waves-transition(all 500ms ease-out);
+		transition-property: transform, opacity;
+		@include waves-transform(scale(0) translate(0,0));
+		pointer-events: none;
+	}
+	&.waves-light .waves-ripple {
+		background: rgba(255,255,255,0.55);
+	}
+	&.waves-primary .waves-ripple {
+		background: rgba(0, 172, 193, 0.2);
+	}
+	&.waves-md .waves-ripple {
+		background: rgba(98, 0, 238, 0.2);
+	}
+	&.waves-warning .waves-ripple {
+		background: rgba(255, 179, 0, 0.2);
+	}
+	&.waves-danger .waves-ripple {
+		background: rgba(229, 57, 53, 0.2);
+	}
+	&.waves-success .waves-ripple {
+		background: rgba(124, 179, 66, 0.2);
+	}
+	&.waves-classic .waves-ripple {
+		background: rgba(0,0,0,0.2);
+	}
+	&.waves-classic.waves-light .waves-ripple {
+		background: rgba(255,255,255,0.4);
+	}
+}
+.waves-notransition {
+	@include waves-transition(none #{"!important"});
+}
+.waves-button,
+.waves-circle {
+	@include waves-transform(translateZ(0));
+}
+
+.waves-input-wrapper {
+	border-radius: 0.2em;
+	vertical-align: bottom;
+	&.waves-button {
+		padding: 0;
+	}
+	.waves-button-input {
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: 1;
+	}
+}
+.waves-circle {
+	text-align: center;
+	width: 1.2em;
+	height: 1.2em;
+	line-height: 1.2em;
+	border-radius: 50%;
+}
+.waves-float {
+	-webkit-mask-image: none;
+	@include box-shadow(2);
+	@include waves-transition(all 300ms);
+}
+.waves-block {
+	display: block;
+	@include waves-transition(all 300ms);
+}

@@ -1,0 +1,124 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+.tui-grid-container {
+	font-family: $primaryFont,Arial,Sans-Serif;
+	.mdi {
+		color: $text-color-secondary;
+		&:before {
+			font-size: 18px;
+			line-height: 1;
+		}
+	}
+	.tui-grid-cell-content {
+		select {
+			border-radius: 3px;
+			border-color: $border-color;
+			padding: 4px;
+		}
+		input[type=password],
+		input[type=text] {
+			border-radius: 3px;
+			border-color: $border-color;
+			padding: 6px;
+		}
+	}
+	.tui-pagination {
+		display: flex;
+		justify-content: center;
+		.tui-ico-ellip,
+		.tui-ico-first,
+		.tui-ico-last,
+		.tui-ico-next,
+		.tui-ico-prev {
+			font-size: 0;
+		}
+		.tui-next-is-ellip,
+		.tui-prev-is-ellip,
+		.tui-first,
+		.tui-last,
+		.tui-next,
+		.tui-prev {
+			position: relative;
+			overflow: hidden;
+			&:before {
+				position: absolute;
+				top: 2px;
+				left: 2px;
+				font-family: $mdFont;
+				font-size: 24px;
+				line-height: 1;
+			}
+		}
+		.tui-first {
+			&:before {
+				content: '\f13d';
+			}
+		}
+		.tui-prev {
+			&:before {
+				content: '\f141';
+			}
+		}
+		.tui-next {
+			&:before {
+				content: '\f142';
+			}
+		}
+		.tui-last {
+			&:before {
+				content: '\f13e';
+			}
+		}
+		.tui-next-is-ellip,
+		.tui-prev-is-ellip {
+			&:before {
+				top: 8px;
+				left: 4px;
+				content: '\f1d8';
+				font-size: 20px;
+			}
+		}
+		.tui-page-btn {
+			box-sizing: border-box;
+			width: 28px;
+			height: 28px;
+			padding: 4px;
+			color: $text-color-primary;
+			@include font-size(14px);
+			font-weight: 500;
+			line-height: 20px;
+			text-align: center;
+			text-decoration: none;
+			border-radius: 3px;
+			margin-right: 4px;
+		}
+		.tui-is-disabled {
+			color: $muted-color;
+		}
+		.tui-is-selected {
+			background: $theme-color;
+			color: $white;
+		}
+	}
+	.tui-grid-layer-editing {
+		fieldset {
+			* {
+				vertical-align: middle;
+			}
+			label {
+				margin-left: 2px;
+				+ input {
+					margin-left: 8px;
+				}
+			}
+		}
+	}
+	@include respond-below('medium') {
+		.tui-grid-layer-editing {
+			max-width: 100%;
+			overflow-x: auto;
+			overflow-y: hidden;
+		}
+	}
+}

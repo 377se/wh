@@ -1,0 +1,30 @@
+#sc-offcanvas {
+	@include respond-above('large') {
+		display: none !important;
+	}
+	top: $header-height;
+	.uk-offcanvas-bar {
+		top: 0;
+		width: $offcanvas-width;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+.sc-offcanvas-open {
+	display: block;
+}
+.sc-offcanvas-close {
+	display: none;
+}
+.sc-offcanvas {
+	&-visible {
+		.sc-offcanvas-open {
+			display: none;
+		}
+		.sc-offcanvas-close {
+			display: block;
+		}
+	}
+}
+.sc-js-offcanvas-toggle {
+	display: none;
+}

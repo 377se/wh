@@ -1,0 +1,109 @@
+$sc-ff-black: #222;
+$sc-ff-grey: #a4b0be;
+$sc-ff-height: 56px;
+
+#sc-fancy-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  @include respond-above('medium') {
+    padding-left: $sidebar-main-width;
+  }
+  nav {
+    width: 440px;
+    max-width: 100%;
+    display: block;
+    // wave
+    .sc-ff-wave-wrap {
+      height: 26px;
+      overflow: hidden;
+      margin-bottom: 0;
+      padding: 0 32px;
+      position: relative;
+      .sc-ff-wave {
+        position: absolute;
+        width: 120px;
+        transform-origin: bottom;
+        transform: scaleY(0.8);
+        transition: all 300ms $easing;
+        .path {
+          fill: $sc-ff-black;
+        }
+      }
+    }
+    // list
+    .sc-ff-list {
+      display: flex;
+      height: $sc-ff-height;
+      list-style: none;
+      justify-content: space-around;
+      background: $sc-ff-black;
+      margin: 0;
+      padding: 0 32px;
+      position: relative;
+      &:before {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 100%;
+        content: '';
+        background: $sc-ff-black;
+        display: block;
+      }
+      > li {
+        transition: all 300ms $easing;
+        width: $sc-ff-height;
+        position: relative;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: $sc-ff-height;
+          height: $sc-ff-height;
+          // flex-direction: column;
+          span {
+            color: $white;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: block;
+            letter-spacing: 0.5px;
+          }
+        }
+        .mdi {
+          position: relative;
+          font-size: 1.5em;
+          color: $sc-ff-grey;
+          z-index: 5;
+          transition: all 300ms $easing;
+        }
+        &:before {
+          content: "";
+          position: absolute;
+          background: green;
+          height: 80%;
+          width: 80%;
+          left: 10%;
+          top: 10%;
+          border-radius: 50%;
+          z-index: 0;
+          transform: scale(0);
+          transition: all 300ms $easing;
+        }
+        &.uk-active {
+          transform: translateY(-8px);
+          i {
+            color: $white;
+          }
+          &:before {
+            transform: scale(1);
+            background: var(--item-bg)
+          }
+        }
+      }
+    }
+  }
+}
+

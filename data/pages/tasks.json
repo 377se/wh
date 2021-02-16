@@ -1,0 +1,130 @@
+[
+	{
+		"id": 1,
+		"list": "",
+		"title": "Microsoft OneDrive & Sharepoint integration",
+		"date": "14/06/2019",
+		"tags": ["Integrations"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 2,
+		"list": "",
+		"title": "Ability to merge tags",
+		"date": "14/06/2019",
+		"tags": ["Idea"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 3,
+		"list": "",
+		"title": "Update documentation regarding 'yarn install' and 'yarn update' commands",
+		"date": "14/06/2019",
+		"tags": [],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 4,
+		"list": "",
+		"title": "Angular version",
+		"date": "14/06/2019",
+		"tags": ["Feature"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 5,
+		"list": "",
+		"title": "Support for social login",
+		"date": "14/06/2019",
+		"tags": ["Integrations"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 6,
+		"list": "todo",
+		"list_long": "To Do",
+		"title": "External API integration",
+		"date": "14/06/2019",
+		"tags": ["Integrations"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": ["user_1","user_2","user_3","user_4","user_5","user_5"]
+
+	},
+	{
+		"id": 7,
+		"list": "todo",
+		"list_long": "To Do",
+		"title": "Drag and drop issues in Chrome",
+		"date": "14/06/2019",
+		"tags": ["Bug"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 8,
+		"list": "todo",
+		"list_long": "To Do",
+		"title": "RTL support (Arabic, Hebrew etc.)",
+		"date": "14/06/2019",
+		"tags": ["Feature","Idea"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 9,
+		"list": "in_progress",
+		"list_long": "In progress",
+		"title": "Personal API tokens to control individual resources",
+		"date": "14/06/2019",
+		"tags": [],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": [],
+		"progress": "64"
+	},
+	{
+		"id": 10,
+		"list": "in_progress",
+		"list_long": "In progress",
+		"title": "Search filters and autosuggest",
+		"date": "14/06/2019",
+		"tags": ["Bug"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": [],
+		"progress": "18"
+	},
+	{
+		"id": 11,
+		"list": "testing",
+		"list_long": "Testing",
+		"title": "Social share buttons on individual article page",
+		"date": "14/06/2019",
+		"tags": [],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": ["user_2"]
+	},
+	{
+		"id": 12,
+		"list": "done",
+		"list_long": "Done",
+		"title": "Restrict access to certain IP addresses",
+		"date": "14/06/2019",
+		"tags": [],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	},
+	{
+		"id": 13,
+		"list": "done",
+		"list_long": "Done",
+		"title": "Scrolling issues in Safari 11.1.2 (macOS 10.13)",
+		"date": "14/06/2019",
+		"tags": ["Bug"],
+		"description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid deserunt excepturi fugiat fugit incidunt neque officiis quae quidem sapiente. Autem culpa cumque dolorem modi nemo provident quidem repellat rerum, sequi?",
+		"assignee": []
+	}
+]

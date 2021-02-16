@@ -1,0 +1,225 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+$text-color: $text-color-primary !default;
+$popover-bg: $white !default;
+$stage-bg: $white !default;
+$button-bg: $white !default;
+$disabled-btn-color: $input-disabled-color !default;
+
+$popover-z-index: 1000000000 !default;
+$overlay-z-index: 100002 !default;
+$stage-z-index: 100003 !default;
+$highlighted-element-z-index: 100004 !default;
+
+// If you update this duration, make sure to
+// update `ANIMATION_DURATION_MS` constant
+$animation-ms: 400 !default;
+$animation-sec: ($animation-ms / 1000) * 1s !default;
+
+div#driver-popover-item {
+	display: none;
+	position: absolute;
+	background: $popover-bg;
+	color: $text-color;
+	margin: 0;
+	padding: 16px;
+	border-radius: 4px;
+	min-width: 240px;
+	max-width: 300px;
+	@include elevation(4);
+	z-index: $popover-z-index;
+	.driver-popover-tip {
+		border: 5px solid $popover-bg;
+		content: '';
+		position: absolute;
+		&.bottom {
+			bottom: -10px;
+			border-top-color: $popover-bg;
+			border-right-color: transparent;
+			border-bottom-color: transparent;
+			border-left-color: transparent;
+
+			&.position-center {
+				left: 49%;
+			}
+
+			&.position-right {
+				right: 20px;
+			}
+		}
+		&.left {
+			left: -10px;
+			top: 10px;
+			border-top-color: transparent;
+			border-right-color: $popover-bg;
+			border-bottom-color: transparent;
+			border-left-color: transparent;
+			&.position-center {
+				top: 46%;
+			}
+			&.position-bottom {
+				top: auto;
+				bottom: 20px;
+			}
+		}
+		&.right {
+			right: -10px;
+			top: 10px;
+			border-top-color: transparent;
+			border-right-color: transparent;
+			border-bottom-color: transparent;
+			border-left-color: $popover-bg;
+			&.position-center {
+				top: 46%;
+			}
+			&.position-bottom {
+				top: auto;
+				bottom: 20px;
+			}
+		}
+		&.top {
+			top: -10px;
+			border-top-color: transparent;
+			border-right-color: transparent;
+			border-bottom-color: $popover-bg;
+			border-left-color: transparent;
+
+			&.position-center {
+				left: 49%;
+			}
+
+			&.position-right {
+				right: 20px;
+			}
+		}
+	}
+	.driver-popover-footer {
+		display: block;
+		clear: both;
+		padding-top: 16px;
+		button {
+			display: inline-block;
+			padding: 6px 8px 5px;
+			border: none;
+			text-decoration: none;
+			color: $white;
+			@include font-size(12px);
+			font-weight: 500;
+			font-family: $primaryFont, sans-serif;
+			cursor: pointer;
+			outline: 0;
+			background-color: $theme-color-dark;
+			border-radius: $border-radius;
+			zoom: 1;
+			text-transform: uppercase;
+			transition: all 140ms $easing;
+			text-shadow: none;
+			margin: 0;
+			@include box-shadow(1);
+			&:hover {
+				@include box-shadow(2);
+			}
+			+ button {
+				margin-left: 4px;
+			}
+		}
+		button.driver-disabled {
+			color: $disabled-btn-color;
+			background: $input-disabled-bg;
+			cursor: default;
+			pointer-events: none;
+			box-shadow: none !important;
+		}
+		.driver-close-btn {
+			float: left;
+			background-color: transparent;
+			box-shadow: none !important;
+			color: $text-color-secondary;
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 0;
+			&:hover {
+				color: $text-color-primary;
+			}
+			&:before {
+				content: '\F156';
+				font-family: $mdFont;
+				@include font-size(20px);
+			}
+		}
+		.driver-btn-group {
+			float: right;
+		}
+	}
+	.driver-popover-title {
+		margin: 0 0 4px;
+		font-weight: 700;
+		@include font-size(18px);
+		font-family: $primaryFont, sans-serif;
+		display: block;
+		position: relative;
+		line-height: 1.5;
+		zoom: 1;
+		padding-right: 16px;
+	}
+	.driver-popover-description {
+		margin-bottom: 0;
+		font-size: 14px;
+		font-weight: 400;
+		font-family: $primaryFont, sans-serif;
+		color: $text-color;
+		zoom: 1;
+	}
+}
+.driver-stage-no-animation {
+	transition: none !important;
+	background: transparent !important;
+	outline: 5000px solid rgba(0, 0, 0, 0.75);
+}
+div#driver-page-overlay {
+	background: black;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	zoom: 1;
+	filter: alpha(opacity=75);
+	opacity: 0.75;
+	z-index: $overlay-z-index !important;
+	transition: all $animation-sec;
+}
+div#driver-highlighted-element-stage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 50px;
+	width: 300px;
+	background: $stage-bg;
+	z-index: $stage-z-index !important;
+	display: none;
+	border-radius: 2px;
+	transition: all $animation-sec;
+}
+.driver-highlighted-element {
+	z-index: $highlighted-element-z-index !important;
+}
+
+.driver-position-relative {
+	position: relative !important;
+}
+.driver-fix-stacking {
+	z-index: auto !important;
+	opacity: 1.0 !important;
+	transform: none !important;
+	filter: none !important;
+	perspective: none !important;
+	transform-style: flat !important;
+	transform-box: border-box !important;
+	will-change: unset !important;
+}

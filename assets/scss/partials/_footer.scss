@@ -1,0 +1,117 @@
+.sc-footer {
+	position: fixed;
+	left: $sidebar-main-width;
+	right: 0;
+	bottom: 0;
+	padding: 8px $spacing-default;
+	background: $white;
+	height: $footer-height;
+	box-sizing: border-box;
+	border-top: 1px solid $border-color;
+	z-index: $z-index-sidebar + 10;
+	line-height: 30px;
+	color: $text-color-secondary;
+	a {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+		text-decoration: underline;
+		span {
+			@include font-size(12px);
+			padding-top: 4px;
+		}
+	}
+	@include font-size(14px);
+	.sc-sidebar-main-slide & {
+		left: $sidebar-main-mini-width;
+		z-index: $z-index-sidebar - 10;
+		justify-content: center;
+	}
+	.sc-sidebar-mini & {
+		left: $sidebar-main-mini-width !important;
+		z-index: $z-index-sidebar - 10 !important;
+		justify-content: center !important;
+	}
+	@include respond-below('medium') {
+		left: 0 !important;
+		z-index: $z-index-sidebar - 10;
+		height: $footer-height-mobile;
+		padding: 8px 0;
+		line-height: 1;
+		.mdi {
+			line-height: 1;
+			color: $text-color-secondary;
+		}
+	}
+	&.sc-footer-light {
+		border-top: none;
+		&,
+		a:not(.sc-fab) {
+			color: $white;
+		}
+		.uk-grid-divider > :not(.uk-first-column):before {
+			border-left-color: rgba(255,255,255,.3);
+		}
+		.mdi {
+			color: $white;
+		}
+		a:not(.sc-fab) {
+			&,
+			.mdi {
+				color: rgba(255,255,255,.9);
+			}
+		}
+	}
+	.sc-fab-footer-wrapper {
+		position: absolute;
+		top: -$fab-size/2;
+		left: 50%;
+		margin-left: -$fab-size/2;
+	}
+	.sc-fab-wrapper {
+		width: $fab-size;
+		height: $fab-size / 1.4;
+		padding: 0 8px;
+		border-bottom-left-radius: $fab-size * 2.5;
+		border-bottom-right-radius: $fab-size * 2.5;
+		background: $body-background;
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translate3d(-50%,0,0);
+		.round-corner {
+			background: $body-background;
+			position: absolute;
+			top: 0;
+			display: block;
+			width: 10px;
+			height: 7px;
+			&.left {
+				left: -10px;
+				&:before {
+					left: -1px;
+					border-top-right-radius: 10px;
+				}
+			}
+			&.right {
+				right: -10px;
+				&:before {
+					right: -1px;
+					border-top-left-radius: 10px;
+				}
+			}
+			&:before {
+				position: absolute;
+				top: 0;
+				content: '';
+				display: block;
+				width: 11px;
+				height: 7px;
+				background: $theme-color-dark;
+				z-index: 10;
+			}
+		}
+	}
+}

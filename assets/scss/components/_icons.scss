@@ -1,0 +1,126 @@
+.mdi {
+	&.sc-icon-square {
+		width: 36px;
+		height: 36px;
+		&,
+		&-large {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+		&-large {
+			width: 48px;
+			height: 48px;
+		}
+	}
+	&:before {
+		@include font-size(24px);
+	}
+	&-clock-outline:before {
+		padding-top: 1px;
+	}
+	&-email-open:before {
+		padding-top: 2px;
+	}
+	&-close:before {
+		margin-left: 1px;
+	}
+}
+
+a.mdi {
+	@include hover();
+	position: relative;
+	&:after {
+		content: '';
+		background: $hover-color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: scale3d(0.1,0.1,0.1);
+		opacity: 0;
+		border-radius: 50%;
+		width: 100%;
+		height: 100%;
+		transition: all 140ms ease;
+	}
+	&:before {
+		position: relative;
+		z-index: 10;
+	}
+	&.uk-open,
+	&:hover {
+		&:after {
+			opacity: 1;
+			transform: scale3d(1,1,1);
+		}
+	}
+	&.sc-light {
+		color: $white;
+		&:after {
+			background: $hover-color-dark;
+		}
+	}
+}
+
+.sc-icon {
+	&-18 {
+		> i.mdi,
+		&:before {
+			@include font-size(18px,true);
+		}
+	}
+	&-20 {
+		> i.mdi,
+		&:before {
+			@include font-size(20px,true);
+		}
+	}
+	&-22 {
+		> i.mdi,
+		&:before {
+			@include font-size(22px,true);
+		}
+	}
+	&-24 {
+		> i.mdi,
+		&:before {
+			@include font-size(24px,true);
+		}
+		&.sc-icon-square {
+			width: 36px;
+			height: 36px;
+		}
+	}
+	&-28 {
+		> i.mdi,
+		&:before {
+			@include font-size(28px,true);
+		}
+		&.sc-icon-square {
+			width: 36px;
+			height: 36px;
+		}
+	}
+	&-32 {
+		> i.mdi,
+		&:before {
+			@include font-size(32px,true);
+		}
+	}
+	&-36 {
+		> i.mdi,
+		&:before {
+			@include font-size(36px,true);
+		}
+	}
+	&-48 {
+		> i.mdi,
+		&:before {
+			@include font-size(48px,true);
+		}
+	}
+	&-square {
+		text-align: center;
+	}
+}
+

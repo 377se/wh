@@ -1,0 +1,438 @@
+@import "../common/md_colors";
+// --------- VARIABLES
+// common
+$z-index:								1000 !default;
+$z-index-app:							$z-index + 10000;
+$z-index-tooltip:						$z-index + 600;
+$z-index-modal:							$z-index + 500;
+$z-index-header:						$z-index + 400;
+$z-index-sidebar:						$z-index + 300;
+$z-index-overlay:						$z-index + 200;
+$z-index-fab:							$z-index + 150;
+$z-index-sticky:						$z-index + 100;
+$z-index-topbar:						$z-index - 100;
+$easing:								cubic-bezier(.55,0,.1,1) !default;
+
+// fonts
+$primaryFont:							'Roboto' !default;
+$codeFont:								'Source Code Pro' !default;
+$mdFont:								'Material Design Icons' !default;
+
+// colors
+$text-color-primary:					rgba(0,0,0,.87) !default;
+$text-color-secondary:					rgba(0,0,0,.54) !default;
+$icon-color:							rgba(0,0,0,.54) !default;
+$icon-color-inactive:					rgba(0,0,0,.38) !default;
+
+$muted-color:							rgba(0,0,0,.40) !default;
+$muted-color-hex:						#999 !default;
+
+$border-color:							rgba(0,0,0,.12) !default;
+$border-color-hex:						#e1e1e1 !default;
+$border-color-hover:					rgba(0,0,0,.36) !default;
+$border-color-dark:						rgba(0,0,0,.36) !default;
+$border-color-light:					rgba(0,0,0,.08) !default;
+$border-color-light-hex:				#e8e8e8 !default;
+$hover-color:							rgba(0,0,0,.08) !default;
+$hover-color-dark:						rgba(0,0,0,.16) !default;
+$hover-color-light:						rgba(255,255,255,.36) !default;
+$hover-color-hex:						#ebebeb !default;
+$highlight-bg:							rgba(0,0,0,.08) !default;
+$highlight-bg-dark:						rgba(0,0,0,.16) !default;
+$highlight-bg-light:					rgba(0,0,0,.04) !default;
+$highlight-bg-alt:						material-color('yellow','50') !default;
+$link-color:							material-color('light-blue','800') !default;
+
+$border-radius:							3px;
+
+$_theme-color:							'cyan';
+$_theme-complementary-color:			'red';
+
+$theme-color:							material-color($_theme-color,'600') !default;
+$theme-color-dark:						material-color($_theme-color,'800') !default;
+$theme-color-bg:						material-color($_theme-color,'50') !default;
+$theme-color-bg-dark:					material-color($_theme-color,'100') !default;
+$theme-color-bg-darker:					material-color($_theme-color,'200') !default;
+
+$theme-complementary-color:				material-color($_theme-complementary-color,'a700') !default;
+$theme-complementary-color-dark:		material-color($_theme-complementary-color,'800') !default;
+$theme-complementary-color-bg:			material-color($_theme-complementary-color,'50') !default;
+
+$danger-color:							material-color('red','600') !default;
+$danger-color-dark:						material-color('red','800') !default;
+$danger-color-light:					material-color('red','400') !default;
+$danger-color-bg:						material-color('red','50') !default;
+
+$success-color:							material-color('light-green','600') !default;
+$success-color-dark:					material-color('light-green','800') !default;
+$success-color-light:					material-color('light-green','400') !default;
+$success-color-bg:						material-color('light-green','50') !default;
+
+$warning-color:							material-color('amber','600') !default;
+$warning-color-dark:					material-color('amber','800') !default;
+$warning-color-light:					material-color('amber','400') !default;
+$warning-color-bg:						material-color('amber','50') !default;
+
+$white:									#fff !default;
+
+// spacing
+$spacing-mini:							4px !default;
+$spacing-small:							8px !default;
+$spacing-medium:						16px !default;
+$spacing-default:						24px !default;
+$spacing-large:							40px !default;
+$spacing-xlarge:						48px !default;
+
+// buttons
+$button-hover-bg:						rgba(153,153,153,0.2) !default;
+$button-active-bg:						rgba(153,153,153,0.4) !default;
+
+$fab-size:								48px !default;
+$fab-size-small:						36px !default;
+$fab-size-large:						64px !default;
+
+// body
+$body-color:							rgba(0,0,0,.87) !default;
+$body-background:						#f5f5f5 !default;
+
+// input colors
+$input-on-color:						material-color('blue','700') !default;
+$input-on-color-dark:				 	material-color('blue','900') !default;
+$input-on-color-medium:					material-color('blue','500') !default;
+$input-on-color-disabled:				material-color('blue','900') !default;
+$input-on-color-light:					material-color('blue','200') !default;
+$input-on-color-alt:					material-color('teal','700') !default;
+$input-off-color:						rgba(0,0,0,.54) !default;
+$input-off-color-hex:					#757575 !default;
+$input-disabled-color:					rgba(0,0,0,.26) !default;
+$input-disabled-color-hex:				#bdbdbd !default;
+$input-disabled-bg:						rgba(0,0,0,.06) !default;
+
+// top bar (page)
+$top-bar-page-height:					24px !default;
+
+// top bar (content)
+$top-bar-content-height:				50px !default;
+$top-bar-content-height-small:			36px !default;
+$top-bar-content-height-large:			64px !default;
+
+// header
+$header-height:							48px !default;
+
+// sidebar main
+$sidebar-main-width:					260px !default;
+$sidebar-main-mini-width:				72px !default;
+
+// aside
+$aside-main-width:						240px !default;
+$aside-main-large-width:				320px !default;
+$aside-main-mini-width:					140px !default;
+
+// task board
+$task-board-column:						320px !default;
+$task-board-column-small:				240px !default;
+
+// avatar
+$avatar-size:							32px !default;
+$avatar-size-md:						64px !default;
+$avatar-size-lg:						96px !default;
+
+// offcanvas width
+$offcanvas-width:                       280px !default;
+
+// footer
+$footer-height:                         46px !default;
+$footer-height-mobile:                  56px !default;
+
+$breakpoints: (
+	xxsmall: 380px,
+	xsmall: 480px,
+	small: 640px,
+	medium: 960px,
+	large: 1200px,
+	xlarge: 1600px
+);
+@mixin respond-above($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+		@media (min-width: $breakpoint-value) {
+			@content;
+		}
+	} @else {
+		@warn 'Invalid breakpoint: #{$breakpoint}.';
+	}
+}
+@mixin respond-below($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+		@media (max-width: ($breakpoint-value - 1)) {
+			@content;
+		}
+	} @else {
+		@warn 'Invalid breakpoint: #{$breakpoint}.';
+	}
+}
+@mixin respond-between($lower, $upper) {
+	@if map-has-key($breakpoints, $lower) and map-has-key($breakpoints, $upper) {
+		$lower-breakpoint: map-get($breakpoints, $lower);
+		$upper-breakpoint: map-get($breakpoints, $upper);
+		@media (min-width: $lower-breakpoint) and (max-width: ($upper-breakpoint - 1)) {
+			@content;
+		}
+	} @else {
+		@if (map-has-key($breakpoints, $lower) == false) {
+			@warn 'Your lower breakpoint was invalid: #{$lower}.';
+		}
+		@if (map-has-key($breakpoints, $upper) == false) {
+			@warn 'Your upper breakpoint was invalid: #{$upper}.';
+		}
+	}
+}
+
+@mixin ie-fix() {
+	@media screen and (-ms-high-contrast: none) {
+		@content;
+	}
+}
+@mixin edge-fix() {
+	@supports (-ms-ime-align:auto) {
+		@content;
+	}
+}
+
+// shadows
+@mixin box-shadow ($level) {
+	@if $level == 0 {
+		box-shadow: none;
+	} @else if $level == 1 {
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	} @else if $level == 2 {
+		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	} @else if $level == 3 {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	} @else if $level == 4 {
+		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	} @else if $level == 5 {
+		box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+	}
+}
+
+@mixin box-shadow-left() {
+	box-shadow: -2px 2px 5px rgba(0,0,0,.23);
+}
+@mixin box-shadow-right() {
+	box-shadow: 2px 2px 5px rgba(0,0,0,.23);
+}
+
+// elevation
+// TODO box-shadow or elevation
+@mixin elevation ($level) {
+	@if $level == 0 {
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 1 {
+		box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 2 {
+		box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 3 {
+		box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 4 {
+		box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 5 {
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px 0 rgba(0, 0, 0, 0.14), 0 1px 14px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 6 {
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+	} @else if $level == 7  {
+		box-shadow: 0 4px 5px -2px rgba(0, 0, 0, 0.2), 0 7px 10px 1px rgba(0, 0, 0, 0.14), 0 2px 16px 1px rgba(0, 0, 0, 0.12);
+	} @else if $level == 8 {
+		box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+	} @else if $level == 9 {
+		box-shadow: 0 5px 6px -3px rgba(0, 0, 0, 0.2), 0 9px 12px 1px rgba(0, 0, 0, 0.14), 0 3px 16px 2px rgba(0, 0, 0, 0.12);
+	} @else if $level == 10 {
+		box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.2), 0 10px 14px 1px rgba(0, 0, 0, 0.14), 0 4px 18px 3px rgba(0, 0, 0, 0.12);
+	} @else if $level == 11 {
+		box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2), 0 11px 15px 1px rgba(0, 0, 0, 0.14), 0 4px 20px 3px rgba(0, 0, 0, 0.12);
+	} @else if $level == 12 {
+		box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12);
+	} @else if $level == 13 {
+		box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12);
+	} @else if $level == 14 {
+		box-shadow: 0 7px 9px -4px rgba(0, 0, 0, 0.2), 0 14px 21px 2px rgba(0, 0, 0, 0.14), 0 5px 26px 4px rgba(0, 0, 0, 0.12);
+	} @else if $level == 15 {
+		box-shadow: 0 8px 9px -5px rgba(0, 0, 0, 0.2), 0 15px 22px 2px rgba(0, 0, 0, 0.14), 0 6px 28px 5px rgba(0, 0, 0, 0.12);
+	} @else if $level == 16 {
+		box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+	} @else if $level == 17 {
+		box-shadow: 0 8px 11px -5px rgba(0, 0, 0, 0.2), 0 17px 26px 2px rgba(0, 0, 0, 0.14), 0 6px 32px 5px rgba(0, 0, 0, 0.12);
+	} @else if $level == 18 {
+		box-shadow: 0 9px 11px -5px rgba(0, 0, 0, 0.2), 0 18px 28px 2px rgba(0, 0, 0, 0.14), 0 7px 34px 6px rgba(0, 0, 0, 0.12);
+	} @else if $level == 19 {
+		box-shadow: 0 9px 12px -6px rgba(0, 0, 0, 0.2), 0 19px 29px 2px rgba(0, 0, 0, 0.14), 0 7px 36px 6px rgba(0, 0, 0, 0.12);
+	} @else if $level == 20 {
+		box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 20 31px 3px rgba(0, 0, 0, 0.14), 0 8px 38px 7px rgba(0, 0, 0, 0.12);
+	} @else if $level == 21 {
+		box-shadow: 0 10px 13px -6px rgba(0, 0, 0, 0.2), 0 21px 33px 3px rgba(0, 0, 0, 0.14), 0 8px 40px 7px rgba(0, 0, 0, 0.12);
+	} @else if $level == 22 {
+		box-shadow: 0 10px 14px -6px rgba(0, 0, 0, 0.2), 0 22px 35px 3px rgba(0, 0, 0, 0.14), 0 8px 42px 7px rgba(0, 0, 0, 0.12);
+	} @else if $level == 23 {
+		box-shadow: 0 11px 14px -7px rgba(0, 0, 0, 0.2), 0 23px 36px 3px rgba(0, 0, 0, 0.14), 0 9px 44px 8px rgba(0, 0, 0, 0.12);
+	} @else if $level == 24 {
+		box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2), 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+	}
+}
+
+// --------- MIXINS
+@mixin sc-clearfix {
+	&:before {
+		content: "";
+		display: table-cell;
+	}
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+@mixin text-truncate {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@mixin sc-pseudo {
+	content: '';
+	position: absolute;
+	display: block;
+}
+
+@mixin hover($animation: null) {
+	@if($animation) {
+		transition: all 280ms $easing;
+	}
+	color: $text-color-secondary;
+	&:hover {
+		color: $text-color-primary;
+	}
+}
+
+%reset-list {
+	&,
+	> li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+}
+
+// buttons
+@mixin buttonVariant {
+	&, &:hover, &:focus, &:active, &.uk-active {@content;}
+}
+
+// fonts
+@function calculateRem($size) {
+	$remSize: $size / 16px;
+	@return $remSize * 1rem;
+}
+
+@mixin oultine-accessibility {
+	outline: 1px dashed $text-color-secondary;
+}
+
+// font size
+@mixin font-size($size,$important:false) {
+	@if $important == true {
+		font-size: $size !important;
+		font-size: calculateRem($size) !important;
+	} @else {
+		font-size: $size;
+		font-size: calculateRem($size);
+	}
+}
+
+@mixin sc-font-primary() {
+	font-family: $primaryFont, Arial, Helvetica, sans-serif;
+}
+@mixin sc-font-code() {
+	font-family: $codeFont, Consolas, monospace;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+@mixin bgtexture($name) {
+	$url:"../img/textures/#{$name}.png";
+	background-image: url($url);
+}
+
+@mixin retina($path, $cap: 2, $size: auto auto, $extras: null) {
+	$position: -1;
+	$strpath: '#{$path}';
+	$length: str-length($strpath);
+	@for $i from $length through $length - 10{
+		@if $position == -1 {
+			$char : str-slice($strpath, $i, $i);
+			@if str-index($char, ".") == 1 {
+				$position: $i;
+			}
+		}
+	}
+	@if $position != -1 {
+		$ext: str-slice($strpath, $position + 1, $length);
+		$base: str-slice($strpath, 1, $position - 1);
+		$at1x_path: "#{$base}.#{$ext}";
+		$at2x_path: "#{$base}@2x.#{$ext}";
+		background: url("#{$at1x_path}") $extras;
+		background-size: $size;
+		@media all and (-webkit-min-device-pixel-ratio : 1.5),
+		all and (-o-min-device-pixel-ratio: 3/2),
+		all and (min--moz-device-pixel-ratio: 1.5),
+		all and (min-device-pixel-ratio: 1.5) {
+			background      : url("#{$at2x_path}") $extras;
+			background-size : $size;
+		}
+		@if $cap >= 2 {
+			@for $env from 2 through $cap {
+				$suffix: "@#{$env}x";
+				@media (-webkit-min-device-pixel-ratio: $env),
+				(min-resolution: $env * 96dpi) {
+					background      : url("#{$base}#{$suffix}.#{$ext}") $extras;
+					background-size : $size;
+				}
+			}
+		}
+	} @else {
+		background: url("#{$path}") $extras;
+		background-size: $size;
+	}
+
+}
+
+@function strip-unit($value) {
+	@return $value / ($value * 0 + 1);
+}
+@mixin fluid-type($min-font-size, $max-font-size, $min-vw: 320px, $max-vw: 1920px) {
+	$u1: unit($min-vw);
+	$u2: unit($max-vw);
+	$u3: unit($min-font-size);
+	$u4: unit($max-font-size);
+	@if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+		& {
+			font-size: $min-font-size;
+			@media screen and (min-width: $min-vw) {
+				font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+			}
+			@media screen and (min-width: $max-vw) {
+				font-size: $max-font-size;
+			}
+		}
+	}
+}
+
+@mixin placeholder {
+	&::-webkit-input-placeholder {@content}
+	&:-moz-placeholder           {@content}
+	&::-moz-placeholder          {@content}
+	&:-ms-input-placeholder      {@content}
+}

@@ -1,0 +1,847 @@
+.sc-button {
+	background: $white;
+	border: none;
+	border-radius: 4px;
+	@include elevation(2);
+	height: 36px;
+	min-width: 70px;
+	padding: 4px 16px;
+	margin: 0;
+	text-align: center;
+	text-shadow: none;
+	text-transform: uppercase;
+	transition: all 240ms $easing;
+	color: $text-color-primary;
+	box-sizing: border-box;
+	cursor: pointer;
+	-webkit-appearance: none;
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: 500 !important;
+	@include font-size(14px,true);
+	line-height: 30px !important;
+	overflow: hidden;
+	will-change: box-shadow, color;
+	&:focus,
+	&:active,
+	&.uk-button-dropdown.uk-open {
+		background: $white;
+		outline: none;
+		text-decoration: none;
+		color: $text-color-primary;
+		> i.mdi {
+			color: $text-color-primary;
+		}
+	}
+	&:hover {
+		color: $text-color-primary;
+		@include elevation(4);
+		text-decoration: none;
+	}
+	&:active,
+	&.uk-active,
+	&.uk-button-dropdown.uk-open {
+		@include elevation(8);
+	}
+	&-primary {
+		@include buttonVariant {
+			background: $theme-color-dark;
+		}
+	}
+	&-secondary {
+		@include buttonVariant {
+			background: $theme-complementary-color-dark;
+		}
+	}
+	&-danger {
+		@include buttonVariant {
+			background: $danger-color;
+		}
+	}
+	&-success {
+		@include buttonVariant {
+			background: $success-color;
+		}
+	}
+	&-warning {
+		@include buttonVariant {
+			background: $warning-color;
+		}
+	}
+	&-danger,
+	&-primary,
+	&-secondary,
+	&-success,
+	&-warning,
+	&-custom {
+		&,
+		&:hover,
+		&:focus,
+		&:active,
+		&.uk-active,
+		> i {
+			&,
+			&:before {
+				color: $white;
+			}
+		}
+	}
+	.disabled > &,
+	&:disabled,
+	&-disabled {
+		@include buttonVariant {
+			color: $muted-color-hex;
+			background: #eaeaea;
+			box-shadow: none !important;
+			cursor: default;
+			pointer-events: none;
+		}
+	}
+	> i {
+		&.mdi {
+			transition: all 140ms $easing;
+			color: $text-color-secondary;
+			&:before {
+				@include font-size(18px);
+			}
+		}
+	}
+	&::-moz-focus-inner {
+		border: 0;
+		padding: 0;
+	}
+	&-block {
+		width: 100%;
+		& + & {
+			margin-left: 0;
+			margin-top: 12px;
+		}
+	}
+	&-flex {
+		&,
+		> span {
+			display: inline-flex;
+			align-items: center;
+		}
+		.mdi {
+			margin-top: -2px;
+			height: 24px;
+			&:before {
+				line-height: 1;
+			}
+		}
+	}
+	// flat buttons
+	&-flat {
+		background: none !important;
+		box-shadow: none !important;
+		&:hover {
+			background: $hover-color !important;
+		}
+		&:active,
+		&.uk-active {
+			background: $button-active-bg;
+		}
+		&-primary {
+			@include buttonVariant {
+				color: $theme-color-dark;
+			}
+			&.uk-active {
+				color: $theme-color-dark;
+				background: $theme-color-bg;
+			}
+			&:hover {
+				background: $theme-color-bg !important;
+			}
+		}
+		&-danger {
+			@include buttonVariant {
+				color: $danger-color;
+			}
+			&.uk-active {
+				color: $danger-color-dark;
+				background: $danger-color-bg;
+			}
+			&:hover {
+				background: $danger-color-bg !important;
+			}
+		}
+		&-success {
+			@include buttonVariant {
+				color: $success-color;
+			}
+			&.uk-active {
+				color: $success-color-dark;
+				background: $success-color-bg;
+			}
+			&:hover {
+				background: $success-color-bg !important;
+			}
+		}
+		&-warning {
+			@include buttonVariant {
+				color: $warning-color;
+			}
+			&.uk-active {
+				color: $warning-color-dark;
+				background: $warning-color-bg;
+			}
+			&:hover {
+				background: $warning-color-bg !important;
+			}
+		}
+		&:disabled,
+		&.sc-button-disabled {
+			color: #a8a8a8;
+			background: $white;
+			cursor: default;
+			pointer-events: none;
+		}
+	}
+	// outline buttons
+	&-outline {
+		box-shadow: none !important;
+		border: 1px solid $border-color;
+		line-height: 28px !important;
+		color: $text-color-primary;
+		background: transparent;
+		&-square {
+			width: 36px !important;
+		}
+		&:active,
+		&.uk-active,
+		&:hover,
+		&.uk-button-dropdown.uk-open {
+			border-color: $border-color-hover;
+		}
+		&-danger {
+			@include buttonVariant {
+				color: $danger-color;
+				background: none;
+			}
+			&:hover {
+				border-color: $danger-color;
+			}
+			&.uk-active {
+				color: $danger-color-dark;
+				background: $danger-color-bg;
+			}
+			&.sc-button-icon {
+				> i {
+					&.mdi {
+						color: $danger-color;
+					}
+				}
+			}
+		}
+		&-primary {
+			@include buttonVariant {
+				color: $theme-color-dark;
+				background: none;
+			}
+			&:hover {
+				border-color: $theme-color;
+			}
+			&.uk-active {
+				color: $theme-color-dark;
+				background: $theme-color-bg;
+			}
+			&.sc-button-icon {
+				> i {
+					&.mdi {
+						color: $theme-color;
+					}
+				}
+			}
+		}
+		&-success {
+			@include buttonVariant {
+				color: $success-color;
+				background: none;
+			}
+			&:hover {
+				border-color: $success-color;
+			}
+			&.uk-active {
+				color: $success-color-dark;
+				background: $success-color-bg;
+			}
+			&.sc-button-icon {
+				> i {
+					&.mdi {
+						color: $success-color;
+					}
+				}
+			}
+		}
+		&-warning {
+			@include buttonVariant {
+				color: $warning-color;
+				background: none;
+			}
+			&:hover {
+				border-color: $warning-color;
+			}
+			&.uk-active {
+				color: $warning-color-dark;
+				background: $warning-color-bg;
+			}
+			&.sc-button-icon {
+				> i {
+					&.mdi {
+						color: $warning-color;
+					}
+				}
+			}
+		}
+		&:disabled,
+		&.sc-button-disabled {
+			color: #a8a8a8 !important;
+			border-color: $border-color-light;
+			background: $white;
+			cursor: default;
+			pointer-events: none;
+		}
+	}
+	&-wrapper {
+		display: inline-block;
+		text-align: center;
+	}
+	&-round {
+		border-radius: 50%;
+		padding: 4px;
+		.mdi {
+			&:before {
+				margin-top: -1px;
+			}
+		}
+	}
+	&-state {
+		&-loading {
+			//transition: all 280ms $easing;
+			transition-timing-function: ease-in-out;
+			width: 100%;
+			&-start {
+				font-size: 0;
+				background: $white !important;
+			}
+			&-end {
+				width: 36px;
+				min-width: 36px;
+				border-radius: 50%;
+			}
+		}
+	}
+	// social media buttons
+	&-facebook {
+		background: #3b5998 !important;
+	}
+	&-twitter {
+		background: #00aced !important;
+	}
+	&-gplus {
+		background: #dd4b39 !important;
+	}
+	&-twitch {
+		background: #6441a5 !important;
+	}
+	&-youtube {
+		background: #c4302b !important;
+	}
+	&-linkedin {
+		background: #0e76a8 !important;
+	}
+	&-social {
+		display: inline-flex;
+		align-items: center;
+		min-width: inherit;
+		&,
+		> i {
+			color: $white !important;
+		}
+		i {
+			margin-top: 2px;
+		}
+		> span {
+			padding-top: 2px;
+			margin-right: 8px;
+		}
+	}
+	// size modifiers
+	&-mini {
+		line-height: 18px !important;
+		min-width: 12px;
+		font-size: 11px !important;
+		height: 24px;
+		padding: 4px 8px;
+		&.sc-button-outline {
+			line-height: 16px !important;
+		}
+	}
+	&-small {
+		line-height: 26px !important;
+		height: 32px;
+		min-width: 14px;
+		font-size: 12px !important;
+		padding: 4px 8px;
+		&.sc-button-outline {
+			line-height: 22px !important;
+		}
+	}
+	&-large {
+		line-height: 42px !important;
+		height: 48px;
+		font-size: 16px !important;
+		min-width: 100px;
+		&.sc-button-outline {
+			line-height: 40px !important;
+		}
+	}
+	&-icon {
+		min-width: 32px;
+		padding: 4px 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		> i,
+		> i.mdi,
+		> i.mdi:before {
+			font-size: 24px;
+			line-height: 24px;
+		}
+		&.sc-button-large {
+			> i,
+			> i.mdi {
+				font-size: 32px;
+			}
+		}
+		&.sc-button-small {
+			> i,
+			> i.mdi {
+				font-size: 18px;
+			}
+		}
+		&.sc-button-mini {
+			> i,
+			> i.mdi {
+				position: relative;
+				font-size: 16px;
+				line-height: 1;
+			}
+		}
+	}
+	&.uk-button-dropdown {
+		position: relative;
+		padding-right: 32px;
+		&:after {
+			position: absolute;
+			right: 6px;
+			top: 3px;
+			content: '\f140';
+			font-family: $mdFont;
+			@include font-size(20px);
+			transition: transform 140ms ease;
+		}
+		&.uk-open {
+			&:after {
+				transform: rotate(180deg);
+			}
+		}
+	}
+	.sc-progress-circular {
+		width: 18px;
+		height: 18px;
+		margin-top: 1px;
+	}
+	&-progress {
+		min-width: 36px;
+		padding: 4px 0;
+		border-radius: 50%;
+	}
+	&-progress-overlay {
+		position: relative;
+	}
+	&-progress-layer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: rgba(255,255,255,.5);
+		border-radius: $border-radius;
+		.sc-progress-circular {
+			margin-top: 5px;
+		}
+	}
+}
+
+.uk-button-group {
+	border-radius: 4px;
+	&:not(.sc-button-group-outline) {
+		@include elevation(2);
+		> .sc-button:nth-child(n+2),
+		> div:nth-child(n+2) .sc-button {
+			position: relative;
+			border-left: 1px solid rgba(0,0,0,.1);
+		}
+		.sc-button {
+			box-shadow: none !important;
+			&:hover,
+			&:active {
+				background: $highlight-bg;
+				&.sc-button-primary {
+					background: darken($theme-color-dark,5%);
+				}
+				&.sc-button-secondary {
+					background: darken($theme-complementary-color-dark,5%);
+				}
+				&.sc-button-success {
+					background: darken($success-color,10%);
+				}
+				&.sc-button-danger {
+					background: darken($danger-color,10%);
+				}
+				+ .sc-button {
+					border-left-color: transparent;
+				}
+			}
+			&:active {
+				box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12) !important;
+			}
+			&.uk-active {
+				background: $theme-color !important;
+				color: $white;
+			}
+			&.uk-open {
+				background: $highlight-bg;
+				outline: none;
+			}
+		}
+		@mixin sc-buttons-stacked {
+			> .sc-button:nth-child(n+2),
+			> div:nth-child(n+2) .sc-button {
+				border-radius: 0;
+				border-top: 1px solid rgba(0,0,0,.1);
+				border-left: none;
+			}
+			.sc-button {
+				width: 100%;
+				&:first-child {
+					border-radius: 4px 4px 0 0;
+				}
+				&:last-child {
+					border-radius: 0 0 4px 4px;
+				}
+			}
+		}
+		@include respond-below(medium) {
+			&.sc-buttons-stacked\@m {
+				@include sc-buttons-stacked;
+				flex-wrap: wrap;
+			}
+		}
+		@include respond-below(small) {
+			&.sc-buttons-stacked\@s {
+				@include sc-buttons-stacked;
+				flex-wrap: wrap;
+			}
+		}
+		@include respond-below(xsmall) {
+			&.sc-buttons-stacked\@xs {
+				@include sc-buttons-stacked;
+				flex-wrap: wrap;
+			}
+		}
+	}
+	> .sc-button {
+		border-radius: 0;
+		&:first-child {
+			border-radius: 4px 0 0 4px;
+		}
+		&:last-child,
+		+ div > .sc-button {
+			border-radius: 0 4px 4px 0;
+		}
+	}
+	&.sc-button-group-outline {
+		margin-left: -1px;
+		.sc-button {
+			margin-left: -1px;
+			background: $white;
+			&:hover {
+				position: relative;
+				z-index: 10;
+			}
+			&.uk-active {
+				background: $theme-color;
+				color: $white;
+				z-index: 20;
+			}
+		}
+	}
+}
+
+.sc-fab {
+	&-page-wrapper {
+		position: absolute;
+		bottom: 16px;
+		right: 16px;
+	}
+}
+
+.sc-fab {
+	box-sizing: border-box;
+	width: $fab-size;
+	height: $fab-size;
+	border-radius: 50%;
+	background: $white;
+	color: $text-color-secondary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	@include elevation(6);
+	transition: all 280ms $easing;
+	border: none;
+	position: relative;
+	text-align: center;
+	cursor: pointer;
+	&:hover {
+		@include elevation(8);
+		color: $text-color-secondary;
+	}
+	&:active {
+		@include elevation(12);
+	}
+	> i {
+		color: $text-color-secondary;
+		&:before {
+			@include font-size(28px);
+		}
+	}
+	.mdi-reload,
+	.mdi-send {
+		&:before {
+			margin-right: -2px;
+		}
+	}
+	&-dark {
+		&,
+		&:hover,
+		> i {
+			color: $white;
+		}
+	}
+	&-primary {
+		background: $theme-color-dark;
+		&,
+		&:hover,
+		> i {
+			color: $white;
+		}
+	}
+	&-secondary {
+		background: $theme-complementary-color-dark;
+		&,
+		&:hover,
+		> i {
+			color: $white;
+		}
+	}
+	&-success {
+		background: $success-color;
+		&,
+		&:hover,
+		> i {
+			color: $white;
+		}
+	}
+	&-danger {
+		background: $danger-color;
+		&,
+		&:hover,
+		> i {
+			color: $white;
+		}
+	}
+	&-warning {
+		background: $warning-color;
+		&,
+		> i {
+			color: $white;
+		}
+	}
+	&-small {
+		width: $fab-size-small;
+		height: $fab-size-small;
+		border-radius: 50%;
+		> i {
+			&:before {
+				@include font-size(20px);
+			}
+		}
+	}
+	&-large {
+		width: $fab-size-large;
+		height: $fab-size-large;
+		border-radius: 50%;
+		> i {
+			&:before {
+				@include font-size(36px);
+			}
+		}
+	}
+	&-text {
+		width: auto;
+		padding: 0 24px;
+		border-radius: $fab-size;
+		text-transform: uppercase;
+		font-weight: 500;
+		> i {
+			margin-left: -8px;
+			margin-right: 4px;
+		}
+		&.sc-fab-small {
+			padding: 0 12px;
+			@include font-size(12px);
+			> i {
+				margin-left: -4px;
+			}
+		}
+		&.sc-fab-large {
+			padding: 0 36px;
+			@include font-size(20px);
+			> i {
+				margin-left: -12px;
+				margin-right: 8px;
+			}
+		}
+	}
+	&-page-wrapper {
+		position: fixed;
+		bottom: 24px;
+		right: 24px;
+		z-index: $z-index-fab;
+		transition: margin 280ms $easing;
+		.sc-footer-active & {
+			bottom: 24px + $footer-height;
+			@include respond-below('medium') {
+				bottom: 24px + $footer-height-mobile;
+			}
+		}
+	}
+	&-card-wrapper {
+		position: absolute;
+		bottom: 16px;
+		right: 16px;
+	}
+	&-page-wrapper,
+	&-card-wrapper {
+		> .sc-fab + .sc-fab {
+			margin-top: 12px;
+		}
+	}
+	&-speed-dial {
+		> .sc-fab {
+			position: relative;
+			z-index: 10;
+			> i {
+				&:nth-child(2) {
+					display: none;
+				}
+			}
+		}
+		.sc-fab-wrapper-inner {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			flex-direction: column;
+			display: none;
+			.sc-fab {
+				flex-shrink: 0;
+				animation-duration: 100ms;
+				animation-fill-mode: both;
+				animation-timing-function: $easing;
+			}
+		}
+		&:not(.sc-fab-speed-dial-horizontal) {
+			.sc-fab-wrapper-inner {
+				flex-direction: column-reverse;
+				padding-bottom: $fab-size + 8px;
+				> div {
+					margin-top: 8px;
+				}
+				.sc-fab {
+					+ .sc-fab {
+						margin-bottom: 8px;
+					}
+				}
+			}
+		}
+		&-horizontal {
+			.sc-fab-wrapper-inner {
+				padding-right: $fab-size + 8px;
+				flex-direction: row-reverse;
+				> div {
+					margin-left: 8px;
+				}
+				.sc-fab {
+					+ .sc-fab {
+						margin-right: 8px;
+					}
+				}
+			}
+		}
+		&-active {
+			&:not(.sc-fab-speed-dial-hover) {
+				> .sc-fab {
+					> i {
+						&:nth-child(1) {
+							display: none;
+						}
+						&:nth-child(2) {
+							display: block;
+						}
+					}
+				}
+			}
+			.sc-fab-wrapper-inner {
+				display: flex;
+			}
+			&.animIn {
+				.sc-fab-wrapper-inner {
+					.sc-fab {
+						animation-name: fabSpeedDialIn;
+					}
+				}
+			}
+			&.animOut {
+				.sc-fab-wrapper-inner {
+					.sc-fab {
+						animation-name: fabSpeedDialOut;
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes fabSpeedDialIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes fabSpeedDialOut {
+	from {
+		opacity: 1;
+		transform: scale3d(1, 1, 1);
+	}
+	to {
+		opacity: 0;
+		transform: scale3d(0.1, 0.1, 0.1);
+	}
+}

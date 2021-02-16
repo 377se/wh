@@ -1,0 +1,254 @@
+.sc-list {
+	&-messages {
+		@extend %reset-list;
+		border-bottom: 1px solid $border-color-light;
+		overflow: hidden;
+		> li {
+			background: $white;
+			min-height: 68px;
+			cursor: pointer;
+			&:not(.sc-disable-transition) {
+				transition: all 140ms ease;
+			}
+			.sc-message-card:not(.sc-message-expanded) {
+				transition: all 140ms ease;
+			}
+			+ li {
+				border-top: 1px solid $border-color-light;
+			}
+			&.sc-item-checked {
+				background: $highlight-bg-alt;
+			}
+			&:hover {
+				z-index: 10;
+				position: relative;
+				.sc-message-card:not(.sc-message-expanded) {
+					@include elevation(6);
+					.sc-message {
+						&-date {
+							display: none;
+						}
+						&-actions {
+							display: flex;
+							align-items: center;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.sc-message {
+		&-card {
+			padding: 12px 24px;
+			box-sizing: border-box;
+			display: flex;
+			flex-flow: column;
+			width: 100%;
+			overflow-x: hidden;
+		}
+		&-title {
+			font-weight: 400;
+			@include font-size(16px);
+			@include sc-font-primary;
+			margin: 0;
+			padding-right: 24px;
+		}
+		&-date {
+			@include font-size(14px);
+			color: $text-color-secondary;
+		}
+		&-close {
+			@include font-size(24px);
+			margin: 0 0 0 24px;
+			@include hover(true);
+		}
+		&-actions {
+			display: none;
+			.mdi {
+				height: 32px;
+				width: 32px;
+				text-align: center;
+				text-decoration: none;
+				color: $text-color-secondary;
+				&:before {
+					line-height: 32px;
+				}
+				+ .mdi {
+					margin-left: 8px;
+				}
+				&.uk-open:after,
+				&:hover:after {
+					transform: scale3d(1.2,1.2,1.2);
+				}
+			}
+		}
+		&-expanded {
+			position: absolute;
+			z-index: $z-index-overlay + 100;
+			width: 100%;
+			margin-top: -12px;
+			&,
+			&-single {
+				background: $white;
+				padding: 24px;
+				align-self: flex-start;
+				align-items: normal;
+				cursor: default;
+				overflow-x: hidden;
+				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
+				@include respond-below('medium') {
+					.sc-message-head {
+						flex-direction: column !important;
+						justify-content: left;
+						align-items: flex-start;
+						.uk-text-truncate {
+							width: auto;
+							overflow: visible;
+							white-space: normal;
+						}
+						.sc-message-title {
+							line-height: 1.5;
+						}
+						.sc-message-date {
+							padding-top: 8px;
+						}
+					}
+				}
+			}
+			&-single {
+				height: 100%;
+			}
+		}
+		&-head {
+			align-self: flex-start;
+			width: 100%;
+		}
+		&-content {
+			margin-top: $spacing-default;
+			overflow-y: auto;
+			flex: 1;
+			-webkit-overflow-scrolling: touch;
+		}
+		&-attachments {
+			list-style: none;
+			margin: -8px 0 0 0;
+			padding: 0;
+			display: flex;
+			flex-wrap: wrap;
+			li {
+				padding: 0;
+				margin: 8px 8px 0 0;
+				display: inline-flex;
+				list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+				.sc-attachment {
+					padding: 8px 8px 8px 12px;
+					background-color: material-color('grey','100');
+					display: flex;
+					position: relative;
+					font-weight: 500;
+					@include font-size(14px);
+					border-radius: 4px;
+					align-items: center;
+					a {
+						text-decoration: none;
+						span {
+							color: $text-color-secondary;
+						}
+					}
+					&-remove {
+						@include font-size(20px);
+						width: 30px;
+						height: 30px;
+						text-align: center;
+						margin-left: 8px;
+						&:before {
+							line-height: 30px;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+		&-footer {
+			box-sizing: border-box;
+			align-self: flex-end;
+			width: 100%;
+			flex-shrink: 0;
+		}
+		&-reply {
+			border-radius: $border-radius;
+			box-sizing: border-box;
+			width: 100%;
+			padding: 12px;
+			@include elevation(2);
+			margin-top: 24px;
+		}
+		&-unreaded {
+			background: $highlight-bg-light;
+			.sc-message {
+				&-title {
+					font-weight: 500;
+				}
+			}
+		}
+		&-compose {
+			background: rgba(255,255,255,1);
+			height: 100%;
+			&:not(.sc-message-compose-single) {
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+				transform-origin: 0 36px;
+				@include respond-below(medium) {
+					transform-origin: 88% 88%;
+				}
+				z-index: $z-index-overlay + 200;
+				width: 100%;
+				transition: all 280ms $easing;
+				opacity: 0;
+
+			}
+			> .sc-message-compose-wrapper {
+				box-sizing: border-box;
+				padding: 24px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
+			}
+			.sc-message-body {
+				// height: 100%;
+				flex: 1;
+				.sc-input-wrapper {
+					margin-top: 16px;
+					height: 100%;
+				}
+				.sc-input-wrapper,
+				textarea {
+					height: calc(100% - 22px);
+				}
+				textarea {
+					align-self: flex-start
+				}
+			}
+			&-visible {
+				.sc-message-compose {
+					opacity: 1;
+					display: flex;
+					transform: scale(0,0);
+				}
+			}
+			&-expanded {
+				.sc-message-compose {
+					transform: scale(1,1);
+				}
+			}
+		}
+	}
+.sc-js-expand-message {
+	> li {
+		cursor: pointer;
+	}
+}

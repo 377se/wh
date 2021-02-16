@@ -1,0 +1,12 @@
+.sortable {
+	&-handle-el {
+		cursor: move;
+		cursor: -webkit-grabbing;
+	}
+	&-ghost {
+		background: rgba(0, 0, 0, .1);
+		> * {
+			visibility: hidden;
+		}
+	}
+}

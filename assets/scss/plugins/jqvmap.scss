@@ -1,0 +1,86 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+.jqvmap-label {
+	position: absolute;
+	display: none;
+	border-radius: 3px;
+	background: #292929;
+	color: $white;
+	font-family: $primaryFont, sans-serif;
+	@include font-size(12px);
+	padding: 4px 8px;
+	pointer-events: none;
+	z-index: $z-index-sidebar + 100;
+}
+
+.jqvmap-pin {
+	pointer-events: none;
+}
+
+.jqvmap-zoomin, .jqvmap-zoomout {
+	position: absolute;
+	right: 24px;
+	border-radius: 4px;
+	background: material-color( 'grey' , '300' );
+	padding: 4px;
+	color: $text-color-primary;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	line-height: 12px;
+	text-indent: -9999em;
+	&:after {
+		text-indent: 0;
+		position: absolute;
+		content: '';
+		display: block;
+		font: normal 18px/1 $mdFont;
+	}
+}
+
+.jqvmap-zoomin {
+	top: 12px;
+	&:after {
+		content: '\F415';
+		top: 3px;
+		left: 3px;
+	}
+}
+
+.jqvmap-zoomout {
+	top: 42px;
+	&:after {
+		content: '\F374';
+		top: 3px;
+		left: 3px;
+	}
+
+}
+
+.jqvmap-region {
+	cursor: pointer;
+}
+
+.jqvmap-ajax_response {
+	width: 100%;
+	height: 500px;
+}
+
+.jqvmap-pin {
+	> * {
+		padding: 1px 4px;
+		border-radius: 3px;
+		display: flex;
+		align-items: center;
+		@include font-size(14px);
+	}
+	.jqvmap-pin-bg-dark {
+		background: rgba(0,0,0,.8);
+		color: $white;
+	}
+	.jqvmap-pin-bg-light {
+		background: rgba(255,255,255,.8);
+		color: $text-color-primary;
+	}
+}

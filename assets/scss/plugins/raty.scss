@@ -1,0 +1,83 @@
+@import "../common/_md_colors.scss";
+@import "../common/variables_mixins";
+
+.cancel-on-png,
+.cancel-off-png,
+.star-on-png,
+.star-off-png,
+.star-half-png {
+	display: inline-block;
+	font-family: "Material Design Icons";
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-rendering: auto;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	@include font-size(26px);
+	color: material-color('grey','500');
+}
+
+.cancel-on-png,
+.cancel-off-png {
+	margin-right: 4px;
+	@include font-size(22px);
+}
+.cancel-on-png:before {
+	content: "\f739";
+	color: material-color('red','600');
+}
+.cancel-off-png:before {
+	content: "\f739";
+}
+
+.star-on-png:before {
+	content: "\f4ce";
+	color: material-color('amber','500');
+}
+
+.star-off-png:before {
+	content: "\f4d2";
+}
+
+.star-half-png:before {
+	content: "\f4d0";
+	color: material-color('amber','500');
+}
+
+.raty-large {
+	.cancel-on-png,
+	.cancel-off-png,
+	.star-on-png,
+	.star-off-png,
+	.star-half-png {
+		@include font-size(36px);
+	}
+	.cancel-on-png,
+	.cancel-off-png {
+		@include font-size(28px);
+	}
+}
+
+.raty-small {
+	.cancel-on-png,
+	.cancel-off-png,
+	.star-on-png,
+	.star-off-png,
+	.star-half-png {
+		@include font-size(18px);
+	}
+	.cancel-on-png,
+	.cancel-off-png {
+		@include font-size(16px);
+	}
+}
+
+.uk-form-label {
+	&.raty-align {
+		padding-top: 6px;
+	}
+}

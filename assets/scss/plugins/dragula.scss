@@ -1,0 +1,44 @@
+@import "../common/_md_colors.scss";
+
+.gu-mirror {
+	position: fixed !important;
+	margin: 0 !important;
+	z-index: 9999 !important;
+	opacity: 0.8;
+	list-style: none;
+	&.sc-mirror-el {
+		transform: rotate(3deg);
+	}
+}
+.gu-hide {
+	display: none !important;
+}
+.gu-unselectable {
+	user-select: none !important;
+}
+.gu-transit {
+	opacity: 1;
+	&,
+	> * {
+		background: rgba(0, 0, 0, .1);
+		> * {
+			visibility: hidden;
+		}
+	}
+}
+.dragula {
+	&:not(.dragula-handle) {
+		> * {
+			cursor: move;
+		}
+	}
+	&-vertical {
+		height: 100%;
+		> * + * {
+			margin-top: 4px
+		}
+	}
+	&-handle-el {
+		cursor: move;
+	}
+}

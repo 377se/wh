@@ -1,0 +1,16 @@
+.sc-error-page {
+	@include font-size(18px);
+	text-align: center;
+	.sc-error-icon {
+		&:before {
+			font-size: 48px;
+		}
+	}
+	.sc-error-title {
+		@include font-size(64px);
+		margin: 0;
+		padding-top: 80px;
+		color: material-color('red','600');
+		background: material-color('blue-grey', '50')
+	}
+}

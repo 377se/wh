@@ -1,0 +1,12 @@
+@media print {
+	.sc-print-text-wrap {
+		white-space: normal !important;
+	}
+
+	.sc-print-column-2-5 {
+		width: 40%;
+	}
+	.sc-print-column-3-5 {
+		width: 60%;
+	}
+}

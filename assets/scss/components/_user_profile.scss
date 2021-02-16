@@ -1,0 +1,65 @@
+.sc-user-profile-avatar {
+  position: relative;
+  @include respond-below('large') {
+    float: none !important;
+    text-align: center;
+    margin: 0 0 8px !important ;
+    &.fileinput {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+      display: block;
+    }
+  }
+  img {
+    transition: all 280ms $easing;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .thumbnail {
+    transition: all 280ms $easing;
+    width: 70px;
+    height: 70px;
+    line-height: 64px;
+    border-radius: 50%;
+    border: 2px solid $border-color-hex;
+    background-color: $body-background;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: inline-block;
+    &.thumbnail-lg {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  .btn-file {
+    text-align: center;
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    background: $white;
+    display: block;
+    border-radius: 50%;
+    @include elevation(2);
+    overflow: hidden;
+    .mdi {
+      color: material-color('blue', '600');
+      font-size: 24px;
+    }
+  }
+  .btn-file.fileinput-exists {
+    left: -8px;
+    right: auto;
+    .mdi {
+      color: $danger-color;
+    }
+  }
+  &.fileinput-new {
+    .btn-file.fileinput-exists {
+      display: none;
+    }
+  }
+}

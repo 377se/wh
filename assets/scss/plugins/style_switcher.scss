@@ -1,0 +1,141 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+@import "../themes/base";
+
+#sc-style-switcher {
+	position: fixed;
+	top: 20%;
+	right: 0;
+	width: 220px;
+	transform: translateX(272px);
+	transition: all 280ms $easing;
+	background: $white;
+	@include elevation(2);
+	border-radius: 0 0 0 4px;
+	padding: 24px;
+	z-index: $z-index-sidebar - 100;
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 20px;
+		height: 2.5rem;
+		background: $white;
+		z-index: 20;
+	}
+	@include respond-below('medium') {
+		width: 180px;
+		transform: translateX(232px);
+	}
+	&.active {
+		transform: translateX(0);
+	}
+	.sc-sSw-toggle {
+		color: $theme-color-dark;
+		@include font-size(24px);
+		position: absolute;
+		left: -3rem;
+		top: 0;
+		width: 3rem;
+		height: 2.5rem;
+		border-radius: 0.25rem 0 0 0.25rem;
+		@include elevation(2);
+		background: $white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		.mdi {
+			height: 2.25rem;
+		}
+	}
+	.sc-sSw-theme-switcher {
+		margin-top: -16px !important;
+		&,
+		li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+		li {
+			margin-top: 16px;
+			opacity: 0.4;
+			transition: opacity 140ms ease;
+			position: relative;
+			&:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 50%;
+				margin-left: -12px;
+				display: block;
+				font-family: $mdFont;
+				@include font-size(24px);
+				color: $white;
+				line-height: 1;
+			}
+			a {
+				display: flex;
+				width: 64px;
+				height: 1.5rem;
+				@include respond-below('medium') {
+					width: 48px;
+				}
+				span {
+					width: 50%;
+					&:first-child {
+
+					}
+					&:last-child {
+
+					}
+				}
+			}
+			a.sc-sW-theme-default {
+				span {
+					&:first-child {
+						background: material-color($_theme-color, '600');
+					}
+					&:last-child {
+						background: material-color($_theme-complementary-color, '600');
+					}
+				}
+			}
+			@each $name, $color-1, $color-2 in $themes {
+				a.sc-sW-theme-#{$name} {
+					span {
+						&:first-child {
+							background: material-color($color-1, '600');
+						}
+						&:last-child {
+							background: material-color($color-2, '600');
+						}
+					}
+				}
+			}
+			a.sc-sW-theme-dark {
+				span {
+					&:first-child {
+						background: material-color('cyan', '900');
+					}
+					&:last-child {
+						background: material-color('grey', '800');
+					}
+				}
+			}
+			&:hover,
+			&.active {
+				opacity: 1;
+			}
+			&.active {
+				&:after {
+					content: '\f12c';
+				}
+			}
+		}
+	}
+}

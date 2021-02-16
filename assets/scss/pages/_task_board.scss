@@ -1,0 +1,195 @@
+.sc-task {
+	&-board {
+		padding: 12px 0;
+		height: 100%;
+		box-sizing: border-box;
+		display: flex;
+		&-wrapper {
+			display: flex;
+			flex-wrap: nowrap;
+			overflow-y: hidden;
+			overflow-x: auto;
+			max-width: 100%;
+			-webkit-overflow-scrolling: touch;
+			padding: 0 12px;
+			height: 100%;
+			box-sizing: border-box;
+		}
+	}
+	&-list {
+		width: $task-board-column;
+		background: material-color('grey','200');
+		display: flex;
+		flex: 1 0 auto;
+		flex-direction: column;
+		transition: width 280ms $easing;
+		&-head {
+			display: flex;
+			align-items: center;
+			padding: 8px 24px;
+			box-sizing: border-box;
+			min-height: 52px;
+			.sc-task-list-header {
+				flex: 1;
+				margin: 0;
+			}
+		}
+		+ .sc-task-list {
+			margin-left: 12px;
+		}
+		&:last-child {
+			margin-right: 12px;
+		}
+		&-collapsed {
+			width: 64px;
+			display: block;
+			.sc-task-list-cards,
+			.sc-js-el-hide {
+				display: none;
+			}
+			.sc-js-el-show {
+				display: block;
+			}
+			.sc-task-list-head {
+				transform: rotate(-90deg);
+				justify-content: flex-end;
+				padding: 8px 16px;
+			}
+			.sc-actions {
+				margin: 0 !important;
+				.sc-column-show {
+					transform: rotate(90deg);
+				}
+			}
+			.sc-task-list-header {
+				white-space: nowrap;
+				padding-right: 16px;
+				max-width: inherit;
+				overflow: visible;
+			}
+			@include ie-fix() {
+				.sc-task-list-head {
+					transform: rotate(-270deg);
+					padding-left: 0;
+				}
+				.sc-actions {
+					margin: 0 !important;
+					.sc-js-el-show {
+						transform: rotate(-270deg);
+					}
+				}
+				.sc-task-list-header {
+					padding-right: 0;
+					position: absolute;
+					left: 64px;
+					bottom: 16px;
+				}
+			};
+		}
+	}
+
+	&-list-header {
+		margin: 0 0 12px;
+		@include sc-font-primary;
+		@include font-size(14px);
+		text-transform: uppercase;
+		font-weight: 500;
+	}
+	&-list-cards {
+		margin: 8px 4px 0 12px;
+		padding: 0 12px 8px 4px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		flex: 1;
+		flex-shrink: 0;
+		min-height: 24px;
+		* {
+			-webkit-user-select: none;
+		}
+		&,
+		> li {
+			@extend %reset-list;
+		}
+		> li {
+			cursor: pointer;
+			+ li {
+				margin-top: 12px;
+			}
+		}
+		.sc-mirror-el {
+			border-radius: $border-radius;
+		}
+	}
+	&-card {
+		border-radius: $border-radius;
+		padding: 8px 12px;
+		background: $white;
+		@include box-shadow(1);
+		cursor: pointer;
+		&-title {
+			margin: 0;
+			@include sc-font-primary();
+			@include font-size(14px);
+			font-weight: 400;
+			line-height: 1.4;
+		}
+		&-assignee {
+			display: flex;
+			align-items: center;
+			margin-top: 8px;
+			> a {
+				&,
+				img {
+					border-radius: 50%;
+				}
+				margin-right: 4px;
+				@include font-size(14px)
+			}
+		}
+	}
+}
+
+#sc-page-aside {
+	.sc-task-list-head {
+		margin-top: 12px;
+		margin-bottom: 8px;
+	}
+	.sc-task-list-cards {
+		height: 100%;
+		margin-top: 0;
+		:first-child {
+			&[style*="display: none"] {
+				+ li {
+					margin-top: 0;
+				}
+			}
+		}
+		.sortable-ghost {
+			border-radius: $border-radius;
+		}
+	}
+}
+
+.sc-task-board {
+	> [style*="display: none"]:first-child {
+		+ .sc-task-list {
+			margin-left: 0;
+		}
+
+	}
+}
+.sc-task-list,
+.sc-task-list-cards {
+	:first-child {
+		&[style*="display: none"] {
+			+ li {
+				margin-top: 0;
+			}
+		}
+	}
+	.sc-task-list-cards {
+		.sortable-ghost {
+			border-radius: $border-radius;
+		}
+	}
+}

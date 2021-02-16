@@ -1,0 +1,423 @@
+@import '../common/md_colors';
+@import '../common/variables_mixins.scss';
+
+// for style switcher
+$themes: (
+	('a', 'blue', 'green'),
+	('b', 'indigo', 'pink'),
+	('c', 'grey', 'light-blue'),
+	('d', 'purple', 'green'),
+	('e', 'red', 'indigo'),
+	('f', 'blue-grey', 'deep-orange'),
+	('g', 'deep-purple', 'brown'),
+	('h', 'brown', 'cyan')
+);
+
+@mixin theme($name, $primary, $complementary, $md: true) {
+
+	$_theme-color:							$primary;
+	$_theme-complementary-color:			$complementary;
+	$theme-color:							if($md == true, material-color($_theme-color,'600'), $primary);
+	$theme-color-dark:						if($md == true, material-color($_theme-color,'800'), darken($primary, 5%));
+	$theme-color-bg:						if($md == true, material-color($_theme-color,'50'), lighten($primary, 20%));
+	$theme-color-bg-dark:					if($md == true, material-color($_theme-color,'100'), lighten($primary, 25%));
+	$theme-color-bg-darker:					if($md == true, material-color($_theme-color,'200'), lighten($primary, 25%));
+	$theme-complementary-color:			    if($md == true, material-color($_theme-complementary-color, if($complementary == 'brown' or  $complementary == 'grey' or $complementary == 'blue-grey','600','a700')), $_theme-complementary-color);
+	$theme-complementary-color-dark:		if($md == true, material-color($_theme-complementary-color,'800'), darken($_theme-complementary-color, 5%));
+	$theme-complementary-color-bg:			if($md == true, material-color($_theme-complementary-color,'50'), lighten($_theme-complementary-color, 20%));
+
+	.sc-theme-#{$name} {
+		#sc-header {
+			.uk-navbar {
+				background: $theme-color-dark;
+				.uk-navbar-nav {
+					> li {
+						> a {
+							.sc-indicator {
+								border-color: $theme-color-dark;
+							}
+						}
+					}
+				}
+				// tour plugin
+				.driver-highlighted-element {
+					&,
+					a {
+						background: $theme-color-dark;
+					}
+				}
+			}
+		}
+		&.sc-header {
+			&-expanded {
+				#sc-page-wrapper {
+					&:before {
+						background: $theme-color-dark;
+					}
+				}
+			}
+		}
+		#sc-sidebar-main {
+			.sc-sidebar {
+				&-menu {
+					> li {
+						> .sc-sidebar-menu-sub {
+							li {
+								&.sc-page-active {
+									a {
+										color: $theme-complementary-color-dark;
+										background: $theme-complementary-color-bg;
+									}
+								}
+							}
+						}
+						&.sc-page-active > a {
+							color: $theme-complementary-color-dark;
+							background: $theme-complementary-color-bg;
+						}
+					}
+					.sc-page-active {
+						.uk-nav-icon {
+							> i {
+								color: $theme-complementary-color-dark;
+							}
+						}
+					}
+				}
+			}
+		}
+		.sc-sidebar-dark {
+			#sc-sidebar-main {
+				li {
+					&.sc-page-active {
+						> a {
+							background: $theme-complementary-color;
+						}
+					}
+				}
+			}
+		}
+		.sc {
+			&-button {
+				&-primary {
+					@include buttonVariant {
+						background: $theme-color-dark;
+					}
+				}
+				&-secondary {
+					@include buttonVariant {
+						background: $theme-complementary-color-dark;
+					}
+				}
+				&-flat {
+					&-primary {
+						@include buttonVariant {
+							color: $theme-color-dark;
+						}
+						&.uk-active {
+							color: $theme-color-dark;
+							background: $theme-color-bg;
+						}
+						&:hover {
+							background: $theme-color-bg !important;
+						}
+					}
+				}
+				&-outline {
+					&-primary {
+						@include buttonVariant {
+							color: $theme-color-dark;
+						}
+						&:hover {
+							border-color: $theme-color;
+						}
+						&.uk-active {
+							color: $theme-color-dark;
+							background: $theme-color-bg;
+						}
+					}
+				}
+			}
+			&-fab {
+				&-primary {
+					background: $theme-color-dark;
+				}
+				&-secondary {
+					background: $theme-complementary-color-dark;
+				}
+			}
+			&-theme {
+				&-color {
+					color: $theme-color !important;
+				}
+				&-bg {
+					background-color: $theme-color !important;
+					&-light {
+						background-color: $theme-color-bg !important;
+					}
+					&-dark {
+						background-color: $theme-color-dark !important;
+					}
+				}
+				&-complementary {
+					&-color {
+						color: $theme-complementary-color !important;
+					}
+					&-bg {
+						background-color: $theme-complementary-color !important;
+						&-light {
+							background-color: $theme-complementary-color-bg !important;
+						}
+					}
+				}
+			}
+			&-progress-circular {
+				border-top-color: $theme-color;
+				&-secondary {
+					border-top-color: $theme-complementary-color;
+				}
+			}
+		}
+		.uk-button-group {
+			&:not(.sc-button-group-outline) {
+				.sc-button {
+					&:hover,
+					&:active {
+						&.sc-button-primary {
+							background: darken($theme-color-dark, 5%);
+						}
+						&.sc-button-secondary {
+							background: darken($theme-complementary-color-dark, 5%);
+						}
+					}
+					&.uk-active {
+						background: $theme-color !important;
+					}
+				}
+			}
+			&.sc-button-group-outline .sc-button.uk-active {
+				background: $theme-color !important;
+			}
+		}
+		// UIkit
+		.uk-alert {
+			&-primary {
+				background: $theme-color-dark !important;
+			}
+		}
+		.uk-button {
+			&-primary {
+				background-color: $theme-color-dark;
+				&:hover,
+				&:focus {
+					background-color: lighten($theme-color-dark, 4%);
+				}
+			}
+			&-secondary {
+				background-color: $theme-complementary-color-dark;
+				&:hover,
+				&:focus {
+					background-color: lighten($theme-complementary-color-dark, 10%);
+				}
+			}
+		}
+		.uk-card {
+			&-primary {
+				background-color: $theme-color-dark;
+				&.uk-card-hover {
+					&:hover {
+						background-color: $theme-color-dark;
+					}
+				}
+			}
+			&-secondary {
+				background-color: $theme-complementary-color-dark;
+				&.uk-card-hover {
+					&:hover {
+						background-color: $theme-complementary-color-dark;
+					}
+				}
+			}
+		}
+		.uk-label {
+			background: $theme-color;
+		}
+		.uk-notification .uk-notification-message-primary {
+			background: $theme-color;
+		}
+		.uk-subnav-pill {
+			.uk-active > a {
+				background: $theme-color;
+			}
+		}
+		.uk-pagination {
+			.uk-active {
+				> * {
+					background: $theme-color-dark;
+				}
+			}
+		}
+		.uk-tab {
+			> * {
+				> a {
+					&:after {
+						background: $theme-color;
+					}
+				}
+			}
+		}
+		.sc-footer .sc-fab-wrapper .round-corner:before {
+			background-color: $theme-color-dark;
+		}
+
+		// PLUGINS
+		// data grid
+		.tui-grid-container {
+			.tui-pagination {
+				.tui-is-selected {
+					background: $theme-color;
+				}
+			}
+		}
+		// datatable
+		table.dataTable tbody>tr.selected,
+		table.dataTable tbody>tr>.selected {
+			background-color: $theme-color-bg-dark !important;
+		}
+		table.dataTable.hover tbody>tr.selected:hover,
+		table.dataTable.hover tbody>tr>.selected:hover,
+		table.dataTable.display tbody>tr.selected:hover,
+		table.dataTable.display tbody>tr>.selected:hover {
+			background-color: $theme-color-bg-darker !important;
+		}
+		// daterangepicker
+		.date-picker-wrapper {
+			table .caption {
+				background: $theme-color;
+			}
+			.drp_top-bar {
+				.apply-btn {
+					border: solid 1px $theme-color;
+				}
+			}
+			.first-date-selected,
+			.last-date-selected {
+				background-color: $theme-color !important;
+				border-color: $theme-color !important;
+			}
+		}
+		// flatpickr
+		.flatpickr-calendar {
+			&:not(.noCalendar) {
+				&.arrowTop {
+					&:before,
+					&:after {
+						border-bottom-color: $theme-color;
+					}
+				}
+			}
+		}
+		.flatpickr-months {
+			background: $theme-color;
+		}
+		.flatpickr-day {
+			&.today {
+				&.selected {
+					&,
+					&:hover {
+						border-color: $theme-color;
+					}
+				}
+			}
+			&.selected,
+			&.startRange,
+			&.endRange {
+				&,
+				&.inRange,
+				&:focus,
+				&:hover,
+				&.prevMonthDay,
+				&.nextMonthDay {
+					background: $theme-color;
+					border-color: $theme-color;
+				}
+			}
+			&.selected.startRange,
+			&.startRange.startRange,
+			&.endRange.startRange {
+				+ .endRange:not(:nth-child(7n+1)) {
+					box-shadow: -10px 0 0 $theme-color;
+				}
+			}
+		}
+		// listnav
+		.ln-letters {
+			a:hover,
+			.ln-selected {
+				background-color: $theme-color;
+				border-color: $theme-color;
+			}
+		}
+		// multiselect
+		.ms-container {
+			& .ms-list.ms-focus {
+				border-color: $theme-color;
+			}
+		}
+		// select2
+		.select2-container--default {
+			.select2-results__option{
+				&[aria-selected=true] {
+					background: $theme-color;
+				}
+			}
+		}
+		// steps
+		.wizard {
+			> .steps {
+				> ul {
+					> li {
+						> a {
+							&:before {
+								border-color: $theme-color;
+							}
+						}
+						&.current {
+							a {
+								color: $theme-color;
+								&,
+								&:after {
+									border-color: $theme-color !important;
+								}
+							}
+						}
+					}
+				}
+			}
+			&.minimal {
+				> .steps {
+					> ul {
+						.current {
+							a {
+								&,
+								&:hover,
+								&:active {
+									background: $theme-color;
+								}
+								&:after {
+									background: $theme-color !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// waves
+		.waves-effect {
+			&.waves-primary .waves-ripple {
+				background: rgba($theme-color, 0.2);
+			}
+		}
+	}
+}

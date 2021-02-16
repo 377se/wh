@@ -1,0 +1,740 @@
+@import '../common/md_colors';
+@import '../common/variables_mixins.scss';
+
+$theme-color: material-color('grey', '600');
+$theme-color-dark: material-color('grey', '900');
+$theme-color-bg: material-color('grey', '50');
+$theme-color-bg-dark: material-color('grey', '700');
+$theme-color-bg-darker: #1d1d1d;
+$theme-color-bg-darkest: material-color('grey', '900');
+
+.sc-theme-dark {
+	body {
+		background: #121212;
+		color: $white;
+	}
+
+	a {
+		&:not(.sc-button) {
+			color: #62b5ff;
+
+			&:hover,
+			&:focus {
+				color: #1e87f0;
+			}
+		}
+	}
+
+	.sc-fab-success, .sc-fab-success:hover, .sc-fab-success > i,
+	.sc-fab-danger, .sc-fab-danger:hover, .sc-fab-danger > i,
+	.sc-fab-warning, .sc-fab-warning:hover, .sc-fab-warning > i,
+	.sc-fab-secondary, .sc-fab-secondary:hover, .sc-fab-secondary > i {
+		color: $white !important;
+	}
+
+	.sc-color-primary {
+		color: $white !important;
+	}
+
+	.uk-accordion-title:hover,
+	.uk-accordion-title:focus {
+		color: #1e87f0;
+	}
+
+	#sc-sidebar-main .sc-sidebar-menu li.sc-section-active > a,
+	#sc-sidebar-main .sc-sidebar-menu > li > a:hover,
+	#sc-js-map-visits,
+	.sc-progress,
+	.uk-dropdown,
+	.uk-navbar-dropdown,
+	.sc-message-attachments li .sc-attachment,
+	.uk-input,
+	.uk-select,
+	.uk-textarea,
+	.sc-input-wrapper-outline label,
+	.select2-dropdown,
+	.select2-container--default,
+	.select2-container--default .select2-selection--multiple,
+	.sc-task-list.uk-card,
+	.select2-container--default .select2-selection--single .select2-selection__rendered,
+	.select2-container--default .select2-selection--single,
+	.flatpickr-calendar,
+	.date-picker-wrapper,
+	.date-picker-wrapper .month-wrapper,
+	.ms-container .ms-selectable,
+	.ms-container .ms-selection,
+	.uk-accordion-outline > li.uk-open .uk-accordion-title,
+	.wizard > .steps > ul,
+	.uk-accordion-alt > li.uk-open .uk-accordion-title:not([class*="md-bg-"]),
+	.sc-timeline-body,
+	.tablesorter-scutum input.tablesorter-filter,
+	.tablesorter-scutum select.tablesorter-filter,
+	div.dataTables_wrapper select,
+	div.dataTables_wrapper input,
+	.fancytree-plain span.fancytree-selected span.fancytree-title,
+	.fancytree-plain span.fancytree-active span.fancytree-title,
+	.fancytree-plain span.fancytree-selected span.fancytree-title:hover,
+	.sc-top-menu ul,
+	.sc-task-card,
+	.vgt-input,
+	.vgt-select,
+	.vgt-wrap__footer .footer__row-count__select {
+		background: $theme-color-bg-dark !important;
+	}
+
+	.uk-button-default {
+		&,
+		&:hover {
+			background-color: $white;
+		}
+	}
+
+	.sc-colorpicker-inline .sc-colorpicker-colors {
+		background-color: $white;
+	}
+
+	.uk-card,
+	.uk-card-hover:not(.uk-card-default):not(.uk-card-primary):not(.uk-card-secondary):hover {
+		background: $theme-color-bg-darker;
+		color: $white;
+	}
+
+	.uk-drop .uk-card {
+		background: $theme-color-bg-dark;
+	}
+
+	#sc-sidebar-main:not(.uk-offcanvas),
+	#sc-sidebar-main .uk-offcanvas-bar,
+	.sc-chat-header,
+	.sc-chat-user-input,
+	#sc-page-top-bar .sc-top-bar-content,
+	#sc-page-top-bar .sc-top-bar-aside,
+	.sc-list-messages > li,
+	.sc-chat-user-input .uk-input:not(:focus),
+	.sc-chat-user-input [data-sc-input],
+	.sc-message-expanded #sc-message-single,
+	#sc-style-switcher,
+	#sc-style-switcher .sc-sSw-toggle,
+	#sc-style-switcher:before,
+	.uk-modal-dialog,
+	.uk-modal-header,
+	.uk-modal-footer,
+	.select2-container--default .select2-search--dropdown .select2-search__field,
+	.wizard > .content > .body,
+	.wizard > .content > div > .body,
+	.wizard > .steps > ul > li.done a,
+	.wizard > .steps > ul > li.done a:active,
+	.wizard > .steps > ul > li.done a:after,
+	.wizard > .steps > ul > li.done a:hover,
+	.sc-list-shadow > li,
+	#sc-page-top-bar .sc-top-bar-content-expanded,
+	table.fancytree-ext-table tbody tr.fancytree-active,
+	ul.fancytree-container,
+	.sc-message-expanded,
+	.sc-message-expanded-single,
+	.sc-task-list,
+	.uk-offcanvas-bar,
+	#sc-sidebar-main.sc-sidebar-info-fixed .sc-sidebar-info {
+		background: $theme-color-bg-darker;
+	}
+
+	.sc-color-primary,
+	.uk-h1,
+	.uk-h2,
+	.uk-h3,
+	.uk-h4,
+	.uk-h5,
+	.uk-h6,
+	.uk-heading-2xlarge,
+	.uk-heading-large,
+	.uk-heading-medium,
+	.uk-heading-small,
+	.uk-heading-xlarge,
+	h1, h2, h3, h4, h5, h6,
+	h1 span.sc-sub-heading,
+	h2 span.sc-sub-heading,
+	h3 span.sc-sub-heading,
+	h4 span.sc-sub-heading,
+	h5 span.sc-sub-heading,
+	h6 span.sc-sub-heading,
+	a.mdi,
+	a.mdi:hover,
+	.sc-widget .uk-card-title,
+	.uk-card-title,
+	#sc-sidebar-main .sc-sidebar-menu-heading,
+	#sc-sidebar-main .sc-sidebar-menu li a,
+	#sc-sidebar-main .sc-sidebar-menu > li > a .uk-nav-icon,
+	#sc-sidebar-main .sc-sidebar-menu > li > a:hover .uk-nav-icon,
+	#sc-sidebar-main .sc-sidebar-menu > li.sc-section-active .mdi,
+	._uk-list-li .mdi:not(.icon),
+	.uk-list:not(.uk-list-bullet) > li .mdi:not(.icon),
+	._uk-list-li a, .uk-list:not(.uk-list-bullet) > li a,
+	.sc-progress-label,
+	.uk-dropdown-nav > li.uk-active > a,
+	.uk-dropdown-nav > li > a:focus,
+	.uk-dropdown-nav > li > a:hover,
+	.uk-table thead th,
+	.uk-dropdown-nav .uk-nav-header,
+	.uk-dropdown-nav > li > a,
+	.uk-navbar-dropdown .uk-nav > li > a,
+	.sc-button-outline.sc-button-default,
+	.sc-button-outline.sc-button-default:hover,
+	.sc-button-flat.sc-button-default,
+	.sc-button-flat.sc-button-default:hover,
+	.sc-chat-user-input [data-sc-input],
+	.uk-input,
+	.uk-select,
+	.uk-select:not([multiple]):not([size]) option,
+	.uk-textarea,
+	.uk-input:focus,
+	.uk-select:focus,
+	.uk-textarea:focus,
+	.select2-container--default .select2-results__option--highlighted[aria-selected],
+	.uk-accordion-title .mdi,
+	.uk-accordion .uk-open .uk-accordion-title .mdi,
+	.uk-legend,
+	.uk-input:not([data-sc-input]):not(.sc-vue-input):focus,
+	.uk-select:not([data-sc-input]):not(.sc-vue-input):focus,
+	.uk-textarea:not([data-sc-input]):not(.sc-vue-input):focus,
+	.select2-container--default .select2-selection--single .select2-selection__rendered,
+	.irs-max,
+	.irs-min,
+	.irs-grid-text,
+	.select2-container--default .select2-search--inline .select2-search__field,
+	.select2-container--default .select2-search--dropdown .select2-search__field,
+	.select2-container--default .select2-selection--single .select2-selection__clear:after,
+	.date-picker-wrapper .month-wrapper table .day.toMonth.valid,
+	.date-picker-wrapper .time1 > div:first-child,
+	.date-picker-wrapper .time2 > div:first-child,
+	.date-picker-wrapper .time label,
+	.date-picker-wrapper,
+	.date-picker-wrapper b,
+	.date-picker-wrapper .drp_top-bar .apply-btn,
+	.ms-container .ms-selectable li.ms-elem-selectable,
+	.ms-container .ms-selection li.ms-elem-selection,
+	.sc-button > i.mdi,
+	.uk-accordion-outline > li.uk-open .uk-accordion-title,
+	.wizard > .steps > ul > li > a .sub-text,
+	.wizard > .steps > ul > li > a > .step-icon,
+	.wizard.minimal > .steps > ul .done a > .step-icon,
+	.wizard.minimal > .steps > ul .done a,
+	.uk-accordion-alt > li.uk-open .uk-accordion-title,
+	.uk-tab > .uk-active > a,
+	.uk-tab > * > a,
+	.sc-timeline-date,
+	.ln-letters a,
+	.tablesorter-pager-scutum .tablesorter-page-nav > button,
+	.tablesorter-scutum input.tablesorter-filter,
+	.tablesorter-scutum select.tablesorter-filter,
+	.uk-button-group:not(.sc-button-group-outline) .sc-button:hover,
+	.uk-button-group:not(.sc-button-group-outline) .sc-button:active,
+	.tui-grid-container .tui-pagination .tui-page-btn,
+	div.dataTables_wrapper select,
+	div.dataTables_wrapper input,
+	div.ganttview-hzheader-month,
+	.fancytree-container .mdi:before,
+	span.fancytree-title,
+	.sc-top-menu ul li a,
+	.sc-top-menu ul li a:hover,
+	.sc-top-menu ul li.sc-has-submenu > a:after,
+	.vgt-global-search__input:before,
+	.vgt-input,
+	.vgt-select,
+	div.dataTables_wrapper div.dataTables_info,
+	.vgt-wrap__footer .footer__row-count__select,
+	.uk-offcanvas-bar {
+		color: $white;
+	}
+
+	.uk-form-success,
+	.uk-form-danger {
+		color: $white !important;
+	}
+
+	.sc-color-secondary,
+	.uk-text-meta,
+	#sc-sidebar-main .sc-sidebar-info,
+	#sc-sidebar-main .sc-sidebar-menu li.sc-has-submenu > a:after,
+	.uk-list:not(.uk-list-bullet) > .sc-list-group label span,
+	._sc-list-group label span,
+	.uk-sortable-drag.sc-list-group label span,
+	.uk-list:not(.uk-list-bullet) .sc-list-secondary-text,
+	.sc-message-attachments li .sc-attachment a span,
+	.sc-input-wrapper > label,
+	.sc-message-date,
+	.uk-form-label,
+	.uk-form-help-inline, .uk-form-help-block,
+	.flatpickr-weekwrapper span.flatpickr-day,
+	.flatpickr-weekwrapper span.flatpickr-day:hover,
+	.date-picker-wrapper .month-wrapper table td,
+	.date-picker-wrapper .month-wrapper table th,
+	.ms-container:before,
+	.sc-button-flat.sc-button-default:disabled,
+	.sc-button-flat.sc-button-default.sc-button-disabled,
+	.sc-button-flat.sc-button-default:disabled:hover,
+	.sc-button-flat.sc-button-default.sc-button-disabled:hover,
+	.sc-timeline-meta,
+	.tablesorter-pager-scutum .tablesorter-page-nav > button.disabled,
+	.vgt-selection-info-row,
+	.uk-offcanvas-bar .uk-text-muted {
+		color: rgba(255, 255, 255, .67) !important;
+	}
+
+	a.mdi:after {
+		background: rgba(255, 255, 255, .2) !important;
+	}
+
+	.irs-grid-pol {
+		background: rgba(255, 255, 255, .5) !important;
+	}
+
+	.sc-button-outline {
+		background: transparent !important;
+		border-color: rgba(255, 255, 255, .67);
+	}
+
+	.sc-button-outline:hover,
+	.date-picker-wrapper .drp_top-bar .apply-btn,
+	.uk-divider-icon:before, .uk-divider-icon:after,
+	.uk-divider-icon:before, .uk-divider-icon:after {
+		border-color: $white;
+	}
+
+	.uk-table-divider > :first-child > tr:not(:first-child),
+	.uk-table-divider > :not(:first-child) > tr,
+	.uk-table-divider > tr:not(:first-child),
+	.uk-list:not(.uk-list-bullet).uk-list-divider > .sc-list-group:nth-child(n+2) .sc-list-body:after,
+	.uk-list:not(.uk-list-bullet).uk-list-divider > li:nth-child(n+2) {
+		border-top-color: $theme-color-bg-dark;
+	}
+
+	.uk-dropdown-nav .uk-nav-divider,
+	.uk-navbar-dropdown .uk-list:not(.uk-list-bullet).uk-list-divider > .sc-list-group:nth-child(n+2) .sc-list-body:after,
+	.uk-navbar-dropdown .uk-list:not(.uk-list-bullet).uk-list-divider > li:nth-child(n+2) {
+		border-top-color: rgba(0, 0, 0, .2);
+	}
+
+	hr,
+	.uk-hr {
+		border-top-color: rgba(0, 0, 0, .5);
+	}
+
+	.uk-grid-divider > :not(.uk-first-column)::before {
+		border-left-color: $theme-color-bg-dark;
+	}
+
+	.uk-navbar-dropdown:after,
+	.sc-border-bottom {
+		border-bottom-color: $theme-color-bg-dark;
+	}
+
+	.sc-user-status {
+		border-color: $theme-color-bg-darker;
+	}
+
+	.bb line,
+	.bb path {
+		stroke: rgba(255, 255, 255, .6);
+	}
+
+	.bb text,
+	.bb-axis.bb-axis-x tspan,
+	.bb-axis.bb-axis-y tspan {
+		fill: $white;
+	}
+
+	.bb-tooltip {
+		color: $text-color-primary;
+	}
+
+	.uk-table.uk-table-striped tbody tr {
+		border-top: 1px solid $theme-color-bg-dark !important;
+	}
+
+	.uk-table > tr:nth-of-type(odd),
+	.uk-table.uk-table-striped tbody tr:nth-of-type(odd),
+	.uk-dropdown-nav .uk-active > a,
+	.uk-dropdown-nav > li > a:hover,
+	.uk-navbar-dropdown .uk-nav > li > a:hover {
+		background: rgba(0, 0, 0, .5);
+	}
+
+	.uk-table.uk-table-hover > tr:hover,
+	.uk-table.uk-table-hover tbody tr:hover {
+		background: rgba(0, 0, 0, .9) !important;
+	}
+
+	.md-bg-grey-200 {
+		background-color: material-color('grey', '700') !important;
+	}
+
+	.md-bg-grey-100 {
+		background-color: material-color('grey', '800') !important;
+	}
+
+	.md-bg-grey-50 {
+		background-color: material-color('grey', '900') !important;
+	}
+
+	.md-bg-white {
+		background-color: material-color('grey', '900') !important;
+		color: $white;
+	}
+
+	#sc-sidebar-main .sc-sidebar-menu > li.sc-page-active > a:hover {
+		background-color: #ffebee !important;
+	}
+
+	.uk-input, .uk-select, .uk-textarea,
+	.uk-heading-line > :before,
+	.uk-heading-line > :after {
+		border-color: rgba(255, 255, 255, .3);
+	}
+
+	.vgt-input,
+	.vgt-select,
+	.select2-container--default .select2-search--inline .select2-search__field {
+		@include placeholder {
+			color: rgba(255, 255, 255, .4);
+		}
+	}
+
+	.flatpickr-day {
+		&.flatpickr-disabled,
+		&.flatpickr-disabled:hover,
+		&.prevMonthDay,
+		&.nextMonthDay,
+		&.notAllowed,
+		&.notAllowed.prevMonthDay,
+		&.notAllowed.nextMonthDay {
+			color: rgba(255, 255, 255, .4) !important;
+		}
+
+		&.inRange,
+		&.nextMonthDay.inRange,
+		&.nextMonthDay.today.inRange,
+		&.nextMonthDay:focus,
+		&.nextMonthDay:hover,
+		&.prevMonthDay.inRange,
+		&.prevMonthDay.today.inRange,
+		&.prevMonthDay:focus,
+		&.prevMonthDay:hover,
+		&.today.inRange,
+		&:focus,
+		&:hover {
+			background-color: rgba(0, 0, 0, .1);
+			border-color: rgba(0, 0, 0, .1);
+		}
+	}
+
+	.date-picker-wrapper .month-wrapper table .day.toMonth.hovering,
+	.date-picker-wrapper .month-wrapper table .day.checked {
+		background: rgba(0, 0, 0, .2);
+	}
+
+	.date-picker-wrapper .month-wrapper table .day.real-today.checked,
+	.date-picker-wrapper .month-wrapper table .day.real-today.hovering {
+		background: rgba(0, 0, 0, .4);
+	}
+
+	.date-picker-wrapper a {
+		color: #62b5ff;
+	}
+
+	.date-picker-wrapper .drp_top-bar.normal .normal-top span {
+		color: $white !important;
+	}
+
+	.wizard > .steps > ul > li.disabled a,
+	.wizard > .steps > ul > li.disabled a .sub-text,
+	.wizard > .steps > ul > li.disabled a:active,
+	.wizard > .steps > ul > li.disabled a:hover,
+	.uk-tab > .uk-disabled > a,
+	.ln-letters a {
+		background: transparent;
+	}
+
+	.ln-letters a:hover {
+		color: $white;
+	}
+
+	.ln-letters .ln-disabled {
+		color: rgba(255, 255, 255, .5) !important;
+		cursor: default;
+	}
+
+	.ln-letters .ln-selected {
+		background: material-color('cyan', '200');
+	}
+
+	.wizard > .steps > ul > li.current a, {
+		background: material-color('cyan', '600');
+		color: $white !important;
+	}
+
+	.wizard > .steps > ul > li.current a:after {
+		background: material-color('cyan', '600') !important;
+	}
+
+	.wizard > .steps > ul > li > a:before,
+	.wizard > .steps > ul > li > a:after {
+		background: $theme-color-bg-dark !important;
+	}
+
+	.wizard > .steps > ul > li.done a:after,
+	.wizard > .steps > ul > li > a:before {
+		background: $theme-color-bg-darkest !important;
+	}
+
+	.si-content-wrapper,
+	#sc-calendar {
+		color: $text-color-primary;
+	}
+
+	.tui-grid-cell {
+		color: $white;
+		background: material-color('grey', '800');;
+	}
+
+	.tui-grid-cell-header.tui-grid-cell-selected {
+		color: $text-color-primary;
+	}
+
+	.tui-grid-row-odd > td {
+		background: material-color('grey', '700');
+	}
+
+	.tui-grid-row-even > td {
+		background: material-color('grey', '600');
+	}
+
+	.tui-grid-container .mdi {
+		color: $white;
+	}
+
+	div.ganttview-vtheader {
+		background: $theme-color-bg-darker;
+	}
+
+	div.ganttview-vtheader-group {
+		color: $white
+	}
+
+	div.ganttview-vtheader-series-row .series-content .series-dates {
+		color: rgba(255, 255, 255, .67)
+	}
+
+	div.ganttview-vtheader-series-row {
+		border-top-color: rgba(255, 255, 255, .2);
+
+		&:first-child {
+			border-top-color: $theme-color-bg-darker;
+		}
+	}
+
+	div.ganttview-vtheader-group-name,
+	div.ganttview-grid-spacer {
+		background: $theme-color-bg-dark;
+		border-top-color: $theme-color-bg-darker;
+	}
+
+	div.ganttview-grid-spacer + .ganttview-grid-row > div.ganttview-grid-row-cell {
+		border-top-color: $theme-color-bg-darker;
+	}
+
+	div.ganttview-grid-row-cell {
+		border-right-color: rgba(255, 255, 255, .1);
+	}
+
+	div.ganttview-grid-row-cell {
+		border-top-color: rgba(255, 255, 255, .2);
+	}
+
+	div.ganttview-grid-row-cell.ganttview-weekend {
+		background: rgba(255, 255, 255, .1);
+	}
+
+	div.ganttview-hzheader-day.ganttview-weekend {
+		background: $theme-color-bg-dark;
+	}
+
+	div.ganttview-hzheader-day {
+		border-right-color: rgba(255, 255, 255, .1);
+	}
+
+	div.ganttview-block-text > a {
+		color: $white !important;
+	}
+
+	table.fancytree-ext-table tbody tr:hover {
+		background: rgba(255, 255, 255, .2);
+	}
+
+	table.fancytree-ext-table tbody tr.fancytree-selected {
+		background-color: material-color('blue', '900') !important;
+	}
+
+	.sc-js-vmap {
+		background-color: transparent !important;
+	}
+
+	.sc-chat-user-input .uk-input,
+	.sc-chat-user-input [data-sc-input] {
+		background: transparent !important;
+	}
+
+	.sc-colorpicker-inline .sc-colorpicker-colors {
+		background: $theme-color-bg-darker !important;
+	}
+	.sc-colorpicker:not(.sc-colorpicker-inline) .sc-colorpicker-dropdown {
+		background: $theme-color-bg-dark !important;
+	}
+	.sc-colorpicker:not(.sc-colorpicker-inline) .sc-colorpicker-picker {
+		border-color: $white !important;
+	}
+	.ql-toolbar.ql-snow {
+		background: $theme-color-bg-darker;
+		border-color: $theme-color-bg-darker;
+	}
+	.ql-snow .ql-fill,.ql-snow .ql-stroke.ql-fill {
+		fill: rgba(255,255,255,.8)
+	}
+	.ql-snow .ql-stroke {
+		stroke: rgba(255,255,255,.8)
+	}
+	.ql-snow.ql-toolbar button:hover .ql-fill,
+	.ql-snow .ql-toolbar button:hover .ql-fill,
+	.ql-snow.ql-toolbar button:focus .ql-fill,
+	.ql-snow .ql-toolbar button:focus .ql-fill,
+	.ql-snow.ql-toolbar button.ql-active .ql-fill,
+	.ql-snow .ql-toolbar button.ql-active .ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+	.ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+	.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+	.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+		fill: #62b5ff;
+	}
+	.ql-snow.ql-toolbar button:hover .ql-stroke,
+	.ql-snow .ql-toolbar button:hover .ql-stroke,
+	.ql-snow.ql-toolbar button:focus .ql-stroke,
+	.ql-snow .ql-toolbar button:focus .ql-stroke,
+	.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+	.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+	.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+	.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+	.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+	.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+	.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+	.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+	.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+	.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+	.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+	.ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+	.ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+	.ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+	.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+	.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+	.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+	.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+	.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+	.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+	.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+	.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+	.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+	.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+		stroke: #62b5ff;
+	}
+	.ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover,
+	.ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus,
+	.ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active,
+	.ql-snow.ql-toolbar .ql-picker-label:hover,
+	.ql-snow .ql-toolbar .ql-picker-label:hover,
+	.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+	.ql-snow .ql-toolbar .ql-picker-label.ql-active,
+	.ql-snow.ql-toolbar .ql-picker-item:hover,
+	.ql-snow .ql-toolbar .ql-picker-item:hover,
+	.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+	.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+		color: #62b5ff;
+	}
+	.ql-toolbar.ql-snow .ql-picker-label {
+		color: rgba(255,255,255,.67)
+	}
+	.ql-container {
+		background: $theme-color-bg-dark;
+		border-color: $theme-color-bg-darker !important;
+	}
+
+	#sc-style-switcher .sc-sSw-toggle {
+		color: material-color('cyan', '200');
+	}
+
+	.sc-theme-dark-inverse {
+		&.uk-card {
+			&,
+			a.mdi,
+			a.mdi:hover,
+			h1, h2, h3, h4, h5, h6 {
+				color: $text-color-primary;
+			}
+		}
+	}
+	.sc-button {
+		&:not(.sc-button-default) {
+			&.sc-button-icon {
+				.mdi {
+					color: $text-color-primary;
+				}
+			}
+		}
+	}
+	.uk-button-text {
+		color: rgba(255,255,255,.5)
+	}
+	.sc-footer.sc-footer-light a,
+	.sc-footer.sc-footer-light a .mdi {
+		color: rgba(255,255,255,.8)
+	}
+	table.dataTable thead .sorting:before,
+	table.dataTable thead .sorting:after,
+	table.dataTable thead .sorting_asc:before,
+	table.dataTable thead .sorting_asc:after,
+	table.dataTable thead .sorting_desc:before,
+	table.dataTable thead .sorting_desc:after,
+	table.dataTable thead .sorting_asc_disabled:before,
+	table.dataTable thead .sorting_asc_disabled:after,
+	table.dataTable thead .sorting_desc_disabled:before,
+	table.dataTable thead .sorting_desc_disabled:after {
+		color: $white;
+	}
+
+	.sc-invoice-logo {
+		display: none;
+
+		&-light {
+			display: block;
+		}
+	}
+
+	.sc-theme-dark-info {
+		display: block;
+	}
+}

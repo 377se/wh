@@ -1,0 +1,44 @@
+@import "../common/variables_mixins";
+
+.CodeMirror {
+	z-index: 10;
+	pre {
+		@include sc-font-code();
+		@include font-size(14px);
+	}
+}
+.CodeMirror-fullscreen {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	z-index: $z-index + 500;
+	+ #sc-code-editor-fs-disable,
+	#sc-code-editor-fs-disable {
+		display: block;
+	}
+}
+#sc-code-editor-fs-disable {
+	position: absolute;
+	top: 12px;
+	right: 20px;
+	display: none;
+	background: rgba(255,255,255,.6);
+	color: $text-color-primary;
+	padding: 8px;
+	border-radius: 50%;
+	cursor: pointer;
+	z-index: $z-index + 550;
+}
+.CodeMirror-fullscreen-active {
+	.uk-card-body {
+		overflow: visible;
+	}
+}
+.CodeMirror {
+	+ #sc-code-editor-fs-disable {
+		position: fixed;
+	}
+}

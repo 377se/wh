@@ -1,0 +1,102 @@
+#sc-page-top-bar {
+	&.sc-top-bar {
+		background: $white;
+		box-sizing: border-box;
+		position: relative;
+		@include font-size(14px);
+		display: flex;
+		min-height: $top-bar-content-height;
+		z-index: $z-index-topbar;
+		flex-shrink: 0;
+		.sc-js-top-bar-fold {
+			display: none;
+		}
+		&-expanded {
+			.sc-top-bar-content {
+				&-expanded {
+					transition: transform 280ms $easing, opacity 140ms $easing;
+					opacity: 1;
+					transform:translate3d(0,0,0);
+				}
+			}
+			.sc-js-el-hide {
+				display: none;
+			}
+			.sc-js-el-show {
+				display: block;
+			}
+		}
+	}
+	.sc-top-bar {
+		&-large {
+			min-height: $top-bar-content-height-large;
+		}
+		&-aside {
+			width: $aside-main-width;
+			border-bottom: 1px solid $border-color;
+			min-height: $top-bar-content-height;
+			background: $white;
+			&-large {
+				width: $aside-main-large-width;
+			}
+			&,
+			&-large {
+				padding: 8px 24px;
+				box-sizing: border-box;
+
+			}
+			&.padding-small {
+				padding: 8px 12px;
+			}
+		}
+		&-content {
+			display: flex;
+			min-height: $top-bar-content-height;
+			align-items: center;
+			padding: 8px 24px;
+			border-bottom: 1px solid $border-color;
+			box-sizing: border-box;
+			z-index: $z-index + 10;
+			position: relative;
+			background: $white;
+			&,
+			&-expanded {
+				&.padding-small {
+					padding: 8px 12px;
+				}
+			}
+			&-expanded {
+				padding: 16px 24px;
+				background: $white;
+				border-top: 1px solid $border-color;
+				@include box-shadow(2);
+				margin-top: -1px;
+				position: absolute;
+				top: 100%;
+				left: 0;
+				right: 0;
+				transform: translate3d(0,-100%,0);
+				transition: transform 280ms $easing, opacity 140ms $easing 140ms;
+				z-index: $z-index-topbar;
+				opacity: 0;
+			}
+		}
+		&-title {
+			margin: 0;
+			@include font-size(16px);
+			font-weight: 500;
+		}
+		&-subtitle {
+			margin: 0;
+			line-height: 1.2;
+		}
+	}
+	&.uk-sticky-fixed {
+		z-index: $z-index-sidebar - 50;
+		transition: all 140ms ease-in-out;
+	}
+	+ .uk-sticky-placeholder + #sc-page-wrapper-inner,
+	+ #sc-page-wrapper-inner {
+		height: calc(100% - #{$top-bar-content-height});
+	}
+}

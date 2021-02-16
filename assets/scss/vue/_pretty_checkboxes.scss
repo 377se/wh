@@ -1,0 +1,280 @@
+@import '../common/md_colors';
+@import '../common/variables_mixins';
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
+body {
+    .pretty {
+        margin: 0;
+        line-height: normal;
+        &.p-smooth .icon,
+        &.p-smooth .svg {
+            transition: all 140ms $easing;
+        }
+		label {
+			a {
+				position: relative;
+				z-index: 10;
+			}
+		}
+        &:not(.p-switch):not(.p-radio) {
+            &,
+            .state {
+                height: 18px;
+            }
+            .state {
+                display: flex;
+                align-items: center;
+            }
+            &.p-icon .state .icon {
+                border-radius: 4px;
+                left: 0;
+                top: -1px;
+                width: 18px;
+                height: 18px;
+                &,
+                &:before {
+                    font-size: 18px;
+                }
+            }
+            .state label {
+                min-width: 18px;
+                text-indent: 26px;
+				min-height: 18px;
+                &:before,
+                &:after {
+                    width: 18px;
+                    height: 18px;
+                    top: 0;
+                }
+                &:before {
+                    background: transparent;
+                    border-radius: 50%;
+                    transition: all 140ms $easing;
+                }
+                &:after {
+                    background: $white;
+                    border-radius: 2px;
+                    border: 2px solid $input-off-color;
+                    transition: all 240ms $easing;
+                }
+            }
+            input:checked {
+                ~ .state label {
+                    &:after {
+                        border-color: $input-on-color;
+                        background: $input-on-color;
+                    }
+                }
+            }
+			&.p-custom {
+				input:checked {
+					~ .state label {
+						&:after {
+							background: var(--color);
+							border-color: var(--color);
+						}
+					}
+				}
+			}
+            input:checked[disabled] {
+                ~ .state label {
+                    &:after {
+                        border-color: $input-off-color-hex;
+                        background: $input-off-color-hex;
+                    }
+                }
+            }
+            input[disabled] ~ * {
+                opacity: 0.6;
+            }
+            &.p-icon {
+                input:checked {
+                    ~ .state .icon {
+                        color: $white;
+                    }
+                }
+            }
+            .state.p-is-indeterminate {
+                .icon {
+                    top: 0;
+                    color: $white;
+                    &,
+                    &:before {
+                       font-size: 18px;
+                    }
+                }
+                label {
+                    &:after {
+                        border-color: $input-on-color;
+                        background-color: $input-on-color;
+                    }
+                }
+            }
+
+        }
+        &.p-radio {
+            &,
+            .state {
+                min-height: 20px;
+            }
+            .state {
+                display: flex;
+                align-items: center;
+                position: relative;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid $input-off-color;
+                    transition: all 240ms $easing;
+                    border-radius: 50%;
+                    box-sizing: border-box;
+	                margin-top: -10px;
+					background: $white;
+                }
+                label {
+                    min-width: 20px;
+                    text-indent: 26px;
+                    &:before {
+                        background: transparent;
+                        border-radius: 50%;
+                        border-color: transparent;
+                        transition: all 140ms $easing;
+                        width: 18px;
+                        height: 18px;
+                        top: 0;
+                    }
+                    &:after {
+                        border-radius: 50%;
+                        transition: all 240ms $easing;
+                        width: 10px;
+                        height: 10px;
+                        top: 50%;
+	                    margin-top: -5px;
+                        left: 5px;
+                    }
+                }
+            }
+            input:checked {
+                ~ .state {
+                    &:before {
+                        border-color: $input-on-color;
+                    }
+                    label {
+                        &:after {
+                            background: $input-on-color;
+                        }
+                    }
+                }
+            }
+            input:checked[disabled] {
+                ~ .state {
+                    &:before {
+                        border-color: $input-off-color;
+                    }
+                    label {
+                        &:after {
+                            background: $input-off-color;
+                        }
+                    }
+                }
+            }
+            input[disabled] ~ * {
+                opacity: 0.6;
+            }
+        }
+        &.p-switch {
+            .state {
+                height: 26px;
+                &:before {
+                    border-radius: 20px;
+                    height: 14px;
+                    width: 36px;
+                    background-color: rgba(0, 0, 0, 0.26);
+                    border: none;
+                    top: 50%;
+                    margin-top: -7px;
+                    left: 2px;
+                    transition: all 140ms $easing;
+                }
+                label {
+                    text-indent: 48px;
+                    line-height: 28px;
+                    height: 28px;
+					min-width: 38px;
+                    &:before,
+                    &:after {
+                        width: 20px;
+                        height: 20px;
+                        top: 3px;
+                        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+                        transition: all 140ms $easing;
+                        border: none;
+                        transform: none;
+                    }
+                    &:after {
+                        background-color: $white !important;
+                    }
+                }
+            }
+            input:checked {
+                ~ .state {
+                    &:before {
+                        background-color: lighten($input-on-color, 30%);
+                    }
+                    label {
+                        &:after {
+                            left: 20px;
+                            background-color: $input-on-color !important;
+                        }
+                    }
+                    &.p-primary {
+                        &:before {
+                            background-color: lighten($theme-color-dark, 40%);
+                        }
+                        label {
+                            &:after {
+                                background-color: $theme-color-dark !important;
+                            }
+                        }
+                    }
+                    &.p-danger {
+                        &:before {
+                            background-color: lighten($danger-color, 30%);
+                        }
+                        label {
+                            &:after {
+                                background-color: $danger-color !important;
+                            }
+                        }
+                    }
+                    &.p-success {
+                        &:before {
+                            background-color: lighten($success-color, 30%);
+                        }
+                        label {
+                            &:after {
+                                background-color: $success-color !important;
+                            }
+                        }
+                    }
+                    &.p-warning {
+                        &:before {
+                            background-color: lighten($warning-color, 30%);
+                        }
+                        label {
+                            &:after {
+                                background-color: $warning-color !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+		&.uk-flex {
+			display: flex;
+		}
+    }
+}

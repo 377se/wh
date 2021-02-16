@@ -1,0 +1,141 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+.ms-container {
+	position: relative;
+	&:after {
+		content: ".";
+		display: block;
+		height: 0;
+		line-height: 0;
+		font-size: 0;
+		clear: both;
+		min-height: 0;
+		visibility: hidden;
+	}
+	&:before {
+		display: block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -12px;
+		margin-top: -18px;
+		@include font-size(24px);
+		content: "\f4e1";
+		font-family: $mdFont;
+		color: $text-color-secondary;
+		@include respond-below('small') {
+			transform: rotate(90deg);
+		}
+	}
+	& .ms-selectable,
+	& .ms-selection {
+		background: $white;
+		color: $text-color-primary;
+		width: 45%;
+		position: relative;
+		border-radius: $border-radius;
+		&:before {
+			display: block;
+			position: absolute;
+			top: 50%;
+			margin-top: -13px;
+			font-size: 18px;
+			color: $text-color-secondary;
+		}
+		@include respond-below('small') {
+			width: 100%;
+		}
+	}
+	& .ms-selectable {
+		float: left;
+		&:before {
+			right: -11%;
+		}
+		@include respond-below('small') {
+			float: none;
+		}
+	}
+	& .ms-selection {
+		float: right;
+		@include respond-below('small') {
+			float: none;
+			margin-top: 36px;
+		}
+	}
+	& .ms-list {
+		box-shadow: none;
+		transition: border linear 0.2s, box-shadow linear 0.2s;
+		border: 1px solid $border-color;
+		border-radius: 4px;
+		position: relative;
+		height: 220px;
+		padding: 0;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+	& .ms-list.ms-focus {
+		border-color: $theme-color;
+		outline: 0;
+		outline: thin dotted \9;
+	}
+	& ul {
+		margin: 0;
+		list-style-type: none;
+		padding: 0;
+	}
+	& .ms-optgroup-container {
+		width: 100%;
+	}
+	& .ms-optgroup-label {
+		margin: 0;
+		padding: 4px 12px;
+		cursor: pointer;
+		text-transform: uppercase;
+		@include font-size(14px);
+		font-weight: 500;
+		background: material-color('grey', '100');
+	}
+	& .ms-selectable li.ms-elem-selectable,
+	& .ms-selection li.ms-elem-selection {
+		 padding: 4px 12px;
+		 color: $text-color-primary;
+		@include font-size(14px);
+	}
+	& .ms-selectable,
+	& .ms-selection {
+		li.ms-hover{
+			cursor: pointer;
+			text-decoration: none;
+			background-color: $hover-color;
+		}
+		li.disabled {
+			color: $muted-color;
+			cursor: text;
+		}
+	}
+	&.ms-header {
+		& .ms-list {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	}
+	&.ms-footer {
+		& .ms-list {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+	.custom-header,
+	.custom-footer {
+		padding: 8px 12px;
+		@include font-size(14px);
+	}
+	.custom-header {
+		border-radius: 4px 4px 0 0;
+	}
+	.custom-footer {
+		border-radius: 0 0 4px 4px;
+	}
+}
+

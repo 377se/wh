@@ -1,0 +1,69 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+ul.fancytree-container {
+	border: none;
+	&,
+	ul {
+		@include font-size(14px);
+	}
+	ul {
+		padding-left: 26px;
+	}
+}
+.fancytree-container {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	&,
+	ul {
+		@include font-size(14px);
+	}
+	.mdi {
+		overflow: hidden;
+		&:before {
+			line-height: 1;
+		}
+	}
+	.sc-icheckbox {
+		margin-left: 2px;
+	}
+	span.fancytree-checkbox {
+		color: $input-off-color;
+		&.mdi-checkbox-marked {
+			color: $input-on-color;
+		}
+		&.mdi-minus-box {
+			color: material-color('grey','500');
+		}
+	}
+	span.fancytree-radio {
+		color: $input-off-color;
+		&.mdi-radiobox-marked {
+			color: $input-on-color;
+		}
+	}
+	span.mdi-folder,
+	span.mdi-folder-open,
+	span.mdi-file-outline,
+	span.mdi-file-document-outline {
+		color: material-color('grey','600');
+	}
+}
+table.fancytree-ext-table tbody {
+	td {
+		@include font-size(14px);
+		vertical-align: middle;
+	}
+	tr.fancytree-selected {
+		background: $highlight-bg-alt !important;
+	}
+	span.fancytree-node {
+		margin-top: 0;
+		display: flex;
+		min-height: 24px;
+		vertical-align: middle;
+	}
+	span.fancytree-title {
+		padding: 0 4px;
+		line-height: 24px;
+	}
+}

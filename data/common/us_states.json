@@ -1,0 +1,238 @@
+[
+	{
+		"name": "Alabama",
+		"val": "AL"
+	},
+	{
+		"name": "Alaska",
+		"val": "AK"
+	},
+	{
+		"name": "American Samoa",
+		"val": "AS"
+	},
+	{
+		"name": "Arizona",
+		"val": "AZ"
+	},
+	{
+		"name": "Arkansas",
+		"val": "AR"
+	},
+	{
+		"name": "California",
+		"val": "CA"
+	},
+	{
+		"name": "Colorado",
+		"val": "CO"
+	},
+	{
+		"name": "Connecticut",
+		"val": "CT"
+	},
+	{
+		"name": "Delaware",
+		"val": "DE"
+	},
+	{
+		"name": "District Of Columbia",
+		"val": "DC"
+	},
+	{
+		"name": "Federated States Of Micronesia",
+		"val": "FM"
+	},
+	{
+		"name": "Florida",
+		"val": "FL"
+	},
+	{
+		"name": "Georgia",
+		"val": "GA"
+	},
+	{
+		"name": "Guam",
+		"val": "GU"
+	},
+	{
+		"name": "Hawaii",
+		"val": "HI"
+	},
+	{
+		"name": "Idaho",
+		"val": "ID"
+	},
+	{
+		"name": "Illinois",
+		"val": "IL"
+	},
+	{
+		"name": "Indiana",
+		"val": "IN"
+	},
+	{
+		"name": "Iowa",
+		"val": "IA"
+	},
+	{
+		"name": "Kansas",
+		"val": "KS"
+	},
+	{
+		"name": "Kentucky",
+		"val": "KY"
+	},
+	{
+		"name": "Louisiana",
+		"val": "LA"
+	},
+	{
+		"name": "Maine",
+		"val": "ME"
+	},
+	{
+		"name": "Marshall Islands",
+		"val": "MH"
+	},
+	{
+		"name": "Maryland",
+		"val": "MD"
+	},
+	{
+		"name": "Massachusetts",
+		"val": "MA"
+	},
+	{
+		"name": "Michigan",
+		"val": "MI"
+	},
+	{
+		"name": "Minnesota",
+		"val": "MN"
+	},
+	{
+		"name": "Mississippi",
+		"val": "MS"
+	},
+	{
+		"name": "Missouri",
+		"val": "MO"
+	},
+	{
+		"name": "Montana",
+		"val": "MT"
+	},
+	{
+		"name": "Nebraska",
+		"val": "NE"
+	},
+	{
+		"name": "Nevada",
+		"val": "NV"
+	},
+	{
+		"name": "New Hampshire",
+		"val": "NH"
+	},
+	{
+		"name": "New Jersey",
+		"val": "NJ"
+	},
+	{
+		"name": "New Mexico",
+		"val": "NM"
+	},
+	{
+		"name": "New York",
+		"val": "NY"
+	},
+	{
+		"name": "North Carolina",
+		"val": "NC"
+	},
+	{
+		"name": "North Dakota",
+		"val": "ND"
+	},
+	{
+		"name": "Northern Mariana Islands",
+		"val": "MP"
+	},
+	{
+		"name": "Ohio",
+		"val": "OH"
+	},
+	{
+		"name": "Oklahoma",
+		"val": "OK"
+	},
+	{
+		"name": "Oregon",
+		"val": "OR"
+	},
+	{
+		"name": "Palau",
+		"val": "PW"
+	},
+	{
+		"name": "Pennsylvania",
+		"val": "PA"
+	},
+	{
+		"name": "Puerto Rico",
+		"val": "PR"
+	},
+	{
+		"name": "Rhode Island",
+		"val": "RI"
+	},
+	{
+		"name": "South Carolina",
+		"val": "SC"
+	},
+	{
+		"name": "South Dakota",
+		"val": "SD"
+	},
+	{
+		"name": "Tennessee",
+		"val": "TN"
+	},
+	{
+		"name": "Texas",
+		"val": "TX"
+	},
+	{
+		"name": "Utah",
+		"val": "UT"
+	},
+	{
+		"name": "Vermont",
+		"val": "VT"
+	},
+	{
+		"name": "Virgin Islands",
+		"val": "VI"
+	},
+	{
+		"name": "Virginia",
+		"val": "VA"
+	},
+	{
+		"name": "Washington",
+		"val": "WA"
+	},
+	{
+		"name": "West Virginia",
+		"val": "WV"
+	},
+	{
+		"name": "Wisconsin",
+		"val": "WI"
+	},
+	{
+		"name": "Wyoming",
+		"val": "WY"
+	}
+]

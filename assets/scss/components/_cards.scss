@@ -1,0 +1,167 @@
+.uk-card {
+	&-header {
+		&.uk-cover-container {
+			.uk-card-title,
+			.uk-text-meta {
+				position: relative;
+				z-index: 10;
+			}
+		}
+	}
+	.sc-card-fs-visible {
+		display: none;
+	}
+}
+.sc-card {
+	&-header-separator {
+		border-bottom: 1px solid $border-color;
+	}
+	&-footer-separator {
+		border-top: 1px solid $border-color;
+	}
+	&-loading {
+		position: relative;
+		.sc-card-content {
+			opacity: 0;
+			position: relative;
+			transform: scale3d(0.2,0.2,0.2);
+			&:after {
+				position: absolute;
+				left:0;
+				right: 0;
+				top:0;
+				bottom: 0;
+				content: '';
+				z-index: 10;
+				display: block;
+			}
+		}
+		.sc-progress-card {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 20;
+			transform: translate3d(-50%,-50%,0);
+			display: flex;
+			> svg {
+				> * {
+					stroke: material-color('green','400') !important;
+					stroke-width: 0.8px !important;
+				}
+			}
+		}
+	}
+	&-content-more {
+		display: none;
+	}
+	&-fs {
+		&-active {
+			position: fixed;
+			z-index: 10000;
+			border-radius: 0;
+			box-shadow: none;
+			margin: 0 !important;
+			display: flex;
+			flex-direction: column;
+			.sc-card-content {
+				overflow: auto;
+				-webkit-overflow-scrolling: touch;
+				.sc-card-content-more {
+					display: block;
+				}
+			}
+			.sc-card-fs-hidden {
+				display: none;
+				opacity: 0;
+			}
+			.sc-card-fs-visible {
+				display: block;
+			}
+		}
+		&-animate {
+			&.uk-card {
+				overflow: hidden;
+			}
+			.sc-card-content {
+				transform: translate3d(0,10%,0);
+				opacity: 0;
+				overflow: hidden;
+			}
+		}
+	}
+	&-minimized {
+		.sc-js-card-reload {
+			color: $muted-color !important;
+		}
+		&.sc-card-fs-active {
+			background-color: transparent;
+			.uk-card-header {
+				background-color: $white;
+				@include box-shadow(2);
+			}
+		}
+	}
+	&-fixed {
+		&,
+		body {
+			overflow: hidden;
+		}
+		body,
+		#sc-body-wrapper {
+			height: 100%;
+		}
+		.uk-card {
+			border-radius: $border-radius $border-radius 0 0;
+		}
+		.uk-card-body {
+			height: 100%;
+			flex: 1;
+			overflow-x: hidden;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		#sc-page-content {
+			overflow: hidden;
+		}
+	}
+	&-user-profile {
+		display: flex;
+		align-items: center;
+		&-body {
+			flex: 1;
+			padding: 12px 24px;
+			align-items: center;
+			display: flex;
+		}
+		.sc-avatar {
+			transition: all 140ms $easing;
+			height: 64px;
+			width: 64px;
+			border: 2px solid rgba(0,0,0,.2);
+			@include respond-below(medium) {
+				height: 48px;
+				width: 48px;
+			}
+		}
+		.sc-actions {
+			margin: 0 !important;
+			padding: 12px 24px;
+		}
+		&.is-stuck {
+			z-index: $z-index + 100;
+			position: fixed;
+			top: 0;
+			border-radius: 0 0 $border-radius $border-radius;
+			&.below-header {
+				top: $header-height;
+			}
+			.sc-card-user-profile-body {
+				padding: 8px 12px;
+			}
+			.sc-avatar {
+				width: 48px;
+				height: 48px;
+			}
+		}
+	}
+}

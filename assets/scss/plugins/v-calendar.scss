@@ -1,0 +1,23 @@
+@import "../common/variables_mixins";
+
+.vc-container {
+	border: none;
+}
+.vc-calendar-events {
+	padding: 8px 16px;
+	> div {
+		padding: 8px;
+		background: rgba(0,0,0,.05);
+		border-radius: 3px;
+		margin: 0 0 8px;
+		.vc-calendar-events-description {
+			font-size: 1rem;
+			font-weight: 500;
+			margin: 0;
+		}
+		span {
+			color: $text-color-secondary;
+			font-size: 0.875rem;
+		}
+	}
+}

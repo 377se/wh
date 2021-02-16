@@ -1,0 +1,21 @@
+.sc-vue-errors {
+    color: $danger-color;
+    @include font-size(14px);
+    padding: 0 4px 4px 8px;
+    display: none;
+    &,
+    li {
+        margin: 0;
+        list-style: none;
+    }
+    li {
+        padding-top: 8px;
+    }
+}
+.sc-input-wrapper-danger,
+.select2-wrapper-danger,
+.vuelidate-wrapper-error {
+    + .sc-vue-errors {
+        display: block;
+    }
+}

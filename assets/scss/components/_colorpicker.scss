@@ -1,0 +1,89 @@
+.sc-colorpicker {
+    position: relative;
+    display: inline-flex;
+    &:not(.sc-colorpicker-inline) {
+        .sc-colorpicker-picker {
+            width: 24px;
+            height: 24px;
+            border: 1px solid $border-color;
+            display: inline-flex;
+            cursor: pointer;
+            transition: all 140ms $easing;
+            border-radius: 50%;
+        }
+        .sc-colorpicker-dropdown {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale3d(0.25,0.25,0.25);
+            top: 100%;
+            transition: all 280ms $easing;
+            transform-origin: 0 0;
+            @include elevation(8);
+            border-radius: $border-radius;
+            z-index: $z-index;
+            max-width: 224px;
+            width: 100%;
+            background: $white;
+            display: flex;
+            padding: 4px 6px 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            > span {
+                width :24px;
+                height: 24px;
+                display: block;
+                cursor: pointer;
+                margin: 4px 2px 0 2px;
+                transition: all 140ms $easing;
+                flex-shrink: 0;
+                &.sc-color-active {
+                    border-radius: 50%;
+                }
+            }
+        }
+        &.sc-colorpicker-active {
+            .sc-colorpicker-dropdown {
+                opacity: 1;
+                visibility: visible;
+                transform: scale3d(1,1,1);
+            }
+        }
+    }
+    input {
+        visibility: hidden;
+        position: absolute;
+        width: 0;
+        height: 0;
+    }
+    &-inline {
+        .sc-colorpicker-colors {
+            background: $white;
+            display: flex;
+            padding: 4px 0;
+            flex-wrap: wrap;
+            > span {
+                width :24px;
+                height: 24px;
+                display: block;
+                cursor: pointer;
+                margin: 4px 2px 0 2px;
+                transition: all 140ms $easing;
+                flex-shrink: 0;
+                &.sc-color-active {
+                    border-radius: 50%;
+                }
+            }
+        }
+        .sc-colorpicker-dropdown {
+            width: 224px;
+        }
+    }
+    &-right {
+        .sc-colorpicker-dropdown {
+            left: auto;
+            right: 0;
+            transform-origin: 100% 0 !important;
+        }
+    }
+}

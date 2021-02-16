@@ -1,0 +1,21 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+
+.swipeout-action {
+	padding: 0 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.sc-list-swiped {
+	.swipeout-content {
+		padding: 16px;
+	}
+	.swipeout-list-item {
+		+ .swipeout-list-item {
+			border-top: 1px solid $border-color;
+		}
+	}
+}

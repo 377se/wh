@@ -1,0 +1,18 @@
+#sc-toolbar {
+	position: relative;
+	padding: 8px 24px 6px;
+	background: $white;
+	border-bottom: 1px solid $border-color;
+	max-height: 72px;
+	min-height: 48px;
+	box-sizing: border-box;
+	z-index: $z-index - 100;
+	&.uk-sticky {
+		margin: -24px -24px 24px !important;
+	}
+	.uk-search {
+		.uk-search-input {
+			line-height: 34px;
+		}
+	}
+}

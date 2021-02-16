@@ -1,0 +1,28 @@
+.sc-chart {
+	width: 100%;
+	height: 280px;
+	&-small {
+		height: 140px;
+	}
+	&-large {
+		height: 360px;
+	}
+	&-widget {
+		height: 100px;
+	}
+	svg {
+		height: inherit;
+	}
+	&-chartjs {
+		&,
+		> div {
+			height: 420px;
+		}
+		@include respond-below('large') {
+			&,
+			> div {
+				height: 280px;
+			}
+		}
+	}
+}

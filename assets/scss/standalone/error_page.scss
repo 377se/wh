@@ -1,0 +1,63 @@
+@import "../common/md_colors";
+@import "../common/variables_mixins";
+@import "../common/common";
+
+@import "../common/uikit_custom";
+
+@import "../components/colors";
+@import "../components/cards";
+@import "../components/forms";
+@import "../components/buttons";
+@import "../components/icons";
+
+@import "../components/icheck";
+
+.sc-error-page {
+	@include font-size(18px);
+	.sc-error-title {
+		@include font-size(64px);
+		margin: 0;
+		color: $white;
+		background: material-color('blue-grey', '600');
+		overflow: hidden;
+		position: relative;
+		display: flex;
+		align-items: center;
+		.mdi {
+			margin-right: 24px;
+			color: material-color('blue-grey', '300');
+			&:before {
+				font-size: 128px;
+				line-height: 128px;
+			}
+		}
+		@include respond-below(medium) {
+			@include font-size(24px);
+			.mdi {
+				&:before {
+					font-size: 64px;
+					line-height: 64px;
+				}
+			}
+		}
+	}
+	&.sc-theme-dark {
+		body {
+			background: material-color('blue-grey', '700');
+			color: $white;
+			a {
+				color: #62b5ff;
+				&:hover,
+				&:focus {
+					color: #1e87f0;
+				}
+			}
+		}
+		.sc-error-title {
+			background: material-color('blue-grey', '900');
+			.mdi {
+				color: material-color('blue-grey', '700');
+			}
+		}
+	}
+}

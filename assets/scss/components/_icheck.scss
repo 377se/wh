@@ -1,0 +1,165 @@
+.sc-icheckbox,
+.sc-iradio {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+	position: relative;
+	box-sizing: border-box;
+	flex-shrink: 0;
+	&:after {
+		display: block;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	> input {
+		margin: 0;
+	}
+	> .iCheck-helper {
+		z-index: 10;
+	}
+	+ label {
+		padding-left: 8px;
+		padding-top: 1px;
+	}
+}
+
+.sc-icheckbox {
+	border: 2px solid $input-off-color;
+	border-radius: 2px;
+	width: 18px;
+	height: 18px;
+	background: $white;
+	transition: all 140ms ease-out;
+	&.checked,
+	&.disabled {
+		&:after {
+			content: '\F12C';
+			font-family: $mdFont;
+			font-size: 18px;
+			color: $white;
+			position: absolute;
+			left: -2px;
+			top: -6px;
+		}
+	}
+	&.hover.checked,
+	&.checked {
+		background: $input-on-color;
+		border-color: $input-on-color !important;
+	}
+	&.disabled {
+		&:after {
+			display: none;
+		}
+		&,
+		&.checked {
+			background: transparent;
+			background-clip: padding-box;
+			border-color: $input-disabled-color;
+			cursor: default;
+		}
+		&.checked {
+			background: $input-disabled-color-hex !important;
+			border-color: $input-disabled-color-hex !important;
+			&:after {
+				display: block !important;
+			}
+		}
+	}
+	.sc-input-danger & {
+		border-color: $danger-color;
+	}
+	&.indeterminate {
+		background: $input-on-color;
+		border-color: $input-on-color;
+		&:after {
+			content: '';
+			background: $white;
+			position: absolute;
+			left: 2px;
+			top: 2px;
+			width: 10px;
+			height: 10px;
+		}
+	}
+	label & {
+		margin-right: 8px;
+		vertical-align: -4px;
+	}
+}
+
+.sc-iradio {
+	border: 2px solid $input-off-color;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: $white;
+	&:after {
+		content: '';
+		background: transparent;
+		position: absolute;
+		left: 3px;
+		top: 3px;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		transform: scale(0.1);
+		transition: all 200ms ease-out;
+	}
+	&.checked {
+		border-color: $input-on-color;
+		&:after {
+			background: $input-on-color;
+			transform: scale(1);
+		}
+	}
+	&.disabled {
+		border-color: $input-disabled-color;
+		cursor: default;
+		&.checked {
+			&:after {
+				background: $input-disabled-color;
+				transform: scale(1);
+			}
+		}
+	}
+	.sc-input-danger & {
+		border-color: $danger-color;
+	}
+	label & {
+		margin-right: 8px;
+		vertical-align: -5px;
+	}
+}
+
+.disabled + .inline-label {
+	color: $input-disabled-color;
+	cursor: default;
+}
+
+.icheck-inline {
+	display: inline-block;
+	margin: 0 16px 16px 0;
+	+ .parsley-errors-list {
+		margin-top: -8px;
+	}
+}
+
+.uk-form-danger {
+	.sc-icheckbox,
+	.sc-iradio {
+		border-color: $danger-color;
+	}
+}
+
+.sc-icheck-custom {
+	&.hover.checked,
+	&.checked {
+		background: var(--color);
+		border-color: var(--color) !important;
+	}
+}
