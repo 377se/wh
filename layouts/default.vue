@@ -50,7 +50,7 @@ export default {
 	}),
 	head () {
 		return {
-			'title': 'Scutum Admin - ' + this.$route.path
+			'title': '377 Warehouse - ' + this.$route.path
 		}
 	},
 	computed: {
