@@ -17,7 +17,6 @@ if(mode === 'universal') {
 
 module.exports = {
 	ssr: mode === 'universal',
-	target: 'static',
 	/*
 	** Headers of the page
 	*/
