@@ -15,7 +15,6 @@
 import { mapState } from 'vuex'
 import ScMenuList from './navigation/MenuList';
 import { scMq } from '~/assets/js/utils'
-import { menuEntries } from './navigation/sidebar_menu'
 
 require('~/plugins/vue2-touch-events')
 
@@ -24,9 +23,11 @@ export default {
 	components: {
 		ScMenuList
 	},
-	data: () => ({
-		menuEntries
-	}),
+	data () {
+		return { 
+			menuEntries: []
+		}
+  	},
 	computed: mapState([
 		'vxSidebarMainExpanded',
 		'vxAppVersion'
@@ -75,7 +76,17 @@ export default {
 				this.$store.commit('sidebarMainToggle', false);
 			}
 		}
-	}
+	},
+	async fetch () {
+		try{
+			const [menuEntries] = await Promise.all([
+				this.$axios.$get("/webapi/Menu/GetMenu")
+			]);
+			this.menuEntries = menuEntries
+		}catch(error){
+			console.log(error);
+		}
+	},
 }
 </script>
 
