@@ -24,7 +24,7 @@ module.exports = {
 		htmlAttrs: {
 			lang: 'en'
 		},
-		title: 'Scutum Admin',
+		title: '377 Warehouse',
 		meta: [
 			{ charset: 'utf-8' },
 			{
@@ -216,6 +216,14 @@ module.exports = {
 			"/pages/issues/details/N7tGsc8W"
 		]
 	},
+	axios: {
+		proxy: true
+	  },
+	  proxy: {
+		'/webapi': {
+		  target: process.env.NODE_ENV !== 'production'?'https://api.377.se':'https://api.377.se'
+		}
+	  },
 	/*
 	** Build configuration
 	*/
