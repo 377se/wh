@@ -7,11 +7,11 @@
 	>
 		<li
 			v-for="item in menuItems"
-			:key="item.id"
+			:key="item.MenuId"
 			:class="{
-				'sc-has-submenu': item.submenu && item.submenu.length,
-				'sc-page-active': $route.path === item.page || pageChild(item),
-				'sc-section-active': item.isOpen,
+				'sc-has-submenu': item.SubItemList && item.SubItemList.length,
+				'sc-page-active': $route.path === item.Url || pageChild(item),
+				'sc-section-active': item.IsOpen,
 				'sc-sidebar-menu-heading': item.section_title,
 				'sc-sidebar-menu-separator': item.separator
 			}"
@@ -19,31 +19,31 @@
 			<span v-if="item.section_title">
 				{{ $t(item.section_title) }}
 			</span>
-			<nuxt-link v-if="item.page && !item.submenu" :to="item.page">
+			<nuxt-link v-if="item.Url && !item.SubItemList" :to="item.Url">
 				<span v-if="item.tag" class="uk-label">
 					{{ item.tag }}
 				</span>
-				<span v-if="item.icon" class="uk-nav-icon">
-					<i :class="item.icon"></i>
+				<span v-if="item.Icon" class="uk-nav-icon">
+					<i :class="item.Icon"></i>
 				</span>
 				<span class="uk-nav-title">
-					{{ $t(item.title) }}
+					{{ $t(item.Name) }}
 				</span>
 			</nuxt-link>
-			<a v-if="item.submenu" href="javascript:void(0)" @click.stop="toggleSection($event, item)">
-				<span v-if="item.icon" class="uk-nav-icon">
-					<i :class="item.icon"></i>
+			<a v-if="item.SubItemList" href="javascript:void(0)" @click.stop="toggleSection($event, item)">
+				<span v-if="item.Icon" class="uk-nav-icon">
+					<i :class="item.Icon"></i>
 				</span>
 				<span class="uk-nav-title">
-					{{ $t(item.title) }}
+					{{ $t(item.Name) }}
 				</span>
 			</a>
-			<a v-if="item.page === '' && !item.submenu" href="javascript:void(0)">
-				<span v-if="item.icon" class="uk-nav-icon">
-					<i :class="item.icon"></i>
+			<a v-if="item.Url === '' && !item.SubItemList" href="javascript:void(0)">
+				<span v-if="item.Icon" class="uk-nav-icon">
+					<i :class="item.Icon"></i>
 				</span>
 				<span class="uk-nav-title">
-					{{ item.title }}
+					{{ item.Name }}
 				</span>
 			</a>
 			<transition
@@ -53,7 +53,7 @@
 				@leave="tLeave"
 				@leave-cancelled="tLeaveCancelled"
 			>
-				<ScMenuList v-if="item.submenu && item.submenu.length" v-show="item.isOpen" :menu-data="item.submenu"></ScMenuList>
+				<ScMenuList v-if="item.SubItemList && item.SubItemList.length" v-show="item.IsOpen" :menu-data="item.SubItemList"></ScMenuList>
 			</transition>
 		</li>
 	</ul>
@@ -87,46 +87,46 @@ export default {
 	},
 	created () {
 		this.menuItems.forEach(k => {
-			if (typeof k.submenu !== 'undefined') {
-				this.setSectionOpen(k)
+			if (typeof k.SubItemList !== 'undefined') {
+				// this.setSectionOpen(k)
 			}
 		});
 	},
 	methods: {
 		pageChild (item) {
-			return this.$nuxt.$route.matched.some(route => route.path === item.page)
+			return this.$nuxt.$route.matched.some(route => route.path === item.Url)
 		},
 		toggleSection (e, item) {
 			const state = this.$store.state;
 			if (state.vxSidebarMainAccordionMode) {
-				const items = _.filter(this.menuItems, {level: item.level});
+				const items = _.filter(this.menuItems, {Level: item.Level});
 				items.forEach(k => {
-					if(k.title !== item.title) {
-						k.isOpen = false;
+					if(k.Name !== item.Name) {
+						k.IsOpen = false;
 					}
 				});
 			}
-			item.isOpen = !item.isOpen;
+			item.IsOpen = !item.IsOpen;
 		},
 		setSectionOpen (item) {
-			let subPages = this.getSubPages(item.submenu);
+			let subPages = this.getSubPages(item.SubItemList);
 			if(subPages.length) {
 				let isActive = subPages.some(path => {
 					return this.$route.path.indexOf(path) === 0
 				});
 				if(isActive) {
-					item.isOpen = true;
+					item.IsOpen = true;
 				}
 			}
 		},
 		getSubPages (items) {
 			let pages = [];
 			items.forEach(k => {
-				if (k.page !== 'undefinded' && k.page !== '') {
-					pages.push(k.page)
+				if (k.Url !== 'undefined' && k.Url !== '') {
+					pages.push(k.Url)
 				}
-				if (typeof k.submenu !== 'undefined') {
-					this.getSubPages(k.submenu);
+				if (typeof k.SubItemList !== 'undefined') {
+					this.getSubPages(k.SubItemList);
 				}
 			});
 			return pages;
