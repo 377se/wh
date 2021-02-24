@@ -89,6 +89,7 @@ module.exports = {
 		base: process.env.NODE_ENV !== 'production' || !serveFromSubFolder ? '/' : '/' + dist
 	},
 	modules: [
+		'cookie-universal-nuxt',
 		'@nuxtjs/axios',
 		'@nuxtjs/google-analytics',
 		[
