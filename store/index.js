@@ -20,13 +20,13 @@ export const state = () => ({
 	vxFullWidthActive: false,
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
-	cid: null
+	cid:null
 });
 
 export const mutations = {
 	setCid(state, val){
-    state.cid = val
-  },
+		state.cid = val
+	  },
 	sidebarMainToggle (state, expanded) {
 		state.vxSidebarMainExpanded = expanded
 	},
@@ -89,6 +89,9 @@ export const mutations = {
 };
 
 export const getters = {
+	cid(state){
+		return state.cid
+	  },
 	pageFixedState: state => state.vxPageFixed,
 	cardFixedState: state => state.vxCardFixed,
 	headerExpandedState: state => state.vxHeaderExpanded,
@@ -98,9 +101,9 @@ export const getters = {
 };
 
 export const actions = {
-  async nuxtServerInit ({getters, commit, dispatch}, context) {
-    if(context.app.$cookies.get('cid')!=undefined){
-      commit('setCid', context.app.$cookies.get('cid'))
-    }
+	async nuxtServerInit ({getters, commit, dispatch}, context) {
+	  if(context.app.$cookies.get('cid')!=undefined){
+		commit('setCid', context.app.$cookies.get('cid'))
+	  }
 	}
 }
