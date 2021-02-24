@@ -7,25 +7,25 @@
 						Control Center
 					</h1>
 				</div>
-				<!-- <div class="sc-actions uk-margin-left">
-					<a href="javascript:void(0)" class="sc-actions-icon mdi mdi-printer"></a>
-					<a href="javascript:void(0)" class="sc-actions-icon mdi mdi-archive"></a>
-					<a href="javascript:void(0)" class="sc-actions-icon mdi mdi-dots-vertical"></a>
-				</div> -->
 			</div>
 		</div>
 		<div id="sc-page-content">
 			<ScCard>
 				<ScCardBody>
+
+					<select class="uk-select uk-margin-medium-bottom" v-model="selectionId">
+						<option value="1">Produkter utan full sortering som inte är på REA/OUTLET</option>
+						<option value="2">Produkter som saknar storleksguide</option>
+					</select>
+
 					<VueGoodTable
 						:columns="columns"
-						:rows="issues"
+						:rows="products"
 						:pagination-options="{ enabled: true }"
 						style-class="vgt-table"
                         row-style-class="rowStyleClass"
 						:search-options="{ enabled: true }"
                         :fixed-header="true"
-                        max-height="70vh"
                     >
 						<template slot="table-row" slot-scope="props">
 
@@ -73,16 +73,15 @@ import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
 import { mapGetters } from 'vuex'
 export default {
-	name: 'PagesIssuesList',
 	components: {
 		VueGoodTable
 	},
-        data () {
-        return {
-            issues: []
-        }
+	data () {
+	return {
+		products: [],
+		selectionId: 1
+	}
     },
-
 	computed: {
 		columns () {
 			return [
@@ -90,7 +89,6 @@ export default {
 					label: '',
 					field: 'ImageName',
 					sortable: false,
-					// sortFn: this.issueIdSort,
 					tdClass: 'uk-text-center uk-text-nowrap',
                     width: '8%',
 				},
@@ -157,41 +155,24 @@ export default {
 		},
 	},
 	methods: {
-		priorityLabel (priority) {
-			let priorityClass = null;
-			switch (priority) {
-			case 'minor':
-				priorityClass = 'uk-label-success';
-				break;
-			case 'major':
-				priorityClass = '';
-				break;
-			case 'critical':
-				priorityClass = 'uk-label-warning';
-				break;
-			case 'blocker':
-				priorityClass = 'uk-label-danger';
-				break;
-			default:
-			}
-			return priorityClass;
-		},
-		issueIdSort (x, y, col, rowX, rowY) {
-			const _x = parseInt(x.replace("sc-", ""));
-			const _y = parseInt(y.replace("sc-", ""));
-			return (_x < _y ? -1 : (_x > _y ? 1 : 0));
-		}
+		async loadProducts(selectionId) {
+			await this.$axios.$get('/webapi/ControlCenter/GetSelectionList', { params: { selectionId: selectionId } })
+			.then(products => {
+				this.products = products
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	}
 	},
-    async fetch () {
-		try{
-			const [articles] = await Promise.all([
-				this.$axios.$get("/webapi/ControlCenter/GetSelectionList?selectionId=1")
-			]);
-			this.issues = articles
-		}catch(error){
-			console.log(error);
+	mounted() {
+        this.loadProducts(1)
+    },
+	watch: {
+		selectionId: function () {
+			this.loadProducts(this.selectionId)
 		}
-	},
+	}
 }
 </script>
 
