@@ -12,56 +12,64 @@
 		<div id="sc-page-content">
 			<ScCard>
 				<ScCardBody>
-
 					<select class="uk-select uk-margin-medium-bottom" v-model="selectionId">
-						<option value="1">Produkter utan full sortering som inte är på REA/OUTLET</option>
-						<option value="2">Produkter som saknar storleksguide</option>
+						<option v-for="selection in selections" :key="selection.Id" :value="selection.Id">{{ selection.Name }}</option>
 					</select>
-
-					<VueGoodTable
-						:columns="columns"
-						:rows="products"
-						:pagination-options="{ enabled: true }"
-						style-class="vgt-table"
-                        row-style-class="rowStyleClass"
-						:search-options="{ enabled: true }"
-                        :fixed-header="true"
-                    >
-						<template slot="table-row" slot-scope="props">
-
-                            <img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
-							<nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
-								<div>{{ props.row.Category }}</div>
-								<div>{{ props.row.ProductName }}</div>
-							</nuxt-link>
-                            <span v-else-if="props.column.field === 'ArticleNumber'">
-                                {{ props.row.ArticleNumber }}
-                            </span>
-                            <span v-else-if="props.column.field === 'Shelf'">
-                                {{ props.row.Shelf }}
-                            </span>
-                            <span v-else-if="props.column.field === 'Price'">
-                                {{ props.row.Price }}
-                            </span>
-                            <span v-else-if="props.column.field === 'PriceOnSale'">
-                                {{ props.row.PriceOnSale }}
-                            </span>
-                            <span v-else-if="props.column.field === 'ItemsInStock'"
-                            :class="[
-                                {'uk-label uk-label-danger': props.row.ItemsInStock < 1 },
-                                {'uk-label uk-label-warning': props.row.ItemsInStock < 11 && props.row.ItemsInStock >= 1 },
-                                ]">
-                                {{ props.row.ItemsInStock }}
-                            </span>
-                            <span v-else-if="props.column.field === 'PublishDate'">
-                                {{ props.row.PublishDate }}
-                            </span>
-							<template v-else>
-								{{ props.formattedRow[props.column.field] }}
+						<div v-if="isLoading" class="uk-alert-success" data-uk-alert>
+							Awesome products is being loaded...
+						</div>
+						<VueGoodTable
+							:columns="columns"
+							:rows="products"
+							style-class="vgt-table"
+							row-style-class="rowStyleClass"
+							:search-options="{ enabled: true }"
+							:pagination-options="{
+								enabled: true,
+								mode: 'pages',
+								perPage: 10,
+								position: 'top',
+								perPageDropdown: [10, 20, 30, 40, 50],
+								dropdownAllowAll: true,
+								setCurrentPage: 1,
+								nextLabel: 'nästa',
+								prevLabel: 'föregående',
+								rowsPerPageLabel: 'Produkter per sida',
+								ofLabel: 'av',
+								pageLabel: 'sida', // for 'pages' mode
+								allLabel: 'Alla',
+							}"
+						>
+							<template slot="table-row" slot-scope="props">
+								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
+								<nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
+									<div>{{ props.row.Category }}</div>
+									<div>{{ props.row.ProductName }}</div>
+								</nuxt-link>
+								<span v-else-if="props.column.field === 'ArticleNumber'">
+									{{ props.row.ArticleNumber }}
+								</span>
+								<span v-else-if="props.column.field === 'Shelf'">
+									{{ props.row.Shelf }}
+								</span>
+								<span v-else-if="props.column.field === 'Price'">
+									{{ props.row.Price }}
+								</span>
+								<span v-else-if="props.column.field === 'PriceOnSale'">
+									{{ props.row.PriceOnSale }}
+								</span>
+								<span v-else-if="props.column.field === 'ItemsInStock'"
+								:class="[
+									{'uk-label uk-label-danger': props.row.ItemsInStock < 1 },
+									{'uk-label uk-label-warning': props.row.ItemsInStock < 11 && props.row.ItemsInStock >= 1 },
+									]">
+									{{ props.row.ItemsInStock }}
+								</span>
+								<span v-else>
+									{{ props.row.PublishDate }}
+								</span>
 							</template>
-
-                        </template>
-					</VueGoodTable>
+						</VueGoodTable>
 				</ScCardBody>
 			</ScCard>
 		</div>
@@ -77,10 +85,12 @@ export default {
 		VueGoodTable
 	},
 	data () {
-	return {
-		products: [],
-		selectionId: 1
-	}
+		return {
+			products: [],
+			selections: [],
+			selectionId: 1,
+			isLoading: false
+		}
     },
 	computed: {
 		columns () {
@@ -95,6 +105,8 @@ export default {
 				{
 					label: 'Produktnamn',
 					field: 'ProductName',
+					sortable: true,
+					type: 'string',
 					filterOptions: {
 						enabled: true
 					},
@@ -103,6 +115,8 @@ export default {
 				{
 					label: 'Artikelnummer',
 					field: 'ArticleNumber',
+					sortable: true,
+					type: 'string',
 					filterOptions: {
 						enabled: true
 					},
@@ -111,6 +125,8 @@ export default {
 				{
 					label: 'Hyllplan',
 					field: 'Shelf',
+					sortable: true,
+					type: 'string',
 					filterOptions: {
 						enabled: true
 					},
@@ -119,6 +135,8 @@ export default {
 				{
 					label: 'Utpris',
 					field: 'Price',
+					sortable: true,
+					type: 'number',
 					filterOptions: {
 						enabled: true
 					},
@@ -127,6 +145,8 @@ export default {
 				{
 					label: 'REA',
 					field: 'PriceOnSale',
+					sortable: true,
+                    type: 'number',
 					filterOptions: {
 						enabled: true
 					},
@@ -135,6 +155,8 @@ export default {
 				{
 					label: 'Lagersaldo',
 					field: 'ItemsInStock',
+					sortable: true,
+                    type: 'number',
 					filterOptions: {
 						enabled: true
 					},
@@ -143,6 +165,7 @@ export default {
 				{
 					label: 'Pub.datum',
 					field: 'PublishDate',
+					sortable: true,
 					filterOptions: {
 						enabled: true
 					},
@@ -159,6 +182,18 @@ export default {
 			await this.$axios.$get('/webapi/ControlCenter/GetSelectionList', { params: { selectionId: selectionId } })
 			.then(products => {
 				this.products = products
+				this.isLoading = false
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
+		async loadSelections() {
+			this.isLoading = true
+			await this.$axios.$get('/webapi/ControlCenter/GetControlCenterSelections')
+			.then( selections => {
+				this.selections = selections
+				this.isLoading = false
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -167,9 +202,12 @@ export default {
 	},
 	mounted() {
         this.loadProducts(1)
+        this.loadSelections()
     },
 	watch: {
 		selectionId: function () {
+			this.isLoading = true
+			this.products = []
 			this.loadProducts(this.selectionId)
 		}
 	}
@@ -177,7 +215,7 @@ export default {
 </script>
 
 <style lang="scss">
-	@import '~scss/plugins/vue-good-table.scss';
+	/* @import '~scss/plugins/vue-good-table.scss'; */
     table.vgt-table {
         font-size: 14px;
     }
@@ -189,4 +227,7 @@ export default {
     .text-center {
         text-align: center;
     }
+	/* .vgt-wrap__footer .footer__navigation__page-btn .chevron:after {
+    	top: -1px;
+	} */
 </style>
