@@ -89,9 +89,6 @@ export const mutations = {
 };
 
 export const getters = {
-	cid(state){
-		return state.cid
-	  },
 	pageFixedState: state => state.vxPageFixed,
 	cardFixedState: state => state.vxCardFixed,
 	headerExpandedState: state => state.vxHeaderExpanded,
