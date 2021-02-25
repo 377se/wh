@@ -13,7 +13,6 @@
 		<div id="sc-page-content">
 			<ScCard>
 				<ScCardBody>
-					{{ valueBeingEdited }}
 					<select class="uk-select uk-margin-medium-bottom" v-model="selectionId">
 						<option v-for="selection in selections" :key="selection.Id" :value="selection.Id">{{ selection.Name }}</option>
 					</select>
@@ -44,7 +43,7 @@
 								allLabel: 'Alla',
 							}"
 						>
-							<template slot="table-row" slot-scope="props" class="updateArticleDetails">
+							<template slot="table-row" slot-scope="props">
 								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
 								<span v-else-if="props.column.field === 'Category'">
 									{{ props.row.Category }}
@@ -82,61 +81,6 @@
 				</ScCardBody>
 			</ScCard>
 		</div>
-
-		<!-- <div>
-							<p class="uk-text-large uk-margin-medium-bottom">
-								Groups
-							</p>
-							<div data-uk-margin>
-								<a class="sc-button" href="#modal-group-1" data-uk-toggle>
-									Modal 1
-								</a>
-								<a class="sc-button" href="#modal-group-2" data-uk-toggle>
-									Modal 2
-								</a>
-							</div>
-							<div id="modal-group-1" class="uk-modal" data-uk-modal>
-								<div class="uk-modal-dialog">
-									<div class="uk-modal-header">
-										<h2 class="uk-modal-title">
-											Modal 1
-										</h2>
-									</div>
-									<div class="uk-modal-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-									</div>
-									<div class="uk-modal-footer uk-text-right">
-										<button class="sc-button sc-button-flat sc-button-flat-danger uk-modal-close" type="button">
-											Cancel
-										</button>
-										<a href="#modal-group-2" class="sc-button sc-button-secondary" data-uk-toggle>
-											Modal 2
-										</a>
-									</div>
-								</div>
-							</div>
-							<div id="modal-group-2" class="uk-modal" data-uk-modal>
-								<div class="uk-modal-dialog">
-									<div class="uk-modal-header">
-										<h2 class="uk-modal-title">
-											Modal 2
-										</h2>
-									</div>
-									<div class="uk-modal-body">
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-									</div>
-									<div class="uk-modal-footer uk-text-right">
-										<button class="sc-button sc-button-flat sc-button-flat-danger uk-modal-close" type="button">
-											Cancel
-										</button>
-										<a href="#modal-group-1" class="sc-button sc-button-secondary" data-uk-toggle>
-											Modal 1
-										</a>
-									</div>
-								</div>
-							</div>
-		</div> -->
-
 	</div>
 </content-overlay>
 </template>
@@ -331,5 +275,8 @@ export default {
         vertical-align: middle;
         border-right: 1px solid #dcdfe6;
         padding: .3em .75em .3em .75em;
+    }
+	table.vgt-table th {
+        font-size: 12px;
     }
 </style>
