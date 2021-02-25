@@ -43,6 +43,9 @@
 								allLabel: 'Alla',
 							}"
 						>
+                        <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
+                            {{ this.products.length }} 
+                        </div>
 							<template slot="table-row" slot-scope="props">
 								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
 								<span v-else-if="props.column.field === 'Category'">
