@@ -1,4 +1,5 @@
 <template>
+<content-overlay :active="contentOverlayActive" :animate="true" :progress="progressActive">
 	<div id="sc-page-wrapper">
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -12,17 +13,20 @@
 		<div id="sc-page-content">
 			<ScCard>
 				<ScCardBody>
+					{{ valueBeingEdited }}
 					<select class="uk-select uk-margin-medium-bottom" v-model="selectionId">
 						<option v-for="selection in selections" :key="selection.Id" :value="selection.Id">{{ selection.Name }}</option>
 					</select>
 						<div v-if="isLoading" class="uk-alert-success" data-uk-alert>
 							Awesome products is being loaded...
 						</div>
+						<div v-if="isUpdating" class="uk-alert-success" data-uk-alert>
+							The awesome product is being updated...
+						</div>
 						<VueGoodTable
 							:columns="columns"
 							:rows="products"
 							style-class="vgt-table"
-							row-style-class="rowStyleClass"
 							:search-options="{ enabled: true }"
 							:pagination-options="{
 								enabled: true,
@@ -40,7 +44,7 @@
 								allLabel: 'Alla',
 							}"
 						>
-							<template slot="table-row" slot-scope="props">
+							<template slot="table-row" slot-scope="props" class="updateArticleDetails">
 								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
 								<nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
 									<div>{{ props.row.Category }}</div>
@@ -49,9 +53,12 @@
 								<span v-else-if="props.column.field === 'ArticleNumber'">
 									{{ props.row.ArticleNumber }}
 								</span>
-								<span v-else-if="props.column.field === 'Shelf'">
-									{{ props.row.Shelf }}
-								</span>
+								<input 
+									class="uk-input" 
+									v-else-if="props.column.field === 'Shelf'" 
+									v-on:blur="updateArticleDetails(props.row)"
+									v-model="props.row.Shelf"
+								>
 								<span v-else-if="props.column.field === 'Price'">
 									{{ props.row.Price }}
 								</span>
@@ -73,23 +80,85 @@
 				</ScCardBody>
 			</ScCard>
 		</div>
+
+		<!-- <div>
+							<p class="uk-text-large uk-margin-medium-bottom">
+								Groups
+							</p>
+							<div data-uk-margin>
+								<a class="sc-button" href="#modal-group-1" data-uk-toggle>
+									Modal 1
+								</a>
+								<a class="sc-button" href="#modal-group-2" data-uk-toggle>
+									Modal 2
+								</a>
+							</div>
+							<div id="modal-group-1" class="uk-modal" data-uk-modal>
+								<div class="uk-modal-dialog">
+									<div class="uk-modal-header">
+										<h2 class="uk-modal-title">
+											Modal 1
+										</h2>
+									</div>
+									<div class="uk-modal-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									</div>
+									<div class="uk-modal-footer uk-text-right">
+										<button class="sc-button sc-button-flat sc-button-flat-danger uk-modal-close" type="button">
+											Cancel
+										</button>
+										<a href="#modal-group-2" class="sc-button sc-button-secondary" data-uk-toggle>
+											Modal 2
+										</a>
+									</div>
+								</div>
+							</div>
+							<div id="modal-group-2" class="uk-modal" data-uk-modal>
+								<div class="uk-modal-dialog">
+									<div class="uk-modal-header">
+										<h2 class="uk-modal-title">
+											Modal 2
+										</h2>
+									</div>
+									<div class="uk-modal-body">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+									</div>
+									<div class="uk-modal-footer uk-text-right">
+										<button class="sc-button sc-button-flat sc-button-flat-danger uk-modal-close" type="button">
+											Cancel
+										</button>
+										<a href="#modal-group-1" class="sc-button sc-button-secondary" data-uk-toggle>
+											Modal 1
+										</a>
+									</div>
+								</div>
+							</div>
+		</div> -->
+
 	</div>
+</content-overlay>
 </template>
 
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
-import { VueGoodTable } from 'vue-good-table';
+import { VueGoodTable } from 'vue-good-table'
+import contentOverlay from '~/components/Overlay'
 import { mapGetters } from 'vuex'
 export default {
 	components: {
-		VueGoodTable
+		VueGoodTable,
+		contentOverlay
 	},
 	data () {
 		return {
 			products: [],
 			selections: [],
 			selectionId: 1,
-			isLoading: false
+			valueBeingEdited: null,
+			isLoading: false,
+			isUpdating: false,
+			contentOverlayActive: false,
+			progressActive: false
 		}
     },
 	computed: {
@@ -198,7 +267,35 @@ export default {
 			.catch(function (error) {
 				console.log(error)
 			})
-    	}
+    	},
+		async updateArticleDetails(articleDetails) {
+			let _this = this
+			// _this.isUpdating = true
+			await this.$axios.$post('/webapi/ControlCenter/PostUpdate', articleDetails)
+			.then(function (response) {
+				if(response.Message !== ''){
+					// setTimeout(() => {
+					// 	_this.isUpdating = false
+					// }, 1000)
+					_this.showPageOverlaySpinner()
+				} else {
+
+        		}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+		},
+		showPageOverlaySpinner () {
+			this.$store.commit('togglePageOverlay', true)
+			this.$store.commit('toggleProgressOverlay', true);
+			setTimeout(() => {
+				this.$store.commit('toggleProgressOverlay', false);
+				setTimeout(() => {
+					this.$store.commit('togglePageOverlay', false)
+				})
+			}, 500)
+		}
 	},
 	mounted() {
         this.loadProducts(1)
@@ -210,12 +307,11 @@ export default {
 			this.products = []
 			this.loadProducts(this.selectionId)
 		}
-	}
+	},
 }
 </script>
 
 <style lang="scss">
-	/* @import '~scss/plugins/vue-good-table.scss'; */
     table.vgt-table {
         font-size: 14px;
     }
@@ -227,7 +323,7 @@ export default {
     .text-center {
         text-align: center;
     }
-	/* .vgt-wrap__footer .footer__navigation__page-btn .chevron:after {
-    	top: -1px;
-	} */
+	.updateArticleDetails {
+		background-color: aqua;
+	}
 </style>
