@@ -1,5 +1,4 @@
 <template>
-<content-overlay :active="contentOverlayActive" :animate="true" :progress="progressActive">
 	<div id="sc-page-wrapper">
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -16,14 +15,11 @@
 						<div v-if="isLoading" class="uk-alert-success" data-uk-alert>
 							Awesome products is being loaded...
 						</div>
-						<div v-if="isUpdating" class="uk-alert-success" data-uk-alert>
-							The awesome product is being updated...
-						</div>
 						<VueGoodTable
 							:columns="columns"
 							:rows="products"
 							style-class="vgt-table"
-							:search-options="{ enabled: false }"
+							:search-options="{ enabled: true }"
 							:pagination-options="{
 								enabled: false,
 								mode: 'pages',
@@ -40,6 +36,9 @@
 								allLabel: 'Alla',
 							}"
 						>
+                        <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
+                            {{ this.products.length }} 
+                        </div>
 							<template slot="table-row" slot-scope="props">
                                 <span v-if="props.column.field === 'CreatedDate'">
 									{{ props.row.CreatedDate }}
@@ -64,18 +63,14 @@
 			</ScCard>
 		</div>
 	</div>
-</content-overlay>
 </template>
 
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table'
-import contentOverlay from '~/components/Overlay'
-import { mapGetters } from 'vuex'
 export default {
 	components: {
 		VueGoodTable,
-		contentOverlay
 	},
 	data () {
 		return {
@@ -141,7 +136,8 @@ export default {
 					filterOptions: {
 						enabled: false
 					},
-                    tdClass: 'uk-text-center',
+                    tdClass: 'uk-text-right',
+                    thClass: 'uk-text-right',
                     width: '8%',
 				},
 				{
@@ -175,45 +171,10 @@ export default {
 				console.log(error)
 			})
     	},
-		async updateArticleDetails(articleDetails) {
-			let _this = this
-			// _this.isUpdating = true
-			await this.$axios.$post('/webapi/ControlCenter/PostUpdate', articleDetails)
-			.then(function (response) {
-				if(response.Message !== ''){
-					// setTimeout(() => {
-					// 	_this.isUpdating = false
-					// }, 1000)
-					_this.showPageOverlaySpinner()
-				} else {
-
-        		}
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-		},
-		showPageOverlaySpinner () {
-			this.$store.commit('togglePageOverlay', true)
-			this.$store.commit('toggleProgressOverlay', true);
-			setTimeout(() => {
-				this.$store.commit('toggleProgressOverlay', false);
-				setTimeout(() => {
-					this.$store.commit('togglePageOverlay', false)
-				})
-			}, 500)
-		}
-	},
+    },
 	mounted() {
         this.loadProducts()
     },
-	watch: {
-		selectionId: function () {
-			this.isLoading = true
-			this.products = []
-			this.loadProducts(this.selectionId)
-		}
-	},
 }
 </script>
 
