@@ -89,7 +89,7 @@ export default {
       await this.$axios.post('/webapi/Login/PostLogin', {
 		    UserName: _this.form.email,
         Password: _this.form.password,
-        Domain: process.env.NODE_ENV !== 'production'?'localhost':'.377.se'
+        Domain: window.location.hostname
       }).then(function (response) {
 		  // console.log(this.form.email, this.form.password)
         _this.isSubmitting=false
