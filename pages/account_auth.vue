@@ -4,12 +4,12 @@
 			<ScCard>
 				<ScCardBody>
 					<div>
-						Name: {{ user.name }}
+						Name: {{ this.userDetails.Firstname }}
 					</div>
 					<div class="uk-margin-small-top uk-margin-bottom">
-						Email: {{ user.email }}
+						Email: {{ userDetails.Email }}
 					</div>
-					<a class="sc-button sc-button-default sc-button-outline" href="javascript:void(0)" @click="$auth.logout()">
+					<a class="sc-button sc-button-default sc-button-outline" href="javascript:void(0)" @click="logout()">
 						Logout
 					</a>
 				</ScCardBody>
@@ -20,12 +20,31 @@
 
 <script>
 export default {
-	async asyncData ({ params, $axios }) {
-		const user = await await $axios.$get('/api/user')
-		return { user }
+	mounted () {
+		this.loadUserDetails()
+	},
+	methods: {
+		async loadUserDetails() {
+			await this.$axios.$get('/webapi/admin/GetCurrentUser')
+			.then(userDetails => {
+				this.userDetails = userDetails
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
+		async logout() {
+			await this.$axios.$post('/webapi/Logout/PostLogout')
+			.then(response => {
+          		this.$router.push('/')
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
 	},
 	data: () => ({
-		user: {}
+		userDetails: []
 	})
 }
 </script>

@@ -166,7 +166,8 @@
 					</li>
 					<li>
 						<a href="javascript:void(0)">
-							<img v-rjs="require('~/assets/img/avatars/avatar_default_sm@2x.png')" :src="user.avatar" alt="">
+							<!-- <img v-rjs="require('~/assets/img/avatars/avatar_default_sm@2x.png')" :src="user.avatar" alt=""> -->
+							<img :src="this.userDetails.ImageName" alt="">
 						</a>
 						<div class="uk-navbar-dropdown uk-dropdown-small">
 							<ul class="uk-nav uk-nav-navbar">
@@ -181,7 +182,7 @@
 									</nuxt-link>
 								</li>
 								<li>
-									<nuxt-link to="/login_page">
+									<nuxt-link to="/account_auth">
 										Log Out
 									</nuxt-link>
 								</li>
@@ -212,8 +213,8 @@ export default {
 		ScTopMenu
 	},
 	data: () => ({
+		userDetails: [],
 		user: {
-			avatar: require('~/assets/img/avatars/avatar_default_sm.png'),
 			messages: [
 				{
 					"id": 1,
@@ -481,6 +482,7 @@ export default {
 		}
 	},
 	mounted () {
+		this.loadUserDetails()
 		const self = this;
 		self.$nextTick(() => {
 			if(scMq.mediumMin() || this.$store.getters['sidebarOffcanvasState']) {
@@ -494,6 +496,15 @@ export default {
 		UIkit.sticky(this.$refs.header, options);
 	},
 	methods: {
+		async loadUserDetails() {
+			await this.$axios.$get('/webapi/admin/GetCurrentUser')
+			.then(userDetails => {
+				this.userDetails = userDetails
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
 		toggleMainSidebar () {
 			let state = !this.sidebarMainExpanded;
 			this.$store.commit('sidebarMainToggle', state);
