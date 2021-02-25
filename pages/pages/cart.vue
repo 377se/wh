@@ -5,7 +5,7 @@
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
 					<h1 class="sc-top-bar-title">
-						Control Center
+						Varukorg
 					</h1>
 				</div>
 			</div>
@@ -13,9 +13,6 @@
 		<div id="sc-page-content">
 			<ScCard>
 				<ScCardBody>
-					<select class="uk-select uk-margin-medium-bottom" v-model="selectionId">
-						<option v-for="selection in selections" :key="selection.Id" :value="selection.Id">{{ selection.Name }}</option>
-					</select>
 						<div v-if="isLoading" class="uk-alert-success" data-uk-alert>
 							Awesome products is being loaded...
 						</div>
@@ -26,9 +23,9 @@
 							:columns="columns"
 							:rows="products"
 							style-class="vgt-table"
-							:search-options="{ enabled: true }"
+							:search-options="{ enabled: false }"
 							:pagination-options="{
-								enabled: true,
+								enabled: false,
 								mode: 'pages',
 								perPage: 10,
 								position: 'top',
@@ -44,38 +41,23 @@
 							}"
 						>
 							<template slot="table-row" slot-scope="props">
-								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
-								<span v-else-if="props.column.field === 'Category'">
-									{{ props.row.Category }}
+                                <span v-if="props.column.field === 'CreatedDate'">
+									{{ props.row.CreatedDate }}
 								</span>
-								<nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
-									<div>{{ props.row.ProductName }}</div>
+                                <img v-if="props.column.field === 'ArticleImage'" :src="props.row.ArticleImage">
+								<span v-else-if="props.column.field === 'TeamName'">
+									{{ props.row.TeamName }}
+								</span>
+								<nuxt-link v-else-if="props.column.field === 'ArticleName'" :to="props.row.Url">
+									<div>{{ props.row.ArticleName }}</div>
 								</nuxt-link>
-								<span v-else-if="props.column.field === 'ArticleNumber'">
-									{{ props.row.ArticleNumber }}
+	                            <span v-else-if="props.column.field === 'PriceToPay'">
+									{{ props.row.PriceToPay }}
 								</span>
-								<input 
-									class="uk-input" 
-									v-else-if="props.column.field === 'Shelf'" 
-									v-on:blur="updateArticleDetails(props.row)"
-									v-model="props.row.Shelf"
-								>
-								<span v-else-if="props.column.field === 'Price'">
-									{{ props.row.Price }}
+	                            <span v-else-if="props.column.field === 'SessionId'">
+									{{ props.row.SessionId }}
 								</span>
-								<span v-else-if="props.column.field === 'PriceOnSale'">
-									{{ props.row.PriceOnSale }}
-								</span>
-								<span v-else-if="props.column.field === 'ItemsInStock'"
-								:class="[
-									{'uk-label uk-label-danger': props.row.ItemsInStock < 1 },
-									{'uk-label uk-label-warning': props.row.ItemsInStock < 11 && props.row.ItemsInStock >= 1 },
-									]">
-									{{ props.row.ItemsInStock }}
-								</span>
-								<span v-else>
-									{{ props.row.PublishDate }}
-								</span>
+                                <img v-if="props.column.field === 'ShopImage'" :src="props.row.ShopImage">
 							</template>
 						</VueGoodTable>
 				</ScCardBody>
@@ -111,113 +93,82 @@ export default {
 		columns () {
 			return [
 				{
+					label: 'Tidpunkt',
+					field: 'CreatedDate',
+					sortable: false,
+					filterOptions: {
+						enabled: false
+					},
+                    type: 'date',
+					dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS",
+					dateOutputFormat: "yyyy-MM-dd' 'HH:mm",
+                    thClass: 'uk-text-left',
+					tdClass: 'uk-text-nowrap uk-text-left',
+                    width: '11%',
+				},
+                {
 					label: '',
-					field: 'ImageName',
+					field: 'ArticleImage',
 					sortable: false,
 					tdClass: 'uk-text-center uk-text-nowrap',
                     width: '33px',
 				},
 				{
-					label: 'Kategori',
-					field: 'Category',
-					sortable: true,
+					label: 'Lag',
+					field: 'TeamName',
+					sortable: false,
 					type: 'string',
 					filterOptions: {
-						enabled: true
+						enabled: false
 					},
                     width: '10%',
 				},
 				{
-					label: 'Produktnamn',
-					field: 'ProductName',
-					sortable: true,
+					label: 'Produkt',
+					field: 'ArticleName',
+					sortable: false,
 					type: 'string',
 					filterOptions: {
-						enabled: true
+						enabled: false
 					},
                     width: '25%',
 				},
-				{
-					label: 'Artikelnummer',
-					field: 'ArticleNumber',
-					sortable: true,
-					type: 'string',
-					filterOptions: {
-						enabled: true
-					},
-                    width: '20%',
-				},
-				{
-					label: 'Hyllplan',
-					field: 'Shelf',
-					sortable: true,
-					type: 'string',
-					filterOptions: {
-						enabled: true
-					},
-                    tdClass: 'uk-text-center',
-				},
-				{
-					label: 'Utpris',
-					field: 'Price',
-					sortable: true,
+                {
+					label: 'Pris (SEK)',
+					field: 'PriceToPay',
+					sortable: false,
 					type: 'number',
 					filterOptions: {
-						enabled: true
+						enabled: false
 					},
                     tdClass: 'uk-text-center',
+                    width: '8%',
 				},
 				{
-					label: 'REA',
-					field: 'PriceOnSale',
-					sortable: true,
-                    type: 'number',
+					label: 'Session',
+					field: 'SessionId',
+					sortable: false,
+					type: 'string',
 					filterOptions: {
-						enabled: true
+						enabled: false
 					},
-                    tdClass: 'uk-text-center',
+                    width: '30%',
 				},
-				{
-					label: 'Lagersaldo',
-					field: 'ItemsInStock',
-					sortable: true,
-                    type: 'number',
-					filterOptions: {
-						enabled: true
-					},
-                    tdClass: 'uk-text-center',
-				},
-				{
-					label: 'Pub.datum',
-					field: 'PublishDate',
-					sortable: true,
-					filterOptions: {
-						enabled: true
-					},
-                    type: 'date',
-					dateInputFormat: 'yyyy-MM-dd',
-					dateOutputFormat: 'MMM do yyyy',
-					tdClass: 'uk-text-nowrap uk-text-left'
+                {
+					label: '',
+					field: 'ShopImage',
+					sortable: false,
+					tdClass: 'uk-text-center uk-text-nowrap',
+                    width: '33px',
 				},
 			]
 		},
 	},
 	methods: {
-		async loadProducts(selectionId) {
-			await this.$axios.$get('/webapi/ControlCenter/GetSelectionList', { params: { selectionId: selectionId } })
+		async loadProducts() {
+			await this.$axios.$get('/webapi/Cart/GetCartList')
 			.then(products => {
 				this.products = products
-				this.isLoading = false
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-    	},
-		async loadSelections() {
-			this.isLoading = true
-			await this.$axios.$get('/webapi/ControlCenter/GetControlCenterSelections')
-			.then( selections => {
-				this.selections = selections
 				this.isLoading = false
 			})
 			.catch(function (error) {
@@ -254,8 +205,7 @@ export default {
 		}
 	},
 	mounted() {
-        this.loadProducts(1)
-        this.loadSelections()
+        this.loadProducts()
     },
 	watch: {
 		selectionId: function () {
@@ -276,7 +226,7 @@ export default {
         border-right: 1px solid #dcdfe6;
         padding: .3em .75em .3em .75em;
     }
-	table.vgt-table th {
+    table.vgt-table th {
         font-size: 12px;
     }
 </style>
