@@ -2,7 +2,6 @@
   <section>
     <div class="uk-background-muted">
       <div class="uk-container uk-container-xsmall uk-padding">
-
         <form 
           method="post"
           @submit.prevent="login">
@@ -43,7 +42,6 @@
                 :button-text="'Logga in'"
                 :is-submit="true"/>
             </div>
-
 
           </fieldset>
         </form>
@@ -91,7 +89,7 @@ export default {
           Domain: window.location.hostname
         })
         this.isSubmitting=false
-        if(logmein.ErrorList!==null){
+        if(logmein.data.ErrorList){
           this.errors = response.data.ErrorList
         }else{
           this.$router.push('/')
@@ -101,7 +99,6 @@ export default {
         this.isSubmitting=false
         console.log(err)
       }
-
     }
   }
 }
