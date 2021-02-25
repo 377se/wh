@@ -46,8 +46,10 @@
 						>
 							<template slot="table-row" slot-scope="props" class="updateArticleDetails">
 								<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
+								<span v-else-if="props.column.field === 'Category'">
+									{{ props.row.Category }}
+								</span>
 								<nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
-									<div>{{ props.row.Category }}</div>
 									<div>{{ props.row.ProductName }}</div>
 								</nuxt-link>
 								<span v-else-if="props.column.field === 'ArticleNumber'">
@@ -169,7 +171,17 @@ export default {
 					field: 'ImageName',
 					sortable: false,
 					tdClass: 'uk-text-center uk-text-nowrap',
-                    width: '8%',
+                    width: '33px',
+				},
+				{
+					label: 'Kategori',
+					field: 'Category',
+					sortable: true,
+					type: 'string',
+					filterOptions: {
+						enabled: true
+					},
+                    width: '10%',
 				},
 				{
 					label: 'Produktnamn',
@@ -179,7 +191,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-                    width: '30%',
+                    width: '25%',
 				},
 				{
 					label: 'Artikelnummer',
@@ -199,7 +211,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-                    tdClass: 'text-center',
+                    tdClass: 'uk-text-center',
 				},
 				{
 					label: 'Utpris',
@@ -209,7 +221,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-                    tdClass: 'text-center',
+                    tdClass: 'uk-text-center',
 				},
 				{
 					label: 'REA',
@@ -219,7 +231,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-                    tdClass: 'text-center',
+                    tdClass: 'uk-text-center',
 				},
 				{
 					label: 'Lagersaldo',
@@ -229,7 +241,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-                    tdClass: 'text-center',
+                    tdClass: 'uk-text-center',
 				},
 				{
 					label: 'Pub.datum',
@@ -313,17 +325,11 @@ export default {
 
 <style lang="scss">
     table.vgt-table {
-        font-size: 14px;
+        font-size: 13px;
     }
     table.vgt-table td {
         vertical-align: middle;
         border-right: 1px solid #dcdfe6;
-        padding: .35em .75em .35em .75em;
+        padding: .3em .75em .3em .75em;
     }
-    .text-center {
-        text-align: center;
-    }
-	.updateArticleDetails {
-		background-color: aqua;
-	}
 </style>
