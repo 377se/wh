@@ -28,7 +28,8 @@
                   v-model="form.password"
                   class="uk-input" 
                   type="password"
-                  name="password">
+                  name="password"
+                />
               </div>
               <div class="uk-margin uk-margin-remove-top uk-text-center uk-text-small">
                 <nuxt-link 
@@ -86,16 +87,15 @@ export default {
       const _this = this
       _this.isSubmitting=true
       await this.$axios.post('/webapi/Login/PostLogin', {
-		UserName: _this.form.email,
-        Password: _this.form.password
+		    UserName: _this.form.email,
+        Password: _this.form.password,
+        Domain: process.env.NODE_ENV !== 'production'?'localhost':'.377.se'
       }).then(function (response) {
 		  // console.log(this.form.email, this.form.password)
         _this.isSubmitting=false
           if(response.data.ErrorList !== null) {
             _this.errors = response.data.ErrorList
           }else{
-            _this.$store.commit('setCid', response.data.Id)
-            _this.$cookies.set('cid', response.data.Id)
             _this.$router.push(this.$root.context.app.localePath('/'))
           }
       })
