@@ -2,7 +2,6 @@
   <section>
     <div class="uk-background-muted">
       <div class="uk-container uk-container-xsmall uk-padding">
-	  {{ this.form }}
 
         <form 
           method="post"
@@ -84,25 +83,25 @@ export default {
   },
   methods: {
     async login(event) {
-      const _this = this
-      _this.isSubmitting=true
-      await this.$axios.post('/webapi/Login/PostLogin', {
-		    UserName: _this.form.email,
-        Password: _this.form.password,
-        Domain: window.location.hostname
-      }).then(function (response) {
-		  // console.log(this.form.email, this.form.password)
-        _this.isSubmitting=false
-          if(response.data.ErrorList !== null) {
-            _this.errors = response.data.ErrorList
-          }else{
-            _this.$router.push(this.$root.context.app.localePath('/'))
-          }
-      })
-      .catch(function (error) {
-        _this.isSubmitting=false
-        console.log(error)
-      })
+      this.isSubmitting=true
+      try{
+        let logmein = await this.$axios.post('/webapi/Login/PostLogin', {
+          UserName: this.form.email,
+          Password: this.form.password,
+          Domain: window.location.hostname
+        })
+        this.isSubmitting=false
+        if(logmein.ErrorList!==null){
+          this.errors = response.data.ErrorList
+        }else{
+          this.$router.push('/')
+        }
+
+      }catch(err){
+        this.isSubmitting=false
+        console.log(err)
+      }
+
     }
   }
 }
