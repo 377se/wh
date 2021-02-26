@@ -166,8 +166,8 @@
 					</li>
 					<li>
 						<a href="javascript:void(0)">
-							<!-- <img v-rjs="require('~/assets/img/avatars/avatar_default_sm@2x.png')" :src="user.avatar" alt=""> -->
-							<img :src="this.userDetails.ImageName" alt="">
+							<img v-if="this.$store.getters['isLoggedInState']" :src="this.userDetails.ImageName" alt="User-avatar">
+							<img v-else src="~/assets/img/logo-avatar.png" style="width: 35px;" alt="377 Logo">
 						</a>
 						<div class="uk-navbar-dropdown uk-dropdown-small">
 							<ul class="uk-nav uk-nav-navbar">
@@ -183,7 +183,7 @@
 								</li>
 								<li>
 									<nuxt-link to="/account_auth">
-										Log Out
+										Logout
 									</nuxt-link>
 								</li>
 							</ul>

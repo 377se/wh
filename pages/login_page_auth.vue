@@ -82,6 +82,7 @@ export default {
   methods: {
     async login(event) {
       this.isSubmitting=true
+      let _this = this
       try{
         let logmein = await this.$axios.post('/webapi/Login/PostLogin', {
           UserName: this.form.email,
@@ -92,6 +93,7 @@ export default {
         if(logmein.data.ErrorList){
           this.errors = response.data.ErrorList
         }else{
+          this.$store.commit('setIsLoggedIn', true)
           this.$router.push('/')
         }
 
@@ -99,7 +101,7 @@ export default {
         this.isSubmitting=false
         console.log(err)
       }
-    }
+    },
   }
 }
 </script>
