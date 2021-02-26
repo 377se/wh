@@ -166,7 +166,7 @@
 					</li>
 					<li>
 						<a href="javascript:void(0)">
-							<img v-if="this.$store.getters['isLoggedInState']" :src="this.userDetails.ImageName" alt="User-avatar">
+							<img v-if="isLoggedIn" :src="this.userDetails.ImageName" alt="User-avatar">
 							<img v-else src="~/assets/img/logo-avatar.png" style="width: 35px;" alt="377 Logo">
 						</a>
 						<div class="uk-navbar-dropdown uk-dropdown-small">
@@ -199,7 +199,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { scMq } from '~/assets/js/utils'
 import ScFullscreen from '~/components/FullScreen.vue';
 import ScTopMenu from '~/components/topmenu/TopMenu.vue';
@@ -467,7 +467,8 @@ export default {
 			'vxOffcanvasExpanded',
 			'vxTopMenuActive',
 			'vxActiveLocale',
-			'vxSidebarMiniActive'
+			'vxSidebarMiniActive',
+			'isLoggedIn'
 		])
 	},
 	watch: {
