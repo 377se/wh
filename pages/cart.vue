@@ -94,9 +94,7 @@ export default {
 					filterOptions: {
 						enabled: false
 					},
-                    type: 'date',
-					dateInputFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS",
-					dateOutputFormat: "yyyy-MM-dd' 'HH:mm",
+                    type: 'string',
                     thClass: 'uk-text-left',
 					tdClass: 'uk-text-nowrap uk-text-left',
                     width: '11%',
