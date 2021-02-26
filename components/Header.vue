@@ -480,6 +480,11 @@ export default {
 		},
 		'vxOffcanvasPresent' (state) {
 			this.offcanvasPresent = state;
+		},
+		'isLoggedIn' (state){
+			if(state){
+				this.loadUserDetails(); //reload userdetails when logged in.
+			}
 		}
 	},
 	mounted () {
