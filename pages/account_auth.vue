@@ -34,14 +34,11 @@ export default {
 			})
     	},
 		async logout() {
+			let _this = this
 			await this.$axios.$post('/webapi/Logout/PostLogout')
-			.then(response => {
-          		this.$router.push('/')
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-    	},
+			this.$cookies.remove('wh-377')
+          	this.$router.push('/')
+		},
 	},
 	data: () => ({
 		userDetails: []
