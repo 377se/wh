@@ -20,12 +20,12 @@ export const state = () => ({
 	vxFullWidthActive: false,
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
-	vxisLoggedIn: false
+	isLoggedIn: false
 });
 
 export const mutations = {
 	setIsLoggedIn(state, val){
-		state.vxisLoggedIn = val
+		state.isLoggedIn = val
 	  },
 	sidebarMainToggle (state, expanded) {
 		state.vxSidebarMainExpanded = expanded
@@ -94,7 +94,7 @@ export const getters = {
 	headerExpandedState: state => state.vxHeaderExpanded,
 	sidebarMainState: state => state.vxSidebarMainExpanded,
 	offcanvasState: state => state.vxOffcanvasExpanded,
-	isLoggedInState: state => state.vxisLoggedIn
+	isLoggedInState: state => state.isLoggedIn
 };
 
 export const actions = {
