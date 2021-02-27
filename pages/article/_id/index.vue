@@ -10,60 +10,115 @@
 				</div>
 			</div>
 		</div>
-
 		<div id="sc-page-content">
-			<ScCard class="uk-width-1-2">
-
+			<ScCard>
 				<ScCardBody>
-
-					<h5 class="uk-heading-line">
-						<span>Inställningar</span>
-					</h5>
-
+					<h5 class="uk-heading-line"><span>Inställningar</span></h5>
+					<ScInput :value="this.articleDetails.ArticleId.toString()" :disabled="true" extra-classes="uk-form-small">
+					</ScInput>
 					<div class="uk-margin">
-						<div>
-							<ScInput :value="this.articleDetails.ArticleId.toString()" :disabled="true" extra-classes="uk-form-small">
-							</ScInput>
-						</div>
+						<ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Produktnamn</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.ArticleNameList[0].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Produktnamn - sv</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.ArticleNameList[1].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Produktnamn - no</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.ArticleNameList[3].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Produktnamn - fi</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.ArticleNumber" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Artikelnummer</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.Shelf" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Hyllplats</label>
+						</ScInput>
+					</div>
+					<div class="uk-margin">
+						<ScInput v-model="articleDetails.PublishDate" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+							<label>Publiceringsdatum</label>
+						</ScInput>
 					</div>
 
-					<div class="uk-margin">
-						<div>
-							<ScInput v-model="articleDetails.ProductName" mode="outline" v-on:blur="updateArticleDetails(articleDetails)" extra-classes="uk-form-small">
-								<label>Produktnamn</label>
-							</ScInput>
-						</div>
-					</div>
 
-					<div class="uk-margin">
-						<div>
-							<ScInput v-model="articleDetails.ArticleNameList[0].ArticleName" mode="outline" v-on:blur="updateArticleDetails(articleDetails)" extra-classes="uk-form-small">
-								<label>Produktnamn -sv</label>
-							</ScInput>
-						</div>
+					<div class="uk-margin uk-width-1-1">
+						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+						<label class="select-label" for="select-team">Lag</label>
+						<client-only>
+							<Select2
+								id="select-team"
+								v-model="articleDetails.TeamName"
+								:options="teams"
+								:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
+								@change="updateArticleDetails()"
+							>
+							<option :value="articleDetails.TeamName">{{ articleDetails.TeamName }}</option>
+							</Select2>
+						</client-only>
+					</div>
 					</div>
 
 				</ScCardBody>
 			</ScCard>
 		</div>
     </div>
+{{ articleDetails }}
 </div>
 </template>
 
 <script>
+
 import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
+
+const teams = [
+				{
+					"TeamId": "1",
+					"TeamName": "Behöver API"
+				},
+				{
+					"TeamId": "2",
+					"TeamName": "Behöver API"
+				},
+				{
+					"TeamId": "3",
+					"TeamName": "Behöver API"
+				}
+			]
+
 
 export default {
 	components: {
 		ScInput,
-		contentOverlay
+		contentOverlay,
+		Select2: process.client ? () => import('~/components/Select2') : null,
 	},
 	data () {
 		return {
 			articleDetails: [],
-			isLoading: true
+			isLoading: true,
 		}
+	},
+	computed: {
+		teams () {
+			return teams.map(function (obj) {
+				obj.id = obj.id || obj.TeamId;
+				obj.text = obj.text || obj.TeamName;
+				return obj;
+			});
+		},
 	},
 	mounted () {
 		this.loadArticleDetails()
@@ -80,7 +135,7 @@ export default {
 				console.log(error)
 			})
     	},
-		async updateArticleDetails(articleDetails) {
+		async updateArticleDetails() {
 			let _this = this
 			await this.$axios.$post('/webapi/Article/PostUpdateArticle', _this.articleDetails)
 			.then(function (response) {
@@ -109,5 +164,4 @@ export default {
 </script>
 
 <style>
-
 </style>
