@@ -22,51 +22,58 @@
 							<label>Produktnamn</label>
 						</ScInput>
 					</div>
+					<!-- Produktnamn - sv -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.ArticleNameList[0].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Produktnamn - sv</label>
 						</ScInput>
 					</div>
+					<!-- Produktnamn - no -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.ArticleNameList[1].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Produktnamn - no</label>
 						</ScInput>
 					</div>
+					<!-- Produktnamn - fi -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.ArticleNameList[3].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Produktnamn - fi</label>
 						</ScInput>
 					</div>
+					<!-- Artikelnummer -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.ArticleNumber" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Artikelnummer</label>
 						</ScInput>
 					</div>
+					<!-- Hyllplats -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.Shelf" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Hyllplats</label>
 						</ScInput>
 					</div>
+					<!-- Publiceringsdatum -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.PublishDate" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Publiceringsdatum</label>
 						</ScInput>
 					</div>
+					<!-- Lag -->
 					<div class="uk-margin uk-width-1-1">
 						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
 						<label class="select-label" for="select-team">Lag</label>
-						<client-only>
-							<Select2
-								id="select-team"
-								v-model="articleDetails.TeamId"
-								:options="teamInfo"
-								:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
-								@change="updateArticleDetails()"
-							>
-							<option :value="articleDetails.TeamName">{{ articleDetails.TeamName }}</option>
-							</Select2>
-						</client-only>
-					</div>
+							<client-only>
+								<Select2
+									id="select-team"
+									v-model="articleDetails.TeamId"
+									:options="teamInfo"
+									:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
+									@change="updateArticleDetails()"
+								>
+								<option :value="articleDetails.TeamName">{{ articleDetails.TeamName }}</option>
+								</Select2>
+							</client-only>
+						</div>
 					</div>
 				</ScCardBody>
 			</ScCard>
