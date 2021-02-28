@@ -16,6 +16,7 @@
 					<h5 class="uk-heading-line"><span>Inställningar</span></h5>
 					<ScInput :value="this.articleDetails.ArticleId.toString()" :disabled="true" extra-classes="uk-form-small">
 					</ScInput>
+					<!-- Produktnamn -->
 					<div class="uk-margin">
 						<ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
 							<label>Produktnamn</label>
@@ -51,16 +52,14 @@
 							<label>Publiceringsdatum</label>
 						</ScInput>
 					</div>
-
-
 					<div class="uk-margin uk-width-1-1">
 						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
 						<label class="select-label" for="select-team">Lag</label>
 						<client-only>
 							<Select2
 								id="select-team"
-								v-model="articleDetails.TeamName"
-								:options="teams"
+								v-model="articleDetails.TeamId"
+								:options="teamInfo"
 								:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
 								@change="updateArticleDetails()"
 							>
@@ -69,12 +68,10 @@
 						</client-only>
 					</div>
 					</div>
-
 				</ScCardBody>
 			</ScCard>
 		</div>
     </div>
-{{ articleDetails }}
 </div>
 </template>
 
@@ -82,22 +79,6 @@
 
 import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
-
-const teams = [
-				{
-					"TeamId": "1",
-					"TeamName": "Behöver API"
-				},
-				{
-					"TeamId": "2",
-					"TeamName": "Behöver API"
-				},
-				{
-					"TeamId": "3",
-					"TeamName": "Behöver API"
-				}
-			]
-
 
 export default {
 	components: {
@@ -108,20 +89,15 @@ export default {
 	data () {
 		return {
 			articleDetails: [],
+			teamInfo: [],
 			isLoading: true,
 		}
 	},
 	computed: {
-		teams () {
-			return teams.map(function (obj) {
-				obj.id = obj.id || obj.TeamId;
-				obj.text = obj.text || obj.TeamName;
-				return obj;
-			});
-		},
 	},
 	mounted () {
 		this.loadArticleDetails()
+		this.loadTeamInfo()
 	},
 	methods: {
 		async loadArticleDetails() {
@@ -129,6 +105,18 @@ export default {
 			await this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id)
 			.then(articleDetails => {
 				this.articleDetails = articleDetails
+				this.isLoading = false
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
+		async loadTeamInfo() {
+			this.isLoading = true
+			await this.$axios.$get('/webapi/Metadata/GetTeamList')
+			.then(teams => {
+				const parsedTeams = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
+				this.teamInfo = parsedTeams
 				this.isLoading = false
 			})
 			.catch(function (error) {
