@@ -128,15 +128,15 @@
 }
 
 .select2-container {
-	z-index: $z-index-header - 100;
-	body.uk-modal-page & {
-		z-index: $z-index-modal + 100;
-	}
-	@include respond-below('medium') {
-		z-index: $z-index-sidebar - 100;
-	}
-	&--open,
-	&--focus {}
+	// z-index: $z-index-header - 100;
+	// body.uk-modal-page & {
+	// 	z-index: $z-index-modal + 100;
+	// }
+	// @include respond-below('medium') {
+	// 	z-index: $z-index-sidebar - 100;
+	// }
+	// &--open,
+	// &--focus {}
 }
 .select2-dropdown {
 	border-color: $border-color;
@@ -221,14 +221,13 @@
     font-size: 0.75rem;
 }
 .select-label {
-	top: -9px;
-    left: 8px;
-    right: auto;
-    padding: 0 4px;
-	z-index: 10000;
+	z-index: 1001;
 }
 .sc-input-wrapper {
     position: relative;
     display: block;
     width: 100%;
+}
+.select2-dropdown {
+	z-index: 1003;
 }

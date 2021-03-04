@@ -50,7 +50,7 @@ export default {
 			'default': false
 		},
 		value: {
-			type: [String, Array],
+			// type: [String, Array],
 			default: null
 		},
 		successState: {

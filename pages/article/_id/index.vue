@@ -1,5 +1,8 @@
 <template>
-<div v-if="this.isLoading == true">
+<div v-if="$fetchState.pending">
+	<div id="sc-page-wrapper">
+		<p>Loading</p>
+	</div>
 </div>
 <div v-else>
  	<div id="sc-page-wrapper">
@@ -70,12 +73,82 @@
 									:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
 									@change="updateArticleDetails()"
 								>
-								<option :value="articleDetails.TeamName">{{ articleDetails.TeamName }}</option>
+									<option v-if="isLoading = false" :value="articleDetails.TeamId">{{ teamInfo.find(x => x.id === articleDetails.TeamId).text }}</option>
 								</Select2>
 							</client-only>
 						</div>
 					</div>
+					<!-- Varumärke -->
+					<div class="uk-margin uk-width-1-1">
+						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+						<label class="select-label" for="select-brand">Varumärke</label>
+							<client-only>
+								<Select2
+									id="select-brand"
+									v-model="articleDetails.BrandId"
+									:options="brandInfo"
+									:settings="{ 'width': '100%', 'placeholder': 'Välj varumärke...', 'closeOnSelect': true }"
+									@change="updateArticleDetails()"
+								>
+									<option v-if="isLoading = false" :value="articleDetails.BrandId">{{ brandInfo.find(x => x.id === articleDetails.BrandId).text }}</option>
+								</Select2>
+							</client-only>
+						</div>
+					</div>
+					<!-- Material -->
+					<div class="uk-margin uk-width-1-1">
+						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+						<label class="select-label" for="select-material">Material</label>
+						<client-only>
+							<Select2
+								id="select-material"
+								v-model="articleDetails.MaterialId"
+								:options="materialInfo"
+								:settings="{ 'width': '100%', 'placeholder': 'Välj material...', 'closeOnSelect': true }"
+								@change="updateArticleDetails()"
+							>
+								<option v-if="isLoading = false" :value="articleDetails.MaterialId">{{ materialInfo.find(x => x.id === articleDetails.MaterialId).text }}</option>
+							</Select2>
+						</client-only>
+						</div>
+					</div>
+					<!-- Produkttyp -->
+					<div class="uk-margin uk-width-1-1">
+						<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+						<label class="select-label" for="select-producttype">Produkttyp</label>
+						<client-only>
+							<Select2
+								id="select-producttype"
+								v-model="articleDetails.ProductTypeId"
+								:options="productTypeInfo"
+								:settings="{ 'width': '100%', 'placeholder': 'Välj produkttyp...', 'closeOnSelect': true }"
+								@change="updateArticleDetails()"
+							>
+								<option v-if="isLoading = false" :value="articleDetails.ProductTypeId">{{ productTypeInfo.find(x => x.id === articleDetails.ProductTypeId).text }}</option>
+							</Select2>
+						</client-only>
+						</div>
+					</div>
+					<!-- Färg(er) -->
+					<div class="uk-margin uk-width-1-1">
+						<div class="">
+						<label class="uk-text-small">Färg(er)</label>
+							<ul class="uk-list uk-column-1-3 uk-margin-remove-top">
+								<li v-for="color in articleDetails.ColorList" :key="color.ColorId" class="uk-text-small">
+									<PrettyCheck v-model="color.IsSelected" class="p-icon" @change="updateArticleDetails()">
+										<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ color.Description }}</span>
+									</PrettyCheck>
+
+
+								</li>
+							</ul>
+						</div>
+					</div>
+
+<!-- {{ articleDetails.ColorList[0] }} -->
+
 				</ScCardBody>
+
 			</ScCard>
 		</div>
     </div>
@@ -86,56 +159,28 @@
 
 import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
+import PrettyCheck from 'pretty-checkbox-vue/check';
 
 export default {
+	name: "ArticleDetails",
 	components: {
 		ScInput,
 		contentOverlay,
 		Select2: process.client ? () => import('~/components/Select2') : null,
-	},
-	data () {
-		return {
-			articleDetails: [],
-			teamInfo: [],
-			isLoading: true,
-		}
+		PrettyCheck,
 	},
 	computed: {
-	},
-	mounted () {
-		this.loadArticleDetails()
-		this.loadTeamInfo()
+
 	},
 	methods: {
-		async loadArticleDetails() {
-			this.isLoading = true
-			await this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id)
-			.then(articleDetails => {
-				this.articleDetails = articleDetails
-				this.isLoading = false
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-    	},
-		async loadTeamInfo() {
-			this.isLoading = true
-			await this.$axios.$get('/webapi/Metadata/GetTeamList')
-			.then(teams => {
-				const parsedTeams = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				this.teamInfo = parsedTeams
-				this.isLoading = false
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-    	},
 		async updateArticleDetails() {
 			let _this = this
+			_this.isLoading = true
 			await this.$axios.$post('/webapi/Article/PostUpdateArticle', _this.articleDetails)
 			.then(function (response) {
 				if(response.Message !== ''){
 					_this.showPageOverlaySpinner()
+					_this.isLoading = false
 				} else {
 
         		}
@@ -153,10 +198,43 @@ export default {
 					this.$store.commit('togglePageOverlay', false)
 				})
 			}, 500)
+		},
+	},
+		data () {
+		return {
+			articleDetails: [],
+			teamInfo: [],
+			brandInfo: [],
+			materialInfo: [],
+			productTypeInfo: [],
+			isLoading: true,
 		}
-	}
+	},
+	async fetch () {
+		try {
+			const [articleDetails, teams, brands, materials, producttypes] = await Promise.all([
+				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Metadata/GetTeamList'),
+				this.$axios.$get('/webapi/Metadata/GetBrandList'),
+				this.$axios.$get('/webapi/Metadata/GetMaterialList'),
+				this.$axios.$get('/webapi/Metadata/GetProductTypeList'),
+      		])
+			this.articleDetails = articleDetails
+			const parsedTeams = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.teamInfo = parsedTeams
+			const parsedBrands = brands.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.brandInfo = parsedBrands
+			const parsedMaterials = materials.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.materialInfo = parsedMaterials
+			const parsedProductTypes = producttypes.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.productTypeInfo = parsedProductTypes
+		} catch (err) {
+      		console.log(err);
+		}
+    },
 }
 </script>
 
-<style>
+<style lang="scss">
+	@import '~scss/vue/_pretty_checkboxes';
 </style>
