@@ -379,7 +379,7 @@
 													</Select2>
 											</client-only>
 										</div>
-										<i v-if="articleStatusList[0].StatusId === 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+										<i v-if="articleStatusList[0].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 									</div>
 								</div>
 							<!-- Sam Dodds -->
@@ -399,7 +399,7 @@
 												</Select2>
 											</client-only>
 										</div>
-										<i v-if="articleStatusList[1].StatusId === 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+										<i v-if="articleStatusList[1].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 									</div>
 								</div>
 							<!-- KopShop -->
@@ -419,7 +419,7 @@
 												</Select2>
 											</client-only>
 										</div>
-										<i v-if="articleStatusList[2].StatusId === 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+										<i v-if="articleStatusList[2].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 									</div>
 								</div>
 							<!-- Gameday -->
@@ -439,7 +439,7 @@
 												</Select2>
 											</client-only>
 										</div>
-										<i v-if="articleStatusList[3].StatusId === 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+										<i v-if="articleStatusList[3].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 									</div>
 								</div>
 							<!-- Supporterprylar -->
@@ -459,7 +459,7 @@
 												</Select2>
 											</client-only>
 										</div>
-										<i v-if="articleStatusList[4].StatusId === 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+										<i v-if="articleStatusList[4].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 									</div>
 								</div>
 							</ScCardBody>
