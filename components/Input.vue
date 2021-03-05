@@ -50,7 +50,7 @@ export default {
 			default: 'text'
 		},
 		value: {
-			type: [String, Object],
+			// type: [String, Object],
 			default: ''
 		},
 		disabled: {
