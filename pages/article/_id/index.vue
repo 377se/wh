@@ -637,6 +637,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table'
 import ScInput from '~/components/Input'
@@ -685,11 +686,16 @@ export default {
 			isLoading: true,
 			Swedish,
 			contentOverlayActive: false,
-			articleAssortment: [],
 			rowObjectFromVueGoodTable: null,
 		}
 	},
+	watch: {
+
+	},
 	computed: {
+		...mapGetters({
+			articleAssortment: 'articleAssortmentState'
+		}),
 		columns_articleAssortment () {
 			return [
 				{
@@ -774,13 +780,12 @@ export default {
 			.then(function (response) {
 				if(response.StockId !== ''){
 					_this.showPageOverlaySpinner()
-					const elementsIndex = _this.articleAssortment.findIndex(element => element.StockId == response.StockId )
-					_this.articleAssortment[elementsIndex] = { ..._this.articleAssortment[elementsIndex], Correction: 0, ItemsInStock: response.ItemsInStock }
-					console.log(response.ItemsInStock)
-					_this.isLoading = false
-				} else {
 
-        		}
+					const elementsIndex = _this.articleAssortment.findIndex(element => element.StockId == response.StockId )
+					_this.articleAssortment[elementsIndex] = response
+					_this.$store.commit('setArticleAssortment', _this.articleAssortment)
+					_this.isLoading = false
+				}
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -851,8 +856,7 @@ export default {
 			this.kopShopArticleStatusList = articleStatusList[2].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.supporterPrylarArticleStatusList = articleStatusList[3].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.gameDayArticleStatusList = articleStatusList[4].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
-			this.articleAssortment = articleAssortment
-
+			this.$store.commit('setArticleAssortment', articleAssortment)
 		} catch (err) {
       		console.log(err);
 		}
@@ -882,8 +886,6 @@ export default {
 		font-size: 0.75rem;
 	}
 	.dimmed {
-		& > table.vgt-table td {
-			color: #aaa;
-		}
+		opacity: 0.2;
 	}
 </style>

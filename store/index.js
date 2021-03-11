@@ -20,10 +20,14 @@ export const state = () => ({
 	vxFullWidthActive: false,
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
-	isLoggedIn: false
+	isLoggedIn: false,
+	articleAssortment: []
 });
 
 export const mutations = {
+	setArticleAssortment(state, val){
+		state.articleAssortment = val
+	  },
 	setIsLoggedIn(state, val){
 		state.isLoggedIn = val
 	  },
@@ -94,7 +98,8 @@ export const getters = {
 	headerExpandedState: state => state.vxHeaderExpanded,
 	sidebarMainState: state => state.vxSidebarMainExpanded,
 	offcanvasState: state => state.vxOffcanvasExpanded,
-	isLoggedInState: state => state.isLoggedIn
+	isLoggedInState: state => state.isLoggedIn,
+	articleAssortmentState: state => state.articleAssortment,
 };
 
 export const actions = {
