@@ -25,6 +25,10 @@ export const state = () => ({
 });
 
 export const mutations = {
+	updateArticleAssortment(state, val){
+		const elementsIndex = state.articleAssortment.findIndex(element => element.StockId == val.StockId )
+		state.articleAssortment[elementsIndex] = response
+	},
 	setArticleAssortment(state, val){
 		state.articleAssortment = val
 	  },

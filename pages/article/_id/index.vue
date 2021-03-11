@@ -690,7 +690,9 @@ export default {
 		}
 	},
 	watch: {
-
+		articleAssortment(oldA, newA){
+			alert('changed')
+		}
 	},
 	computed: {
 		...mapGetters({
@@ -781,9 +783,10 @@ export default {
 				if(response.StockId !== ''){
 					_this.showPageOverlaySpinner()
 
-					const elementsIndex = _this.articleAssortment.findIndex(element => element.StockId == response.StockId )
+					/*const elementsIndex = _this.articleAssortment.findIndex(element => element.StockId == response.StockId )
 					_this.articleAssortment[elementsIndex] = response
-					_this.$store.commit('setArticleAssortment', _this.articleAssortment)
+					_this.$store.commit('setArticleAssortment', _this.articleAssortment)*/
+					_this.$store.commit('updateArticleAssortment', response)
 					_this.isLoading = false
 				}
 			})
