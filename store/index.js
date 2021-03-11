@@ -27,7 +27,7 @@ export const state = () => ({
 export const mutations = {
 	updateArticleAssortment(state, val){
 		const elementsIndex = state.articleAssortment.findIndex(element => element.StockId == val.StockId )
-		if (index !== -1) {
+		if (elementsIndex !== -1) {
 			Vue.set(state.articleAssortment, elementsIndex, val);
 		}
 	},
