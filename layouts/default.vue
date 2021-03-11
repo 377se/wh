@@ -5,7 +5,7 @@
 		<nuxt />
 		<Footer v-if="vxFooterActive"></Footer>
 		<FancyFooter v-if="vxFancyFooterActive"></FancyFooter>
-		<StyleSwitcher></StyleSwitcher>
+		<!-- <StyleSwitcher></StyleSwitcher> -->
 		<div v-if="vxPageOverlay" class="sc-overlay dimmed sc-overlay-page"></div>
 		<ScProgressOverlayRoot />
 	</div>
