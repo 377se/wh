@@ -544,6 +544,7 @@
 										<ScCardContent>
 											<ScCardBody style="padding: 0px;">
 												<VueGoodTable
+													v-if="updateTheBloodyTable == true"
 													:columns="columns_articleAssortment"
 													:rows="articleAssortment"
 													style-class="vgt-table"
@@ -642,7 +643,7 @@ import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table'
 import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
-import PrettyCheck from 'pretty-checkbox-vue/check';
+import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 
 if(process.client) {
@@ -687,11 +688,12 @@ export default {
 			Swedish,
 			contentOverlayActive: false,
 			rowObjectFromVueGoodTable: null,
+			updateTheBloodyTable: true,
 		}
 	},
 	watch: {
 		articleAssortment(oldA, newA){
-			alert('changed')
+
 		}
 	},
 	computed: {
@@ -782,11 +784,11 @@ export default {
 			.then(function (response) {
 				if(response.StockId !== ''){
 					_this.showPageOverlaySpinner()
-
-					/*const elementsIndex = _this.articleAssortment.findIndex(element => element.StockId == response.StockId )
-					_this.articleAssortment[elementsIndex] = response
-					_this.$store.commit('setArticleAssortment', _this.articleAssortment)*/
 					_this.$store.commit('updateArticleAssortment', response)
+					_this.updateTheBloodyTable = false
+					setTimeout(() => {
+						_this.updateTheBloodyTable = true
+					}, 10);
 					_this.isLoading = false
 				}
 			})
