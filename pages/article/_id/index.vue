@@ -9,7 +9,7 @@
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
-					<img :src="this.articleDetails.ProductImage" alt="Produkbild" class="uk-margin-medium-right"><h1 class="sc-top-bar-title uk-display-inline">{{ this.articleDetails.ProductName }}</h1>
+					<img :src="this.articleDetails.ProductImage" alt="Produktbild" class="uk-margin-medium-right"><h1 class="sc-top-bar-title uk-display-inline">{{ this.articleDetails.ProductName }}</h1>
 				</div>
 			</div>
 		</div>
@@ -552,7 +552,7 @@
 												>
 													<template slot="table-row" slot-scope="props">
 														<input  class="uk-input"
-															v-if="props.column.field === 'SizeDisplay'" 
+															v-if="props.column.field === 'SizeDisplay'"
 															v-on:blur="updateArticleAssortment(props.row)"
 															v-model="props.row.SizeDisplay"
 														>
@@ -563,7 +563,7 @@
 															{{ props.row.ItemsInStock }}
 														</span>
 														<input  class="uk-input"
-															v-else-if="props.column.field === 'Correction'" 
+															v-else-if="props.column.field === 'Correction'"
 															v-on:blur="updateArticleAssortment(props.row)"
 															v-model="props.row.Correction"
 														>
@@ -614,13 +614,49 @@
 														</a>
 													</li>
 												</ul>
-												<!-- TAB-CONTENT - Inleverans / Korrigering / Historik -->
+												<!-- TAB-CONTENT - Inleverans / Historik -->
 												<ul class="uk-switcher">
+													<!-- Inleverans -->
 													<li>
 															Inleverans
 													</li>
+													<!-- Historik -->
 													<li>
-															Historik
+														<div>
+															<ScCard>
+																<ScCardContent>
+																	<ScCardBody style="padding: 0px;">
+																		<VueGoodTable
+																			:columns="columns_articleAssortmentHistory"
+																			:rows="articleAssortmentHistory"
+																			style-class="vgt-table"
+																			:row-style-class="rowStyleClassFn"
+																		>
+																			<template slot="table-row" slot-scope="props">
+																				<span v-if="props.column.field === 'CreatedDate'">
+																					{{ props.row.CreatedDate }}
+																				</span>
+																				<span v-else-if="props.column.field === 'Description'">
+																					{{ props.row.Description }}
+																				</span>
+																				<span v-else-if="props.column.field === 'AdminName'">
+																					{{ props.row.AdminName }}
+																				</span>
+																				<span v-else-if="props.column.field === 'SizeDisplay'">
+																					{{ props.row.SizeDisplay }}
+																				</span>
+																				<span v-else-if="props.column.field === 'Items'">
+																					{{ props.row.Items }}
+																				</span>
+																				<span v-else>
+																					{{ props.row.PurchasePrice }}
+																				</span>
+																			</template>
+																		</VueGoodTable>
+																	</ScCardBody>
+																</ScCardContent>
+															</ScCard>
+														</div>
 													</li>
 												</ul>
 											</ScCardBody>
@@ -689,6 +725,7 @@ export default {
 			contentOverlayActive: false,
 			rowObjectFromVueGoodTable: null,
 			updateTheBloodyTable: true,
+			articleAssortmentHistory: [],
 		}
 	},
 	watch: {
@@ -734,7 +771,8 @@ export default {
 					field: 'Correction',
 					sortable: false,
 					type: 'number',
-					thClass: 'uk-text-left vgt-assortment-th',                    tdClass: 'uk-text-left',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
                     width: '55px',
 				},
 				{
@@ -753,6 +791,64 @@ export default {
 					type: 'boolean',
 					thClass: 'uk-text-center vgt-assortment-th',
                     tdClass: 'uk-text-center ',
+				},
+			]
+		},
+		columns_articleAssortmentHistory () {
+			return [
+				{
+					label: 'Tidpunkt',
+					field: 'CreatedDate',
+					sortable: false,
+                    type: 'string',
+                    thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-nowrap uk-text-left',
+                    width: '90px',
+				},
+				{
+					label: 'Typ',
+					field: 'Description',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
+                    width: '60px',
+				},
+				{
+					label: 'Admin',
+					field: 'AdminName',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
+                    width: '40px',
+				},
+				{
+					label: 'Storlek',
+					field: 'SizeDisplay',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
+                    width: '95px',
+				},
+				{
+					label: 'Antal',
+					field: 'Items',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
+                    width: '25px',
+				},
+				{
+					label: 'Inköpspris',
+					field: 'PurchasePrice',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-center vgt-assortment-th',
+                    tdClass: 'uk-text-center ',
+                    width: '35px',
 				},
 			]
 		},
@@ -825,7 +921,7 @@ export default {
 	},
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
@@ -841,6 +937,7 @@ export default {
 				this.$axios.$get('/webapi/Metadata/GetPrintTypeList'),
 				this.$axios.$get('/webapi/Article/GetArticleStatusList?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id),
       		])
 			this.articleDetails = articleDetails
 			this.teamInfo = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
@@ -862,6 +959,7 @@ export default {
 			this.supporterPrylarArticleStatusList = articleStatusList[3].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.gameDayArticleStatusList = articleStatusList[4].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.$store.commit('setArticleAssortment', articleAssortment)
+			this.articleAssortmentHistory = articleAssortmentHistory
 		} catch (err) {
       		console.log(err);
 		}

@@ -178,7 +178,7 @@ export default {
 
 <style lang="scss">
     table.vgt-table {
-        font-size: 13px;
+        font-size: 0.75rem;
     }
     table.vgt-table td {
         vertical-align: middle;
@@ -186,6 +186,6 @@ export default {
         padding: .3em .75em .3em .75em;
     }
     table.vgt-table th {
-        font-size: 12px;
+        font-size: 0.6rem;
     }
 </style>

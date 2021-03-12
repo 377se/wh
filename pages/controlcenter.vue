@@ -169,6 +169,7 @@ export default {
 						enabled: true
 					},
                     tdClass: 'uk-text-center',
+                    thClass: 'uk-text-left',
 				},
 				{
 					label: 'REA',
@@ -178,6 +179,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
+					thClass: 'uk-text-left',
                     tdClass: 'uk-text-center',
 				},
 				{
@@ -188,6 +190,7 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
+					thClass: 'uk-text-left',
                     tdClass: 'uk-text-center',
 				},
 				{
@@ -200,6 +203,7 @@ export default {
                     type: 'date',
 					dateInputFormat: 'yyyy-MM-dd',
 					dateOutputFormat: 'MMM do yyyy',
+					thClass: 'uk-text-left',
 					tdClass: 'uk-text-nowrap uk-text-left'
 				},
 			]
@@ -272,7 +276,7 @@ export default {
 
 <style lang="scss">
     table.vgt-table {
-        font-size: 13px;
+        font-size: 0.75rem;
     }
     table.vgt-table td {
         vertical-align: middle;
@@ -280,6 +284,6 @@ export default {
         padding: .3em .75em .3em .75em;
     }
 	table.vgt-table th {
-        font-size: 12px;
+        font-size: 0.6rem;
     }
 </style>
