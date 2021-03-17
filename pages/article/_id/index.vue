@@ -517,6 +517,20 @@
 						</li>
 						<!-- SHOP INFO -->
 						<li>
+							<!-- TAB-HEADLINES - SHOP INFO -->
+							<ul data-uk-tab>
+								<li v-for="shop in shopListByArticle" :key="shop.ShopId">
+    								<a href="javascript:void(0)">
+										<img :src="shop.ImageName" alt="shop-logo">
+									</a>
+  								</li>
+							</ul>
+							<!-- TAB-CONTENT - SHOP INFO -->
+							<ul class="uk-switcher">
+								<li v-for="shop in shopListByArticle" :key="shop.ShopId">
+									<ShopInfo :shopId="parseInt(shop.ShopId)" :articleId="parseInt($route.params.id)"/>
+  								</li>
+							</ul>
 						</li>
 						<!-- SORTERING -->
 						<li>
@@ -670,6 +684,7 @@ import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
+import ShopInfo from '~/components/ShopInfo'
 
 if(process.client) {
 	require('~/plugins/flatpickr');
@@ -682,6 +697,7 @@ export default {
 		contentOverlay,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		PrettyCheck,
+		ShopInfo,
 	},
 	data () {
 		return {
@@ -715,6 +731,7 @@ export default {
 			rowObjectFromVueGoodTable: null,
 			updateTheBloodyTable: true,
 			articleAssortmentHistory: [],
+			shopListByArticle: [],
 		}
 	},
 	watch: {
@@ -950,7 +967,7 @@ export default {
 	},
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory,shopListByArticle] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
@@ -967,6 +984,8 @@ export default {
 				this.$axios.$get('/webapi/Article/GetArticleStatusList?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Shop/GetShopListByArticle?articleId=' + this.$route.params.id),
+
       		])
 			this.articleDetails = articleDetails
 			this.teamInfo = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
@@ -989,6 +1008,7 @@ export default {
 			this.gameDayArticleStatusList = articleStatusList[4].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.$store.commit('setArticleAssortment', articleAssortment)
 			this.articleAssortmentHistory = articleAssortmentHistory
+			this.shopListByArticle = shopListByArticle
 		} catch (err) {
       		console.log(err);
 		}
