@@ -36,7 +36,7 @@
 					</ul>
 					<!-- TAB-CONTENT - ARTICLE DETAILS -->
 					<ul class="uk-switcher">
-						<!-- Global info -->
+						<!-- GLOBAL INFO -->
 						<li class="uk-active">
 							<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
 								<div>
@@ -515,20 +515,20 @@
 								</div>
 							</div>
 						</li>
-						<!-- Shop info -->
+						<!-- SHOP INFO -->
 						<li>
 						</li>
-						<!-- Sortering -->
+						<!-- SORTERING -->
 						<li>
 							<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
-								<!-- SORTERING -->
+								<!-- LAGERHANTERING -->
 								<div>
 									<ScCard :full-screen="cardSorteringFullScreen">
 										<ScCardHeader separator>
 											<div class="uk-flex uk-flex-middle">
 												<div class="uk-flex-1">
 													<ScCardTitle>
-														Sortering
+														Lagerhantering
 													</ScCardTitle>
 												</div>
 												<ScCardActions>
@@ -542,13 +542,17 @@
 											</div>
 										</ScCardHeader>
 										<ScCardContent>
-											<ScCardBody style="padding: 0px;">
+											<ScCardBody>
 												<VueGoodTable
 													v-if="updateTheBloodyTable == true"
 													:columns="columns_articleAssortment"
-													:rows="articleAssortment"
+													:rows="articleAssortmentAsChildren"
 													style-class="vgt-table"
 													:row-style-class="rowStyleClassFn"
+													:group-options="{
+														enabled: true,
+														headerPosition: 'bottom',
+													}"
 												>
 													<template slot="table-row" slot-scope="props">
 														<input  class="uk-input"
@@ -562,10 +566,15 @@
 														<span v-else-if="props.column.field === 'ItemsInStock'">
 															{{ props.row.ItemsInStock }}
 														</span>
-														<input  class="uk-input"
+														<input class="uk-input"
 															v-else-if="props.column.field === 'Correction'"
 															v-on:blur="updateArticleAssortment(props.row)"
 															v-model="props.row.Correction"
+														>
+														<input class="uk-input"
+															v-else-if="props.column.field === 'Delivery'"
+															v-on:blur="updateArticleAssortment(props.row)"
+															v-model="props.row.Delivery"
 														>
 														<span v-else-if="props.column.field === 'WaitingForDelivery'">
 															{{ props.row.WaitingForDelivery }}
@@ -575,18 +584,20 @@
 														</PrettyCheck>
 													</template>
 												</VueGoodTable>
+												<div class="uk-text-small uk-margin-medium-top">Inköpspris:</div> 
+												<div><input class="uk-input uk-width-1-4" v-model="articleDetails.PurchasePrice" :placeholder="articleDetails.PurchasePrice"></div>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
 								</div>
-								<!-- LAGERHANTERING -->
+								<!-- HISTORIK -->
 								<div>
 									<ScCard :full-screen="cardInventoryHandlingFullScreen">
 										<ScCardHeader separator>
 											<div class="uk-flex uk-flex-middle">
 												<div class="uk-flex-1">
 													<ScCardTitle>
-														Lagerhantering
+														Historik
 													</ScCardTitle>
 												</div>
 												<ScCardActions>
@@ -601,64 +612,42 @@
 										</ScCardHeader>
 										<ScCardContent>
 											<ScCardBody>
-												<!-- TAB-HEADLINES -->
-												<ul data-uk-tab>
-													<li>
-														<a href="javascript:void(0)">
-															Inleverans
-														</a>
-													</li>
-													<li>
-														<a href="javascript:void(0)">
-															Historik
-														</a>
-													</li>
-												</ul>
-												<!-- TAB-CONTENT - Inleverans / Historik -->
-												<ul class="uk-switcher">
-													<!-- Inleverans -->
-													<li>
-															Inleverans
-													</li>
-													<!-- Historik -->
-													<li>
-														<div>
-															<ScCard>
-																<ScCardContent>
-																	<ScCardBody style="padding: 0px;">
-																		<VueGoodTable
-																			:columns="columns_articleAssortmentHistory"
-																			:rows="articleAssortmentHistory"
-																			style-class="vgt-table"
-																			:row-style-class="rowStyleClassFn"
-																		>
-																			<template slot="table-row" slot-scope="props">
-																				<span v-if="props.column.field === 'CreatedDate'">
-																					{{ props.row.CreatedDate }}
-																				</span>
-																				<span v-else-if="props.column.field === 'Description'">
-																					{{ props.row.Description }}
-																				</span>
-																				<span v-else-if="props.column.field === 'AdminName'">
-																					{{ props.row.AdminName }}
-																				</span>
-																				<span v-else-if="props.column.field === 'SizeDisplay'">
-																					{{ props.row.SizeDisplay }}
-																				</span>
-																				<span v-else-if="props.column.field === 'Items'">
-																					{{ props.row.Items }}
-																				</span>
-																				<span v-else>
-																					{{ props.row.PurchasePrice }}
-																				</span>
-																			</template>
-																		</VueGoodTable>
-																	</ScCardBody>
-																</ScCardContent>
-															</ScCard>
-														</div>
-													</li>
-												</ul>
+												<div>
+													<ScCard>
+														<ScCardContent>
+															<ScCardBody style="padding: 0px;">
+																<VueGoodTable
+																	v-if="updateTheBloodyTable == true"
+																	:columns="columns_articleAssortmentHistory"
+																	:rows="articleAssortmentHistory"
+																	style-class="vgt-table"
+																	:row-style-class="rowStyleClassFn"
+																>
+																	<template slot="table-row" slot-scope="props">
+																		<span v-if="props.column.field === 'CreatedDate'">
+																			{{ props.row.CreatedDate }}
+																		</span>
+																		<span v-else-if="props.column.field === 'Description'">
+																			{{ props.row.Description }}
+																		</span>
+																		<span v-else-if="props.column.field === 'AdminName'">
+																			{{ props.row.AdminName }}
+																		</span>
+																		<span v-else-if="props.column.field === 'SizeDisplay'">
+																			{{ props.row.SizeDisplay }}
+																		</span>
+																		<span v-else-if="props.column.field === 'Items'">
+																			{{ props.row.Items }}
+																		</span>
+																		<span v-else>
+																			{{ props.row.PurchasePrice }}
+																		</span>
+																	</template>
+																</VueGoodTable>
+															</ScCardBody>
+														</ScCardContent>
+													</ScCard>
+												</div>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -737,6 +726,19 @@ export default {
 		...mapGetters({
 			articleAssortment: 'articleAssortmentState'
 		}),
+		articleAssortmentAsChildren () {
+			return [
+				{
+          			SizeDisplay: 'Totalt',
+         			InitialAmount: 0,
+         			ItemsInStock: 0,
+         			Correction: '',
+         			WaitingForDelivery: '',
+         			IsHidden: '',
+          			children: this.articleAssortment,
+				}
+			]
+		},
 		columns_articleAssortment () {
 			return [
 				{
@@ -749,31 +751,42 @@ export default {
                     width: '105px',
 				},
 				{
-					label: 'Inköpta totalt',
+					label: 'Ink tot',
 					field: 'InitialAmount',
 					sortable: false,
-					type: 'number',
 					thClass: 'uk-text-left vgt-assortment-th',
 					tdClass: 'uk-text-left',
-                    width: '60px',
+                    width: '40px',
+					headerField: this.sumInitialAmount,
+					type: 'number',
 				},
 				{
 					label: 'Lagersaldo',
 					field: 'ItemsInStock',
 					sortable: false,
-					type: 'number',
 					thClass: 'uk-text-left vgt-assortment-th',
 					tdClass: 'uk-text-left',
-                    width: '55px',
+                    width: '45px',
+					headerField: this.sumItemsInStock,
+					type: 'number',
 				},
 				{
-					label: 'Korrigering',
+					label: 'Korr',
 					field: 'Correction',
 					sortable: false,
 					type: 'number',
 					thClass: 'uk-text-left vgt-assortment-th',
 					tdClass: 'uk-text-left',
-                    width: '55px',
+                    width: '35px',
+				},
+				{
+					label: 'Inlev',
+					field: 'Delivery',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-left',
+                    width: '35px',
 				},
 				{
 					label: 'I orderlistan',
@@ -854,6 +867,20 @@ export default {
 		},
 	},
 	methods: {
+		sumInitialAmount(rowObj) {
+    		let sum = 0
+			for (let i = 0; i < rowObj.children.length; i++) {
+				sum += rowObj.children[i].InitialAmount
+			}
+    		return sum
+	    },
+		sumItemsInStock(rowObj) {
+    		let sum = 0
+			for (let i = 0; i < rowObj.children.length; i++) {
+				sum += rowObj.children[i].ItemsInStock
+			}
+    		return sum
+	    },
 		rowStyleClassFn(row) {
     		return row.IsHidden ? 'dimmed' : '';
   		},
@@ -876,10 +903,12 @@ export default {
 		async updateArticleAssortment(articleAssortmentRow) {
 			let _this = this
 			_this.isLoading = true
-			await this.$axios.$post('/webapi/Article/PostUpdateArticleAssortment?articleId=' + this.$route.params.id, articleAssortmentRow)
+			await this.$axios.$post('/webapi/Article/PostUpdateArticleAssortment?purchasePrice=' + this.articleDetails.PurchasePrice, articleAssortmentRow)
 			.then(function (response) {
 				if(response.StockId !== ''){
 					_this.showPageOverlaySpinner()
+					_this.articleAssortmentHistory = response.History
+					delete response.History
 					_this.$store.commit('updateArticleAssortment', response)
 					_this.updateTheBloodyTable = false
 					setTimeout(() => {
@@ -980,6 +1009,9 @@ export default {
     .vgt-assortment-th {
         font-size: 0.6rem;
     }
+	.vgt-table th.vgt-row-header {
+        font-size: 0.7rem;
+	}
 	.uk-input {
 		height: 30px;
 		border-radius: 0;
