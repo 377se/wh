@@ -500,10 +500,16 @@
 															></a>
 														</ScCardActions>
 													</div>
-												</ScCardHeader>
+											</ScCardHeader>
 										<ScCardContent>
 											<ScCardBody>
-												Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum unde accusantium, distinctio neque, quae aliquid architecto aliquam nemo in minus ratione quas nisi omnis asperiores eius enim. Error officia iusto, sunt maxime praesentium earum reiciendis nam repellendus eaque, iure doloribus alias eveniet beatae, consequuntur sit illum fugit nulla? Fuga deserunt voluptas, veritatis eveniet vel aperiam soluta possimus voluptatum commodi incidunt quod modi aliquid neque atque nam facere eaque laboriosam unde fugit quidem nisi tempora, consequuntur quibusdam earum. Dolore quod architecto, quidem nisi dolor quae eum ducimus ab magni? Assumenda fugiat cum voluptates, delectus eligendi recusandae labore ipsam modi sequi ullam.
+												<div id="sortableImages" class="uk-flex" data-uk-sortable>
+													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round" :data-id="item.ImageId">
+														<div class="sc-padding-small">
+															<img :src="item.Name">
+														</div>
+													</div>
+												</div>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -680,6 +686,7 @@ import contentOverlay from '~/components/Overlay'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 import ShopInfo from '~/components/ShopInfo'
+import _ from 'lodash'
 
 if(process.client) {
 	require('~/plugins/flatpickr');
@@ -727,6 +734,7 @@ export default {
 			updateTheBloodyTable: true,
 			articleAssortmentHistory: [],
 			shopListByArticle: [],
+			articleImages: [],
 		}
 	},
 	watch: {
@@ -734,10 +742,31 @@ export default {
 
 		}
 	},
+	mounted () {
+		this.$nextTick(() => {
+			const self = this;
+			// save sortable order
+			UIkit.util.on(document, 'stop', function (data) {
+
+				let list = data.srcElement.children
+				for (let i = 0; i < list.length; i++) {
+					let item = self.articleImages.filter(obj => {
+						return obj.ImageId == list[i].dataset.id
+					})
+					item[0].Sortorder = i
+				}
+				self.articleImages = self.sortableOrder
+				self.updateImageSorting()
+			})
+		})
+	},
 	computed: {
 		...mapGetters({
 			articleAssortment: 'articleAssortmentState'
 		}),
+		sortableOrder () {
+			return _.orderBy(this.articleImages, 'Sortorder')
+		},
 		articleAssortmentAsChildren () {
 			return [
 				{
@@ -912,6 +941,22 @@ export default {
 				console.log(error)
 			})
 		},
+		async updateImageSorting() {
+			let _this = this
+			_this.isLoading = true
+			await this.$axios.$post('/webapi/Article/PostUpdateImageSorting', _this.articleImages)
+			.then(function (response) {
+				if(response.Message !== ''){
+					_this.showPageOverlaySpinner()
+					_this.isLoading = false
+				} else {
+
+        		}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+		},
 		async updateArticleAssortment(articleAssortmentRow) {
 			let _this = this
 			_this.isLoading = true
@@ -962,7 +1007,7 @@ export default {
 	},
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory,shopListByArticle] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory, shopListByArticle, articleImages] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
@@ -980,6 +1025,7 @@ export default {
 				this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Shop/GetShopListByArticle?articleId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Article/GetArticleImages?articleId=' + this.$route.params.id),
 
       		])
 			this.articleDetails = articleDetails
@@ -1004,6 +1050,7 @@ export default {
 			this.$store.commit('setArticleAssortment', articleAssortment)
 			this.articleAssortmentHistory = articleAssortmentHistory
 			this.shopListByArticle = shopListByArticle
+			this.articleImages = articleImages
 		} catch (err) {
       		console.log(err);
 		}
