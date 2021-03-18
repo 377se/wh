@@ -76,7 +76,11 @@
                 </ScCardHeader>
                 <ScCardContent>
                     <ScCardBody>
-                        Produktbeskrivning
+                        <div class="uk-margin" v-for="description in shopInfo.DescriptionList" :key="description.ArticleDescriptionId">
+                            <ScTextarea v-model="description.Description" :rows="5" placeholder="" state="fixed" mode="outline" @blur="updateArticleDescription()" extra-classes="uk-form-small">
+                                <label><img :src="description.FlagImage"> Beskrivning</label>
+                            </ScTextarea>
+                        </div>
                     </ScCardBody>
                 </ScCardContent>
             </ScCard>
@@ -130,6 +134,7 @@
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import contentOverlay from '~/components/Overlay'
 import ScInput from '~/components/Input'
+import ScTextarea from '~/components/Textarea'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 
 if(process.client) {
@@ -139,6 +144,7 @@ if(process.client) {
 export default {
 	components: {
 		ScInput,
+		ScTextarea,
 		PrettyCheck,
 		contentOverlay,
     },
