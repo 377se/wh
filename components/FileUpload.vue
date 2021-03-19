@@ -10,6 +10,7 @@
           <span class="uk-badge md-bg-blue-600">{{ file.name }}</span>
           <span class="uk-label uk-label-danger uk-margin-small-left" v-on:click="removeFile(key)">Remove</span>
       </div>
+      <progress v-if="isLoading == true" class="uk-width-1-1" max="100" :value.prop="uploadPercentage"></progress>
     </div>
     <br>
     <div>
@@ -29,7 +30,9 @@
     },
     data(){
       return {
-        files: []
+        files: [],
+        uploadPercentage: 0,
+		isLoading: false,
       }
     },
     methods: {
@@ -39,7 +42,8 @@
       },
       /* Submits files to the server */
       submitFiles() {
-          let _this = this
+        let _this = this
+        _this.isLoading = true
         /* Initialize the form data */
         let formData = new FormData();
         /* Iterate over any file sent over appending the files to the form data. */
@@ -47,15 +51,21 @@
           let file = this.files[i]
           formData.append('files[' + i + ']', file)
         }
+
         /* Make the request to the POST /select-files URL */
         this.$axios.$post('/webapi/Image/PostUploadImage?imageTypeId=1&id=' + this.$route.params.id,
-          formData,
-          {
+        formData,
+        {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
-          }
+            },
+            onUploadProgress: function(progressEvent) {
+            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ))
+            }.bind(this)
+        }
         ).then(function(response){
+            _this.isLoading = false
+            _this.files = []
             _this.updateArticleImages(response)
         })
         .catch(function(error){

@@ -1088,11 +1088,11 @@ export default {
 		},
 		async deleteImage(image) {
 			let _this = this
+			_this.showPageOverlaySpinner()
 			_this.isLoading = true
 			await this.$axios.$post('/webapi/Article/PostDeleteImage?articleId=' + this.$route.params.id, image)
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
 					_this.articleImages = response
 					_this.isLoading = false
 				} else {
