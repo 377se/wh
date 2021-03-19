@@ -508,17 +508,19 @@
 											</ScCardHeader>
 										<ScCardContent>
 											<ScCardBody>
-												<div id="sortableImages" class="uk-flex" data-uk-sortable>
-													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round imageSlot" :data-id="item.ImageId">
-														<div class="sc-padding-small">
+												<div id="sortableImages" class="uk-flex uk-flex-wrap" data-uk-sortable>
+													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round" :data-id="item.ImageId">
+														<div class="sc-padding-small uk-position-relative">
 															<img :src="item.Name">
-														</div>
-														<div class="wasteBasket" @click="deleteImage(item)">
-															<i class="mdi mdi-delete-forever md-color-red-600"></i>
+															<div class="wasteBasket" @click="deleteImage(item)">
+																<i class="mdi mdi-delete-forever md-color-red-600"></i>
+															</div>
 														</div>
 													</div>
 												</div>
-												<FileUpload />
+												<div class="uk-padding-small">
+													<FileUpload />
+												</div>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -1228,15 +1230,13 @@ export default {
 	.dimmed {
 		opacity: 0.2;
 	}
-	.imageSlot {
-		position: relative;
-	}
 	.wasteBasket {
 		position: absolute;
 		background-color: #fff;
+		cursor: pointer;
 		border-radius: 10px;
 		bottom: -3px;
-		right: -3px;
+		left: -3px;
 		z-index: 1000;
 	}
 </style>

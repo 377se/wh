@@ -1,12 +1,15 @@
 <template>
-  <div class="container">
+  <div>
     <div>
       <label>
         <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
       </label>
     </div>
     <div>
-      <div v-for="(file, key) in files" class="file-listing" :key="key">{{ file.name }} <span class="remove-file" v-on:click="removeFile( key )">Remove</span></div>
+      <div class="uk-flex uk-margin-small-bottom" v-for="(file, key) in files" :key="key">
+          <span class="uk-badge md-bg-blue-600">{{ file.name }}</span>
+          <span class="uk-label uk-label-danger uk-margin-small-left" v-on:click="removeFile(key)">Remove</span>
+      </div>
     </div>
     <br>
     <div>
@@ -30,7 +33,7 @@
     methods: {
       /* Adds a file */
       addFiles(){
-        this.$refs.files.click();
+        this.$refs.files.click()
       },
       /* Submits files to the server */
       submitFiles() {
@@ -38,8 +41,8 @@
         let formData = new FormData();
         /* Iterate over any file sent over appending the files to the form data. */
         for( var i = 0; i < this.files.length; i++ ){
-          let file = this.files[i];
-          formData.append('files[' + i + ']', file);
+          let file = this.files[i]
+          formData.append('files[' + i + ']', file)
         }
         /* Make the request to the POST /select-files URL */
         this.$axios.$post('/webapi/Image/PostUploadImage?imageTypeId=1&id=' + this.$route.params.id,
@@ -50,12 +53,12 @@
             }
           }
         ).then(function(response){
-          console.log('SUCCESS!!');
-          _this.articleImages = response
+          console.log('SUCCESS!!')
+          this.articleImages = response
         })
-        .catch(function(){
-          console.log('FAILURE!!');
-        });
+        .catch(function(error){
+          console.log(error);
+        })
       },
       /* Handles the uploading of files */
       handleFilesUpload(){
@@ -73,16 +76,8 @@
   }
 </script>
 <style lang="scss">
-  input[type="file"]{
+  input[type="file"] {
     position: absolute;
     top: -1000px;
-  }
-  div.file-listing{
-    width: 200px;
-  }
-  span.remove-file{
-    color: red;
-    cursor: pointer;
-    float: right;
   }
 </style>
