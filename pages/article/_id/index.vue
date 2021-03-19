@@ -509,25 +509,16 @@
 										<ScCardContent>
 											<ScCardBody>
 												<div id="sortableImages" class="uk-flex" data-uk-sortable>
-													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round" :data-id="item.ImageId">
+													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round imageSlot" :data-id="item.ImageId">
 														<div class="sc-padding-small">
 															<img :src="item.Name">
 														</div>
+														<div class="wasteBasket" @click="deleteImage(item)">
+															<i class="mdi mdi-delete-forever md-color-red-600"></i>
+														</div>
 													</div>
 												</div>
-													<ul>
-														<li v-for="file in files" :key="file.id">
-														<span>{{file.name}}</span> -
-														<span>{{$formatSize(file.size)}}</span> -
-														<span v-if="file.error">{{file.error}}</span>
-														<span v-else-if="file.success">success</span>
-														<span v-else-if="file.active">active</span>
-														<span v-else></span>
-														</li>
-													</ul>
-
-
-
+												<FileUpload />
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -764,6 +755,7 @@ import contentOverlay from '~/components/Overlay'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 import ShopInfo from '~/components/ShopInfo'
+import FileUpload from '~/components/FileUpload'
 import _ from 'lodash'
 
 
@@ -779,6 +771,7 @@ export default {
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		PrettyCheck,
 		ShopInfo,
+		FileUpload,
 	},
 	data () {
 		return {
@@ -1088,6 +1081,23 @@ export default {
 				console.log(error)
 			})
 		},
+		async deleteImage(image) {
+			let _this = this
+			_this.isLoading = true
+			await this.$axios.$post('/webapi/Article/PostDeleteImage?articleId=' + this.$route.params.id, image)
+			.then(function (response) {
+				if(response.Message !== ''){
+					_this.showPageOverlaySpinner()
+					_this.articleImages = response
+					_this.isLoading = false
+				} else {
+
+        		}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+		},
 		async updateArticleAssortment(articleAssortmentRow) {
 			let _this = this
 			_this.isLoading = true
@@ -1217,5 +1227,16 @@ export default {
 	}
 	.dimmed {
 		opacity: 0.2;
+	}
+	.imageSlot {
+		position: relative;
+	}
+	.wasteBasket {
+		position: absolute;
+		background-color: #fff;
+		border-radius: 10px;
+		bottom: -3px;
+		right: -3px;
+		z-index: 1000;
 	}
 </style>
