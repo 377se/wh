@@ -519,7 +519,10 @@
 													</div>
 												</div>
 												<div class="uk-padding-small">
-													<FileUpload />
+													<FileUpload 
+													:articleImages="this.articleImages"
+													@updateArticleImages="articleImages = $event"
+													/>
 												</div>
 											</ScCardBody>
 										</ScCardContent>

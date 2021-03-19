@@ -24,7 +24,9 @@
 
 <script>
   export default {
-
+    props: {
+        articleImages: Array,
+    },
     data(){
       return {
         files: []
@@ -32,11 +34,12 @@
     },
     methods: {
       /* Adds a file */
-      addFiles(){
+      addFiles() {
         this.$refs.files.click()
       },
       /* Submits files to the server */
       submitFiles() {
+          let _this = this
         /* Initialize the form data */
         let formData = new FormData();
         /* Iterate over any file sent over appending the files to the form data. */
@@ -53,15 +56,17 @@
             }
           }
         ).then(function(response){
-          console.log('SUCCESS!!')
-          this.articleImages = response
+            _this.updateArticleImages(response)
         })
         .catch(function(error){
-          console.log(error);
+            console.log(error);
         })
-      },
+        },
+        updateArticleImages(response) {
+            this.$emit('updateArticleImages', response)
+        },
       /* Handles the uploading of files */
-      handleFilesUpload(){
+        handleFilesUpload(){
         let uploadedFiles = this.$refs.files.files;
         /* Adds the uploaded file to the files array */
         for( var i = 0; i < uploadedFiles.length; i++ ){
