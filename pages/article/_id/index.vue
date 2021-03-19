@@ -20,17 +20,22 @@
 					<ul data-uk-tab>
 						<li class="uk-active">
 							<a href="javascript:void(0)">
-								Global info
+								GLOBAL INFO
 							</a>
 						</li>
 						<li>
 							<a href="javascript:void(0)">
-								Shop info
+								SHOP INFO
 							</a>
 						</li>
 						<li>
 							<a href="javascript:void(0)">
-								Sortering
+								SORTERING
+							</a>
+						</li>
+						<li>
+							<a href="javascript:void(0)">
+								FÖRSÄLJNINGSSTATISTIK
 							</a>
 						</li>
 					</ul>
@@ -510,6 +515,18 @@
 														</div>
 													</div>
 												</div>
+													<ul>
+														<li v-for="file in files" :key="file.id">
+														<span>{{file.name}}</span> -
+														<span>{{$formatSize(file.size)}}</span> -
+														<span v-if="file.error">{{file.error}}</span>
+														<span v-else-if="file.success">success</span>
+														<span v-else-if="file.active">active</span>
+														<span v-else></span>
+														</li>
+													</ul>
+
+												<FileUpload v-model="files" post-action="/webapi/Image/PostUploadImage">Ladda upp bilder</FileUpload>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -669,6 +686,66 @@
 								</div>
 							</div>
 						</li>
+						<!-- FÖRSÄLJNINGSSTATISTIK -->
+						<li>
+							<div>
+								<ScCard :full-screen="cardArticleSaleFullScreen">
+									<ScCardHeader separator>
+										<div class="uk-flex uk-flex-middle">
+											<div class="uk-flex-1">
+												<ScCardTitle>
+													Försäljningsstatistik
+												</ScCardTitle>
+											</div>
+											<ScCardActions>
+												<a
+													href="javascript:void(0)"
+													class="sc-actions-icon mdi mdi-fullscreen"
+													:class="{'mdi-fullscreen' : !cardArticleSaleFullScreen, 'mdi-fullscreen-exit' : cardArticleSaleFullScreen }"
+													@click.prevent="cardArticleSaleFullScreen = !cardArticleSaleFullScreen"
+												></a>
+											</ScCardActions>
+										</div>
+									</ScCardHeader>
+									<ScCardContent>
+										<ScCardBody>
+											<div>
+												<ScCard>
+													<ScCardContent>
+														<ScCardBody style="padding: 0px;">
+															<VueGoodTable
+																:columns="columns_articleSale"
+																:rows="articleSale"
+																style-class="vgt-table"
+																:row-style-class="rowStyleClassFn"
+															>
+																<template slot="table-row" slot-scope="props">
+																	<span v-if="props.column.field === 'OrderDate'">
+																		{{ props.row.OrderDate }}
+																	</span>
+																	<span v-else-if="props.column.field === 'Quantity'">
+																		{{ props.row.Quantity }}
+																	</span>
+																	<span v-else-if="props.column.field === 'TotalSale'">
+																		{{ props.row.TotalSale }}
+																	</span>
+																	<span v-else-if="props.column.field === 'PriceAverage'">
+																		{{ props.row.PriceAverage }}
+																	</span>
+																	<span v-else>
+																		{{ props.row.GrossMargin }}
+																	</span>
+																</template>
+															</VueGoodTable>
+														</ScCardBody>
+													</ScCardContent>
+												</ScCard>
+											</div>
+										</ScCardBody>
+									</ScCardContent>
+								</ScCard>
+							</div>
+						</li>
 					</ul>
 				</ScCardBody>
 			</ScCard>
@@ -687,6 +764,8 @@ import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 import ShopInfo from '~/components/ShopInfo'
 import _ from 'lodash'
+import FileUpload from 'vue-upload-component/dist/vue-upload-component.part.js'
+
 
 if(process.client) {
 	require('~/plugins/flatpickr');
@@ -694,6 +773,7 @@ if(process.client) {
 
 export default {
 	components: {
+	    FileUpload,
 		ScInput,
 		VueGoodTable,
 		contentOverlay,
@@ -703,6 +783,8 @@ export default {
 	},
 	data () {
 		return {
+			files: [],
+			cardArticleSaleFullScreen: false,
 			cardPrefsFullScreen: false,
 			cardStatusFullScreen: false,
 			cardProduktbilderFullScreen: false,
@@ -735,6 +817,7 @@ export default {
 			articleAssortmentHistory: [],
 			shopListByArticle: [],
 			articleImages: [],
+			articleSale: [],
 		}
 	},
 	watch: {
@@ -778,6 +861,55 @@ export default {
          			IsHidden: '',
           			children: this.articleAssortment,
 				}
+			]
+		},
+		columns_articleSale () {
+			return [
+				{
+					label: 'Datum',
+					field: 'OrderDate',
+					sortable: false,
+                    type: 'string',
+                    thClass: 'uk-text-left vgt-assortment-th',
+					tdClass: 'uk-text-nowrap uk-text-left',
+                    width: '20%',
+				},
+				{
+					label: 'Antal',
+					field: 'Quantity',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-right vgt-assortment-th',
+					tdClass: 'uk-text-right',
+                    width: '20%',
+				},
+				{
+					label: 'Totalt',
+					field: 'TotalSale',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-right vgt-assortment-th',
+					tdClass: 'uk-text-right',
+                    width: '20%',
+				},
+				{
+					label: 'Snittpris',
+					field: 'PriceAverage',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-right vgt-assortment-th',
+                    tdClass: 'uk-text-right ',
+                    width: '20%',
+				},
+				{
+					label: 'Bruttomarginal',
+					field: 'GrossMargin',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-right vgt-assortment-th',
+                    tdClass: 'uk-text-right ',
+                    width: '20%',
+				},
 			]
 		},
 		columns_articleAssortment () {
@@ -1007,7 +1139,7 @@ export default {
 	},
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory, shopListByArticle, articleImages] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory, shopListByArticle, articleImages, articleSale] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
@@ -1026,6 +1158,7 @@ export default {
 				this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Shop/GetShopListByArticle?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Article/GetArticleImages?articleId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Article/GetArticleSale?articleId=' + this.$route.params.id),
 
       		])
 			this.articleDetails = articleDetails
@@ -1051,6 +1184,7 @@ export default {
 			this.articleAssortmentHistory = articleAssortmentHistory
 			this.shopListByArticle = shopListByArticle
 			this.articleImages = articleImages
+			this.articleSale = articleSale
 		} catch (err) {
       		console.log(err);
 		}
@@ -1060,6 +1194,7 @@ export default {
 
 <style lang="scss">
 	@import '~scss/vue/_pretty_checkboxes';
+	@import "vue-upload-component/dist/vue-upload-component.part.css";
     table.vgt-table {
         font-size: 0.75rem;
     }
