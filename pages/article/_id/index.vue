@@ -1,7 +1,7 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		<p>Loading</p>
+		{{ this.showPageOverlaySpinner() }}
 	</div>
 </div>
 <div v-else>
@@ -44,8 +44,8 @@
 						<!-- GLOBAL INFO -->
 						<li class="uk-active">
 							<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
+								<!-- Inställningar -->
 								<div>
-									<!-- Inställningar -->
 									<ScCard :full-screen="cardPrefsFullScreen">
 										<ScCardHeader separator>
 											<div class="uk-flex uk-flex-middle">
@@ -362,8 +362,8 @@
 										</ScCardContent>
 									</ScCard>
 								</div>
+								<!-- Status -->
 								<div>
-									<!-- Status -->
 									<ScCard :full-screen="cardStatusFullScreen">
 											<ScCardHeader separator>
 													<div class="uk-flex uk-flex-middle">
@@ -526,7 +526,8 @@
 														</li>
 													</ul>
 
-												<FileUpload v-model="files" post-action="/webapi/Image/PostUploadImage">Ladda upp bilder</FileUpload>
+
+
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -616,7 +617,7 @@
 														</PrettyCheck>
 													</template>
 												</VueGoodTable>
-												<div class="uk-text-small uk-margin-medium-top">Inköpspris:</div> 
+												<div class="uk-text-small uk-margin-medium-top">Inköpspris:</div>
 												<div><input class="uk-input uk-width-1-4" v-model="articleDetails.PurchasePrice" :placeholder="articleDetails.PurchasePrice"></div>
 											</ScCardBody>
 										</ScCardContent>
@@ -764,7 +765,6 @@ import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 import ShopInfo from '~/components/ShopInfo'
 import _ from 'lodash'
-import FileUpload from 'vue-upload-component/dist/vue-upload-component.part.js'
 
 
 if(process.client) {
@@ -773,7 +773,6 @@ if(process.client) {
 
 export default {
 	components: {
-	    FileUpload,
 		ScInput,
 		VueGoodTable,
 		contentOverlay,
@@ -1194,7 +1193,6 @@ export default {
 
 <style lang="scss">
 	@import '~scss/vue/_pretty_checkboxes';
-	@import "vue-upload-component/dist/vue-upload-component.part.css";
     table.vgt-table {
         font-size: 0.75rem;
     }
