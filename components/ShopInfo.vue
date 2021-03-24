@@ -55,7 +55,7 @@
                     </ScCardBody>
                 </ScCardContent>
             </ScCard>
-            <!-- PRODUKBESKRIVNING -->
+            <!-- PRODUKTBESKRIVNING -->
             <ScCard class="uk-margin-medium-top" :full-screen="cardDescriptionFullScreen">
                 <ScCardHeader separator>
                     <div class="uk-flex uk-flex-middle">
