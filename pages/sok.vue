@@ -50,11 +50,15 @@
                                     </div>
 
                                     <div class="uk-margin">
-                                        <ScInput v-model="criteriaShit.searchCriteria" state="fixed" mode="outline" v-on:blur="getSearchResult(criteriaShit)" extra-classes="uk-form-small">
+                                        <ScInput v-model="criteriaShit.searchCriteria" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Söksträng</label>
                                         </ScInput>
                                     </div>
-
+                                    <div>
+                                        <a v-waves.button.light class="sc-button sc-button-primary" @click.prevent="getSearchResult(criteriaShit)">
+                                            SÖK
+                                        </a>
+                                    </div>
                                 </ScCardBody>
                             </ScCardContent>
                         </ScCard>
