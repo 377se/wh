@@ -75,6 +75,9 @@
                             </ScCardHeader>
                             <ScCardContent>
                                 <ScCardBody>
+							        <div v-if="isSearchPerformed == true" class="uk-alert-success" data-uk-alert>
+                                        Sökningen gav {{ numberOfHits }} träffar.
+			                        </div>
                                     <VueGoodTable
                                         :columns="this.searchHeaders"
                                         :rows="this.searchList"
@@ -134,6 +137,7 @@ export default {
 			searchList: [],
 			searchHeaders: [],
             numberOfHits: null,
+            isSearchPerformed: false,
 		}
 	},
 	watch: {
@@ -171,6 +175,7 @@ export default {
                     _this.searchList = response.SearchList
                     _this.searchHeaders = _this.buildHeaderObject(response.Headers)
                     _this.numberOfHits = response.NumberOfHits
+                    _this.isSearchPerformed = true
                     _this.isLoading = false
                 } else {
 
