@@ -172,7 +172,7 @@
                                     <div class="uk-flex uk-flex-middle">
                                         <div class="uk-flex-1">
                                             <ScCardTitle>
-                                                Nuvarande antal coins: {{ customer.Coins }}
+                                                Nuvarande antal coins: {{ coins.TotalCoins }}
                                             </ScCardTitle>
                                         </div>
                                         <ScCardActions>
@@ -181,7 +181,56 @@
                                 </ScCardHeader>
                                 <ScCardContent>
                                     <ScCardBody>
+                                    <div v-if="coins.Message != null" class="uk-alert-success" uk-alert>
+                                        {{ coins.Message }}
+                                        <a @click="coins.Message = null"><i class="mdi mdi-close md-color-white"></i></a>
+			                        </div>
+                                    <div v-if="coins.ErrorList != null" class="uk-alert-danger" uk-alert>
+                                        <a class="uk-alert-close" data-uk-close></a>
+                                        <div v-for="error in coins.ErrorList" :key="error.Name">
+                                            {{ coins.ErrorList[0].Value }}
+                                        </div>
+			                        </div>
+                                    <div class="uk-margin">
+                                        <ScInput v-model="coins.Coins" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Antal</label>
+                                        </ScInput>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <ScInput v-model="coins.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Beskrivning</label>
+                                        </ScInput>
+                                    </div>
+                                    <div class="uk-margin">
+                                        <ScInput v-model="coins.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Giltiga t.o.m.</label>
+                                        </ScInput>
+                                    </div>
+                                    <button v-waves.button.light class="uk-margin-large-bottom sc-button sc-button-primary" @click="updateCoins()">
+                                        UPPDATERA
+                                    </button>
 
+                                    <VueGoodTable
+                                        v-if="updateTheBloodyTable == true"
+                                        :columns="this.columnsCoinEvents"
+                                        :rows="this.coins.EventList"
+                                        style-class="vgt-table"
+                                    >
+                                        <template slot="table-row" slot-scope="props">
+                                            <span v-if="props.column.field === 'CreatedDate'">
+                                                    {{ props.row.CreatedDate }}
+                                            </span>
+                                            <span v-else-if="props.column.field === 'Description'">
+                                                {{ props.row.Description }}
+                                            </span>
+                                            <span v-else-if="props.column.field === 'Value'">
+                                                {{ props.row.Value }}
+                                            </span>
+                                            <span v-else>
+                                                {{ props.row.AdminName }}
+                                            </span>
+                                        </template>
+                                    </VueGoodTable>
                                     </ScCardBody>
                                 </ScCardContent>
                             </ScCard>
@@ -201,6 +250,11 @@ import {mapGetters} from 'vuex'
 import ScInput from '~/components/Input'
 import { VueGoodTable } from 'vue-good-table'
 import 'vue-good-table/dist/vue-good-table.css'
+import { Swedish } from "flatpickr/dist/l10n/sv.js"
+
+if(process.client) {
+	require('~/plugins/flatpickr');
+}
 
 export default {
 	components: {
@@ -211,9 +265,12 @@ export default {
 		return {
 			customer: {},
             orderList: [],
+            coins: [],
             resetLink: '',
             resetLinkVisible: false,
             showAllOrders: false,
+            updateTheBloodyTable: true,
+            Swedish,
         }
     },
     computed: {
@@ -244,7 +301,7 @@ export default {
 					type: 'string',
 					thClass: 'uk-text-left vgt-th',
 					tdClass: 'uk-text-left',
-                    width: '100px',
+                    width: '90px',
 				},
 				{
 					label: 'Voucher',
@@ -278,6 +335,46 @@ export default {
 				}
 			]
 		},
+		columnsCoinEvents () {
+			return [
+				{
+					label: 'Datum',
+					field: 'CreatedDate',
+					sortable: false,
+                    type: 'string',
+                    thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '80px',
+				},
+				{
+					label: 'Beskrivning',
+					field: 'Description',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '140px',
+				},
+				{
+					label: 'Coins',
+					field: 'Value',
+					sortable: false,
+					type: 'number',
+					thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '20px',
+				},
+				{
+					label: 'Admin',
+					field: 'AdminName',
+					sortable: false,
+                    type: 'string',
+                    thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '70px',
+				},
+			]
+		},
     },
     methods: {
         rowStyleClassFn(row) {
@@ -301,6 +398,26 @@ export default {
 			await this.$axios.$post('/webapi/Customer/PostUpdateCustomer', _this.customer)
 			.then(function (response) {
                 _this.customer = response
+                _this.isLoading = false
+                _this.hidePageOverlaySpinner()
+                _this.isLoading = false
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+		async updateCoins() {
+			let _this = this
+            _this.showPageOverlaySpinnerNew()
+			_this.isLoading = true
+			await this.$axios.$post('/webapi/Coins/PostUpdateCoins', _this.coins)
+			.then(function (response) {
+                _this.coins = response
+                _this.updateTheBloodyTable = false
+					setTimeout(() => {
+						_this.updateTheBloodyTable = true
+					}, 10)
                 _this.isLoading = false
                 _this.hidePageOverlaySpinner()
                 _this.isLoading = false
@@ -347,12 +464,14 @@ export default {
     },
     async fetch () {
 		try {
-			const [customer, orderList] = await Promise.all([
+			const [customer, orderList, coins] = await Promise.all([
 				this.$axios.$get('/webapi/Customer/GetCustomer?customerid=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Order/GetOrderlistByCustomerId?customerId=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Coins/GetCoinsByCustomerId?customerId=' + this.$route.params.id),
       		])
 			this.customer = customer
 			this.orderList = orderList
+			this.coins = coins
 		} catch (err) {
       		console.log(err);
 		}
