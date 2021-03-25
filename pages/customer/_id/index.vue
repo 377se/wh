@@ -237,6 +237,14 @@ export default {
                 })
             }, 500)
         },
+		hidePageOverlaySpinner () {
+			this.$store.commit('toggleProgressOverlay', false);
+			this.$store.commit('togglePageOverlay', false)
+		},
+		showPageOverlaySpinnerNew () {
+			this.$store.commit('toggleProgressOverlay', true);
+			this.$store.commit('togglePageOverlay', true)
+		},
     },
     watch: {
     },
