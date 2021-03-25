@@ -121,28 +121,46 @@
                                 </ScCardHeader>
                                 <ScCardContent>
                                     <ScCardBody>
-                                        <!-- <VueGoodTable
-                                            :columns="this.searchHeaders"
-                                            :rows="this.searchList"
+                                        <VueGoodTable
+                                            :columns="this.columnsOrderList"
+                                            :rows="this.orderListAsChildren"
                                             style-class="vgt-table"
+                                            :row-style-class="rowStyleClassFn"
+                                            :group-options="{
+                                                enabled: true,
+                                                headerPosition: 'bottom',
+                                            }"
                                         >
                                             <template slot="table-row" slot-scope="props">
-                                                <span v-if="props.column.field === 'ImageName'">
-                                                    <img :src="props.row.ImageName">
+                                                <nuxt-link v-if="props.column.field === 'OrderId'" :to="props.row.UrlOrder">
+                                                    <span
+                                                        class="uk-badge"
+                                                        :class="{
+                                                            'md-bg-blue-600': props.row.StatusId == 1
+                                                            && props.row.StatusId == 2,
+                                                            'md-bg-green-600': props.row.StatusId > 2
+                                                        }"
+                                                        >
+                                                        {{ props.row.OrderId }}
+                                                    </span>
+                                                </nuxt-link>
+                                                <span v-else-if="props.column.field === 'OrderDate'">
+                                                        {{ props.row.OrderDate }}
                                                 </span>
-                                                <span v-else-if="props.column.field === 'Column1'">
-                                                    <nuxt-link :to="props.row.Url">
-                                                        {{ props.row.Column1 }}
-                                                    </nuxt-link>
+                                                <span v-else-if="props.column.field === 'PaymentMethod'">
+                                                    {{ props.row.PaymentMethod }}
                                                 </span>
-                                                <span v-else-if="props.column.field === 'Column2'">
-                                                    {{ props.row.Column2 }}
+                                                <span v-else-if="props.column.field === 'Voucher'">
+                                                    {{ props.row.Voucher }}
                                                 </span>
                                                 <span v-else>
-                                                    {{ props.row.Column3 }}
+                                                    {{ props.row.Ordersum | thousandsDelimiter }} {{ props.row.Currency }}
                                                 </span>
                                             </template>
-                                        </VueGoodTable> -->
+                                        </VueGoodTable>
+                                        <button @click.prevent="showAllOrders = !showAllOrders" class="uk-margin-medium-top uk-align-right sc-button sc-button-mini">
+										    {{ showAllOrders ? 'Visa bara färdiga ordrar' : 'Visa alla'}}
+									    </button>
                                     </ScCardBody>
                                 </ScCardContent>
                             </ScCard>
@@ -181,22 +199,101 @@
 <script>
 import {mapGetters} from 'vuex'
 import ScInput from '~/components/Input'
-import contentOverlay from '~/components/Overlay'
 import { VueGoodTable } from 'vue-good-table'
 import 'vue-good-table/dist/vue-good-table.css'
 
 export default {
 	components: {
 		ScInput,
+		VueGoodTable,
     },
 	data () {
 		return {
 			customer: {},
+            orderList: [],
             resetLink: '',
             resetLinkVisible: false,
+            showAllOrders: false,
         }
     },
+    computed: {
+		columnsOrderList () {
+			return [
+				{
+					label: 'OrderId',
+					field: 'OrderId',
+					sortable: false,
+                    type: 'number',
+                    thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '60px',
+				},
+				{
+					label: 'Orderdatum',
+					field: 'OrderDate',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '80px',
+				},
+				{
+					label: 'Betalmetod',
+					field: 'PaymentMethod',
+					sortable: false,
+					type: 'string',
+					thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '100px',
+				},
+				{
+					label: 'Voucher',
+					field: 'Voucher',
+					sortable: false,
+                    type: 'number',
+                    thClass: 'uk-text-left vgt-th',
+					tdClass: 'uk-text-left',
+                    width: '100px',
+				},
+				{
+					label: 'Summa',
+					field: 'Ordersum',
+					sortable: false,
+                    type: 'number',
+                    thClass: 'uk-text-right vgt-th',
+					tdClass: 'uk-text-right',
+                    width: '70px',
+                    headerField: this.orderSumTotal,
+				},
+			]
+		},
+        orderListAsChildren () {
+			return [
+				{
+          			OrderId: '',
+         			OrderDate: '',
+         			PaymentMethod: '',
+         			Ordersum: 0,
+          			children: this.orderList,
+				}
+			]
+		},
+    },
     methods: {
+        rowStyleClassFn(row) {
+            if (this.showAllOrders) {
+                return ''
+            }
+            return row.StatusId > 0 ? '' : 'hideOrder'
+        },
+		orderSumTotal(rowObj) {
+    		let sum = 0
+			for (let i = 0; i < rowObj.children.length; i++) {
+				rowObj.children[i].StatusId > 0 ? sum += rowObj.children[i].Ordersum : sum
+			}
+            sum = this.$options.filters.thousandsDelimiter(sum) + ' ' + rowObj.children[0].Currency
+    		return sum
+	    },
 		async updateCustomer() {
 			let _this = this
             _this.showPageOverlaySpinnerNew()
@@ -250,10 +347,12 @@ export default {
     },
     async fetch () {
 		try {
-			const [customer] = await Promise.all([
+			const [customer, orderList] = await Promise.all([
 				this.$axios.$get('/webapi/Customer/GetCustomer?customerid=' + this.$route.params.id),
+				this.$axios.$get('/webapi/Order/GetOrderlistByCustomerId?customerId=' + this.$route.params.id),
       		])
 			this.customer = customer
+			this.orderList = orderList
 		} catch (err) {
       		console.log(err);
 		}
@@ -265,12 +364,13 @@ export default {
     table.vgt-table {
         font-size: 0.75rem;
     }
-    table.vgt-table td {
+    table.vgt-table td,
+    table.vgt-table th {
         vertical-align: middle;
         border-right: 1px solid #dcdfe6;
-        padding: .35em .65em .35em .65em;
+        padding: .3em .75em .3em .75em;
     }
-    .vgt-assortment-th {
+    .vgt-th {
         font-size: 0.6rem;
     }
 	.vgt-table th.vgt-row-header {
@@ -284,4 +384,7 @@ export default {
 		padding: 8px 8px 7px;
 		font-size: 0.75rem;
 	}
+    .hideOrder {
+        display: none;
+    }
 </style>
