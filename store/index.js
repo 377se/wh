@@ -21,7 +21,6 @@ export const state = () => ({
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
 	isLoggedIn: false,
-	showAlert: false,
 	alerts: [
 		{
 			id: 0,
@@ -31,6 +30,11 @@ export const state = () => ({
 		{
 			id: 1,
 			name: 'coins',
+		  	visible: false
+		},
+		{
+			id: 2,
+			name: 'no address',
 		  	visible: false
 		},
 	],
