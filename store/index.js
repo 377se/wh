@@ -21,6 +21,19 @@ export const state = () => ({
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
 	isLoggedIn: false,
+	showAlert: false,
+	alerts: [
+		{
+			id: 0,
+			name: 'customer',
+			visible: false
+		},
+		{
+			id: 1,
+			name: 'coins',
+		  	visible: false
+		},
+	],
 	articleAssortment: []
 });
 
@@ -34,6 +47,12 @@ export const mutations = {
 	  },
 	setIsLoggedIn(state, val){
 		state.isLoggedIn = val
+	  },
+	setAlertHidden(state, id) {
+		state.alerts[id].visible = false
+	  },
+	setAlertVisible(state, id) {
+		state.alerts[id].visible = true
 	  },
 	sidebarMainToggle (state, expanded) {
 		state.vxSidebarMainExpanded = expanded
@@ -103,6 +122,7 @@ export const getters = {
 	sidebarMainState: state => state.vxSidebarMainExpanded,
 	offcanvasState: state => state.vxOffcanvasExpanded,
 	isLoggedInState: state => state.isLoggedIn,
+	alertsState: state => state.alerts,
 	articleAssortmentState: state => state.articleAssortment,
 };
 

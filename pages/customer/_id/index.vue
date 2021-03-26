@@ -38,9 +38,13 @@
                                     <ScInput :value="customer.CustomerId.toString()" state="fixed" mode="outline" :disabled="true" extra-classes="uk-form-small">
                                     </ScInput>
                                     <!-- MedlemsId -->
-                                    <div v-if="customer.ErrorList != null" class="uk-alert-danger" data-uk-alert>
-                                        {{ customer.ErrorList[0].Value }}
-			                        </div>
+                                    <Alert
+                                        v-if="this.customer.ErrorList != null"
+                                        :errorlist="this.customer.ErrorList"
+                                        :message=null
+                                        :alertClass="alertClass"
+                                        id=0
+                                    />
                                     <div class="uk-margin">
                                         <ScInput v-model="customer.MemberId" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
                                             <label>MedlemsId</label>
@@ -181,56 +185,53 @@
                                 </ScCardHeader>
                                 <ScCardContent>
                                     <ScCardBody>
-                                    <div v-if="coins.Message != null" class="uk-alert-success" uk-alert>
-                                        {{ coins.Message }}
-                                        <a @click="coins.Message = null"><i class="mdi mdi-close md-color-white"></i></a>
-			                        </div>
-                                    <div v-if="coins.ErrorList != null" class="uk-alert-danger" uk-alert>
-                                        <a class="uk-alert-close" data-uk-close></a>
-                                        <div v-for="error in coins.ErrorList" :key="error.Name">
-                                            {{ coins.ErrorList[0].Value }}
+                                        <Alert 
+                                            v-if="this.coins.ErrorList != null || this.coins.Message != null"
+                                            :errorlist="this.coins.ErrorList"
+                                            :message="String(this.coins.Message)"
+                                            :alertClass="alertClass"
+                                            id=1
+                                        />
+                                        <div class="uk-margin">
+                                            <ScInput v-model="coins.Coins" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <label>Antal</label>
+                                            </ScInput>
                                         </div>
-			                        </div>
-                                    <div class="uk-margin">
-                                        <ScInput v-model="coins.Coins" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>Antal</label>
-                                        </ScInput>
-                                    </div>
-                                    <div class="uk-margin">
-                                        <ScInput v-model="coins.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>Beskrivning</label>
-                                        </ScInput>
-                                    </div>
-                                    <div class="uk-margin">
-                                        <ScInput v-model="coins.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>Giltiga t.o.m.</label>
-                                        </ScInput>
-                                    </div>
-                                    <button v-waves.button.light class="uk-margin-large-bottom sc-button sc-button-primary" @click="updateCoins()">
-                                        UPPDATERA
-                                    </button>
+                                        <div class="uk-margin">
+                                            <ScInput v-model="coins.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <label>Beskrivning</label>
+                                            </ScInput>
+                                        </div>
+                                        <div class="uk-margin">
+                                            <ScInput v-model="coins.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <label>Giltiga t.o.m.</label>
+                                            </ScInput>
+                                        </div>
+                                        <button v-waves.button.light class="uk-margin-large-bottom sc-button sc-button-primary" @click="updateCoins()">
+                                            UPPDATERA
+                                        </button>
 
-                                    <VueGoodTable
-                                        v-if="updateTheBloodyTable == true"
-                                        :columns="this.columnsCoinEvents"
-                                        :rows="this.coins.EventList"
-                                        style-class="vgt-table"
-                                    >
-                                        <template slot="table-row" slot-scope="props">
-                                            <span v-if="props.column.field === 'CreatedDate'">
-                                                    {{ props.row.CreatedDate }}
-                                            </span>
-                                            <span v-else-if="props.column.field === 'Description'">
-                                                {{ props.row.Description }}
-                                            </span>
-                                            <span v-else-if="props.column.field === 'Value'">
-                                                {{ props.row.Value }}
-                                            </span>
-                                            <span v-else>
-                                                {{ props.row.AdminName }}
-                                            </span>
-                                        </template>
-                                    </VueGoodTable>
+                                        <VueGoodTable
+                                            v-if="updateTheBloodyTable == true"
+                                            :columns="this.columnsCoinEvents"
+                                            :rows="this.coins.EventList"
+                                            style-class="vgt-table"
+                                        >
+                                            <template slot="table-row" slot-scope="props">
+                                                <span v-if="props.column.field === 'CreatedDate'">
+                                                        {{ props.row.CreatedDate }}
+                                                </span>
+                                                <span v-else-if="props.column.field === 'Description'">
+                                                    {{ props.row.Description }}
+                                                </span>
+                                                <span v-else-if="props.column.field === 'Value'">
+                                                    {{ props.row.Value }}
+                                                </span>
+                                                <span v-else>
+                                                    {{ props.row.AdminName }}
+                                                </span>
+                                            </template>
+                                        </VueGoodTable>
                                     </ScCardBody>
                                 </ScCardContent>
                             </ScCard>
@@ -246,8 +247,9 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import ScInput from '~/components/Input'
+import Alert from '~/components/Alert'
 import { VueGoodTable } from 'vue-good-table'
 import 'vue-good-table/dist/vue-good-table.css'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
@@ -260,6 +262,7 @@ export default {
 	components: {
 		ScInput,
 		VueGoodTable,
+		Alert,
     },
 	data () {
 		return {
@@ -271,9 +274,13 @@ export default {
             showAllOrders: false,
             updateTheBloodyTable: true,
             Swedish,
+            alertClass: '',
         }
     },
     computed: {
+		...mapGetters({
+			alerts: 'alertsState'
+		}),
 		columnsOrderList () {
 			return [
 				{
@@ -398,9 +405,24 @@ export default {
 			await this.$axios.$post('/webapi/Customer/PostUpdateCustomer', _this.customer)
 			.then(function (response) {
                 _this.customer = response
-                _this.isLoading = false
-                _this.hidePageOverlaySpinner()
-                _this.isLoading = false
+                try {
+                    if ( response.ErrorList != null ) {
+                        _this.alertClass = 'uk-alert-danger'
+                        _this.$store.commit('setAlertVisible', 0)
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.alertClass = 'uk-alert-success'
+                        _this.$store.commit('setAlertVisible', 0)
+                        _this.hidePageOverlaySpinner()
+                        _this.updateTheBloodyTable = false
+					    setTimeout(() => {
+						    _this.updateTheBloodyTable = true
+					    }, 10)
+                        _this.isLoading = false
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
 			})
 			.catch(function (error) {
                 console.log(error)
@@ -414,17 +436,27 @@ export default {
 			await this.$axios.$post('/webapi/Coins/PostUpdateCoins', _this.coins)
 			.then(function (response) {
                 _this.coins = response
-                _this.updateTheBloodyTable = false
-					setTimeout(() => {
-						_this.updateTheBloodyTable = true
-					}, 10)
-                _this.isLoading = false
-                _this.hidePageOverlaySpinner()
-                _this.isLoading = false
+                try {
+                    if ( response.ErrorList != null ) {
+                        _this.alertClass = 'uk-alert-danger'
+                        _this.$store.commit('setAlertVisible', 1)
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.alertClass = 'uk-alert-success'
+                        _this.$store.commit('setAlertVisible', 1)
+                        _this.hidePageOverlaySpinner()
+                        _this.updateTheBloodyTable = false
+					    setTimeout(() => {
+						    _this.updateTheBloodyTable = true
+					    }, 10)
+                        _this.isLoading = false
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
 			})
 		},
 		async getResetLink() {
