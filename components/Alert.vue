@@ -24,12 +24,12 @@ export default {
         errorlist: {
             type: Array,
             default: () => [],
-            required: true
+            required: false
         },
         message: {
             type: String,
             default: () => '',
-            required: true
+            required: false
         },
         alertClass: {
             type: String,
