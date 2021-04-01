@@ -2,7 +2,7 @@
   <div 
     v-if="this.$store.getters.alertsState[id].visible"
     :class="alertClass"
-    class="alert" 
+    class="alert uk-margin-bottom" 
     >
     <div
       v-for="error in errorlist"
