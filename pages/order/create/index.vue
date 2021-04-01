@@ -40,7 +40,7 @@
                                                 <client-only>
                                                     <Select2
                                                         id="select-shopOptionsList"
-                                                        v-model="order.ShopId"
+                                                        v-model="shopId"
                                                         :options="shopOptionsList"
                                                         :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
                                                     >
@@ -161,7 +161,7 @@
                                         <div class="uk-flex uk-flex-middle">
                                             <div class="uk-flex-1">
                                                 <ScCardTitle>
-                                                    KORTTITEL
+                                                    Artikelinfo
                                                 </ScCardTitle>
                                             </div>
                                             <ScCardActions>
@@ -170,7 +170,165 @@
                                     </ScCardHeader>
                                     <ScCardContent>
                                         <ScCardBody>
-                                            KORTINNEHÅLL
+                                            <!-- ArtikelNr -->
+                                            <div class="uk-margin">
+                                                <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
+                                                    <label>ArtikelNr</label>
+                                                </ScInput>
+                                            </div>
+                                            <div v-if="articleDetails" :class="{ 'uk-flex': !articleDetails.ErrorList }">
+                                                <div class="uk-margin-small-right uk-width-1-4" :class="{ 'uk-hidden': articleDetails.ErrorList }">
+                                                    <img :src="articleDetails.ProductImage">
+                                                </div>
+                                                <div :class="{ 'uk-width-3-4': !articleDetails.ErrorList }">
+                                                    <Alert
+                                                        :message="this.articleDetails.ErrorList ? this.articleDetails.ErrorList[0].Value : ''"
+                                                        :alertClass="'uk-alert-danger'"
+                                                        id=3
+                                                    />
+                                                    <Alert
+                                                        :message="this.errors ? this.errors[0].Value : ''"
+                                                        :alertClass="'uk-alert-danger'"
+                                                        id=4
+                                                    />
+                                                    <!-- Produktnamn -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
+                                                            <label>Produktnamn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Storlek -->
+                                                    <div class="uk-margin-medium-bottom uk-width-1-1">
+                                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                        <label class="select-label" for="select-paymentOptionsList">Storlek</label>
+                                                        <client-only>
+                                                            <Select2
+                                                                id="select-sizeOptionsList"
+                                                                v-model="articleDetails.StockId"
+                                                                :options="sizeOptionsList"
+                                                                :settings="{ 'width': '100%', 'placeholder': 'Välj storlek', 'closeOnSelect': true }"
+                                                            >
+                                                            </Select2>
+                                                        </client-only>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Pris -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
+                                                            <label>Pris</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <div v-if="articleDetails.HasPrint" class="uk-flex">
+                                                        <div class="uk-width-1-2 uk-margin-small-right">
+                                                            <!-- Tryck - Namn -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <ScInput v-model="articleDetails.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                    <label>Tryck - Namn</label>
+                                                                </ScInput>
+                                                            </div>
+                                                            <!-- Tryck - Nummer -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <ScInput v-model="articleDetails.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                    <label>Tryck - Nummer</label>
+                                                                </ScInput>
+                                                            </div>
+                                                            <!-- Tryck - Patch -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <PrettyCheck v-model="articleDetails.PrintOptionList[2].IsChecked" class="p-icon">
+                                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
+                                                                </PrettyCheck>
+                                                            </div>
+                                                        </div>
+                                                        <div class="uk-width-1-2">
+                                                            <!-- Pris -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <ScInput v-model="articleDetails.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                    <label>Pris</label>
+                                                                </ScInput>
+                                                            </div>
+                                                            <!-- Pris -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <ScInput v-model="articleDetails.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                    <label>Pris</label>
+                                                                </ScInput>
+                                                            </div>
+                                                            <!-- Pris -->
+                                                            <div class="uk-margin-medium-bottom">
+                                                                <ScInput v-model="articleDetails.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                    <label>Pris</label>
+                                                                </ScInput>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="postAddToCart()">
+                                                        LÄGG I VARUKORGEN
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </ScCardBody>
+                                    </ScCardContent>
+                                </ScCard>
+                                <ScCard class="uk-margin-medium-top">
+                                    <ScCardHeader separator>
+                                        <div class="uk-flex uk-flex-middle">
+                                            <div class="uk-flex-1">
+                                                <ScCardTitle>
+                                                    Varukorg
+                                                </ScCardTitle>
+                                            </div>
+                                            <ScCardActions>
+                                            </ScCardActions>
+                                        </div>
+                                    </ScCardHeader>
+                                    <ScCardContent>
+                                        <ScCardBody>
+                                            <VueGoodTable
+                                                v-if="updateTheBloodyTable == true && this.cart"
+                                                :columns="columns_cart"
+                                                :rows="cart"
+                                                style-class="vgt-table"
+                                                :search-options="{ enabled: false }"
+                                                :pagination-options="{
+                                                    enabled: false,
+                                                    mode: 'pages',
+                                                    perPage: 10,
+                                                    position: 'top',
+                                                    perPageDropdown: [10, 20, 30, 40, 50],
+                                                    dropdownAllowAll: true,
+                                                    setCurrentPage: 1,
+                                                    nextLabel: 'nästa',
+                                                    prevLabel: 'föregående',
+                                                    rowsPerPageLabel: 'Produkter per sida',
+                                                    ofLabel: 'av',
+                                                    pageLabel: 'sida',
+                                                    allLabel: 'Alla',
+                                                }"
+                                            >
+                                            <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
+                                                {{ this.cart ? this.cart.length : 0 }}
+                                            </div>
+                                                <template slot="table-row" slot-scope="props">
+                                                    <img v-if="props.column.field === 'ArticleImage'" :src="props.row.ArticleImage">
+                                                    <span v-else-if="props.column.field === 'TeamName'">
+                                                        {{ props.row.TeamName }}
+                                                    </span>
+                                                    <nuxt-link v-else-if="props.column.field === 'ArticleName'" :to="props.row.Url">
+                                                        <div>{{ props.row.ArticleName }}</div>
+                                                        <div v-if="props.row.AddOnText">{{ props.row.AddOnText }}</div>
+                                                    </nuxt-link>
+                                                    <span v-else-if="props.column.field === 'PriceToPay'">
+                                                        {{ props.row.PriceToPay }}
+                                                    </span>
+                                                    <span v-else-if="props.column.field == 'after'">
+                                                        <div class="cart-delete-button" @click="postDeleteFromCart(props.row.CartId)">
+															<i class="mdi mdi-delete-forever md-color-red-600"></i>
+														</div>
+                                                    </span>
+                                                </template>
+                                            </VueGoodTable>
+                                                <button v-if="this.cart" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-top" @click.prevent="postCreateOrder()">
+                                                    SKAPA ORDER
+                                                </button>
                                         </ScCardBody>
                                     </ScCardContent>
                                 </ScCard>
@@ -187,6 +345,9 @@
 import ScInput from '~/components/Input'
 import Alert from '~/components/Alert'
 import PrettyRadio from 'pretty-checkbox-vue/radio';
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table'
+import PrettyCheck from 'pretty-checkbox-vue/check'
 
 export default {
 	components: {
@@ -194,22 +355,89 @@ export default {
 		Alert,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 		PrettyRadio,
+		PrettyCheck,
+		VueGoodTable,
     },
 	data () {
 		return {
             order: [],
             shops: [],
+            shopId: null,
             shopOptionsList: [],
             paymentOptionsList: [],
             countriesOptionsList: [],
             paymentTypes: [],
             customer: [],
+            articleDetails: null,
+            articleNumber: null,
+            sizeOptionsList: [],
             emptyAdressObject: [],
             customerEmail: '',
             showAdressContainer: false,
             showAdressAlert: false,
+            cart: null,
+            updateTheBloodyTable: true,
+            errors: null,
         }
     },
+    watch: {
+        shopId: function (val) {
+            this.order.ShopId = val
+            this.articleDetails ? this.articleDetails.ShopId = val : null
+        },
+    },
+	mounted: function () {
+
+    },
+    computed: {
+		columns_cart () {
+			return [
+                {
+					label: '',
+					field: 'ArticleImage',
+					sortable: false,
+					tdClass: 'uk-text-center uk-text-nowrap',
+                    width: '33px',
+				},
+				{
+					label: 'Lag',
+					field: 'TeamName',
+					sortable: false,
+					type: 'string',
+					filterOptions: {
+						enabled: false
+					},
+                    width: '30%',
+				},
+				{
+					label: 'Produkt',
+					field: 'ArticleName',
+					sortable: false,
+					type: 'string',
+					filterOptions: {
+						enabled: false
+					},
+                    width: '40%',
+				},
+                {
+					label: 'Pris (SEK)',
+					field: 'PriceToPay',
+					sortable: false,
+					type: 'number',
+					filterOptions: {
+						enabled: false
+					},
+                    tdClass: 'uk-text-right',
+                    thClass: 'uk-text-right',
+                    width: '15%',
+				},
+                {
+                    label: '',
+                    field: 'after',
+                },
+			]
+		},
+	},
     methods: {
         async getCustomerByEmail(email, shopId) {
 			let _this = this
@@ -238,6 +466,103 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async getArticleDetailsByArticleNumber(articleNumber) {
+			let _this = this
+            _this.$store.commit('setAlertHidden', 4)
+            _this.showPageOverlaySpinner()
+            _this.$store.commit('setAlertHidden', 3)
+			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleNumber)
+			.then(function (response) {
+                _this.articleDetails = response
+                response.ShopId = _this.order.ShopId
+                _this.sizeOptionsList = response.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))
+                try {
+                    if ( response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                        _this.$store.commit('setAlertVisible', 3)
+                    } else {
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async postAddToCart() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Cart/PostAddToCart', _this.articleDetails)
+			.then(function (response) {
+                _this.errors = response.ErrorList
+                _this.getCartBySessionId()
+                try {
+                    if ( response.ErrorList != null ) {
+                        console.log(_this.errors)
+                        _this.hidePageOverlaySpinner()
+                        _this.$store.commit('setAlertVisible', 4)
+                    } else {
+                        _this.hidePageOverlaySpinner()
+                        _this.$store.commit('setAlertHidden', 4)
+                        _this.articleDetails = null
+                        _this.articleNumber = null
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async postDeleteFromCart(cartId) {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Cart/PostDeleteFromCart?cartId=' + cartId)
+			.then(function (response) {
+                _this.getCartBySessionId()
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async postCreateOrder() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+            console.log(_this.order)
+            
+			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder' + _this.order)
+			.then(function (response) {
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getCartBySessionId() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Cart/GetCartBySessionId')
+			.then(function (cart) {
+                _this.cart = cart.CartList
+                _this.updateTheBloodyTable = false
+                setTimeout(() => {
+                    _this.updateTheBloodyTable = true
+                }, 10)
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
 		hidePageOverlaySpinner () {
 			this.$store.commit('toggleProgressOverlay', false);
 			this.$store.commit('togglePageOverlay', false)
@@ -249,13 +574,15 @@ export default {
     },
     async fetch () {
 		try {
-			const [order, shops, paymentTypes, countries] = await Promise.all([
+			const [order, shops, paymentTypes, countries, cart] = await Promise.all([
 				this.$axios.$get('/webapi/OrderCreate/GetEmptyObject'),
 				this.$axios.$get('/webapi/Shop/GetShopList'),
 				this.$axios.$get('/webapi/Utility/GetPaymentTypeList'),
 				this.$axios.$get('/webapi/Address/GetCountries'),
+				this.$axios.$get('/webapi/Cart/GetCartBySessionId'),
       		])
 			this.order = order
+			this.cart = cart.CartList
 			this.shops = shops
 			this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
 			this.paymentTypes = paymentTypes
@@ -271,6 +598,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	@import '~scss/vue/_pretty_checkboxes';
 	.uk-input {
 		height: 30px;
 		border-radius: 0;
@@ -296,5 +624,19 @@ export default {
     }
     .uk-accordion-content {
         margin-top: 0;
+    }
+    table.vgt-table {
+        font-size: 0.75rem;
+    }
+    table.vgt-table td {
+        vertical-align: middle;
+        border-right: 1px solid #dcdfe6;
+        padding: .3em .75em .3em .75em;
+    }
+    table.vgt-table th {
+        font-size: 0.6rem;
+    }
+    .cart-delete-button {
+        cursor: pointer;
     }
 </style>

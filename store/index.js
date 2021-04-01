@@ -37,6 +37,16 @@ export const state = () => ({
 			name: 'no address',
 		  	visible: false
 		},
+		{
+			id: 3,
+			name: 'search article-details',
+		  	visible: false
+		},
+		{
+			id: 4,
+			name: 'no shop is selected',
+		  	visible: false
+		},
 	],
 	articleAssortment: []
 });
