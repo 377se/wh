@@ -372,8 +372,8 @@ export default {
             articleNumber: null,
             sizeOptionsList: [],
             emptyAdressObject: [],
-            customerEmail: '',
             showAdressContainer: false,
+            customerEmail: '',
             showAdressAlert: false,
             cart: null,
             updateTheBloodyTable: true,
@@ -433,6 +433,7 @@ export default {
 				},
                 {
                     label: '',
+					sortable: false,
                     field: 'after',
                 },
 			]
@@ -534,10 +535,9 @@ export default {
 		},
         async postCreateOrder() {
 			let _this = this
+            _this.order.Address.Email = _this.customerEmail
             _this.showPageOverlaySpinner()
-            console.log(_this.order)
-            
-			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder' + _this.order)
+			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder', _this.order)
 			.then(function (response) {
                 _this.hidePageOverlaySpinner()
 			})
