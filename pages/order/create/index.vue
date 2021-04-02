@@ -33,6 +33,11 @@
                                     </ScCardHeader>
                                     <ScCardContent>
                                         <ScCardBody>
+                                            <Alert
+                                                :message="this.errors ? this.errors[0].Value : ''"
+                                                :alertClass="'uk-alert-danger'"
+                                                id=4
+                                            />
                                             <!-- Shop -->
                                             <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
                                                 <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
@@ -48,108 +53,118 @@
                                                 </client-only>
                                                 </div>
                                             </div>
-                                            <!-- Betalning -->
-                                            <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
-                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                                <label class="select-label" for="select-paymentOptionsList">Betalningstyp</label>
-                                                <client-only>
-                                                    <Select2
-                                                        id="select-paymentOptionsList"
-                                                        v-model="order.PaymentTypeId"
-                                                        :options="paymentOptionsList"
-                                                        :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
-                                                    >
-                                                    </Select2>
-                                                </client-only>
+                                            <!-- Kundinfoblock som visas vid vald shop -->
+                                            <div v-if="shopId" class="uk-margin">
+                                                <!-- Betalning -->
+                                                <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
+                                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                    <label class="select-label" for="select-paymentOptionsList">Betalningstyp</label>
+                                                    <client-only>
+                                                        <Select2
+                                                            id="select-paymentOptionsList"
+                                                            v-model="order.PaymentTypeId"
+                                                            :options="paymentOptionsList"
+                                                            :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
+                                                        >
+                                                        </Select2>
+                                                    </client-only>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!-- Email -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="customerEmail" state="fixed" mode="outline" v-on:blur="getCustomerByEmail(customerEmail, order.ShopId)" extra-classes="uk-form-small">
-                                                    <label>Email</label>
-                                                </ScInput>
-                                            </div>
-                                            <Alert
-                                                v-if="showAdressAlert"
-                                                :message="'Det finns ingen address. Skriv in address manuellt'"
-                                                :alertClass="'uk-alert-danger'"
-                                                id=2
-                                            />
-                                            <!-- Adresser -->
-                                            <div v-if="this.showAdressContainer" class="uk-margin adress-container">
-                                                <div class="adress-title">Address(er)</div>
-                                                <ul data-uk-accordion>
-                                                    <li class="uk-open">
-                                                        <label class="uk-accordion-title">&nbsp;</label>
-                                                        <div class="uk-accordion-content sc-round">
-                                                            <div v-for="adress in customer.AddressList" :key="adress.AddressId">
-                                                                <PrettyRadio
-                                                                    v-model="order.Address"
-                                                                    :value="adress"
-                                                                    name="chooseAdress"
-                                                                    class="p-radio uk-margin-small-bottom"
-                                                                    @change="showAdressContainer = false"
-                                                                >
-                                                                    {{ adress.FirstName }} {{ adress.LastName }}, {{ adress.Address1 }}
-                                                                </PrettyRadio>
+                                                <Alert
+                                                    :message="'Skriv in email-address!'"
+                                                    :alertClass="'uk-alert-danger'"
+                                                    id=5
+                                                />
+                                                <!-- Email -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="customerEmail" state="fixed" mode="outline" v-on:blur="getCustomerByEmail(customerEmail, order.ShopId)" extra-classes="uk-form-small">
+                                                        <label>Email</label>
+                                                    </ScInput>
+                                                </div>
+                                                <Alert
+                                                    :message="'Det finns ingen address. Skriv in address manuellt'"
+                                                    :alertClass="'uk-alert-danger'"
+                                                    id=2
+                                                />
+                                                <!-- Adresser -->
+                                                <div v-if="this.showAdressContainer" class="uk-margin adress-container">
+                                                    <div class="adress-title">Address(er)</div>
+                                                    <ul data-uk-accordion>
+                                                        <li class="uk-open">
+                                                            <label class="uk-accordion-title">&nbsp;</label>
+                                                            <div class="uk-accordion-content sc-round">
+                                                                <div v-for="adress in customer.AddressList" :key="adress.AddressId">
+                                                                    <PrettyRadio
+                                                                        v-model="order.Address"
+                                                                        :value="adress"
+                                                                        name="chooseAdress"
+                                                                        class="p-radio uk-margin-small-bottom"
+                                                                        @change="showAdressContainer = false"
+                                                                    >
+                                                                        {{ adress.FirstName }} {{ adress.LastName }}, {{ adress.Address1 }}
+                                                                    </PrettyRadio>
+                                                                </div>
                                                             </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Nedan block visas endast vid ifylld epost-adress -->
+                                                <div v-if="customerEmail">
+                                                    <!-- Förnamn -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="order.Address.FirstName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Förnamn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Efternamn -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="order.Address.LastName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Efternamn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Address -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="order.Address.Address1" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Address</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Postadress -->
+                                                    <div class="uk-margin uk-flex">
+                                                        <!-- Postnummer -->
+                                                        <div class="uk-width-1-4">
+                                                            <ScInput v-model="order.Address.PostalCode" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                <label>Postnummer</label>
+                                                            </ScInput>
                                                         </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- Förnamn -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="order.Address.FirstName" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                    <label>Förnamn</label>
-                                                </ScInput>
-                                            </div>
-                                            <!-- Efternamn -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="order.Address.LastName" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                    <label>Efternamn</label>
-                                                </ScInput>
-                                            </div>
-                                            <!-- Address -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="order.Address.Address1" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                    <label>Address</label>
-                                                </ScInput>
-                                            </div>
-                                            <!-- Postadress -->
-                                            <div class="uk-margin uk-flex">
-                                                <!-- Postnummer -->
-                                                <div class="uk-width-1-4">
-                                                    <ScInput v-model="order.Address.PostalCode" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Postnummer</label>
-                                                    </ScInput>
+                                                        <!-- Ort -->
+                                                        <div class="uk-width-3-4 uk-margin-left">
+                                                            <ScInput v-model="order.Address.City" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                                <label>Ort</label>
+                                                            </ScInput>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Land -->
+                                                    <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
+                                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                        <label class="select-label" for="select-countriesOptionsList">Land</label>
+                                                        <client-only>
+                                                            <Select2
+                                                                id="select-countriesOptionsList"
+                                                                v-model="order.Address.CountryId"
+                                                                :options="countriesOptionsList"
+                                                                :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
+                                                            >
+                                                            </Select2>
+                                                        </client-only>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Mobil -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="order.Address.Mobile" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Mobil</label>
+                                                        </ScInput>
+                                                    </div>
                                                 </div>
-                                                <!-- Ort -->
-                                                <div class="uk-width-3-4 uk-margin-left">
-                                                    <ScInput v-model="order.Address.City" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Ort</label>
-                                                    </ScInput>
-                                                </div>
-                                            </div>
-                                            <!-- Land -->
-                                            <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
-                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                                <label class="select-label" for="select-countriesOptionsList">Land</label>
-                                                <client-only>
-                                                    <Select2
-                                                        id="select-countriesOptionsList"
-                                                        v-model="order.Address.CountryId"
-                                                        :options="countriesOptionsList"
-                                                        :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
-                                                    >
-                                                    </Select2>
-                                                </client-only>
-                                                </div>
-                                            </div>
-                                            <!-- Mobil -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="order.Address.Mobile" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                    <label>Mobil</label>
-                                                </ScInput>
                                             </div>
                                         </ScCardBody>
                                     </ScCardContent>
@@ -176,21 +191,16 @@
                                                     <label>ArtikelNr</label>
                                                 </ScInput>
                                             </div>
-                                            <div v-if="articleDetails" :class="{ 'uk-flex': !articleDetails.ErrorList }">
-                                                <div class="uk-margin-small-right uk-width-1-4" :class="{ 'uk-hidden': articleDetails.ErrorList }">
+                                            <Alert
+                                                :message="errorsArticleDetails ? this.articleDetails.ErrorList[0].Value : ''"
+                                                :alertClass="'uk-alert-danger'"
+                                                id=3
+                                            />
+                                            <div v-if="articleDetails && !errorsArticleDetails" :class="{ 'uk-flex': !errorsArticleDetails }">
+                                                <div class="uk-margin-small-right uk-width-1-4" :class="{ 'uk-hidden': errorsArticleDetails }">
                                                     <img :src="articleDetails.ProductImage">
                                                 </div>
-                                                <div :class="{ 'uk-width-3-4': !articleDetails.ErrorList }">
-                                                    <Alert
-                                                        :message="this.articleDetails.ErrorList ? this.articleDetails.ErrorList[0].Value : ''"
-                                                        :alertClass="'uk-alert-danger'"
-                                                        id=3
-                                                    />
-                                                    <Alert
-                                                        :message="this.errors ? this.errors[0].Value : ''"
-                                                        :alertClass="'uk-alert-danger'"
-                                                        id=4
-                                                    />
+                                                <div :class="{ 'uk-width-3-4': !errorsArticleDetails }">
                                                     <!-- Produktnamn -->
                                                     <div class="uk-margin-medium-bottom">
                                                         <ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
@@ -373,11 +383,12 @@ export default {
             sizeOptionsList: [],
             emptyAdressObject: [],
             showAdressContainer: false,
-            customerEmail: '',
+            customerEmail: null,
             showAdressAlert: false,
             cart: null,
             updateTheBloodyTable: true,
             errors: null,
+            errorsArticleDetails: null,
         }
     },
     watch: {
@@ -442,6 +453,10 @@ export default {
     methods: {
         async getCustomerByEmail(email, shopId) {
 			let _this = this
+            if (!_this.customerEmail) {
+                _this.$store.commit('setAlertVisible', 5)
+                return
+            }
             _this.showPageOverlaySpinner()
             _this.$store.commit('setAlertHidden', 2)
 			await this.$axios.$get('/webapi/Customer/GetCustomerByEmail?email=' + email + '&shopId=' + shopId)
@@ -449,9 +464,8 @@ export default {
                 _this.customer = response
                 _this.order.CustomerId = response.CustomerId
                 try {
-                    if ( response.AddressList.length == 0 ) {
+                    if ( !response.AddressList ) {
                         _this.hidePageOverlaySpinner()
-                        _this.showAdressAlert = true
                         _this.$store.commit('setAlertVisible', 2)
                         _this.showAdressContainer = false
                     } else {
@@ -461,9 +475,11 @@ export default {
                 } catch(err) {
                     console.log(err)
                 }
+                _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
                 console.log(error)
+                _this.$store.commit('setAlertVisible', 5)
                 _this.hidePageOverlaySpinner()
 			})
 		},
@@ -479,6 +495,7 @@ export default {
                 _this.sizeOptionsList = response.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))
                 try {
                     if ( response.ErrorList != null ) {
+                        _this.errorsArticleDetails = response.ErrorList
                         _this.hidePageOverlaySpinner()
                         _this.$store.commit('setAlertVisible', 3)
                     } else {
