@@ -12,7 +12,7 @@
 					</nuxt-link>
 				</div>
 			</div>
-			<div v-if="!vxTopMenuActive" class="uk-navbar-left nav-overlay uk-margin-right uk-visible@m">
+			<!-- <div v-if="!vxTopMenuActive" class="uk-navbar-left nav-overlay uk-margin-right uk-visible@m">
 				<ul class="uk-navbar-nav">
 					<li>
 						<a href="javascript:void(0)" class="md-color-white sc-padding-remove-left"><i class="mdi mdi-view-grid"></i></a>
@@ -58,7 +58,7 @@
 						</div>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 			<div v-if="vxTopMenuActive" id="sc-top-menu" class="uk-navbar-left nav-overlay nav-overlay-small">
 				<ScTopMenu :menu-data="topMenuData" />
 			</div>
@@ -80,18 +80,18 @@
 			</div>
 			<div class="nav-overlay nav-overlay-small uk-navbar-right">
 				<ul class="uk-navbar-nav">
-					<li>
+					<!-- <li>
 						<a class="uk-navbar-toggle uk-visible@l" href="javascript:void(0)" data-uk-toggle="target: .nav-overlay; animation: uk-animation-slide-top">
 							<i class="mdi mdi-magnify" />
 						</a>
 						<a id="sc-search-main-toggle-mobile" class="uk-navbar-toggle uk-hidden@l" href="javascript:void(0)" data-uk-toggle="target: .nav-overlay-small; animation: uk-animation-slide-top">
 							<i class="mdi mdi-magnify" />
 						</a>
-					</li>
-					<li class="uk-visible@l">
+					</li> -->
+					<!-- <li class="uk-visible@l">
 						<ScFullscreen id="sc-js-fullscreen-toggle" />
-					</li>
-					<li class="uk-visible@l">
+					</li> -->
+					<!-- <li class="uk-visible@l">
 						<a href="javascript:void(0)" class="sc-text-semibold sc-width-micro">
 							{{ vxActiveLocale }}
 						</a>
@@ -110,8 +110,8 @@
 								</li>
 							</ul>
 						</div>
-					</li>
-					<li>
+					</li> -->
+					<!-- <li>
 						<a href="javascript:void(0)">
 							<span class="mdi mdi-email"></span>
 						</a>
@@ -140,8 +140,8 @@
 								Show all in mailbox
 							</nuxt-link>
 						</div>
-					</li>
-					<li class="uk-visible@l">
+					</li> -->
+					<!-- <li class="uk-visible@l">
 						<a href="javascript:void(0)">
 							<span class="mdi mdi-bell uk-display-inline-block">
 								<span v-show="!alertsEmpty" class="sc-indicator md-bg-color-red-600"></span>
@@ -163,7 +163,7 @@
 								</ul>
 							</div>
 						</div>
-					</li>
+					</li> -->
 					<li>
 						<a href="javascript:void(0)">
 							<img v-if="isLoggedIn" :src="this.userDetails.ImageName" alt="User-avatar">
