@@ -192,7 +192,7 @@
                                                 </ScInput>
                                             </div>
                                             <Alert
-                                                :message="errorsArticleDetails ? this.articleDetails.ErrorList[0].Value : ''"
+                                                :message="errorsArticleDetails ? errorsArticleDetails[0].Value : ''"
                                                 :alertClass="'uk-alert-danger'"
                                                 id=3
                                             />
@@ -557,6 +557,7 @@ export default {
 			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder', _this.order)
 			.then(function (response) {
                 _this.hidePageOverlaySpinner()
+                _this.$router.push(response.Url)
 			})
 			.catch(function (error) {
                 console.log(error)
