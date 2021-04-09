@@ -360,24 +360,19 @@
                                         <label>ArtikelNr</label>
                                     </ScInput>
                                 </div>
-                                <Alert
-                                    :message="errors ? errors[0].Value : ''"
-                                    :alertClass="'uk-alert-danger'"
-                                    id=3
-                                />
-                                <div v-if="articleDetails && !errors" :class="{ 'uk-flex': !errors }">
+                                <div v-if="articleDetails" :class="{ 'uk-flex': !errors }">
                                     <div class="uk-margin-small-right uk-width-1-4" :class="{ 'uk-hidden': errors }">
                                         <img :src="articleDetails.ProductImage">
                                     </div>
                                     <div :class="{ 'uk-width-3-4': !errors }">
                                         <!-- Produktnamn -->
-                                        <div class="uk-margin-medium-bottom">
+                                        <div v-if="!errors" class="uk-margin-medium-bottom">
                                             <ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
                                                 <label>Produktnamn</label>
                                             </ScInput>
                                         </div>
                                         <!-- Storlek -->
-                                        <div class="uk-margin-medium-bottom uk-width-1-1">
+                                        <div v-if="!errors" class="uk-margin-medium-bottom uk-width-1-1">
                                             <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                             <label class="select-label" for="select-paymentOptionsList">Storlek</label>
                                             <client-only>
@@ -392,12 +387,13 @@
                                             </div>
                                         </div>
                                         <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
+                                        <div v-if="!errors" class="uk-margin-medium-bottom">
                                             <ScInput v-model="articleDetails.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
                                                 <label>Pris</label>
                                             </ScInput>
                                         </div>
-                                        <div v-if="articleDetails.HasPrint" class="uk-flex">
+                                        <!-- Tryck -->
+                                        <div v-if="articleDetails.HasPrint && !errors" class="uk-flex">
                                             <div class="uk-width-1-2 uk-margin-small-right">
                                                 <!-- Tryck - Namn -->
                                                 <div class="uk-margin-medium-bottom">
@@ -439,7 +435,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="addItem(orderInfo.OrderId)">
+                                        <div v-if="errors" class="uk-alert-danger uk-padding-small uk-border-rounded">
+                                            {{ errors[0].Value }}
+                                        </div>
+                                        <button v-if="!errors" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="addItem(orderInfo.OrderId)">
                                             LÄGG TILL PRODUKT
                                         </button>
                                     </div>
@@ -657,11 +656,13 @@ export default {
 		},
         async getArticleDetails(articleId) {
 			let _this = this
+            _this.errors = null
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.articleDetails = response
