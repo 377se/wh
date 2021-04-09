@@ -79,6 +79,15 @@
                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.HasBeenPrinted ? 'Utskriven' : 'Ej utskriven' }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="border-bottom border-right uk-width-1-5"><strong>Fraktkostnader</strong></td>
+                                        <td class="border-bottom uk-width-4-5">
+                                            <div class="uk-margin">
+                                                <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small" @blur="updateOrder()">
+                                                </ScInput>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="border-bottom border-right uk-width-1-5"><strong>Status</strong></td>
                                         <td class="border-bottom uk-width-4-5">
                                             <div class="uk-width-1-1">
@@ -242,7 +251,6 @@
                                         <td class="border-right"></td>
                                         <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">
                                             <div>Frakt & hantering</div>
-                                            <div><nuxt-link :to="'#'">Återbetala frakten</nuxt-link></div>
                                         </td>
                                         <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.ShippingAndHandling }} {{ orderInfo.Currency }}</td>
                                     </tr>
@@ -491,11 +499,9 @@ export default {
                 try {
                     if (response.ErrorList != null ) {
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertVisible', 4) Vi behöver alert här
                     } else {
                         _this.orderContent = response
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertHidden', 4) Vi behöver alert här
                     }
                 } catch(err) {
                     console.log(err)
