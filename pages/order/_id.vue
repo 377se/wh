@@ -185,11 +185,36 @@
                 <ScCard class="uk-margin-medium-top">
                     <ScCardHeader separator>
                         <div class="uk-flex uk-flex-middle">
-                            <div class="uk-flex-1">
+                            <div class="uk-width-1-3">
                                 <ScCardTitle>
-                                    Orderinnehåll
+                                     {{ 'Orderinnehåll - ' + orderProcessTypeList.find(type => type.Id == paymentTypeId).Name }}
                                 </ScCardTitle>
                             </div>
+                            <div class="uk-width-1-3 uk-text-center">
+                                <button v-if="paymentTypeId == 8" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="processOrder()">
+                                    SKAPA BYTE
+                                </button>
+                                <button v-else-if="paymentTypeId == 7" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="processOrder()">
+                                    SKAPA RETUR
+                                </button>
+                                <button v-else-if="paymentTypeId == 9" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="processOrder()">
+                                    SKAPA RESTNOTERING
+                                </button>
+                            </div>
+                            <div class="uk-width-1-3 uk-margin-small-top">
+                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <label class="select-label" for="select-orderProcessTypeList">Välj redigeringsläge</label>
+                                    <client-only>
+                                        <Select2
+                                            id="select-orderProcessTypeList"
+                                            v-model="paymentTypeId"
+                                            :options="orderProcessTypeList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
+                                            :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                        >
+                                        </Select2>
+                                    </client-only>
+                                </div>
+                             </div>
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
@@ -198,6 +223,7 @@
                             <table :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
                                 <thead>
                                     <tr>
+                                        <td v-if="paymentTypeId == 8" class="border-bottom"></td>
                                         <td class="border-bottom"></td>
                                         <td class="border-bottom"></td>
                                         <td class="border-bottom border-right"></td>
@@ -210,6 +236,11 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="orderItemInList in orderContent.OrderItemList" :key="orderItemInList.ItemId" class="uk-table-middle">
+                                        <td v-if="paymentTypeId != 0" class="border-bottom border-right uk-text-center">
+                                            <PrettyCheck v-model="orderItemInList.IsSelected" class="p-icon">
+                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small"></span>
+                                            </PrettyCheck>
+                                        </td>
                                         <td class="border-bottom border-right uk-text-center">
                                             <div class="editicon" @click="getItemToEdit(orderItemInList.ItemId)"> <!-- EDITERA PRODUKT -->
                                                 <i class="mdi mdi-file-edit md-color-green-600"></i>
@@ -228,11 +259,27 @@
                                             </nuxt-link>
                                         </td>
                                         <td class="border-bottom border-right uk-width-auto">{{ orderItemInList.ArticleNumber }}</td>
-                                        <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.SizeDisplay }}</td>
+                                        <td class="border-bottom border-right uk-width-auto uk-text-center">
+                                            <div v-if="paymentTypeId == 8">
+                                                <client-only>
+                                                    <Select2
+                                                        :id="'select-sizeList-' + orderItemInList.ArticleNumber"
+                                                        v-model="orderItemInList.SizeId"
+                                                        :options="orderItemInList.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
+                                                        :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                                    >
+                                                    </Select2>
+                                                </client-only> 
+                                            </div>
+                                            <div v-else>
+                                                {{ orderItemInList.SizeDisplay }}
+                                            </div>
+                                        </td>
                                         <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
                                         <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.Price }} {{ orderInfo.Currency }}</td>
                                     </tr>
                                     <tr class="uk-table-middle">
+                                        <td v-if="paymentTypeId != 0"></td>
                                         <td class="border-bottom border-right uk-text-center">
                                             <div @click="startAddItem()"><i class="addicon mdi mdi-plus-circle-outline md-color-green-600"></i></div> <!-- LÄGG TILL PRODUKT -->
                                         </td>
@@ -244,6 +291,7 @@
                                         <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum }} {{ orderInfo.Currency }}</td>
                                     </tr>
                                     <tr class="uk-table-middle">
+                                        <td v-if="paymentTypeId != 0"></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -255,6 +303,7 @@
                                         <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.ShippingAndHandling }} {{ orderInfo.Currency }}</td>
                                     </tr>
                                     <tr class="uk-table-middle">
+                                        <td v-if="paymentTypeId != 0"></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -264,6 +313,7 @@
                                         <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total }} {{ orderInfo.Currency }}</strong></td>
                                     </tr>
                                     <tr class="uk-table-middle">
+                                        <td v-if="paymentTypeId != 0"></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -470,8 +520,11 @@ export default {
             adressEditorVisible: false,
             updateEditorVisible: false,
             addEditorVisible: false,
+            orderProcessTypeList: [],
+            paymentTypeId: 0,
             orderInfo: {},
             orderContent: {},
+            orderContentInitial: {},
             orderItem: null,
             adressItem: null,
             articleNumber: null,
@@ -547,13 +600,10 @@ export default {
                 try {
                     if (response.ErrorList != null ) {
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertVisible', 4) Vi behöver alert här
                     } else {
                         _this.orderContent = response
-                        // _this.orderItem = null
                         _this.updateEditorVisible = false
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertHidden', 4) Vi behöver alert här
                     }
                 } catch(err) {
                     console.log(err)
@@ -574,6 +624,31 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.orderInfo = response
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async processOrder() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/OrderHandling/PostProcessOrder?paymentTypeId=' + _this.paymentTypeId, _this.orderContent )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.orderContent = _this.orderContentInitial
+                        _this.orderContent.OrderItemList.forEach(item => {
+                            item.IsSelected = false
+                        })
+                        _this.paymentTypeId = 0
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -691,14 +766,17 @@ export default {
     async fetch () {
         try {
             this.showPageOverlaySpinner()
-            const [ orderInfo, orderContent, countries ] = await Promise.all([
+            const [ orderInfo, orderContent, countries, orderProcessTypeList ] = await Promise.all([
                 this.$axios.$get('/webapi/Order/GetOrder?orderId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Order/GetOrderContent?orderId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Address/GetCountries'),
+                this.$axios.$get('/webapi/Utility/GetOrderProcessTypeList'),
             ])
             this.orderInfo = orderInfo
             this.orderContent = orderContent
+            this.orderContentInitial = orderContent
             this.countries = countries
+            this.orderProcessTypeList = orderProcessTypeList
             this.hidePageOverlaySpinner()
         } catch (err) {
             console.log(err);
