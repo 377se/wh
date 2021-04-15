@@ -234,7 +234,7 @@
                                 <table class="uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
                                     <thead>
                                         <tr>
-                                            <td v-if="paymentTypeId == 8" class="border-bottom"></td>
+                                            <td v-if="paymentTypeId != 0" class="border-bottom"></td>
                                             <td class="border-bottom"></td>
                                             <td class="border-bottom"></td>
                                             <td class="border-bottom border-right"></td>
@@ -287,11 +287,11 @@
                                                 </div>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.Price }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
-                                            <td class="border-bottom border-right uk-text-center">
+                                            <td class="border-bottom border-right uk-text-center" :class="{'border-left': paymentTypeId != 0 }">
                                                 <div @click="startAddItem()"><i class="addicon mdi mdi-plus-circle-outline md-color-green-600"></i></div> <!-- LÄGG TILL PRODUKT -->
                                             </td>
                                             <td></td>
