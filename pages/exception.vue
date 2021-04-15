@@ -166,7 +166,7 @@ export default {
 					filterOptions: {
 						enabled: false
 					},
-                    width: '9%',
+                    width: '45%',
 				},
 				{
 					label: 'Meddelande',
@@ -176,12 +176,13 @@ export default {
 					filterOptions: {
 						enabled: false
 					},
-                    width: '30%',
+                    width: '45%',
 				},
 				{
 					label: '',
 					field: 'show-more',
-                    width: '7%',
+                    width: '4%',
+					sortable: false,
 				},
 			]
 		},
