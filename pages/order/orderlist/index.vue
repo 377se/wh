@@ -81,7 +81,7 @@ export default {
     async fetch () {
         try {
             const [ orderList ] = await Promise.all([
-                this.$axios.$get('/webapi/Order/GetOrderlist?shopId=2&orderdate=2021-03-16&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1'),
+                this.$axios.$get('/webapi/Order/GetOrderlist?shopId=2&orderdate=2021-04-14&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1'),
             ])
             this.orderList = orderList
         } catch (err) {
