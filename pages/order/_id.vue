@@ -218,15 +218,15 @@
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-flex uk-flex-around uk-padding-small">
+                        <div class="uk-grid-column-small uk-grid-row-small uk-padding-small" uk-grid>
                             <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
                                 SKICKA ORDERBEKRÄFTELSE
                             </button>
                             <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
-                                SKICKA ORDERBEKRÄFTELSE
+                                VISA FÖLJESEDEL
                             </button>
                             <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
-                                SKICKA ORDERBEKRÄFTELSE
+                                TILLDELA MEDLEMSRABATT
                             </button>
                         </div>
                          <div class="uk-flex">
