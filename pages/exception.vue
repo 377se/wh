@@ -76,7 +76,7 @@
 							</VueGoodTable>
 						</div>
 						<!-- MER INFO -->
-						<div v-if="exceptionDetails" id="modal-moreinfo" class="uk-modal" data-uk-modal>
+						<div v-if="exceptionDetails != null" id="modal-moreinfo" class="uk-modal" data-uk-modal>
 							<div class="uk-modal-dialog">
 								<button class="uk-modal-close-default" type="button" data-uk-close></button>
 								<div class="uk-modal-header">
@@ -137,7 +137,7 @@ export default {
 			logs: [],
 			domainList: [],
 			domainId: null,
-			exceptionDetails: null,
+			exceptionDetails: {},
 			showMoreVisible: false,
 			errors: null,
 			message: null,
@@ -200,11 +200,11 @@ export default {
 			})
     	},
 		async getExceptionDetails(errorId) {
+			this.exceptionDetails = {}
 			{{ this.showPageOverlaySpinner() }}
 			await this.$axios.$get('/webapi/Exception/GetExceptionDetails?ErrorId=' + errorId )
 			.then( exceptionDetails => {
 				this.exceptionDetails = exceptionDetails
-				this.$router.push('#modal-moreinfo')
 				{{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
