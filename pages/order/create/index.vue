@@ -75,6 +75,27 @@
                                                     :alertClass="'uk-alert-danger'"
                                                     id=5
                                                 />
+                                                <!-- Valuta -->
+                                                <div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
+                                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                    <label class="select-label" for="select-currencyOptionsList">Valuta</label>
+                                                    <client-only>
+                                                        <Select2
+                                                            id="select-currencyOptionsList"
+                                                            v-model="order.CurrencyId"
+                                                            :options="currencyOptionsList"
+                                                            :settings="{ 'width': '100%', 'placeholder': '', 'closeOnSelect': true }"
+                                                        >
+                                                        </Select2>
+                                                    </client-only>
+                                                    </div>
+                                                </div>
+                                                <!-- Frakt -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="order.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                        <label>Fraktkostnader</label>
+                                                    </ScInput>
+                                                </div>
                                                 <!-- Email -->
                                                 <div class="uk-margin">
                                                     <ScInput v-model="customerEmail" state="fixed" mode="outline" v-on:blur="getCustomerByEmail(customerEmail, order.ShopId)" extra-classes="uk-form-small">
@@ -339,6 +360,13 @@
                                                 <button v-if="this.cart" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-top" @click.prevent="postCreateOrder()">
                                                     SKAPA ORDER
                                                 </button>
+                                                <Alert
+                                                    :errorlist="errors"
+                                                    message=""
+                                                    :alertClass="'uk-alert-danger'"
+                                                    id=1
+                                                />
+
                                         </ScCardBody>
                                     </ScCardContent>
                                 </ScCard>
@@ -375,6 +403,7 @@ export default {
             shopId: null,
             shopOptionsList: [],
             paymentOptionsList: [],
+            currencyOptionsList: [],
             countriesOptionsList: [],
             paymentTypes: [],
             customer: [],
@@ -464,7 +493,7 @@ export default {
                 _this.customer = response
                 _this.order.CustomerId = response.CustomerId
                 try {
-                    if ( !response.AddressList ) {
+                    if ( response.AddressList.length === 0 ) {
                         _this.hidePageOverlaySpinner()
                         _this.$store.commit('setAlertVisible', 2)
                         _this.showAdressContainer = false
@@ -556,6 +585,20 @@ export default {
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder', _this.order)
 			.then(function (response) {
+                try {
+                    if ( response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                        _this.errors = response.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
+                    } else {
+                        _this.hidePageOverlaySpinner()
+                        _this.$store.commit('setAlertHidden', 1)
+                        _this.articleDetails = null
+                        _this.articleNumber = null
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
                 _this.hidePageOverlaySpinner()
                 _this.$router.push(response.Url)
 			})
@@ -605,6 +648,7 @@ export default {
 			this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
 			this.paymentTypes = paymentTypes
 			this.paymentOptionsList = paymentTypes.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.currencyOptionsList = order.CurrencyList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.countries = countries
 			this.countriesOptionsList = countries.map(({ CountryId, Name }) => ({ id: CountryId, text: Name }))
 
