@@ -212,6 +212,17 @@ export default {
 				console.log(error)
 			})
     	},
+		async getDomainList() {
+			{{ this.showPageOverlaySpinner() }}
+			await this.$axios.$get('/webapi/Exception/GetDomainList')
+			.then( domainList => {
+				this.domainList = domainList
+				{{ this.hidePageOverlaySpinner() }}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
 		async deleteExceptionsByDomainId(domainId) {
 			{{ this.showPageOverlaySpinner() }}
 			await this.$axios.$post('/webapi/Exception/PostDeleteExceptionsByDomainId?domainId=' + this.domainId )
@@ -219,6 +230,7 @@ export default {
 				this.message = response.Message
 				this.$store.commit('setAlertVisible', 1)
 				this.logs = []
+				this.getDomainList()
 				{{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
@@ -235,7 +247,8 @@ export default {
         },
 	},
 	mounted() {
-    },
+
+	},
 	watch: {
 		domainId: function () {
 			this.logs = []
@@ -244,15 +257,11 @@ export default {
 	},
 	async fetch () {
         try {
-            const [ domainList ] = await Promise.all([
-                this.$axios.$get('/webapi/Exception/GetDomainList'),
-            ])
-            this.domainList = domainList
+            this.getDomainList()
         } catch (err) {
             console.log(err);
         }
     },
-
 }
 </script>
 
