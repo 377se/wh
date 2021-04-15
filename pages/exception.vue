@@ -94,13 +94,13 @@
 												</td>
 											</tr>
 											<tr>
-												<td class="border-bottom border-right uk-width-1-5"><strong>Message</strong>
+												<td class="border-bottom border-right uk-width-1-5"><strong>Meddelande</strong>
 												</td>
 												<td class="border-bottom uk-width-4-5">{{ exceptionDetails.Message }}
 												</td>
 											</tr>
 											<tr>
-												<td class="border-bottom border-right uk-width-1-5"><strong>Method</strong>
+												<td class="border-bottom border-right uk-width-1-5"><strong>Metod</strong>
 												</td>
 												<td class="border-bottom uk-width-4-5">{{ exceptionDetails.Method }}
 												</td>
