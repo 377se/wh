@@ -218,11 +218,11 @@
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-grid-column-small uk-grid-row-small uk-padding-small" uk-grid>
+                        <div class="uk-grid-small uk-padding-small" uk-grid>
                             <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
                                 SKICKA ORDERBEKRÄFTELSE
                             </button>
-                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
+                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
                                 VISA FÖLJESEDEL
                             </button>
                             <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
