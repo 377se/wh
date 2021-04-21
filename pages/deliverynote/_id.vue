@@ -1,160 +1,162 @@
 <template>
   <div class="delivery-note-container">
-    <div id="delivery-note-single" class="delivery-note" style="clear: both; page-break-after: always;">
-    <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynote" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
-    <div class="identity">
-        <div class="logo">
-        <img
-            class="image"
-            src="//res.cloudinary.com/supportersplace/image/fetch/w_270,f_auto/http://static.supportersplace.se/img/mail/samdodds_300.png"
-            alt="logo"
-        />
-        </div>
-        <div class="address">
-        377 Sport AB / Sam Dodds<br />
-        Skärholmen, Stockholm, Sweden
-        </div>
-    </div>
-    <div class="customer">
-        <div class="customer-title">
-        Kund<br />
-        Hansi Fellbrink<br />
-        Hellbergsgatan 38<br />
-        85631 SUNDSVALL<br />
-        SWEDEN<br />
-        0703356961<br />
-        </div>
-    </div>
-    <div class="orderdetails">
-        <div class="header">Följesedel</div>
-        <table class="meta">
-        <tbody>
-            <tr>
-            <td class="meta-head">Ordernummer</td>
-            <td><span style="font-weight: bold;">370390</span></td>
-            </tr>
-            <tr>
-            <td class="meta-head">Orderdatum</td>
-            <td class="date">2021-04-01</td>
-            </tr>
-            <tr>
-            <td class="meta-head">Betalningmetod</td>
-            <td>
-                <div class="due">Give away</div>
-            </td>
-            </tr>
-        </tbody>
-        </table>
-    </div>
-    <div style="clear: both"></div>
-    <div class="order">
-        <table class="items">
-        <thead>
-            <tr>
-            <th></th>
-            <th></th>
-            <th>Artikelnummer</th>
-            <th style="text-align: center;">HP</th>
-            <th style="text-align: center;">Färg</th>
-            <th style="text-align: center;">Storlek</th>
-            <th style="text-align: center;">Antal</th>
-            <th style="text-align: right;">Pris/st (SEK)</th>
-            <th style="text-align: right;">Totalt (SEK)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="item-row">
-            <td>
-                <img
-                class="productImage"
-                src="//res.cloudinary.com/supportersplace/image/fetch/w_50,f_auto/https://static.supportersplace.se/product/adidas-home-jersey-2017-18-5418-1.jpg"
-                alt="Product image"
-                />
-            </td>
-            <td class="description">
-                <span class="articleCategory">Manchester United</span>
-                Home Jersey 2017/18<br />
-                Adidas
-            </td>
-            <td class="item-name">BS1214</td>
-            <td class="qty">J8</td>
-            <td class="qty">Röd</td>
-            <td class="qty">2XL</td>
-            <td class="qty">1</td>
-            <td class="cost">90,00 SEK</td>
-            <td class="price">90,00 SEK</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td
-                colspan="2"
-                class="total-line"
-                style="border-top: 1px solid #000; padding-top: 15px;"
-            >
-                Summa
-            </td>
-            <td
-                class="total-value"
-                style="border-top: 1px solid #000; padding-top: 10px;"
-            >
-                <div
-                style="text-align: right; padding-top: 5px;"
-                class="subtotal"
-                >
-                90,00 SEK
-                </div>
-            </td>
-            </tr>
-            <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2" class="total-line">Frakt &amp; hantering</td>
-            <td class="total-value">
-                <div style="text-align: right">0,00 SEK</div>
-            </td>
-            </tr>
-            <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2" class="total-line">Inklusive moms</td>
-            <td class="total-value paid" style="text-align: right">
-                18,00 SEK
-            </td>
-            </tr>
-            <tr class="blank">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2" class="total-line">
-                <span style="font-weight: bold;">Ordersumma</span>
-            </td>
-            <td class="total-value">
-                <div class="total" style="font-weight: bold; text-align: right;">
-                90,00 SEK
-                </div>
-            </td>
-            </tr>
-        </tfoot>
-        </table>
-    </div>
+    <div id="all-delivery-notes" class="all-delivery-notes">
+      <div v-for="deliveryNote in orderInfo.OrderList" :key="deliveryNote.OrderDetails.OrderId" id="delivery-note-single" class="delivery-note" style="clear: both; page-break-after: always;">
+      <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
+      <div class="identity">
+          <div class="logo">
+          <img
+              class="image"
+              src="//res.cloudinary.com/supportersplace/image/fetch/w_270,f_auto/http://static.supportersplace.se/img/mail/samdodds_300.png"
+              alt="logo"
+          />
+          </div>
+          <div class="address">
+          377 Sport AB / Sam Dodds<br />
+          Skärholmen, Stockholm, Sweden
+          </div>
+      </div>
+      <div class="customer">
+          <div class="customer-title">
+          Kund<br />
+          {{ deliveryNote.OrderDetails.Address.FirstName }} {{ deliveryNote.OrderDetails.Address.LastName }}<br />
+          {{ deliveryNote.OrderDetails.Address.Address1 }}<br />
+          {{ deliveryNote.OrderDetails.Address.PostalCode }} {{ deliveryNote.OrderDetails.Address.City }}<br />
+          {{ deliveryNote.OrderDetails.Address.Country }}<br />
+          {{ deliveryNote.OrderDetails.Address.Mobile }}<br />
+          </div>
+      </div>
+      <div class="orderdetails">
+          <div class="header">Följesedel</div>
+          <table class="meta">
+          <tbody>
+              <tr>
+              <td class="meta-head">Ordernummer</td>
+              <td><span style="font-weight: bold;">{{ deliveryNote.OrderDetails.OrderId }}</span></td>
+              </tr>
+              <tr>
+              <td class="meta-head">Orderdatum</td>
+              <td class="date">{{ deliveryNote.OrderDetails.OrderDate }}</td>
+              </tr>
+              <tr>
+              <td class="meta-head">Betalningmetod</td>
+              <td>
+                  <div class="due">{{ deliveryNote.OrderDetails.PaymentMethod }}</div>
+              </td>
+              </tr>
+          </tbody>
+          </table>
+      </div>
+      <div style="clear: both"></div>
+      <div class="order">
+          <table class="items">
+          <thead>
+              <tr>
+              <th></th>
+              <th></th>
+              <th>Artikelnummer</th>
+              <th style="text-align: center;">HP</th>
+              <th style="text-align: center;">Färg</th>
+              <th style="text-align: center;">Storlek</th>
+              <th style="text-align: center;">Antal</th>
+              <th style="text-align: right;">Pris/st (SEK)</th>
+              <th style="text-align: right;">Totalt (SEK)</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr v-for="article in deliveryNote.OrderContent.OrderItemList" :key="article.ItemId" class="item-row">
+              <td>
+                  <img
+                  class="productImage"
+                  :src="article.ImageName"
+                  alt="Product image"
+                  />
+              </td>
+              <td class="description">
+                  <span class="articleCategory">{{ article.TeamName }}</span>
+                  {{ article.ProductName }}<br />
+                  {{ article.BrandName }}
+              </td>
+              <td class="item-name">{{ article.ArticleNumber }}</td>
+              <td class="qty">{{ article.Shelf }}</td>
+              <td class="qty">{{ article.Color }}</td>
+              <td class="qty">{{ article.SizeDisplay }}</td>
+              <td class="qty">{{ article.Quantity }}</td>
+              <td class="cost">{{ article.PurchasePrice }}</td>
+              <td class="price">{{ article.PriceToPay }}</td>
+              </tr>
+          </tbody>
+          <tfoot>
+              <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td
+                  colspan="2"
+                  class="total-line"
+                  style="border-top: 1px solid #000; padding-top: 15px;"
+              >
+                  Summa
+              </td>
+              <td
+                  class="total-value"
+                  style="border-top: 1px solid #000; padding-top: 10px;"
+              >
+                  <div
+                  style="text-align: right; padding-top: 5px;"
+                  class="subtotal"
+                  >
+                  {{ deliveryNote.OrderContent.OrderSummary.OrderSum }}
+                  </div>
+              </td>
+              </tr>
+              <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colspan="2" class="total-line">Frakt &amp; hantering</td>
+              <td class="total-value">
+                  <div style="text-align: right">{{ deliveryNote.OrderContent.OrderSummary.ShippingAndHandling }}</div>
+              </td>
+              </tr>
+              <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colspan="2" class="total-line">Inklusive moms</td>
+              <td class="total-value paid" style="text-align: right">
+                  {{ deliveryNote.OrderContent.OrderSummary.Vat }}
+              </td>
+              </tr>
+              <tr class="blank">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colspan="2" class="total-line">
+                  <span style="font-weight: bold;">Ordersumma</span>
+              </td>
+              <td class="total-value">
+                  <div class="total" style="font-weight: bold; text-align: right;">
+                  {{ deliveryNote.OrderContent.OrderSummary.Total }}
+                  </div>
+              </td>
+              </tr>
+          </tfoot>
+          </table>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -164,12 +166,12 @@ import print from '~/plugins/directives/vue-print-nb'
 
 export default {
     directives: { print },
-	data: () => ({
-        printDeliverynote: {
-			id: "delivery-note-single",
-			popTitle: 'Följesedel'
-		}
-	}),
+	  data: () => ({
+      printDeliverynotes: {
+			  id: "all-delivery-notes",
+		  },
+      orderInfo: {},
+	  }),
     methods: {
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
@@ -181,16 +183,16 @@ export default {
         },
     },
     async fetch () {
+        this.showPageOverlaySpinner()
         try {
-            this.showPageOverlaySpinner()
             const [ orderInfo ] = await Promise.all([
-                this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=370408&createUnifaunXml=false' + this.$route.params.id),
+                this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.$route.params.id + '&createUnifaunXml=false'),
             ])
             this.orderInfo = orderInfo
-            this.hidePageOverlaySpinner()
         } catch (err) {
-            console.log(err);
+          console.log(err);
         }
+        this.hidePageOverlaySpinner()
     },
 }
 </script>
@@ -204,14 +206,19 @@ export default {
 }
 
 .delivery-note-container {
-    margin: 60px 0 0 50px;
+    margin: 60px 0 0 0px;
+}
+
+.all-delivery-notes {
+  width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 0 50px;
 }
 
 .delivery-note {
-  width: 900px;
-  margin: 0 auto;
-  padding: 0 50px;
-  background-color: #fff;
+  // width: 900px;
+  // margin: 0 auto;
 }
 
 div,
