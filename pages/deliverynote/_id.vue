@@ -1,24 +1,24 @@
 <template>
   <div class="delivery-note-container">
     <div id="all-delivery-notes" class="all-delivery-notes">
-      <div v-for="deliveryNote in orderInfo.OrderList" :key="deliveryNote.OrderDetails.OrderId" id="delivery-note-single" class="delivery-note" style="clear: both; page-break-after: always;">
+      <div v-for="deliveryNote in orderInfo.OrderList" :key="deliveryNote.OrderDetails.OrderId" class="delivery-note" style="clear: both; page-break-after: always;">
       <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
       <div class="identity">
           <div class="logo">
           <img
               class="image"
-              src="//res.cloudinary.com/supportersplace/image/fetch/w_270,f_auto/http://static.supportersplace.se/img/mail/samdodds_300.png"
+              :src="deliveryNote.ImageName"
               alt="logo"
           />
           </div>
           <div class="address">
-          377 Sport AB / Sam Dodds<br />
-          Skärholmen, Stockholm, Sweden
+          {{ deliveryNote.Dictionary.ReturnCompany }}<br />
+          {{ deliveryNote.Dictionary.ReturnAddress }}
           </div>
       </div>
       <div class="customer">
           <div class="customer-title">
-          Kund<br />
+          {{ deliveryNote.Dictionary.Customer }}<br />
           {{ deliveryNote.OrderDetails.Address.FirstName }} {{ deliveryNote.OrderDetails.Address.LastName }}<br />
           {{ deliveryNote.OrderDetails.Address.Address1 }}<br />
           {{ deliveryNote.OrderDetails.Address.PostalCode }} {{ deliveryNote.OrderDetails.Address.City }}<br />
@@ -27,19 +27,19 @@
           </div>
       </div>
       <div class="orderdetails">
-          <div class="header">Följesedel</div>
+          <div class="header">{{ deliveryNote.Dictionary.Title }}</div>
           <table class="meta">
           <tbody>
               <tr>
-              <td class="meta-head">Ordernummer</td>
+              <td class="meta-head">{{ deliveryNote.Dictionary.OrderNumber }}</td>
               <td><span style="font-weight: bold;">{{ deliveryNote.OrderDetails.OrderId }}</span></td>
               </tr>
               <tr>
-              <td class="meta-head">Orderdatum</td>
+              <td class="meta-head">{{ deliveryNote.Dictionary.OrderDate }}</td>
               <td class="date">{{ deliveryNote.OrderDetails.OrderDate }}</td>
               </tr>
               <tr>
-              <td class="meta-head">Betalningmetod</td>
+              <td class="meta-head">{{ deliveryNote.Dictionary.PaymentMethod }}</td>
               <td>
                   <div class="due">{{ deliveryNote.OrderDetails.PaymentMethod }}</div>
               </td>
@@ -48,42 +48,42 @@
           </table>
       </div>
       <div style="clear: both"></div>
-      <div class="order">
+      <div>
           <table class="items">
           <thead>
               <tr>
               <th></th>
               <th></th>
-              <th>Artikelnummer</th>
+              <th>{{ deliveryNote.Dictionary.ArticleNumber }}</th>
               <th style="text-align: center;">HP</th>
-              <th style="text-align: center;">Färg</th>
-              <th style="text-align: center;">Storlek</th>
-              <th style="text-align: center;">Antal</th>
-              <th style="text-align: right;">Pris/st (SEK)</th>
-              <th style="text-align: right;">Totalt (SEK)</th>
+              <th style="text-align: center;">{{ deliveryNote.Dictionary.Color }}</th>
+              <th style="text-align: center;">{{ deliveryNote.Dictionary.Size }}</th>
+              <th style="text-align: center;">{{ deliveryNote.Dictionary.Quantity }}</th>
+              <th style="text-align: right;">{{ deliveryNote.Dictionary.UnitPrice }} ({{ deliveryNote.OrderDetails.Currency }})</th>
+              <th style="text-align: right;">{{ deliveryNote.Dictionary.OrderTotal }} ({{ deliveryNote.OrderDetails.Currency }})</th>
               </tr>
           </thead>
           <tbody>
               <tr v-for="article in deliveryNote.OrderContent.OrderItemList" :key="article.ItemId" class="item-row">
-              <td>
-                  <img
-                  class="productImage"
-                  :src="article.ImageName"
-                  alt="Product image"
-                  />
-              </td>
-              <td class="description">
-                  <span class="articleCategory">{{ article.TeamName }}</span>
-                  {{ article.ProductName }}<br />
-                  {{ article.BrandName }}
-              </td>
-              <td class="item-name">{{ article.ArticleNumber }}</td>
-              <td class="qty">{{ article.Shelf }}</td>
-              <td class="qty">{{ article.Color }}</td>
-              <td class="qty">{{ article.SizeDisplay }}</td>
-              <td class="qty">{{ article.Quantity }}</td>
-              <td class="cost">{{ article.PurchasePrice }}</td>
-              <td class="price">{{ article.PriceToPay }}</td>
+                <td>
+                    <img
+                    class="productImage"
+                    :src="article.ImageName"
+                    alt="Product image"
+                    />
+                </td>
+                <td class="description">
+                    <span class="articleCategory">{{ article.TeamName }}</span>
+                    {{ article.ProductName }}<br />
+                    {{ article.BrandName }}
+                </td>
+                <td class="item-name">{{ article.ArticleNumber }}</td>
+                <td class="qty">{{ article.Shelf }}</td>
+                <td class="qty">{{ article.Color }}</td>
+                <td class="qty">{{ article.SizeDisplay }}</td>
+                <td class="qty">{{ article.Quantity }}</td>
+                <td class="cost">{{ deliveryNote.OrderDetails.Currency }} {{ article.PriceToPay }}</td>
+                <td class="price">{{ deliveryNote.OrderDetails.Currency }} {{ article.PriceToPay }}</td>
               </tr>
           </tbody>
           <tfoot>
@@ -99,7 +99,7 @@
                   class="total-line"
                   style="border-top: 1px solid #000; padding-top: 15px;"
               >
-                  Summa
+                  {{ deliveryNote.Dictionary.OrderTotal }}
               </td>
               <td
                   class="total-value"
@@ -120,7 +120,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td colspan="2" class="total-line">Frakt &amp; hantering</td>
+              <td colspan="2" class="total-line">{{ deliveryNote.Dictionary.ShippingAndHandling }}</td>
               <td class="total-value">
                   <div style="text-align: right">{{ deliveryNote.OrderContent.OrderSummary.ShippingAndHandling }}</div>
               </td>
@@ -132,7 +132,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td colspan="2" class="total-line">Inklusive moms</td>
+              <td colspan="2" class="total-line">{{ deliveryNote.Dictionary.Vat }}</td>
               <td class="total-value paid" style="text-align: right">
                   {{ deliveryNote.OrderContent.OrderSummary.Vat }}
               </td>
@@ -145,7 +145,7 @@
               <td></td>
               <td></td>
               <td colspan="2" class="total-line">
-                  <span style="font-weight: bold;">Ordersumma</span>
+                  <span style="font-weight: bold;">{{ deliveryNote.Dictionary.OrderTotal }}</span>
               </td>
               <td class="total-value">
                   <div class="total" style="font-weight: bold; text-align: right;">
@@ -171,6 +171,7 @@ export default {
 			  id: "all-delivery-notes",
 		  },
       orderInfo: {},
+      articleCount: true,
 	  }),
     methods: {
         hidePageOverlaySpinner () {
@@ -207,19 +208,32 @@ export default {
 
 .delivery-note-container {
     margin: 60px 0 0 0px;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight:400;
 }
 
 .all-delivery-notes {
-  width: 900px;
+  width: 950px;
   margin: 0 auto;
-  background-color: #fff;
-  padding: 0 50px;
 }
 
 .delivery-note {
-  // width: 900px;
-  // margin: 0 auto;
+  margin: 0 0 50px 0;
+  padding: 50px 50px;
+  background-color: #fff;
 }
+
+@media print {
+  .delivery-note {
+    margin: 30px 20px 60px 20px  !important;
+    padding: 0;
+  }
+  .all-delivery-notes {
+    margin-bottom: 60px !important;
+  }
+}
+
 
 div,
 textarea {
@@ -231,6 +245,7 @@ textarea {
 }
 table {
   border-collapse: collapse;
+  line-height: 13px;
 }
 table td,
 table th {
@@ -315,6 +330,19 @@ table th {
   text-align: left;
   color: #fff;
 }
+
+@media print {
+    .items th {
+        background: #333 !important;
+        -webkit-print-color-adjust: exact;
+        color: #fff !important;
+        font-size: 10px;
+    }
+    .items tr {
+        font-size: 12px;
+    }
+}
+
 .items tr.item-row td {
   border: 0;
   vertical-align: middle;
@@ -350,18 +378,6 @@ tr.blank.spread {
 
 .items th {
   text-transform: uppercase;
-}
-.terms p {
-  text-align: left;
-  margin: 0 0 20px 0;
-  background: #f5f5f5;
-  padding: 20px;
-}
-.terms h5 {
-  margin-top: 20px;
-  text-transform: uppercase;
-  font: 13px Helvetica, Sans-Serif;
-  font-weight: bold;
 }
 
 .qty {
