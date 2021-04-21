@@ -17,9 +17,49 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody>
-                        <!-- TILLFÄLLIGT HACK FÖR ATT SE ORDERLISTAN -->
-                        <div v-for="order in orderList" :key="order.OrderId">
-                            <Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link>
+                        <div class="uk-overflow-auto">
+                            <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                <thead :class="{ 'hide': index !== 0 }">
+                                    <tr class="uk-padding-remove-bottom">
+                                        <th class="border-top border-left" style="width: 15px;"></th>
+                                        <th class="border-top border-left" style="width: 15px;"></th>
+                                        <th class="border-top border-left" style="width: 15px;"></th>
+                                        <th class="border-top border-left" style="width: 15px;"></th>
+                                        <th class="border-top border-left uk-text-small" style="text-align: left;">OrderId</th>
+                                        <th class="border-top border-left uk-text-small" style="text-align: left; width: 150px;">Orderdatum</th>
+                                        <th class="border-top border-left uk-text-small" style="text-align: right; width: 70px;">Summa</th>
+                                        <th class="border-top border-left uk-text-small" style="width: 70px;">Valuta</th>
+                                        <th class="border-top border-left uk-text-small" style="width: 70px;">Voucher</th>
+                                        <th class="border-top border-left uk-text-small" style="text-align: left; width: 200px;">Kund</th>
+                                        <th class="border-top border-left border-right uk-text-small" style="text-align: left; width: 200px;">Kommentar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="uk-table-middle">
+                                        <td class="border-top border-left" style="width: 15px;"><input type="checkbox"></td>
+                                        <td class="border-top border-left" style="width: 15px;"><span v-if="order.HasBeenPrinted"><i class="mdi mdi-printer sc-icon-18"></i></span></td>
+                                        <td class="border-top border-left" style="width: 15px;"><span v-if="order.ContainsPrintedItem"><i class="mdi mdi-tshirt-crew sc-icon-18"></i></span></td>
+                                        <td class="border-top border-left" style="width: 15px;"><span v-if="order.ContainsPreorder"><i class="mdi mdi-pause-circle sc-icon-18"></i></span></td>
+                                        <td class="border-top border-left" style="text-align: left;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
+                                        <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}</td>
+                                        <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}</td>
+                                        <td class="border-top border-left" style="width: 70px;">{{ order.Currency }}</td>
+                                        <td class="border-top border-left" style="width: 70px;">{{ order.Voucher }}</td>
+                                        <td class="border-top border-left" style="width: 200px;"><a :href="order.UrlCustomer">{{ order.CustomerName }}</a></td>
+                                        <td class="border-top border-left border-right" style="width: 200px;">{{ order.Comment }}</td>
+                                    </tr>
+                                    <tr v-for="article in order.OrderItemList" :key="article.ItemId">
+                                        <td class="border-top border-left" colspan="4"></td>
+                                        <td class="border-top border-left" style="width: 50px;">
+                                            <img :src="article.ImageName">
+                                        </td>
+                                        <td class="border-top border-left border-right" colspan="6">
+                                            {{ article.TeamName }}<br>
+                                            {{ article.ProductName }}<br>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </ScCardBody>
                 </ScCard>
@@ -92,5 +132,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .border-all {
+        border: 1px solid #ccc;
+    }
+    .border-left {
+        border-left: 1px solid #ccc;
+    }
+    .border-right {
+        border-right: 1px solid #ccc;
+    }
+    .border-top {
+        border-top: 1px solid #ccc;
+    }
+    .border-bottom {
+        border-bottom: 1px solid #ccc;
+    }
+    .hide {
+        display: none;
+    }
 </style>
