@@ -17,6 +17,9 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody>
+                        <div class="uk-margin-medium-bottom uk-padding-small actionpanel" uk-sticky="offset: 60">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab labore laboriosam? Eveniet ducimus perferendis voluptatum unde, dolor qui ullam consequatur, fugiat adipisci tempore numquam fuga distinctio repudiandae repellat itaque autem in illo? Perferendis saepe recusandae, omnis, quam ut quaerat eum vero, nihil dolorum laborum nulla! Iure provident neque in est, inventore eum eligendi dignissimos perspiciatis accusamus deleniti nihil maiores labore illum possimus iste hic delectus, explicabo vel molestiae temporibus excepturi aliquid blanditiis rem. Ab, libero. Voluptate sint, adipisci est maxime eveniet officiis eius porro, alias deserunt itaque ut, esse illum? Iste, dolore qui. Asperiores inventore fugit quod labore voluptatibus.
+                        </div>
                         <div class="uk-overflow-auto">
                             <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove">
                                 <thead :class="{ 'hide': index !== 0 }">
@@ -149,5 +152,8 @@ export default {
     }
     .hide {
         display: none;
+    }
+    .actionpanel {
+        background-color: #fff;
     }
 </style>
