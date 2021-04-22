@@ -5,7 +5,7 @@
     <div id="all-delivery-notes" class="all-delivery-notes">
 
         <!-- PLOCKLISTA -->
-        <div v-if="isUnifaunTrue" class="delivery-note" style="clear: both; page-break-after: always;">
+        <div v-if="isUnifaunTrue && orderInfo.PickingList" class="delivery-note" style="clear: both; page-break-after: always;">
             <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
             <h2>Plocklista</h2>
             <table class="items">
