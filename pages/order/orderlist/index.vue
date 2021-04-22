@@ -20,7 +20,6 @@
                         <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 60">
                                 <div class="uk-margin-medium-bottom uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <!-- <label class="select-label" for="select-shopOptionsList">Shop</label> -->
                                     <client-only>
                                         <Select2
                                             id="select-shopOptionsList"
@@ -160,7 +159,8 @@ export default {
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 1)
                     } else {
-                        _this.message = response.Message
+                        _this.orderList = response
+                        _this.message = 'Markerade ordrar är satt som levererade!'
                         _this.hidePageOverlaySpinner()
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 2)
