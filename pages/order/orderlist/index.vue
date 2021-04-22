@@ -34,8 +34,13 @@
                                 </div>
                             <div v-if="shopId" class="uk-grid-small uk-flex-between" uk-grid>
                                 <div>
+                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="printDeliveryNotes()">
+                                        SKRIV UT FÖLJESEDEL
+                                    </button>
+                                </div>
+                                <div>
                                     <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDelivered()">
-                                        SÄTT SOM LEVERERAD
+                                        SÄTT SOM LEVERERAT
                                     </button>
                                 </div>
                                 <div>
@@ -108,20 +113,24 @@
                 </ScCard>
             </div>
         </div>
+        <Deliverynotes :orders="this.orders" />
     </div>
 </template>
 
 <script>
 import Alert from '~/components/Alert'
+import Deliverynotes from '~/components/Deliverynotes'
 
 export default {
 	components: {
 		Alert,
+		Deliverynotes,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
 		return {
             orderList: [],
+            orders: [],
             shopId: null,
             shopOptionsList: [],
             errors: null,
@@ -139,13 +148,20 @@ export default {
                 if (order.IsSelected === true) counter++;
             }
             return counter
-        }
+        },
     },
     methods: {
         resetIsSelected () {
             for (const order of this.orderList) {
                 if (order.IsSelected === true) order.IsSelected = false
             }
+        },
+        printDeliveryNotes () {
+            let selectedOrders = []
+            for (const order of this.orderList) {
+                if (order.IsSelected === true) selectedOrders.push(order.OrderId)
+            }
+            this.orders = selectedOrders
         },
         async setOrderAsDelivered() {
 			let _this = this
@@ -210,6 +226,8 @@ export default {
         },
         async getOrderList() {
 			let _this = this
+            _this.resetIsSelected()
+            _this.orders = []
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Order/GetOrderlist?shopId=' + _this.shopId +'&orderdate=2021-04-14&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1')
 			.then(function (orderlist) {
