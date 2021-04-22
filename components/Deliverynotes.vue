@@ -5,7 +5,8 @@
     <div id="all-delivery-notes" class="all-delivery-notes">
 
         <!-- PLOCKLISTA -->
-        <div v-if="orderInfo.PickingList" class="delivery-note" style="clear: both; page-break-after: always;">
+        <div v-if="isUnifaunTrue" class="delivery-note" style="clear: both; page-break-after: always;">
+            <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
             <h2>Plocklista</h2>
             <table class="items">
                 <thead>
@@ -190,6 +191,19 @@
               </tr>
           </tfoot>
           </table>
+          <div class="terms">
+            <p>
+                <strong style="background-color: initial;">{{ deliveryNote.Dictionary.KlarnaTitle }}</strong><br>
+                {{ deliveryNote.Dictionary.KlarnaInfo }}
+            </p>
+
+            <p>
+                <strong>{{ deliveryNote.Dictionary.ReturnTitle }}</strong><br>
+                {{ deliveryNote.Dictionary.ReturnInfo }}<br><br><br>
+                 {{ deliveryNote.Dictionary.ReturnCompany }}<br>
+                {{ deliveryNote.Dictionary.ReturnAddress }}
+            </p>
+        </div>
       </div>
       </div>
     </div>
@@ -204,6 +218,11 @@ export default {
         orders: {
             type: Array,
             default: () => [],
+            required: true
+        },
+        isUnifaunTrue: {
+            type: Boolean,
+            default: () => false,
             required: true
         },
     },
@@ -234,7 +253,7 @@ export default {
         this.showPageOverlaySpinner()
         try {
             const [ orderInfo ] = await Promise.all([
-                this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.orders + '&createUnifaunXml=true'),
+                this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.orders + '&createUnifaunXml=' + this.isUnifaunTrue ),
             ])
             this.orderInfo = orderInfo
         } catch (err) {
