@@ -113,7 +113,7 @@
                 </ScCard>
             </div>
         </div>
-        <Deliverynotes :orders="this.orders" />
+        <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
     </div>
 </template>
 
