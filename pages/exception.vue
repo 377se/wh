@@ -20,9 +20,19 @@
 				<ScCard>
 					<ScCardBody>
 						<div class="uk-flex uk-margin-medium-bottom">
-							<select class="uk-select" v-model="domainId">
-								<option v-for="domain in domainList" :key="domain.DomainId" :value="domain.DomainId">{{ domain.DomainName }}</option>
-							</select>
+							<div class="uk-margin-medium-bottom uk-width-1-1">
+								<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled uk-position-z-index">
+								<client-only>
+									<Select2
+										id="select-domainOptionsList"
+										v-model="domainId"
+										:options="domainOptionsList"
+										:settings="{ 'width': '100%', 'placeholder': 'Välj domän', 'closeOnSelect': true }"
+									>
+									</Select2>
+								</client-only>
+								</div>
+							</div>
 							<button v-if="domainId != null" v-waves.button.light class="uk-margin-medium-left sc-button sc-button-primary" @click.prevent="deleteExceptionsByDomainId()">
 								RADERA
 							</button>
@@ -130,12 +140,14 @@ import Alert from '~/components/Alert'
 export default {
 	components: {
 		VueGoodTable,
+		Select2: process.client ? () => import('~/components/Select2') : null,
 		Alert,
 	},
 	data () {
 		return {
 			logs: [],
 			domainList: [],
+			domainOptionsList: [],
 			domainId: null,
 			exceptionDetails: {},
 			showMoreVisible: false,
@@ -217,6 +229,7 @@ export default {
 			await this.$axios.$get('/webapi/Exception/GetDomainList')
 			.then( domainList => {
 				this.domainList = domainList
+				this.domainOptionsList = domainList.map(({ DomainId, DomainName }) => ({ id: DomainId, text: DomainName }))
 				{{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
