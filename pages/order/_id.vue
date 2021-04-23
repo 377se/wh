@@ -218,20 +218,10 @@
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-grid-small uk-padding-small" uk-grid>
-                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
-                                SKICKA ORDERBEKRÄFTELSE
-                            </button>
-                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
-                                VISA FÖLJESEDEL
-                            </button>
-                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
-                                TILLDELA MEDLEMSRABATT
-                            </button>
-                        </div>
                          <div class="uk-flex">
                              <!-- ORDERINNEHÅLL -->
-                                <table class="uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
+                            <div class="uk-width-1-1" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
+                                <table class="uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
                                             <td v-if="paymentTypeId != 0" class="border-bottom"></td>
@@ -335,6 +325,20 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
+                                    <div class="uk-flex uk-flex-right uk-width-1-1">
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="sendOrderConfirmation()">
+                                            SKICKA ORDERBEKRÄFTELSE
+                                        </button>
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
+                                            VISA FÖLJESEDEL
+                                        </button>
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
+                                            TILLDELA MEDLEMSRABATT
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- EDIT ORDERITEM -->
                             <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
                                 <div class="uk-flex uk-flex-between">
