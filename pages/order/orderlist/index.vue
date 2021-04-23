@@ -34,7 +34,7 @@
                                 </div>
                             <div v-if="shopId" class="uk-grid-small uk-flex-between" uk-grid>
                                 <div>
-                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="printDeliveryNotes()">
+                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                         SKRIV UT FÖLJESEDEL
                                     </button>
                                 </div>
@@ -120,6 +120,7 @@
 <script>
 import Alert from '~/components/Alert'
 import Deliverynotes from '~/components/Deliverynotes'
+import Print from '~/plugins/directives/vue-print-nb/printarea.js'
 
 export default {
 	components: {
@@ -151,17 +152,28 @@ export default {
         },
     },
     methods: {
-        resetIsSelected () {
-            for (const order of this.orderList) {
-                if (order.IsSelected === true) order.IsSelected = false
-            }
-        },
-        printDeliveryNotes () {
+        printDeliveryNotes(id) {
             let selectedOrders = []
             for (const order of this.orderList) {
                 if (order.IsSelected === true) selectedOrders.push(order.OrderId)
             }
             this.orders = selectedOrders
+            setTimeout(() => {
+                new Print({
+                    ids: id, // * Partial printing must pass in id
+                    standard: '', // Document type, default is html5, optional html5, loose, strict
+                    extraHead: '', // Additional tags attached to the head tag, separated by commas
+                    extraCss: '', // Additional CSS, separated by multiple commas
+                    popTitle: '', // iframe title
+                    endCallback () { // Callback event after printing
+                    }
+                })
+            }, 500)
+        },
+        resetIsSelected () {
+            for (const order of this.orderList) {
+                if (order.IsSelected === true) order.IsSelected = false
+            }
         },
         async setOrderAsDelivered() {
 			let _this = this
