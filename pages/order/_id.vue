@@ -110,6 +110,16 @@
                                         <td class="border-right uk-width-1-5"><strong>Kommentar</strong></td>
                                         <td class="uk-width-4-5">
                                             <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small" @blur="updateOrder()"></textarea>
+                                            <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
+                                                <div class="uk-flex uk-flex-left uk-width-1-1">
+                                                    <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                                        SKRIV UT
+                                                    </button>
+                                                    <button v-if="orderInfo.ButtonSetAsDelivered" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                        SÄTT SOM LEVERERAD
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -514,6 +524,7 @@
                 </ScCard>
             </div>
         </div>
+        <Deliverynotes :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" />
     </div>
 </template>
 
@@ -521,11 +532,14 @@
 import ScInput from '~/components/Input'
 import Alert from '~/components/Alert'
 import PrettyCheck from 'pretty-checkbox-vue/check'
+import Deliverynotes from '~/components/Deliverynotes'
+import Print from '~/plugins/directives/vue-print-nb/printarea.js'
 
 export default {
     components: {
 		ScInput,
 		PrettyCheck,
+		Deliverynotes,
 		Alert,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
@@ -580,6 +594,17 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        printDeliveryNotes(id) {
+            new Print({
+                ids: id, // * Partial printing must pass in id
+                standard: '', // Document type, default is html5, optional html5, loose, strict
+                extraHead: '', // Additional tags attached to the head tag, separated by commas
+                extraCss: '', // Additional CSS, separated by multiple commas
+                popTitle: '', // iframe title
+                endCallback () { // Callback event after printing
+                }
+            })
+        },
         startAddItem() {
             this.addEditorVisible = true
             this.updateEditorVisible = false
@@ -719,6 +744,28 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async setOrderAsDeliveredByOrderId() {
+			let _this = this
+			_this.message = null
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/OrderHandling/PostSetOrderAsDeliveredByOrderId?orderId=' + _this.orderInfo.OrderId )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.orderInfo = response
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
         async getItemToEdit(itemId) {
 			let _this = this
             _this.showPageOverlaySpinner()
@@ -727,13 +774,11 @@ export default {
                 try {
                     if (response.ErrorList != null ) {
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertVisible', 4) Vi behöver alert här
                     } else {
                         _this.orderItem = response
                         _this.updateEditorVisible = true
                         _this.addEditorVisible = false
                         _this.hidePageOverlaySpinner()
-                        // _this.$store.commit('setAlertHidden', 4) Vi behöver alert här
                     }
                 } catch(err) {
                     console.log(err)
