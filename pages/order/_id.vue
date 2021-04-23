@@ -524,7 +524,7 @@
                 </ScCard>
             </div>
         </div>
-        <Deliverynotes :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" />
+        <Deliverynotes v-if="showDeliveryNote" :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" />
     </div>
 </template>
 
@@ -561,6 +561,7 @@ export default {
             articleDetails: null,
             sizeOptionsList: [],
             countries: [],
+            showDeliveryNote: false,
         }
     },
     watch: {
@@ -595,15 +596,22 @@ export default {
 			})
 		},
         printDeliveryNotes(id) {
-            new Print({
-                ids: id, // * Partial printing must pass in id
-                standard: '', // Document type, default is html5, optional html5, loose, strict
-                extraHead: '', // Additional tags attached to the head tag, separated by commas
-                extraCss: '', // Additional CSS, separated by multiple commas
-                popTitle: '', // iframe title
-                endCallback () { // Callback event after printing
-                }
-            })
+            this.showDeliveryNote = true
+            setTimeout(() => {
+                new Print({
+                    ids: id, // * Partial printing must pass in id
+                    standard: '', // Document type, default is html5, optional html5, loose, strict
+                    extraHead: '', // Additional tags attached to the head tag, separated by commas
+                    extraCss: '', // Additional CSS, separated by multiple commas
+                    popTitle: '', // iframe title
+                    endCallback () { // Callback event after printing
+                        this.showDeliveryNote = false
+                    }
+                })
+                setTimeout(() => {
+                    this.showDeliveryNote = false
+                }, 100);
+            }, 500)
         },
         startAddItem() {
             this.addEditorVisible = true
