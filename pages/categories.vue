@@ -32,19 +32,21 @@
                             </div>
                         </div>
                         <div class="uk-flex">
-                            <ScCard class="uk-width-2-3">
-                                <ScCardHeader separator>
-                                    <ScCardTitle>
-                                        Sorteringslista - Dra för att ändra ordning/placering
-                                    </ScCardTitle>
-                                </ScCardHeader>
+                            <ScCard class="uk-width-1-1" :class="{'uk-width-1-2' : editPanelVisible == true}">
                                 <ScCardBody>
-                                    <Nested :SubItemList="menu" :shopId="parseInt(shopId)"/>
+                                    <!-- NYTT MENYVAL -->
+                                    <div v-if="shopId" class="uk-margin">
+                                        <ScInput v-model="newMenuItem.Name" state="fixed" mode="outline" v-on:blur="addMenuItem()" extra-classes="uk-form-small" placeholder="Namnge ditt nya menyval och tryck tab">
+                                            <label>Lägg till nytt menyval</label>
+                                        </ScInput>
+                                    </div>
+                                    <!-- VISA HEL MENY -->
+                                    <Nested class="mainTree" :SubItemList="menu" @end="$store.commit('setListUpdated')"/>
                                 </ScCardBody>
                             </ScCard>
-                            <ScCard class="uk-width-1-3 uk-padding-small-left">
+                            <ScCard class="uk-width-1-1" :class="{'uk-width-1-2' : editPanelVisible == true}">
                                 <ScCardBody>
-                                    <!-- {{ menu[0] }} -->
+                                    {{editMenuItem}}
                                 </ScCardBody>
                             </ScCard>
                         </div>
@@ -58,6 +60,7 @@
 <script>
 import Alert from '~/components/Alert'
 import Nested from '~/components/nested'
+import ScInput from '~/components/Input'
 
 
 export default {
@@ -65,6 +68,7 @@ export default {
 	components: {
 		Alert,
 		Nested,
+		ScInput,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
@@ -73,8 +77,27 @@ export default {
             shopId: 0,
             shopOptionsList: [],
             menu: [],
+            newMenuItem: {},
+            editMenuItem: {},
+            editPanelVisible: false,
             errors: null,
             message: '',
+        }
+    },
+    computed: {
+        categoryId () {
+            return this.$store.getters.categoryIdState
+        },
+        listUpdated () {
+            return this.$store.getters.listUpdatedState
+        }
+    },
+    watch: {
+        categoryId (newCategoryId, oldCategoryId) {
+            this.getMenuItemById(newCategoryId)
+        },
+        listUpdated () {
+            this.sortMenu()
         }
     },
     methods: {
@@ -100,14 +123,57 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async sortMenu() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.menu)
+			.then(function (menu) {
+                _this.menu = menu
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getMenuItemById(categoryId) {
+			let _this = this
+            _this.editPanelVisible = true
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Menu/GetMenuItemById?categoryId=' + this.$store.getters.categoryIdState)
+			.then(function (editmenuitem) {
+                _this.editMenuItem = editmenuitem
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async addMenuItem() {
+			let _this = this
+            _this.newMenuItem.shopId = _this.shopId
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Menu/PostAddMenuItem', _this.newMenuItem)
+			.then(function (response) {
+                _this.getMenuByShopId()
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
     },
     async fetch () {
         try {
-            const [ shops ] = await Promise.all([
+            const [ shops, menuItem ] = await Promise.all([
                 this.$axios.$get('/webapi/Shop/GetShopList'),
+                this.$axios.$get('/webapi/Menu/GetEmptyMenuItem'),
             ])
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.shops = shops
+            this.menuItem = menuItem
         } catch (err) {
             console.log(err);
         }

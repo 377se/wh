@@ -20,7 +20,9 @@ export const state = () => ({
 	vxFullWidthActive: false,
 	vxActiveLocale: 'en',
 	vxPageOverlay: false,
+	listUpdated: false,
 	isLoggedIn: false,
+	categoryId: null,
 	alerts: [
 		{
 			id: 0,
@@ -66,6 +68,12 @@ export const mutations = {
 	  },
 	setIsLoggedIn(state, val){
 		state.isLoggedIn = val
+	  },
+	setCategoryId(state, val){
+		state.categoryId = val
+	  },
+	setListUpdated(state){
+		state.listUpdated = !state.listUpdated
 	  },
 	setAlertHidden(state, id) {
 		state.alerts[id].visible = false
@@ -142,6 +150,8 @@ export const getters = {
 	offcanvasState: state => state.vxOffcanvasExpanded,
 	isLoggedInState: state => state.isLoggedIn,
 	alertsState: state => state.alerts,
+	categoryIdState: state => state.categoryId,
+	listUpdatedState: state => state.listUpdated,
 	articleAssortmentState: state => state.articleAssortment,
 };
 
