@@ -31,24 +31,142 @@
                             </client-only>
                             </div>
                         </div>
-                        <div class="uk-flex">
-                            <ScCard class="uk-width-1-1" :class="{'uk-width-1-2' : editPanelVisible == true}">
-                                <ScCardBody>
-                                    <!-- NYTT MENYVAL -->
-                                    <div v-if="shopId" class="uk-margin">
-                                        <ScInput v-model="newMenuItem.Name" state="fixed" mode="outline" v-on:blur="addMenuItem()" extra-classes="uk-form-small" placeholder="Namnge ditt nya menyval och tryck tab">
-                                            <label>Lägg till nytt menyval</label>
-                                        </ScInput>
-                                    </div>
-                                    <!-- VISA HEL MENY -->
-                                    <Nested class="mainTree" :SubItemList="menu" @end="$store.commit('setListUpdated')"/>
-                                </ScCardBody>
-                            </ScCard>
-                            <ScCard class="uk-width-1-1" :class="{'uk-width-1-2' : editPanelVisible == true}">
-                                <ScCardBody>
-                                    {{editMenuItem}}
-                                </ScCardBody>
-                            </ScCard>
+                        <div class="uk-grid-column-medium" uk-grid>
+                            <div v-if="menu" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
+                                <ScCard>
+                                    <ScCardBody>
+                                        <!-- NYTT MENYVAL -->
+                                        <div v-if="shopId" class="uk-margin">
+                                            <ScInput v-model="newMenuItemContainer.Name" state="fixed" mode="outline" v-on:blur="addMenuItem()" extra-classes="uk-form-small" placeholder="Namnge ditt nya menyval och tryck tab">
+                                                <label>Lägg till nytt menyval</label>
+                                            </ScInput>
+                                        </div>
+                                        <!-- VISA HEL MENY -->
+                                        <Nested class="mainTree" :SubItemList="menu" @end="$store.commit('setListUpdated')"/>
+                                    </ScCardBody>
+                                </ScCard>
+                            </div>
+                            <div v-if="editMenuItem" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
+                                <ScCard>
+                                    <ScCardHeader separator>
+                                        <ScCardTitle>
+                                            <img style="width: 50px; margin-right: 5px;" :src="editMenuItem.ImageName"> {{ editMenuItem.SeoList[0].Name }}
+                                        </ScCardTitle>
+                                    </ScCardHeader>
+                                    <ScCardBody>
+                                        <!-- TAB-HEADLINES - MENU/CATEGORIES -->
+                                        <ul data-uk-tab>
+                                            <li class="uk-active">
+                                                <a href="javascript:void(0)">
+                                                    SEO
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)">
+                                                    Artiklar
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <!-- TAB-CONTENT - MENU/CATEGORIES -->
+                                        <ul class="uk-switcher">
+                                            <li>
+                                                <!-- BILDUPPLADDNING -->
+                                                <img :src="editMenuItem.ImageName">
+												<div class="uk-padding-small uk-padding-remove-horizontal">
+													<FileUpload 
+													:categoryId="editMenuItem.CategoryId"
+													:menuImage="this.menuImage"
+													@updateMenuImage="getMenuItemById(editMenuItem.CategoryId)"
+													/>
+												</div>
+                                                    <!-- Dold publikt -->
+                                                    <div class="uk-margin uk-width-1-1">
+                                                        <div class="">
+                                                            <ul class="uk-list uk-margin-remove-top">
+                                                                <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                                                    <PrettyCheck v-model="editMenuItem.IsHiddenInPublic" class="p-icon" @change="updateMenuItem()">
+                                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dold publikt</span>
+                                                                    </PrettyCheck>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                <!-- SEO & ARTIKLAR -->
+                                                <div v-for="(seoItem, index) in editMenuItem.SeoList" :key="seoItem.CategoryDescriptionId">
+                                                    <hr>
+                                                    <img :src="seoItem.FlagImage"> {{ seoItem.Language }}
+                                                    <!-- Namn -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="seoItem.Name" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                            <label>Namn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Meta-title -->
+                                                    <div class="uk-margin">
+                                                        <ScTextarea v-model="seoItem.MetaTitle" :rows="2" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                            <label>Meta-title</label>
+                                                        </ScTextarea>
+                                                    </div>
+                                                    <!-- Meta-description -->
+                                                    <div class="uk-margin">
+                                                        <ScTextarea v-model="seoItem.MetaDescription" :rows="2" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                            <label>Meta-description</label>
+                                                        </ScTextarea>
+                                                    </div>
+                                                    <!-- Meta-keywords -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="seoItem.MetaKeywords" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                            <label>Meta-keywords</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- SEO-titel -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="seoItem.SeoTitle" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                            <label>SEO-titel</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- SEO-subtitel -->
+                                                    <div class="uk-margin">
+                                                        <ScInput v-model="seoItem.SeoSubTitle" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                            <label>SEO-subtitel</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- SEO-beskrivning -->
+                                                    <div class="uk-margin">
+                                                        <ScTextarea v-model="seoItem.SeoText" :rows="6" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                            <label>SEO-beskrivning</label>
+                                                        </ScTextarea>
+                                                    </div>
+                                                    <!-- Dölj -->
+                                                    <div class="uk-margin uk-width-1-1">
+                                                        <div class="">
+                                                            <ul class="uk-list uk-margin-remove-top">
+                                                                <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                                                    <PrettyCheck v-model="seoItem.IsHidden" class="p-icon" @change="updateMenuItem()">
+                                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dölj</span>
+                                                                    </PrettyCheck>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <hr v-if="index+1 < editMenuItem.SeoList.length">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <!-- ARTIKLAR / DRAG & DROP -->
+                                                <div id="sortableImages" class="uk-flex uk-flex-wrap" data-uk-sortable>
+													<div v-for="item in sortableOrder" :key="item.ArticleId" class="uk-width-1-6 sc-round" :data-id="item.ArticleId">
+														<div class="sc-padding-small uk-position-relative">
+															<img :src="item.ImageName">
+														</div>
+													</div>
+												</div>
+
+                                            </li>
+                                        </ul>
+                                    </ScCardBody>
+                                </ScCard>
+                            </div>
                         </div>
                     </ScCardBody>
                 </ScCard>
@@ -61,7 +179,10 @@
 import Alert from '~/components/Alert'
 import Nested from '~/components/nested'
 import ScInput from '~/components/Input'
-
+import ScTextarea from '~/components/Textarea'
+import PrettyCheck from 'pretty-checkbox-vue/check'
+import FileUpload from '~/components/FileUploadMenus'
+import _ from 'lodash'
 
 export default {
     order: 15,
@@ -69,6 +190,9 @@ export default {
 		Alert,
 		Nested,
 		ScInput,
+		ScTextarea,
+		PrettyCheck,
+		FileUpload,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
@@ -76,10 +200,11 @@ export default {
             shops: [],
             shopId: 0,
             shopOptionsList: [],
-            menu: [],
-            newMenuItem: {},
-            editMenuItem: {},
-            editPanelVisible: false,
+            menu: null,
+            newMenuItemContainer: {},
+            editMenuItem: null,
+            menuImage: null,
+            articleImages: [],
             errors: null,
             message: '',
         }
@@ -90,17 +215,64 @@ export default {
         },
         listUpdated () {
             return this.$store.getters.listUpdatedState
-        }
+        },
+        sortableOrder () {
+			return _.orderBy(this.articleImages, 'Sortorder')
+		},
     },
     watch: {
         categoryId (newCategoryId, oldCategoryId) {
             this.getMenuItemById(newCategoryId)
+            this.getArticleImages(newCategoryId)
         },
         listUpdated () {
             this.sortMenu()
         }
     },
+	mounted () {
+		this.$nextTick(() => {
+			const _this = this;
+			UIkit.util.on(document, 'stop', function (data) {
+
+				let list = data.srcElement.children
+				for (let i = 0; i < list.length; i++) {
+					let item = _this.articleImages.filter(obj => {
+						return obj.ArticleId == list[i].dataset.id
+					})
+					item[0].Sortorder = i
+				}
+				// _this.articleImages = _this.sortableOrder
+				_this.updateImageSorting(_this.sortableOrder)
+			})
+		})
+	},
     methods: {
+		async updateImageSorting(sortableorder) {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Menu/PostSortArticlesByCategoryId?categoryId=' + _this.categoryId, sortableorder)
+			.then(function (response) {
+                _this.articleImages = response
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getArticleImages() {
+            let _this = this
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Menu/GetArticleListByCategoryId?categoryId=' + _this.categoryId)
+            .then(function (articleimages) {
+                _this.articleImages = articleimages
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
             this.$store.commit('togglePageOverlay', false)
@@ -112,6 +284,7 @@ export default {
         async getMenuByShopId() {
 			let _this = this
             _this.menu = []
+            _this.editMenuItem = null
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Menu/GetMenuByShopId?shopId=' + _this.shopId)
 			.then(function (menu) {
@@ -137,8 +310,7 @@ export default {
 			})
 		},
         async getMenuItemById(categoryId) {
-			let _this = this
-            _this.editPanelVisible = true
+            let _this = this
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Menu/GetMenuItemById?categoryId=' + this.$store.getters.categoryIdState)
 			.then(function (editmenuitem) {
@@ -150,11 +322,23 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async updateMenuItem() {
+            let _this = this
+            _this.showPageOverlaySpinner()
+            await this.$axios.$post('/webapi/Menu/PostUpdateMenuItem', _this.editMenuItem)
+            .then(function (menu) {
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
         async addMenuItem() {
 			let _this = this
-            _this.newMenuItem.shopId = _this.shopId
+            _this.newMenuItemContainer.shopId = _this.shopId
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Menu/PostAddMenuItem', _this.newMenuItem)
+			await this.$axios.$post('/webapi/Menu/PostAddMenuItem', _this.newMenuItemContainer)
 			.then(function (response) {
                 _this.getMenuByShopId()
                 _this.hidePageOverlaySpinner()
@@ -181,6 +365,6 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+	@import '~/assets/scss/components/_uploader.scss';
 </style>
