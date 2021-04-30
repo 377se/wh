@@ -170,14 +170,15 @@
                                             </li>
                                             <li>
                                                 <!-- ARTIKLAR / DRAG & DROP -->
-                                                <div id="sortableImages" class="uk-flex uk-flex-wrap" data-uk-sortable>
-													<div v-for="item in sortableOrder" :key="item.ArticleId" class="uk-width-1-6 sc-round" :data-id="item.ArticleId">
-														<div class="sc-padding-small uk-position-relative">
-															<nuxt-link :to="item.Url"><img :src="item.ImageName"></nuxt-link>
-														</div>
-													</div>
-												</div>
-
+                                                <draggable tag="div" v-model="articleImages" @start="drag = true" @end="drag = false" @change="updateImageSorting" v-bind="dragOptions">
+                                                    <transition-group type="transition" :name="!drag ? 'flip-list' : null" class="uk-flex uk-flex-wrap">
+                                                        <div class="uk-width-1-6 sc-round" v-for="image in articleImages" :key="image.ArticleId">
+                                                            <div class="sc-padding-small uk-position-relative">
+                                                                <nuxt-link :to="image.Url"><img :src="image.ImageName"></nuxt-link>
+                                                            </div>
+                                                        </div>
+                                                    </transition-group>
+                                                </draggable>
                                             </li>
                                         </ul>
                                     </ScCardBody>
@@ -198,6 +199,7 @@ import ScInput from '~/components/Input'
 import ScTextarea from '~/components/Textarea'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import FileUpload from '~/components/FileUploadMenus'
+import draggable from 'vuedraggable'
 import _ from 'lodash'
 
 export default {
@@ -205,6 +207,7 @@ export default {
 	components: {
 		Alert,
 		Nested,
+        draggable,
 		ScInput,
 		ScTextarea,
 		PrettyCheck,
@@ -223,6 +226,7 @@ export default {
             articleImages: [],
             errors: null,
             message: '',
+            drag: false,
         }
     },
     watch: {
@@ -235,21 +239,6 @@ export default {
         }
     },
 	mounted () {
-		this.$nextTick(() => {
-			const _this = this
-			UIkit.util.on(document, 'stop', function (data) {
-
-				let list = data.srcElement.children
-				for (let i = 0; i < list.length; i++) {
-					let item = _this.articleImages.filter(obj => {
-						return obj.ArticleId == list[i].dataset.id
-					})
-					item[0].Sortorder = i
-				}
-				_this.articleImages = _this.sortableOrder
-				_this.updateImageSorting()
-			})
-		})
 	},
     computed: {
         categoryId () {
@@ -258,9 +247,14 @@ export default {
         listUpdated () {
             return this.$store.getters.listUpdatedState
         },
-        sortableOrder () {
-			return _.orderBy(this.articleImages, 'Sortorder')
-		},
+        dragOptions() {
+            return {
+                animation: 200,
+                group: "description",
+                disabled: false,
+                ghostClass: "ghost"
+            }
+        }
     },
     methods: {
 		async updateImageSorting() {
@@ -381,5 +375,14 @@ export default {
 </script>
 
 <style lang="scss">
-
+    .flip-list-move {
+    transition: transform 0.5s;
+    }
+    .no-move {
+    transition: transform 0s;
+    }
+    .ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+    }
 </style>
