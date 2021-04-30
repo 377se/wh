@@ -79,18 +79,34 @@
 													@updateMenuImage="getMenuItemById(editMenuItem.CategoryId)"
 													/>
 												</div>
-                                                    <!-- Dold publikt -->
-                                                    <div class="uk-margin uk-width-1-1">
-                                                        <div class="">
-                                                            <ul class="uk-list uk-margin-remove-top">
-                                                                <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
-                                                                    <PrettyCheck v-model="editMenuItem.IsHiddenInPublic" class="p-icon" @change="updateMenuItem()">
-                                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dold publikt</span>
-                                                                    </PrettyCheck>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                <!-- Sortering -->
+                                                <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                    <label class="select-label" for="select-sortingListOptionsList">Sorteringsordning</label>
+                                                    <client-only>
+                                                        <Select2
+                                                            id="select-sortingListOptionsList"
+                                                            v-model="editMenuItem.DefaultSorting"
+                                                            :options="editMenuItem.SortingList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
+                                                            :settings="{ 'width': '100%', 'placeholder': 'Välj sorteringsordning', 'closeOnSelect': true }"
+                                                            @select="updateMenuItem"
+                                                        >
+                                                        </Select2>
+                                                    </client-only>
                                                     </div>
+                                                </div>
+                                                <!-- Dold publikt -->
+                                                <div class="uk-margin uk-width-1-1">
+                                                    <div class="">
+                                                        <ul class="uk-list uk-margin-remove-top">
+                                                            <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                                                <PrettyCheck v-model="editMenuItem.IsHiddenInPublic" class="p-icon" @change="updateMenuItem()">
+                                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dold publikt</span>
+                                                                </PrettyCheck>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                                 <!-- SEO & ARTIKLAR -->
                                                 <div v-for="(seoItem, index) in editMenuItem.SeoList" :key="seoItem.CategoryDescriptionId">
                                                     <hr>
@@ -157,7 +173,7 @@
                                                 <div id="sortableImages" class="uk-flex uk-flex-wrap" data-uk-sortable>
 													<div v-for="item in sortableOrder" :key="item.ArticleId" class="uk-width-1-6 sc-round" :data-id="item.ArticleId">
 														<div class="sc-padding-small uk-position-relative">
-															<img :src="item.ImageName">
+															<nuxt-link :to="item.Url"><img :src="item.ImageName"></nuxt-link>
 														</div>
 													</div>
 												</div>
@@ -209,17 +225,6 @@ export default {
             message: '',
         }
     },
-    computed: {
-        categoryId () {
-            return this.$store.getters.categoryIdState
-        },
-        listUpdated () {
-            return this.$store.getters.listUpdatedState
-        },
-        sortableOrder () {
-			return _.orderBy(this.articleImages, 'Sortorder')
-		},
-    },
     watch: {
         categoryId (newCategoryId, oldCategoryId) {
             this.getMenuItemById(newCategoryId)
@@ -231,7 +236,7 @@ export default {
     },
 	mounted () {
 		this.$nextTick(() => {
-			const _this = this;
+			const _this = this
 			UIkit.util.on(document, 'stop', function (data) {
 
 				let list = data.srcElement.children
@@ -241,18 +246,28 @@ export default {
 					})
 					item[0].Sortorder = i
 				}
-				// _this.articleImages = _this.sortableOrder
-				_this.updateImageSorting(_this.sortableOrder)
+				_this.articleImages = _this.sortableOrder
+				_this.updateImageSorting()
 			})
 		})
 	},
+    computed: {
+        categoryId () {
+            return this.$store.getters.categoryIdState
+        },
+        listUpdated () {
+            return this.$store.getters.listUpdatedState
+        },
+        sortableOrder () {
+			return _.orderBy(this.articleImages, 'Sortorder')
+		},
+    },
     methods: {
-		async updateImageSorting(sortableorder) {
+		async updateImageSorting() {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Menu/PostSortArticlesByCategoryId?categoryId=' + _this.categoryId, sortableorder)
+			await this.$axios.$post('/webapi/Menu/PostSortArticlesByCategoryId?categoryId=' + _this.categoryId, _this.articleImages)
 			.then(function (response) {
-                _this.articleImages = response
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -366,5 +381,5 @@ export default {
 </script>
 
 <style lang="scss">
-	@import '~/assets/scss/components/_uploader.scss';
+
 </style>
