@@ -28,7 +28,7 @@
                                 <div class="uk-margin">
                                     <img :src="adminDetails.ImageName"/>
                                     <div class="uk-padding-small uk-padding-remove-horizontal">
-                                        <FileUpload 
+                                        <FileUpload
                                         :adminId="adminDetails.AdminId"
                                         @updateAvatar="$fetch()"
                                         />
@@ -93,7 +93,24 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                
+                                <div class="menu-container">
+                                    <ul class="menu">
+                                        <li v-for="level_0 in menuPermissions" :key="level_0.MenuId">
+                                            <PrettyCheck v-model="level_0.HasPermission" class="p-icon" @change="updateMenuPermissions(level_0)">
+                                                <i slot="extra" class="icon mdi mdi-check"></i>
+                                                <label>{{ level_0.Name }}</label>
+                                            </PrettyCheck>
+                                            <ul class="menu" v-if="level_0.SubItemList">
+                                                <li v-for="level_1 in level_0.SubItemList" :key="level_1.MenuId">
+                                                <PrettyCheck v-model="level_1.HasPermission" class="p-icon" @change="updateMenuPermissions(level_1)">
+                                                <i slot="extra" class="icon mdi mdi-check"></i>
+                                                <label>{{ level_1.Name }}</label>
+                                                </PrettyCheck>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
                             </ScCardBody>
                         </ScCard>
                     </div>
@@ -117,7 +134,12 @@ export default {
     data () {
 		return {
             adminDetails: null,
+            menuPermissions: null,
         }
+    },
+    computed: {
+    },
+    watch: {
     },
     methods: {
         hidePageOverlaySpinner () {
@@ -141,13 +163,28 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+		async updateMenuPermissions(item) {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Menu/PostUpdateMenuPermission?adminId='  + this.$route.params.id, item)
+			.then(function (menupermissions) {
+                _this.menuPermissions = menupermissions
+                _this.hidePageOverlaySpinner()
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
     },
     async fetch () {
         try {
-            const [ admindetails ] = await Promise.all([
+            const [ admindetails, menupermissions ] = await Promise.all([
                 this.$axios.$get('/webapi/Admin/GetAdminDetails?adminId=' + this.$route.params.id),
+                this.$axios.$get('/webapi/Menu/GetMenuPermission?adminId=' + this.$route.params.id),
             ])
             this.adminDetails = admindetails
+            this.menuPermissions = menupermissions
         } catch (err) {
             console.log(err);
         }
@@ -156,6 +193,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .menu-container {
+        margin-left: -30px;
+    }
+    .menu {
+        list-style: none;
+    }
 	.border-all {
         border: 1px solid #ccc;
     }
@@ -170,6 +213,9 @@ export default {
     }
     .border-bottom {
         border-bottom: 1px solid #ccc;
+    }
+    .pretty .state label {
+        text-indent: 0.5em;
     }
 
 </style>
