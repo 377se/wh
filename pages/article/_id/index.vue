@@ -520,7 +520,7 @@
 												</div>
 												<div class="uk-padding-small">
 													<FileUpload 
-													:articleImages="this.articleImages"
+													:articleId="this.$route.params.id"
 													@updateArticleImages="articleImages = $event"
 													/>
 												</div>
@@ -760,7 +760,7 @@ import contentOverlay from '~/components/Overlay'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 import ShopInfo from '~/components/ShopInfo'
-import FileUpload from '~/components/FileUpload'
+import FileUpload from '~/components/FileUploadArticleImages'
 import _ from 'lodash'
 
 
