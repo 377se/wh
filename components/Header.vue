@@ -164,7 +164,7 @@
 							</div>
 						</div>
 					</li> -->
-					<li>
+					<li v-if="this.$store.getters['isLoggedInState'] == true">
 						<a href="javascript:void(0)">
 							<img v-if="isLoggedIn" :src="this.userDetails.ImageName" alt="User-avatar">
 							<img v-else src="~/assets/img/logo-avatar.png" style="width: 35px;" alt="377 Logo">
@@ -172,19 +172,14 @@
 						<div class="uk-navbar-dropdown uk-dropdown-small">
 							<ul class="uk-nav uk-nav-navbar">
 								<li>
-									<nuxt-link to="/pages/user_profile">
-										Profile
+									<nuxt-link :to="this.$store.getters['userDetailsState'].Url">
+										Profil
 									</nuxt-link>
 								</li>
 								<li>
-									<nuxt-link to="/pages/settings">
-										Settings
-									</nuxt-link>
-								</li>
-								<li>
-									<nuxt-link to="/account_auth">
+									<a href="#" @click.prevent="logout()">
 										Logout
-									</nuxt-link>
+									</a>
 								</li>
 							</ul>
 						</div>
@@ -506,6 +501,7 @@ export default {
 			await this.$axios.$get('/webapi/admin/GetCurrentUser')
 			.then(userDetails => {
 				this.userDetails = userDetails
+				this.$store.commit('setUserDetails', userDetails)
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -529,7 +525,13 @@ export default {
 		},
 		isActiveLang (code) {
 			return code === this.vxActiveLocale
-		}
+		},
+		async logout() {
+			await this.$axios.$post('/webapi/Logout/PostLogout')
+			this.$cookies.remove('wh-377')
+			this.$store.commit('setIsLoggedIn', false)
+          	this.$router.push('/')
+		},
 	}
 }
 </script>

@@ -1,6 +1,7 @@
 import { version } from '~~/package.json';
 
 export const state = () => ({
+	userDetails: [],
 	vxAppVersion: version,
 	vxSidebarMainExpanded: false,
 	vxSidebarMainAccordionMode: true,
@@ -59,28 +60,31 @@ export const state = () => ({
 });
 
 export const mutations = {
+	setUserDetails(state, val){
+		state.userDetails = val
+	},
 	updateArticleAssortment(state, val){
 			const elementsIndex = state.articleAssortment.findIndex(element => element.StockId == val.StockId )
 			state.articleAssortment[elementsIndex] = val
-		},
+	},
 	setArticleAssortment(state, val){
 		state.articleAssortment = val
-	  },
+	},
 	setIsLoggedIn(state, val){
 		state.isLoggedIn = val
-	  },
+	},
 	setCategoryId(state, val){
 		state.categoryId = val
-	  },
+	},
 	setListUpdated(state){
 		state.listUpdated = !state.listUpdated
-	  },
+	},
 	setAlertHidden(state, id) {
 		state.alerts[id].visible = false
-	  },
+	},
 	setAlertVisible(state, id) {
 		state.alerts[id].visible = true
-	  },
+	},
 	sidebarMainToggle (state, expanded) {
 		state.vxSidebarMainExpanded = expanded
 	},
@@ -143,6 +147,9 @@ export const mutations = {
 };
 
 export const getters = {
+	userDetailsState (state) {
+		return state.userDetails
+	},
 	pageFixedState: state => state.vxPageFixed,
 	cardFixedState: state => state.vxCardFixed,
 	headerExpandedState: state => state.vxHeaderExpanded,
