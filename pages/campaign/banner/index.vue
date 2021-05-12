@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="uk-width-1-6 uk-flex uk-flex-middle" @click="startCreateBanner()">
                                         <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
-                                        <strong><span class="addicon" @click="startCreateBanner()">Skapa ny banner</span></strong> <!-- SKAPA NY BANNER -->
+                                        <span class="addicon uk-text-middle" @click="startCreateBanner()">Skapa ny banner</span> <!-- SKAPA NY BANNER -->
                                     </div>
                                 </div>
 							</div>
@@ -44,11 +44,11 @@
                                 <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td class="border-bottom border-right" style="width:40%;"><strong>Namn</strong></td>
-                                            <td class="border-bottom border-right" style="width:10%;"><strong>Start</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Slut</strong></td>
+                                            <td class="border-bottom border-right" style="width:54%;"><strong>Namn</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Start</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Slut</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Dagar kvar</strong></td>
-                                            <td class="border-bottom border-right uk-text-center uk-text-middle" style="width:30%;" colspan="2">
+                                            <td class="border-bottom uk-text-center uk-text-middle" style="width:10%;" colspan="2">
                                             </td>
                                         </tr>
                                     </thead>
