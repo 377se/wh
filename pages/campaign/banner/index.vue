@@ -87,6 +87,12 @@
                                         />
                                     </div>
                                 </div>
+                                <Alert
+                                    :errorlist="errors"
+                                    message=""
+                                    :alertClass="'uk-alert-danger'"
+                                    id=1
+                                />
                                 <!-- Description -->
                                 <div class="uk-margin">
                                     <ScInput v-model="bannerItem.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -150,6 +156,7 @@ export default {
             bannerImage: null,
             editorVisible: false,
             isNewBanner: false,
+    		errors: null,
     		Swedish,
         }
     },
@@ -188,6 +195,7 @@ export default {
     	},
         async getBannerToEdit(bannerId) {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Banner/GetBanner?bannerId=' + bannerId)
 			.then(function (response) {
@@ -236,8 +244,11 @@ export default {
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
                         _this.hidePageOverlaySpinner()
                     } else {
+                        _this.$store.commit('setAlertHidden', 1)
                         _this.getBannerListByDomainId(_this.domainId)
                         _this.hidePageOverlaySpinner()
                     }
