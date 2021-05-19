@@ -1,0 +1,359 @@
+<template>
+    <div>
+        <div id="sc-page-wrapper">
+            {{ hidePageOverlaySpinner() }}
+            <div id="sc-page-top-bar" class="sc-top-bar">
+                <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
+                    <div class="uk-flex-1">
+					    <h1 class="sc-top-bar-title uk-display-inline">Extensions</h1>
+				    </div>
+                </div>
+            </div>
+	        <div id="sc-page-content">
+				<ScCard>
+					<ScCardBody>
+						<div class="uk-flex uk-margin-medium-bottom">
+							<div class="uk-margin-medium-bottom uk-width-1-1">
+								<div class="uk-flex uk-flex-middle">
+                                    <div class="uk-width-4-5 uk-margin-medium-right sc-input-wrapper sc-input-wrapper-outline sc-input-filled uk-position-z-index">
+                                        <client-only>
+                                            <Select2
+                                                id="select-extensionlist"
+                                                v-model="extensionId"
+                                                :options="extensionOptionsList"
+                                                :settings="{ 'width': '100%', 'placeholder': 'Välj extension', 'closeOnSelect': true }"
+                                            >
+                                            </Select2>
+                                        </client-only>
+                                    </div>
+                                    <div v-if="extensionId" class="uk-width-1-5 uk-flex uk-flex-middle" @click="getEmptyExtension()">
+                                        <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
+                                        <span class="addicon uk-text-middle">Skapa ny extension</span> <!-- SKAPA NY EXTENSION -->
+                                    </div>
+                                </div>
+							</div>
+						</div>
+                        <div v-if="extensionId" class="uk-flex">
+                            <!-- EXTENSIONS -->
+                            <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
+                                <table class="extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+                                    <thead>
+                                        <tr>
+                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Bild</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:20%;"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:20%;"><strong>Artikelnamn</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Kopplad mot</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:7%;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Startdatum</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Slutdatum</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="extension in extensionList" :key="extension.ExtensionId" class="uk-table-middle">
+                                            <td class="border-bottom border-right uk-width-auto"><img :src="extension.ImageName"></td>
+                                            <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
+                                            <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentProductId }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.StartDate }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ValidThru }}</td>
+                                            <td class="border-bottom border-right uk-text-center">
+                                                <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
+                                                <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                </div>
+                                            </td>
+                                            <td class="border-bottom border-right uk-text-center">
+                                                <div class="wastebasket" @click="deleteExtension(extension.ExtensionId)"> <!-- TA BORT EXTENSION -->
+                                                <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- EDIT EXTENSION -->
+                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                                <div class="uk-flex uk-flex-between">
+                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera extension</h3>
+                                    <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                </div>
+                                <div>
+                                <!-- BILD -->
+                                    <img :src="extensionItem.ImageName">
+                                </div>
+                                <Alert
+                                    :errorlist="errors"
+                                    message=""
+                                    :alertClass="'uk-alert-danger'"
+                                    id=1
+                                />
+                                <!-- Artikelnummer -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Artikelnummer</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Artikelnamn -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Artikelnamn</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Kopplad mot -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.ParentProductId" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Kopplad mot</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Pris -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Pris</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Startdatum -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Startdatum</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Slutdatum -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Slutdatum</label>
+                                    </ScInput>
+                                </div>
+                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
+                                    SPARA/UPPDATERA
+                                </button>
+                            </div>
+                        </div>
+                    </ScCardBody>
+                </ScCard>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import Alert from '~/components/Alert'
+import ScInput from '~/components/Input'
+import PrettyCheck from 'pretty-checkbox-vue/check'
+import FileUpload from '~/components/FileUploadBanner'
+import { Swedish } from "flatpickr/dist/l10n/sv.js"
+if(process.client) {
+	require('~/plugins/flatpickr');
+}
+
+export default {
+    components: {
+		ScInput,
+		PrettyCheck,
+		Alert,
+		FileUpload,
+        Swedish,
+		Select2: process.client ? () => import('~/components/Select2') : null,
+    },
+    data () {
+		return {
+            extensionId: null,
+            extensionOptionsList: null,
+            extensionList: null,
+            extensionItem: null,
+            editorVisible: false,
+            isNewExtension: false,
+    		errors: null,
+    		Swedish,
+        }
+    },
+	watch: {
+		extensionId: function () {
+			this.extensionList = []
+			this.getExtensionListByExtensionId(this.extensionId)
+		}
+	},
+	mounted () {
+        this.getExtensionTypeList()
+    },
+    methods: {
+		async getExtensionListByExtensionId() {
+			{{ this.showPageOverlaySpinner() }}
+			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionId )
+			.then( extensionlist => {
+				this.extensionList = extensionlist
+				{{ this.hidePageOverlaySpinner() }}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
+		async getExtensionTypeList() {
+			{{ this.showPageOverlaySpinner() }}
+			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
+			.then( extensiontypelist => {
+				this.extensionOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+				{{ this.hidePageOverlaySpinner() }}
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+    	},
+        async getExtensionToEdit(extensionId) {
+			let _this = this
+            _this.isNewExtension = false
+            _this.$store.commit('setAlertHidden', 1)
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Extension/GetExtensionById?extensionId=' + _this.extensionId)
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.extensionItem = response
+                        _this.editorVisible = true
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async deleteExtension(extensionId) {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId)
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.extensionList = response
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async updateExtension() {
+			let _this = this
+            _this.isNewBanner = true
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Extension/PostUpdateExtension', _this.extensionItem )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.$store.commit('setAlertHidden', 1)
+                        _this.getExtensionListByExtensionId()
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getEmptyExtension() {
+			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Extension/GetEmptyObject')
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.extensionItem = response
+                        _this.extensionItem.ExtensionId = _this.domainId
+                        _this.createExtension()
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async createExtension() {
+			let _this = this
+            _this.isNewExtension = true
+            _this.editorVisible = true
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Extension/PostCreateExtension', _this.extensionItem)
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.extensionItem = response
+                        _this.hidePageOverlaySpinner()
+                        _this.getExtensionListByExtensionId()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        hidePageOverlaySpinner () {
+            this.$store.commit('toggleProgressOverlay', false);
+            this.$store.commit('togglePageOverlay', false)
+        },
+        showPageOverlaySpinner () {
+            this.$store.commit('toggleProgressOverlay', true);
+            this.$store.commit('togglePageOverlay', true)
+        },
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+    .extensionlist {
+        line-height: 1;
+        width: 99%;
+        margin: 1px 1px;
+    }
+    .extensionlist-container {
+        height: 75vh;
+    }
+	.border-all {
+        border: 1px solid #ccc;
+    }
+    .border-left {
+        border-left: 1px solid #ccc;
+    }
+    .border-right {
+        border-right: 1px solid #ccc;
+    }
+    .border-top {
+        border-top: 1px solid #ccc;
+    }
+    .border-bottom {
+        border-bottom: 1px solid #ccc;
+    }
+    .wastebasket, .editicon, .addicon, .closeicon {
+		cursor: pointer;
+	}
+</style>
