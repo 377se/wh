@@ -1,10 +1,5 @@
 <template>
-    <div v-if="$fetchState.pending">
-        <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
-        </div>
-    </div>
-    <div v-else>
+    <div>
         <div id="sc-page-wrapper">
             {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
@@ -31,16 +26,16 @@
                                             </Select2>
                                         </client-only>
                                     </div>
-                                    <div class="uk-width-1-6 uk-flex uk-flex-middle" @click="startCreateBanner()">
+                                    <div v-if="domainId" class="uk-width-1-6 uk-flex uk-flex-middle" @click="getEmptyBanner()">
                                         <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
-                                        <span class="addicon uk-text-middle" @click="startCreateBanner()">Skapa ny banner</span> <!-- SKAPA NY BANNER -->
+                                        <span class="addicon uk-text-middle">Skapa ny banner</span> <!-- SKAPA NY BANNER -->
                                     </div>
                                 </div>
 							</div>
 						</div>
-                        <div class="uk-flex">
+                        <div v-if="domainId" class="uk-flex">
                             <!-- BANNERS -->
-                            <div class="uk-width-1-1" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
+                            <div class="uk-width-1-1" :class="{'uk-width-2-3': editorVisible }">
                                 <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
@@ -76,10 +71,10 @@
                                 </table>
                             </div>
                             <!-- EDIT BANNER -->
-                            <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera banner</h3>
-                                    <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                    <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                 </div>
                                 <div>
                                 <!-- BILD -->
@@ -117,15 +112,8 @@
                                     </ScInput>
                                 </div>
                                 <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateBanner()">
-                                    UPPDATERA
+                                    <span v-if="isNewBanner">SPARA</span><span v-else>UPPDATERA</span>
                                 </button>
-                            </div>
-                            <!-- ADD ORDERITEM -->
-                            <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
-                                <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa ny banner</h3>
-                                    <span class="closeicon" @click="addEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
-                                </div>
                             </div>
                         </div>
                     </ScCardBody>
@@ -154,15 +142,14 @@ export default {
     },
     data () {
 		return {
-            emptyBannerObject: null,
             domainId: null,
             domainList: null,
             domainOptionsList: null,
             bannerList: null,
             bannerItem: null,
             bannerImage: null,
-            updateEditorVisible: false,
-            addEditorVisible: false,
+            editorVisible: false,
+            isNewBanner: false,
     		Swedish,
         }
     },
@@ -172,6 +159,9 @@ export default {
 			this.getBannerListByDomainId(this.domainId)
 		}
 	},
+	mounted () {
+        this.getDomainList()
+    },
     methods: {
 		async getBannerListByDomainId() {
 			{{ this.showPageOverlaySpinner() }}
@@ -206,8 +196,7 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.bannerItem = response
-                        _this.updateEditorVisible = true
-                        _this.addEditorVisible = false
+                        _this.editorVisible = true
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -250,8 +239,54 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.getBannerListByDomainId(_this.domainId)
-                        _this.updateEditorVisible = false
                         _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getEmptyBanner() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Banner/GetEmptyObject')
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.bannerItem = response
+                        _this.bannerItem.DomainId = _this.domainId
+                        _this.createBanner()
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async createBanner() {
+			let _this = this
+            _this.isNewBanner = false
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Banner/PostCreate', _this.bannerItem)
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.bannerItem = response
+                        _this.hidePageOverlaySpinner()
+                        _this.isNewBanner = true
+                        _this.editorVisible = true
                     }
                 } catch(err) {
                     console.log(err)
@@ -270,17 +305,6 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
-    },
-    async fetch () {
-        try {
-            const [ emptybannerobject ] = await Promise.all([
-                this.$axios.$get('/webapi/Banner/GetEmptyObject'),
-                this.getDomainList(),
-            ])
-            this.emptyBannerObject = emptybannerobject
-        } catch (err) {
-            console.log(err);
-        }
     },
 }
 </script>
