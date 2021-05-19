@@ -118,7 +118,7 @@
                                     </ScInput>
                                 </div>
                                 <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateBanner()">
-                                    <span v-if="isNewBanner">SPARA</span><span v-else>UPPDATERA</span>
+                                    SPARA/UPPDATERA
                                 </button>
                             </div>
                         </div>
