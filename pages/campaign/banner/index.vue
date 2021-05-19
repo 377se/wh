@@ -82,7 +82,15 @@
                                     <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                 </div>
                                 <div>
+                                <!-- BILD -->
                                     <img :src="bannerItem.ImageName">
+                                    <div class="uk-padding-small uk-padding-remove-horizontal">
+                                        <FileUpload 
+                                        :bannerId="bannerItem.BannerId"
+                                        :bannerImage="this.menuImage"
+                                        @updateBannerImage="getBannerToEdit(bannerItem.BannerId)"
+                                        />
+                                    </div>
                                 </div>
                                 <!-- Description -->
                                 <div class="uk-margin">
@@ -130,6 +138,7 @@
 <script>
 import Alert from '~/components/Alert'
 import ScInput from '~/components/Input'
+import FileUpload from '~/components/FileUploadBanner'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 if(process.client) {
 	require('~/plugins/flatpickr');
@@ -139,6 +148,7 @@ export default {
     components: {
 		ScInput,
 		Alert,
+		FileUpload,
         Swedish,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
@@ -150,6 +160,7 @@ export default {
             domainOptionsList: null,
             bannerList: null,
             bannerItem: null,
+            bannerImage: null,
             updateEditorVisible: false,
             addEditorVisible: false,
     		Swedish,
