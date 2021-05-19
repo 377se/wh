@@ -39,7 +39,7 @@
                                 <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td class="border-bottom border-right" style="width:54%;"><strong>Namn</strong></td>
+                                            <td class="border-bottom border-right" style="width:53%;"><strong>Namn</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Start</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Slut</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Dagar kvar</strong></td>
@@ -73,7 +73,7 @@
                             <!-- EDIT BANNER -->
                             <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
                                 <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera banner</h3>
+                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal"><span v-if="isNewBanner">Skapa ny banner</span><span v-else>Editera banner</span></h3>
                                     <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                 </div>
                                 <div>
@@ -195,6 +195,7 @@ export default {
     	},
         async getBannerToEdit(bannerId) {
 			let _this = this
+            _this.isNewBanner = false
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Banner/GetBanner?bannerId=' + bannerId)
@@ -239,6 +240,7 @@ export default {
 		},
         async updateBanner() {
 			let _this = this
+            _this.isNewBanner = true
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Banner/PostUpdate', _this.bannerItem )
 			.then(function (response) {
@@ -263,6 +265,7 @@ export default {
 		},
         async getEmptyBanner() {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Banner/GetEmptyObject')
 			.then(function (response) {
@@ -286,7 +289,8 @@ export default {
 		},
         async createBanner() {
 			let _this = this
-            _this.isNewBanner = false
+            _this.isNewBanner = true
+            _this.editorVisible = true
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Banner/PostCreate', _this.bannerItem)
 			.then(function (response) {
@@ -296,8 +300,7 @@ export default {
                     } else {
                         _this.bannerItem = response
                         _this.hidePageOverlaySpinner()
-                        _this.isNewBanner = true
-                        _this.editorVisible = true
+                        _this.getBannerListByDomainId()
                     }
                 } catch(err) {
                     console.log(err)
