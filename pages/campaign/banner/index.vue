@@ -73,7 +73,7 @@
                             <!-- EDIT BANNER -->
                             <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
                                 <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal"><span v-if="isNewBanner">Skapa ny banner</span><span v-else>Editera banner</span></h3>
+                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera banner</h3>
                                     <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                 </div>
                                 <div>
