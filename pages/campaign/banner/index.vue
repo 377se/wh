@@ -35,11 +35,11 @@
 						</div>
                         <div v-if="domainId" class="uk-flex">
                             <!-- BANNERS -->
-                            <div class="uk-width-1-1" :class="{'uk-width-2-3': editorVisible }">
-                                <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
+                            <div class="uk-width-1-1 bannerlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
+                                <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td class="border-bottom border-right" style="width:53%;"><strong>Namn</strong></td>
+                                            <td class="border-bottom border-right" style="width:46%;"><strong>Namn</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Start</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Slut</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Dagar kvar</strong></td>
@@ -117,6 +117,18 @@
                                         <label>Slutdatum</label>
                                     </ScInput>
                                 </div>
+                                <!-- Dölj -->
+                                <div class="uk-margin uk-width-1-1">
+                                    <div>
+                                        <ul class="uk-list uk-margin-remove-top">
+                                            <li class="uk-text-small">
+                                                <PrettyCheck v-model="bannerItem.IsActive" class="p-icon">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
+                                                </PrettyCheck>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateBanner()">
                                     SPARA/UPPDATERA
                                 </button>
@@ -132,6 +144,7 @@
 <script>
 import Alert from '~/components/Alert'
 import ScInput from '~/components/Input'
+import PrettyCheck from 'pretty-checkbox-vue/check'
 import FileUpload from '~/components/FileUploadBanner'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 if(process.client) {
@@ -141,6 +154,7 @@ if(process.client) {
 export default {
     components: {
 		ScInput,
+		PrettyCheck,
 		Alert,
 		FileUpload,
         Swedish,
@@ -326,6 +340,11 @@ export default {
 <style lang="scss" scoped>
     .bannerlist {
         line-height: 1;
+        width: 99%;
+        margin: 1px 1px;
+    }
+    .bannerlist-container {
+        height: 75vh;
     }
 	.border-all {
         border: 1px solid #ccc;
