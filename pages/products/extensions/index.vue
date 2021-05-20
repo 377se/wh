@@ -74,7 +74,7 @@
                                 </table>
                             </div>
                             <!-- EDIT EXTENSION -->
-                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="editorVisible && extensionItem" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera extension</h3>
                                     <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
@@ -104,15 +104,24 @@
                                     </client-only>
                                     </div>
                                 </div>
-                                <!-- Artikelnummer -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
-                                        <label>Artikelnummer</label>
-                                    </ScInput>
+                                <!-- Koppla mot -->
+                                <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <label class="select-label" for="select-MemberPackageList">Koppla mot</label>
+                                    <client-only>
+                                        <Select2
+                                            id="select-MemberPackageList"
+                                            v-model="extensionItem.ParentProductId"
+                                            :options="extensionItem.MemberPackageList.map(({ ArticleId, ArticleName }) => ({ id: ArticleId, text: ArticleName }))"
+                                            :settings="{ 'width': '100%', 'placeholder': 'Välj artikel att koppla mot', 'closeOnSelect': true }"
+                                        >
+                                        </Select2>
+                                    </client-only>
+                                    </div>
                                 </div>
                                 <!-- Artikelnummer -->
                                 <div class="uk-margin">
-                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
                                         <label>Artikelnummer</label>
                                     </ScInput>
                                 </div>
@@ -317,17 +326,17 @@ export default {
 		},
         async getEmptyExtension() {
 			let _this = this
+            _this.isNewExtension = true
+            _this.editorVisible = true
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Extension/GetEmptyObject')
+			await this.$axios.$get('/webapi/Extension/GetEmptyObject?extensionTypeId=' + _this.extensionTypeId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.extensionItem = response
-                        _this.extensionItem.extensionTypeId = _this.extensionTypeId
-                        _this.createExtension()
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -341,8 +350,6 @@ export default {
 		},
         async createExtension() {
 			let _this = this
-            _this.isNewExtension = true
-            _this.editorVisible = true
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Extension/PostCreateExtension', _this.extensionItem)
 			.then(function (response) {
