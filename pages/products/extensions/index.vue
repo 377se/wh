@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                                 <!-- Koppla mot -->
-                                <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                <div v-if="extensionItem.ExtensionTypeId == 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                     <label class="select-label" for="select-MemberPackageList">Koppla mot</label>
                                     <client-only>
@@ -218,8 +218,8 @@ export default {
     methods: {
 		async getExtensionListByExtensionTypeId() {
 			{{ this.showPageOverlaySpinner() }}
-            this.extensionItem = null
-            this.editorVisible = false
+            !this.isNewExtension ? this.extensionItem = null : null
+            !this.isNewExtension ? this.editorVisible = false : null
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
