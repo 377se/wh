@@ -40,19 +40,24 @@
                                 <table class="extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
                                     <thead>
                                         <tr>
+                                            <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Aktiv</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Bild</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:20%;"><strong>Artikelnummer</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:20%;"><strong>Artikelnamn</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:17%;"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:17%;"><strong>Artikelnamn</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Kopplad mot</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:7%;"><strong>Pris</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Startdatum</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Slutdatum</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:12%;"><strong>Startdatum</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:12%;"><strong>Slutdatum</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="extension in extensionList" :key="extension.ExtensionId" class="uk-table-middle">
-                                            <td class="border-bottom border-right uk-width-auto"><img :src="extension.ImageName"></td>
+                                            <td class="border-bottom border-right uk-text-center">
+                                                <span v-if="extension.IsActive"><i class="mdi mdi-check-box-outline md-color-green-600"></i></span>
+                                                <span v-else><i class="mdi mdi-checkbox-blank-outline md-color-green-600"></i></span>
+                                            </td>
+                                            <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
