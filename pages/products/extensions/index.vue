@@ -131,12 +131,6 @@
                                         <label>Artikelnamn</label>
                                     </ScInput>
                                 </div>
-                                <!-- Kopplad mot -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="extensionItem.ParentName" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Kopplad mot</label>
-                                    </ScInput>
-                                </div>
                                 <!-- Pris -->
                                 <div class="uk-margin">
                                     <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -154,6 +148,18 @@
                                     <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Slutdatum</label>
                                     </ScInput>
+                                </div>
+                                <!-- Aktiv -->
+                                <div class="uk-margin uk-width-1-1">
+                                    <div>
+                                        <ul class="uk-list uk-margin-remove-top">
+                                            <li class="uk-text-small">
+                                                <PrettyCheck v-model="extensionItem.IsActive" class="p-icon">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
+                                                </PrettyCheck>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
                                     SPARA/UPPDATERA
