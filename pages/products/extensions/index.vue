@@ -121,7 +121,7 @@
                                 </div>
                                 <!-- Artikelnummer -->
                                 <div class="uk-margin">
-                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
+                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(extensionItem.ArticleNumber)">
                                         <label>Artikelnummer</label>
                                     </ScInput>
                                 </div>
@@ -383,15 +383,15 @@ export default {
             _this.$store.commit('setAlertHidden', 3)
 			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleNumber)
 			.then(function (response) {
-                _this.articleDetails = response
-                response.ShopId = _this.order.ShopId
-                _this.sizeOptionsList = response.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))
                 try {
                     if ( response.ErrorList != null ) {
                         _this.errorsArticleDetails = response.ErrorList
                         _this.hidePageOverlaySpinner()
                         _this.$store.commit('setAlertVisible', 3)
                     } else {
+                        _this.extensionItem.ArticleId = response.ArticleId
+                        _this.extensionItem.ArticleName = response.ProductName
+                        _this.extensionItem.ExtensionId == 0 ? _this.createExtension() : _this.updateExtension()
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
