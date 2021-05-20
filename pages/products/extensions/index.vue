@@ -5,7 +5,7 @@
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
-					    <h1 class="sc-top-bar-title uk-display-inline">Extensions</h1>
+					    <h1 class="sc-top-bar-title uk-display-inline">Extensions {{ extensionTypeId ? '- ' + extensionTypeOptionsList.find( ({ id }) => id == extensionTypeId ).text : '' }}</h1>
 				    </div>
                 </div>
             </div>
@@ -46,23 +46,19 @@
                                             <td class="border-bottom border-right uk-text-left" style="width:17%;"><strong>Artikelnamn</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Kopplad mot</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Pris</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:12%;"><strong>Startdatum</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:12%;"><strong>Slutdatum</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="extension in extensionList" :key="extension.ExtensionId" class="uk-table-middle">
-                                            <td style="width: 55px;" class="border-bottom border-left border-right">
-                                                <div :class="{'uk-badge md-bg-green-600': extension.IsActive, 'uk-badge md-bg-red-600': !extension.IsActive }">{{ extension.IsActive ? 'AKTIV' : 'INAKTIV'}}</div>
+                                            <td class="border-bottom border-left border-right uk-text-center">
+                                                <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.StartDate }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ValidThru }}</td>
                                             <td class="border-bottom border-right uk-text-center">
                                                 <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
                                                 <i class="mdi mdi-file-edit md-color-green-600"></i>
@@ -222,6 +218,8 @@ export default {
     methods: {
 		async getExtensionListByExtensionTypeId() {
 			{{ this.showPageOverlaySpinner() }}
+            this.extensionItem = null
+            this.editorVisible = false
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
