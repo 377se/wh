@@ -22,6 +22,7 @@
                                                 v-model="extensionTypeId"
                                                 :options="extensionTypeOptionsList"
                                                 :settings="{ 'width': '100%', 'placeholder': 'Välj extensiontyp', 'closeOnSelect': true }"
+                                                @select="getShopListByExtensionType()"
                                             >
                                             </Select2>
                                         </client-only>
@@ -54,7 +55,7 @@
                                             <td class="border-bottom border-right uk-width-auto"><img :src="extension.ImageName"></td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentProductId }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.StartDate }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ValidThru }}</td>
@@ -123,7 +124,7 @@
                                 </div>
                                 <!-- Kopplad mot -->
                                 <div class="uk-margin">
-                                    <ScInput v-model="extensionItem.ParentProductId" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                    <ScInput v-model="extensionItem.ParentName" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Kopplad mot</label>
                                     </ScInput>
                                 </div>
@@ -292,6 +293,28 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async getShopListByExtensionType() {
+			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.showPageOverlaySpinner()
+			await this.$axios.$get('/webapi/Shop/GetShopListByExtensionType?extensionTypeId=' + _this.extensionTypeId)
+			.then(function (shops) {
+                try {
+                    if (shops.ErrorList != null ) {
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
         async getEmptyExtension() {
 			let _this = this
             _this.$store.commit('setAlertHidden', 1)
@@ -375,16 +398,6 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
-    },
-    async fetch () {
-        try {
-            const [ shops ] = await Promise.all([
-                this.$axios.$get('/webapi/Shop/GetShopList'),
-            ])
-            this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
-        } catch (err) {
-            console.log(err);
-        }
     },
 }
 </script>
