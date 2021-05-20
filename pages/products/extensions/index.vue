@@ -18,22 +18,22 @@
                                     <div class="uk-width-4-5 uk-margin-medium-right sc-input-wrapper sc-input-wrapper-outline sc-input-filled uk-position-z-index">
                                         <client-only>
                                             <Select2
-                                                id="select-extensionlist"
-                                                v-model="extensionId"
-                                                :options="extensionOptionsList"
-                                                :settings="{ 'width': '100%', 'placeholder': 'Välj extension', 'closeOnSelect': true }"
+                                                id="select-extensiontypelist"
+                                                v-model="extensionTypeId"
+                                                :options="extensionTypeOptionsList"
+                                                :settings="{ 'width': '100%', 'placeholder': 'Välj extensiontyp', 'closeOnSelect': true }"
                                             >
                                             </Select2>
                                         </client-only>
                                     </div>
-                                    <div v-if="extensionId" class="uk-width-1-5 uk-flex uk-flex-middle" @click="getEmptyExtension()">
+                                    <div v-if="extensionTypeId" class="uk-width-1-5 uk-flex uk-flex-middle" @click="getEmptyExtension()">
                                         <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
                                         <span class="addicon uk-text-middle">Skapa ny extension</span> <!-- SKAPA NY EXTENSION -->
                                     </div>
                                 </div>
 							</div>
 						</div>
-                        <div v-if="extensionId" class="uk-flex">
+                        <div v-if="extensionTypeId" class="uk-flex">
                             <!-- EXTENSIONS -->
                             <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
                                 <table class="extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -88,6 +88,27 @@
                                     :alertClass="'uk-alert-danger'"
                                     id=1
                                 />
+                                <!-- Shop -->
+                                <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <label class="select-label" for="select-shopOptionsList">Shop</label>
+                                    <client-only>
+                                        <Select2
+                                            id="select-shopOptionsList"
+                                            v-model="extensionItem.ShopId"
+                                            :options="shopOptionsList"
+                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+                                        >
+                                        </Select2>
+                                    </client-only>
+                                    </div>
+                                </div>
+                                <!-- Artikelnummer -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
+                                        <label>Artikelnummer</label>
+                                    </ScInput>
+                                </div>
                                 <!-- Artikelnummer -->
                                 <div class="uk-margin">
                                     <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -158,28 +179,30 @@ export default {
     data () {
 		return {
             extensionId: null,
-            extensionOptionsList: null,
+            extensionTypeId: null,
+            extensionTypeOptionsList: null,
             extensionList: null,
             extensionItem: null,
             editorVisible: false,
             isNewExtension: false,
+            shopOptionsList: null,
     		errors: null,
     		Swedish,
         }
     },
 	watch: {
-		extensionId: function () {
+		extensionTypeId: function () {
 			this.extensionList = []
-			this.getExtensionListByExtensionId(this.extensionId)
+			this.getExtensionListByExtensionTypeId(this.extensionTypeId)
 		}
 	},
 	mounted () {
         this.getExtensionTypeList()
     },
     methods: {
-		async getExtensionListByExtensionId() {
+		async getExtensionListByExtensionTypeId() {
 			{{ this.showPageOverlaySpinner() }}
-			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionId )
+			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
 				{{ this.hidePageOverlaySpinner() }}
@@ -192,7 +215,7 @@ export default {
 			{{ this.showPageOverlaySpinner() }}
 			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
 			.then( extensiontypelist => {
-				this.extensionOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+				this.extensionTypeOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
 				{{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
@@ -204,7 +227,7 @@ export default {
             _this.isNewExtension = false
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Extension/GetExtensionById?extensionId=' + _this.extensionId)
+			await this.$axios.$get('/webapi/Extension/GetExtensionById?extensionId=' + extensionId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
@@ -257,7 +280,7 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.$store.commit('setAlertHidden', 1)
-                        _this.getExtensionListByExtensionId()
+                        _this.getExtensionListByExtensionTypeId()
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -280,7 +303,7 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.extensionItem = response
-                        _this.extensionItem.ExtensionId = _this.domainId
+                        _this.extensionItem.extensionTypeId = _this.extensionTypeId
                         _this.createExtension()
                         _this.hidePageOverlaySpinner()
                     }
@@ -306,7 +329,34 @@ export default {
                     } else {
                         _this.extensionItem = response
                         _this.hidePageOverlaySpinner()
-                        _this.getExtensionListByExtensionId()
+                        _this.getExtensionListByExtensionTypeId()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
+        async getArticleDetailsByArticleNumber(articleNumber) {
+			let _this = this
+            _this.$store.commit('setAlertHidden', 4)
+            _this.showPageOverlaySpinner()
+            _this.$store.commit('setAlertHidden', 3)
+			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleNumber)
+			.then(function (response) {
+                _this.articleDetails = response
+                response.ShopId = _this.order.ShopId
+                _this.sizeOptionsList = response.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))
+                try {
+                    if ( response.ErrorList != null ) {
+                        _this.errorsArticleDetails = response.ErrorList
+                        _this.hidePageOverlaySpinner()
+                        _this.$store.commit('setAlertVisible', 3)
+                    } else {
+                        _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
                     console.log(err)
@@ -325,6 +375,16 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
+    },
+    async fetch () {
+        try {
+            const [ shops ] = await Promise.all([
+                this.$axios.$get('/webapi/Shop/GetShopList'),
+            ])
+            this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+        } catch (err) {
+            console.log(err);
+        }
     },
 }
 </script>
