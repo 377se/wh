@@ -53,9 +53,8 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="extension in extensionList" :key="extension.ExtensionId" class="uk-table-middle">
-                                            <td class="border-bottom border-right uk-text-center">
-                                                <span v-if="extension.IsActive"><i class="mdi mdi-check-box-outline md-color-green-600"></i></span>
-                                                <span v-else><i class="mdi mdi-checkbox-blank-outline md-color-green-600"></i></span>
+                                            <td style="width: 55px;" class="border-bottom border-left border-right">
+                                                <div :class="{'uk-badge md-bg-green-600': extension.IsActive, 'uk-badge md-bg-red-600': !extension.IsActive }">{{ extension.IsActive ? 'AKTIV' : 'INAKTIV'}}</div>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
