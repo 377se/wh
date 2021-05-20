@@ -117,7 +117,7 @@
                                         <label>Slutdatum</label>
                                     </ScInput>
                                 </div>
-                                <!-- Dölj -->
+                                <!-- Aktiv -->
                                 <div class="uk-margin uk-width-1-1">
                                     <div>
                                         <ul class="uk-list uk-margin-remove-top">
