@@ -57,7 +57,8 @@
                                             <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
+                                            <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-center">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
+                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
                                             <td class="border-bottom border-right uk-text-center">
                                                 <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
@@ -218,8 +219,8 @@ export default {
     methods: {
 		async getExtensionListByExtensionTypeId() {
 			{{ this.showPageOverlaySpinner() }}
-            !this.isNewExtension ? this.extensionItem = null : null
-            !this.isNewExtension ? this.editorVisible = false : null
+            // !this.isNewExtension ? this.extensionItem = null : null
+            // !this.isNewExtension ? this.editorVisible = false : null
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
