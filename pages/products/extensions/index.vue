@@ -90,7 +90,7 @@
                                     id=1
                                 />
                                 <!-- Shop -->
-                                <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                <div v-if="extensionItem.ExtensionTypeId != 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                     <label class="select-label" for="select-shopOptionsList">Shop</label>
                                     <client-only>
@@ -126,31 +126,31 @@
                                     </ScInput>
                                 </div>
                                 <!-- Artikelnamn -->
-                                <div class="uk-margin">
+                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
                                     <ScInput v-model="extensionItem.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Artikelnamn</label>
                                     </ScInput>
                                 </div>
                                 <!-- Pris -->
-                                <div class="uk-margin">
+                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
                                     <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Pris</label>
                                     </ScInput>
                                 </div>
                                 <!-- Startdatum -->
-                                <div class="uk-margin">
+                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
                                     <ScInput v-model="extensionItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Startdatum</label>
                                     </ScInput>
                                 </div>
                                 <!-- Slutdatum -->
-                                <div class="uk-margin">
+                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
                                     <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Slutdatum</label>
                                     </ScInput>
                                 </div>
                                 <!-- Aktiv -->
-                                <div class="uk-margin uk-width-1-1">
+                                <div v-if="extensionItem.ExtensionId" class="uk-margin uk-width-1-1">
                                     <div>
                                         <ul class="uk-list uk-margin-remove-top">
                                             <li class="uk-text-small">
@@ -161,7 +161,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
+                                <button v-if="extensionItem.ExtensionId" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
                                     SPARA/UPPDATERA
                                 </button>
                             </div>
@@ -285,6 +285,8 @@ export default {
 		},
         async updateExtension() {
 			let _this = this
+            _this.errors = null
+            _this.$store.commit('setAlertHidden', 1)
             _this.isNewBanner = true
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Extension/PostUpdateExtension', _this.extensionItem )
@@ -356,6 +358,9 @@ export default {
 		},
         async createExtension() {
 			let _this = this
+            _this.errors = null
+            _this.extensionTypeId == 1 ? _this.extensionItem.ShopId = 1 : null
+            _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Extension/PostCreateExtension', _this.extensionItem)
 			.then(function (response) {
