@@ -514,6 +514,7 @@ export default {
 		},
         async getArticleDetailsByArticleNumber(articleNumber) {
 			let _this = this
+            _this.errorsArticleDetails = null
             _this.$store.commit('setAlertHidden', 4)
             _this.showPageOverlaySpinner()
             _this.$store.commit('setAlertHidden', 3)
