@@ -42,10 +42,11 @@
                                         <tr>
                                             <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Aktiv</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Bild</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:17%;"><strong>Artikelnummer</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:17%;"><strong>Artikelnamn</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnamn</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Kopplad mot</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Ant sålda</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
                                     </thead>
@@ -60,6 +61,7 @@
                                             <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-center">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
                                             <td v-else class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ItemsSold }}</td>
                                             <td class="border-bottom border-right uk-text-center">
                                                 <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
                                                 <i class="mdi mdi-file-edit md-color-green-600"></i>
