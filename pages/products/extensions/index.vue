@@ -67,9 +67,12 @@
                                                 <i class="mdi mdi-file-edit md-color-green-600"></i>
                                                 </div>
                                             </td>
-                                            <td class="border-bottom border-right uk-text-center">
-                                                <div class="wastebasket" @click="deleteExtension(extension.ExtensionId)"> <!-- TA BORT EXTENSION -->
-                                                <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                            <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
+                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId)">
+                                                    <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                </div>
+                                                <div v-else>
+                                                    <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
                                                 </div>
                                             </td>
                                         </tr>
