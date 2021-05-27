@@ -30,7 +30,8 @@ export default {
   	},
 	computed: mapState([
 		'vxSidebarMainExpanded',
-		'vxAppVersion'
+		'vxAppVersion',
+		'isLoggedIn'
 	]),
 	watch: {
 		'vxSidebarMainExpanded' (state) {
@@ -51,6 +52,11 @@ export default {
 					this.$store.commit('sidebarMainToggle', false);
 				}
 			})
+		},
+		'isLoggedIn' (state){
+				if(state){
+					this.$fetch()
+				}
 		}
 	},
 	mounted () {
