@@ -59,7 +59,7 @@
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
                                             <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-center">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
-                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
+                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
                                             <td class="border-bottom border-right uk-text-center">
