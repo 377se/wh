@@ -44,14 +44,14 @@
                                             <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Bild</strong></td>
                                             <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnummer</strong></td>
                                             <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnamn</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Kopplad mot</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Pris</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Ant sålda</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:13%;"><strong>Kopplad mot</strong></td>
+                                            <td class="border-bottom border-right uk-text-right" style="width:4%;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-right" style="width:5%;"><strong>Ant sålda</strong></td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="extension in extensionList" :key="extension.ExtensionId" class="uk-table-middle">
+                                        <tr v-for="extension in extensionList.ItemList" :key="extension.ExtensionId" class="uk-table-middle">
                                             <td class="border-bottom border-left border-right uk-text-center">
                                                 <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
                                             </td>
@@ -59,9 +59,9 @@
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
                                             <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
                                             <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-center">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
-                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ExtensionPrice }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ItemsSold }}</td>
+                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
                                             <td class="border-bottom border-right uk-text-center">
                                                 <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
                                                 <i class="mdi mdi-file-edit md-color-green-600"></i>
@@ -77,6 +77,14 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr 
+                                            v-for="(summary, index) in extensionList.Summary" :key="index">
+                                            <td class="border-bottom border-right uk-text-left" colspan="6"><strong>{{ summary.Name }}</strong></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                             <!-- EDIT EXTENSION -->
