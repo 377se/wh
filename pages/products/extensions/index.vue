@@ -80,7 +80,7 @@
                                     <tfoot>
                                         <tr 
                                             v-for="(summary, index) in extensionList.Summary" :key="index">
-                                            <td class="border-bottom border-right uk-text-left" colspan="6"><strong>{{ summary.Name }}</strong></td>
+                                            <td class="border-bottom border-right uk-text-right" colspan="6"><strong>{{ summary.Name }}</strong></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
