@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <!-- Shop -->
-                                <div v-if="extensionTypeId == 3" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                <div v-if="extensionTypeId == 3" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-3">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                     <client-only>
                                         <Select2
@@ -53,7 +53,7 @@
                         <div v-if="extensionTypeId" class="uk-flex">
                             <!-- EXTENSIONS -->
                             <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
-                                <table class="extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+                                <table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
                                     <thead>
                                         <tr>
                                             <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Aktiv</strong></td>
@@ -66,35 +66,35 @@
                                             <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr v-for="extension in extensionList.ItemList" :key="extension.ExtensionId" class="uk-table-middle">
-                                            <td class="border-bottom border-left border-right uk-text-center">
-                                                <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
-                                            </td>
-                                            <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
-                                            <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
-                                            <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
-                                            <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-center">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
-                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-center">{{ extension.ParentName }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
-                                            <td class="border-bottom border-right uk-text-center">
-                                                <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
-                                                <i class="mdi mdi-file-edit md-color-green-600"></i>
-                                                </div>
-                                            </td>
-                                            <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
-                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
-                                                    <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
-                                                </div>
-                                                <div v-else>
-                                                    <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                        <draggable tag="tbody" v-model="extensionList.ItemList" @start="drag = true" @end="drag = false" @change="sortExtensionList" v-bind="dragOptions">
+                                            <tr v-for="extension in extensionList.ItemList" :key="extension.ExtensionId" class="uk-table-middle">
+                                                <td class="border-bottom border-left border-right uk-text-center">
+                                                    <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
+                                                </td>
+                                                <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
+                                                <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
+                                                <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
+                                                <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-left">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
+                                                <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
+                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
+                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
+                                                <td class="border-bottom border-right uk-text-center">
+                                                    <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
+                                                    <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                    </div>
+                                                </td>
+                                                <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
+                                                    <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
+                                                        <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                    </div>
+                                                    <div v-else>
+                                                        <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </draggable>
                                     <tfoot>
-                                        <tr 
+                                        <tr
                                             v-for="(summary, index) in extensionList.Summary" :key="index">
                                             <td class="border-bottom border-right uk-text-right" colspan="6"><strong>{{ summary.Name }}</strong></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
@@ -209,6 +209,7 @@ import ScInput from '~/components/Input'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import FileUpload from '~/components/FileUploadBanner'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
+import draggable from 'vuedraggable'
 if(process.client) {
 	require('~/plugins/flatpickr');
 }
@@ -220,6 +221,7 @@ export default {
 		Alert,
 		FileUpload,
         Swedish,
+        draggable,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
@@ -236,6 +238,7 @@ export default {
             shopId: 0,
     		errors: null,
     		Swedish,
+            drag: false,
         }
     },
 	watch: {
@@ -244,6 +247,16 @@ export default {
 			this.getExtensionListByExtensionTypeId(this.extensionTypeId, this.shopId)
 		},
 	},
+    computed: {
+        dragOptions() {
+            return {
+                animation: 200,
+                group: "description",
+                disabled: false,
+                ghostClass: "ghost"
+            }
+        },
+    },
 	mounted () {
         this.getExtensionTypeList()
     },
@@ -301,7 +314,7 @@ export default {
         async deleteExtension(extensionId, shopId) {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId + shopId)
+			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId + '&shopId=' + shopId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
@@ -346,6 +359,31 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async sortExtensionList() {
+			let _this = this
+            _this.errors = null
+            _this.$store.commit('setAlertHidden', 1)
+            _this.showPageOverlaySpinner()
+			await this.$axios.$post('/webapi/Extension/SortExtensionList', _this.extensionList )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        _this.$store.commit('setAlertHidden', 1)
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
         async getShopListByExtensionType() {
 			let _this = this
             _this.$store.commit('setAlertHidden', 1)
@@ -358,6 +396,7 @@ export default {
                     } else {
                         _this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
                         _this.shopList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+                        _this.shopList.push({id: 0, text: 'Alla shopar'})
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -484,4 +523,8 @@ export default {
     .wastebasket, .editicon, .addicon, .closeicon {
 		cursor: pointer;
 	}
+    .ghost {
+        opacity: 0.5;
+        background: #c8ebfb;
+    }
 </style>
