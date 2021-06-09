@@ -116,7 +116,7 @@
                                                     <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                                         SKRIV UT
                                                     </button>
-                                                    <button v-if="orderInfo.ButtonSetAsDelivered" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                    <button v-if="orderInfo.statusId == 2" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
                                                         SÄTT SOM LEVERERAD
                                                     </button>
                                                 </div>
@@ -288,7 +288,7 @@
                                                 </div>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -300,7 +300,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Ordersumma</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -312,7 +312,7 @@
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">
                                                 <div>Frakt & hantering</div>
                                             </td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.ShippingAndHandling }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.ShippingAndHandling | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -322,7 +322,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2"><strong>Totalt</strong></td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total }} {{ orderInfo.Currency }}</strong></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total | thousandsDelimiter }} {{ orderInfo.Currency }}</strong></td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -332,7 +332,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Varav moms</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.Vat }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.Vat | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
