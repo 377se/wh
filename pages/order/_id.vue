@@ -80,15 +80,6 @@
                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.HasBeenPrinted ? 'Utskriven' : 'Ej utskriven' }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Fraktkostnader</strong></td>
-                                        <td class="border-bottom uk-width-4-5">
-                                            <div class="uk-margin">
-                                                <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small" @blur="updateOrder()">
-                                                </ScInput>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td class="border-bottom border-right uk-width-1-5"><strong>Status</strong></td>
                                         <td class="border-bottom uk-width-4-5">
                                             <div class="uk-width-1-1">
@@ -116,7 +107,7 @@
                                                     <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                                         SKRIV UT
                                                     </button>
-                                                    <button v-if="orderInfo.statusId == 2" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
                                                         SÄTT SOM LEVERERAD
                                                     </button>
                                                 </div>
@@ -312,7 +303,13 @@
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">
                                                 <div>Frakt & hantering</div>
                                             </td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.ShippingAndHandling | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-text-right">
+                                                <div class="uk-flex uk-flex-middle">
+                                                    <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrder()">
+                                                    </ScInput>
+                                                    <div>&nbsp;{{ orderInfo.Currency }}</div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -757,7 +754,7 @@ export default {
 			let _this = this
 			_this.message = null
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/OrderHandling/PostSetOrderAsDeliveredByOrderId?orderId=' + _this.orderInfo.OrderId )
+            await this.$axios.$post('/webapi/OrderHandling/SetOrderAsDeliveredByOrderId?orderId=' + _this.orderInfo.OrderId )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
