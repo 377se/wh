@@ -89,5 +89,5 @@ Vue.filter('hashCCnumber', function (value) {
 });
 
 Vue.filter('thousandsDelimiter', (value) => {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   })
