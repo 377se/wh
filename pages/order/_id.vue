@@ -10,6 +10,7 @@
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
+                        <img :src="this.orderInfo.ImageName" alt="Produktbild" class="uk-margin-medium-right">
                         <h1 class="sc-top-bar-title uk-display-inline">Order # {{ this.orderInfo.OrderId }}</h1>
                     </div>
                 </div>
