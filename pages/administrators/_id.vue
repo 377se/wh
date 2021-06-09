@@ -85,7 +85,7 @@
                             </ScCardBody>
                         </ScCard>
                     </div>
-                    <div class="uk-width-1-2">
+                    <div v-if="adminDetails.HasAdminPermission" class="uk-width-1-2">
                         <ScCard>
                             <ScCardHeader separator>
                                 <ScCardTitle>
