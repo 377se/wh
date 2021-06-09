@@ -14,7 +14,8 @@
 					<ScCardBody>
 						<div class="uk-flex uk-margin-medium-bottom">
 							<div class="uk-margin-medium-bottom uk-width-1-1">
-								<div class="uk-flex uk-flex-middle">
+								<!-- ExtensionType -->
+                                <div class="uk-flex uk-flex-middle">
                                     <div class="uk-width-4-5 uk-margin-medium-right sc-input-wrapper sc-input-wrapper-outline sc-input-filled uk-position-z-index">
                                         <client-only>
                                             <Select2
@@ -30,6 +31,21 @@
                                     <div v-if="extensionTypeId" class="uk-width-1-5 uk-flex uk-flex-middle" @click="getEmptyExtension()">
                                         <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
                                         <span class="addicon uk-text-middle">Skapa ny extension</span> <!-- SKAPA NY EXTENSION -->
+                                    </div>
+                                </div>
+                                <!-- Shop -->
+                                <div v-if="extensionTypeId == 3" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <client-only>
+                                        <Select2
+                                            id="select-shopList"
+                                            v-model="shopId"
+                                            :options="shopList"
+                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+                                            @select="getExtensionListByExtensionTypeId(extensionTypeId, shopId)"
+                                        >
+                                        </Select2>
+                                    </client-only>
                                     </div>
                                 </div>
 							</div>
@@ -68,7 +84,7 @@
                                                 </div>
                                             </td>
                                             <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
-                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId)">
+                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
                                                     <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
                                                 </div>
                                                 <div v-else>
@@ -216,6 +232,8 @@ export default {
             editorVisible: false,
             isNewExtension: false,
             shopOptionsList: null,
+            shopList: null,
+            shopId: 0,
     		errors: null,
     		Swedish,
         }
@@ -223,8 +241,8 @@ export default {
 	watch: {
 		extensionTypeId: function () {
 			this.extensionList = []
-			this.getExtensionListByExtensionTypeId(this.extensionTypeId)
-		}
+			this.getExtensionListByExtensionTypeId(this.extensionTypeId, this.shopId)
+		},
 	},
 	mounted () {
         this.getExtensionTypeList()
@@ -232,12 +250,14 @@ export default {
     methods: {
 		async getExtensionListByExtensionTypeId() {
 			{{ this.showPageOverlaySpinner() }}
+            this.extensionList = []
             // !this.isNewExtension ? this.extensionItem = null : null
             // !this.isNewExtension ? this.editorVisible = false : null
-			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId )
+			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId + '&shopId=' + this.shopId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
-				{{ this.hidePageOverlaySpinner() }}
+                this.shopId != 0 ? this.shopId = 0 : null
+                {{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -278,10 +298,10 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
-        async deleteExtension(extensionId) {
+        async deleteExtension(extensionId, shopId) {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId)
+			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId + shopId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
@@ -337,6 +357,7 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+                        _this.shopList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -354,7 +375,7 @@ export default {
             _this.editorVisible = true
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Extension/GetEmptyObject?extensionTypeId=' + _this.extensionTypeId)
+			await this.$axios.$get('/webapi/Extension/GetEmptyObject?extensionTypeId=' + _this.extensionTypeId + '&shopId=' + this.shopId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
