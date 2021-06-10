@@ -12,7 +12,7 @@
 	        <div id="sc-page-content">
 				<ScCard>
 					<ScCardBody>
-						<div class="uk-flex uk-margin-medium-bottom">
+						<div id="header-area" class="uk-flex uk-margin-medium-bottom">
 							<div class="uk-margin-medium-bottom uk-width-1-1">
 								<!-- ExtensionType -->
                                 <div class="uk-flex uk-flex-middle">
@@ -33,19 +33,24 @@
                                         <span class="addicon uk-text-middle">Skapa ny extension</span> <!-- SKAPA NY EXTENSION -->
                                     </div>
                                 </div>
-                                <!-- Shop -->
-                                <div v-if="extensionTypeId == 3" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-3">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <client-only>
-                                        <Select2
-                                            id="select-shopList"
-                                            v-model="shopId"
-                                            :options="shopList"
-                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
-                                            @select="getExtensionListByExtensionTypeId(extensionTypeId, shopId)"
-                                        >
-                                        </Select2>
-                                    </client-only>
+                                <!-- Shopdrop & Summary -->
+                                <div class="uk-flex uk-flex-middle uk-flex-between">
+                                    <div v-if="extensionTypeId == 3" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-3">
+                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                        <client-only>
+                                            <Select2
+                                                id="select-shopList"
+                                                v-model="shopId"
+                                                :options="shopList"
+                                                :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+                                                @select="getExtensionListByExtensionTypeId"
+                                            >
+                                            </Select2>
+                                        </client-only>
+                                        </div>
+                                    </div>
+                                    <div class="uk-width-1-2 uk-margin-medium-bottom uk-margin-medium-top" v-if="extensionList.length != 0">
+                                        {{ extensionList.Summary[0].Name }}: {{ extensionList.Summary[0].ItemsSold }}
                                     </div>
                                 </div>
 							</div>
@@ -126,9 +131,10 @@
                                     <client-only>
                                         <Select2
                                             id="select-shopOptionsList"
-                                            v-model="extensionItem.ShopId"
+                                            v-model="shopId"
                                             :options="shopOptionsList"
                                             :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+                                            @select="getExtensionListByExtensionTypeId"
                                         >
                                         </Select2>
                                     </client-only>
@@ -229,7 +235,7 @@ export default {
             extensionId: null,
             extensionTypeId: null,
             extensionTypeOptionsList: null,
-            extensionList: null,
+            extensionList: [],
             extensionItem: null,
             editorVisible: false,
             isNewExtension: false,
@@ -245,6 +251,9 @@ export default {
 		extensionTypeId: function () {
 			this.extensionList = []
 			this.getExtensionListByExtensionTypeId(this.extensionTypeId, this.shopId)
+		},
+		shopId: function () {
+			// this.shopId != 0 ? this.shopId = 0 : null
 		},
 	},
     computed: {
@@ -269,7 +278,6 @@ export default {
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId + '&shopId=' + this.shopId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
-                this.shopId != 0 ? this.shopId = 0 : null
                 {{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
@@ -386,6 +394,7 @@ export default {
 		},
         async getShopListByExtensionType() {
 			let _this = this
+            this.shopId != 0 ? this.shopId = 0 : null
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Shop/GetShopListByExtensionType?extensionTypeId=' + _this.extensionTypeId)
@@ -436,6 +445,8 @@ export default {
 			let _this = this
             _this.errors = null
             _this.extensionTypeId == 1 ? _this.extensionItem.ShopId = 1 : null
+            _this.extensionTypeId == 2 ? _this.extensionItem.ShopId = 2 : null
+            _this.extensionTypeId == 3 ? _this.extensionItem.ShopId = _this.shopId : null
             _this.$store.commit('setAlertHidden', 1)
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Extension/PostCreateExtension', _this.extensionItem)
