@@ -29,8 +29,8 @@
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-flex">
-                            <table :class="{'uk-width-2-3': adressEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
+                        <div class="uk-flex uk-overflow-auto">
+                            <table :class="{'uk-width-1-1 uk-width-2-3@m': adressEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
                                 <tbody>
                                     <tr>
                                         <td class="border-bottom border-right uk-width-1-5"><strong>Kund</strong></td>
@@ -222,7 +222,7 @@
                     <ScCardBody>
                          <div class="uk-flex">
                              <!-- ORDERINNEHÅLL -->
-                            <div class="uk-width-1-1" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
+                            <div class="uk-width-1-1 uk-overflow-auto" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
                                 <table class="uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
