@@ -26,46 +26,46 @@
 							<thead>
 								<tr>
 									<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Dagsförsäljning</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Ordrar i dag</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Månadsförsäljning</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Aktiva ordrar</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Med tryck</strong></td>
-									<td class="border-bottom border-right uk-text-left"><strong>Leveranser i dag</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Snitt i dag</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Årsförsäljning</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Antal kunder</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Aktiva produkter</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Dagsförsäljning</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Ordrar i dag</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Månadsförsäljning</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Aktiva ordrar</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Med tryck</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Leveranser i dag</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Snitt i dag</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Årsförsäljning</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Antal kunder</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Aktiva produkter</strong></td>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
-									<td class="border-bottom border-right uk-width-auto">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.TotalSaleToday }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.OrdersToday }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.TotalSaleCurrentMonth }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.ActiveOrders }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.OrdersWithPrint }}</td>
-									<td class="border-bottom border-right uk-width-auto">{{ shop.ItemsShipped }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.AvgSaleToday }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.TotalSaleCurrentYear }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.NumberOfCustomers }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.ActiveProducts }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleToday | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersWithPrint | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ItemsShipped | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.AvgSaleToday | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentYear | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.NumberOfCustomers | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveProducts | thousandsDelimiter }}</td>
 								</tr>
 							</tbody>
 							<tfoot>
 								<tr class="uk-text-small uk-table-middle">
-									<td class="border-bottom border-right"><strong>Totalt:</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleToday }}</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.OrdersToday }}</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentMonth }}</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ActiveOrders }}</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.OrdersWithPrint }}</strong></td>
-									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ItemsShipped }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.SaleAverage }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentYear }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.NumberOfCustomers }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.ActiveProducts }}</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Totalt:</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleToday | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersToday | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentMonth | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveOrders | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersWithPrint | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ItemsShipped | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.SaleAverage | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentYear | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.NumberOfCustomers | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveProducts | thousandsDelimiter }}</strong></td>
 								</tr>
 								<tr>
 									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary">TOGGLE EXT</button></td>
