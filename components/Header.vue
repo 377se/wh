@@ -531,7 +531,8 @@ export default {
 			await this.$axios.$post('/webapi/Logout/PostLogout')
 			this.$cookies.remove('wh-377')
 			this.$store.commit('setIsLoggedIn', false)
-          	this.$router.push('/')
+          	// this.$router.push('/')
+			location.reload('/')
 		},
 	}
 }
