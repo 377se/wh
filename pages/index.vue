@@ -23,12 +23,12 @@
 								<tr>
 									<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
 									<td class="border-bottom border-right uk-text-right"><strong>Dagsförsäljning</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>Ordrar i dag</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Ordrar idag</strong></td>
 									<td class="border-bottom border-right uk-text-right"><strong>Månadsförsäljning</strong></td>
 									<td class="border-bottom border-right uk-text-right"><strong>Aktiva ordrar</strong></td>
 									<td class="border-bottom border-right uk-text-right"><strong>Med tryck</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>Leveranser i dag</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Snitt i dag</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>Leveranser idag</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Snitt idag</strong></td>
 									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Årsförsäljning</strong></td>
 									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Antal kunder</strong></td>
 									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>Aktiva produkter</strong></td>
