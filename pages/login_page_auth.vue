@@ -2,41 +2,42 @@
   <section>
     <div class="uk-background-muted">
       <div class="uk-container uk-container-xsmall uk-padding">
-        <form 
+        <div class="uk-flex uk-flex-center uk-margin-large-bottom uk-margin-large-top"><img style="width:540px;" src="~/assets/img/logo-green.png"></div>
+        <form
           method="post"
           @submit.prevent="login">
           <fieldset class="uk-fieldset">
 
-            <div  
+            <div
               class="uk-margin">
               <label class="uk-form-label">Email</label>
               <div class="uk-form-controls">
-                <input 
+                <input
                   v-model="form.email"
-                  class="uk-input" 
+                  class="uk-input"
                   type="text"
                   name="email">
               </div>
             </div>
-            <div 
+            <div
               class="uk-margin" >
               <label class="uk-form-label">Lösenord</label>
               <div class="uk-form-controls">
-                <input 
+                <input
                   v-model="form.password"
-                  class="uk-input" 
+                  class="uk-input"
                   type="password"
                   name="password"
                 />
               </div>
               <div class="uk-margin uk-margin-remove-top uk-text-center uk-text-small">
-                <nuxt-link 
-                  :to="localePath('/forgotten-password')" 
+                <nuxt-link
+                  :to="localePath('/forgotten-password')"
                   style="color:#8c8c8c">Glömt ditt lösenord?</nuxt-link></div>
             </div>
 
             <div class="uk-margin uk-text-center">
-              <ButtonSubmit 
+              <ButtonSubmit
                 :is-submitting="isSubmitting"
                 theme="uk-button-primary"
                 :button-text="'Logga in'"
@@ -64,7 +65,7 @@ export default {
         _this.form[key] = ''
       })
     }catch(err){console.log(err)}
-    next() 
+    next()
   },
   components:{
     ButtonSubmit,
