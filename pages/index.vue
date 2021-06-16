@@ -13,8 +13,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="sc-page-content">
-			<ScCard>
+		<div v-if="dashBoard" id="sc-page-content">
+			<!-- STATISTIK -->
+			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody>
 					<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
 						<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -73,6 +74,36 @@
 					</div>
 				</ScCardBody>
 			</ScCard>
+			<!-- 10 SENASTE -->
+			<ScCard>
+				<ScCardBody>
+					<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+						<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+							<thead>
+								<tr>
+									<td colspan="2" class="border-bottom border-right uk-text-left">
+										<div class="uk-flex uk-flex-between">
+											<div><strong>10 senaste produkterna i 377 Warehouse</strong></div>
+											<div class="uk-badge md-bg-green-600">{{ recentlyActivated.length }}</div>
+										</div>
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="article in recentlyActivated" :key="article.ArticleId" class="uk-table-middle">
+									<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left">
+										<nuxt-link :to="article.Url">
+											<div>{{ article.TeamName | toUppercase }}</div>
+											<div>{{ article.ArticleName }}</div>
+										</nuxt-link>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</ScCardBody>
+			</ScCard>
 		</div>
     </div>
 </template>
@@ -81,6 +112,7 @@ export default {
 	data () {
 		return {
 			userDetails: [],
+			recentlyActivated: [],
 			dashBoard: null,
 			isExtended: false,
 		}
@@ -98,12 +130,12 @@ export default {
         },
 		async getDashboardExtended() {
             let _this = this
-			_this.isExtended = !_this.isExtended
             _this.showPageOverlaySpinner()
             await this.$axios.$get('/webapi/Dashboard/GetDashboardExtended')
             .then(function (dashboard) {
                 _this.dashBoard = dashboard
                 _this.hidePageOverlaySpinner()
+				_this.isExtended = !_this.isExtended
             })
             .catch(function (error) {
                 console.log(error)
@@ -114,12 +146,14 @@ export default {
 	},
     async fetch () {
         try {
-            const [ userdetails, dashboard ] = await Promise.all([
+            const [ userdetails, dashboard, recentlyactivated ] = await Promise.all([
 				await this.$axios.$get('/webapi/admin/GetCurrentUser'),
-				await this.$axios.$get('/webapi/Dashboard/GetDashboard')
+				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
+				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
             ])
             this.userDetails = userdetails
             this.dashBoard = dashboard
+            this.recentlyActivated = recentlyactivated
         } catch (err) {
             console.log(err);
         }
