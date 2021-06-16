@@ -24,6 +24,13 @@ Vue.filter("formatNumber", function (value, format) {
 	return numeral(value).format(format);
 });
 
+Vue.filter("removeDecimals", function (value) {
+	if(!value) {
+		return
+	}
+	return Math.trunc(value);
+});
+
 Vue.filter("randomizeNumber", function (value, min, max) {
 	if(!value) {
 		return
