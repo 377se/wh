@@ -68,7 +68,7 @@
 									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveProducts | thousandsDelimiter }}</strong></td>
 								</tr>
 								<tr>
-									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary">TOGGLE EXT</button></td>
+									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary uk-button-small">{{ isExtended ? 'VISA MINDRE' : 'VISA MER' }}</button></td>
 									<td class="border-bottom border-right uk-text-right uk-text-small" :colspan="isExtended ? 10 : 6">
 										 (priser ex moms)
 									</td>
