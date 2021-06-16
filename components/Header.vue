@@ -10,7 +10,7 @@
 					<nuxt-link to="/"><img v-rjs="require('~/assets/img/logo@2x.png')" :src="logo" alt=""></nuxt-link>
 				</div>
 			</div>
-				<div class="uk-flex uk-flex-middle uk-light">Välkommen {{ userDetails.Firstname }}!</div>
+				<div v-if="userDetails.length > 0" class="uk-flex uk-flex-middle uk-light">Välkommen {{ userDetails.Firstname }}!</div>
 			<!-- <div v-if="!vxTopMenuActive" class="uk-navbar-left nav-overlay uk-margin-right uk-visible@m">
 				<ul class="uk-navbar-nav">
 					<li>
