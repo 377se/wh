@@ -25,13 +25,17 @@
 						<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 							<thead>
 								<tr>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Shop</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Dagsförsäljning</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Ordrar i dag</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Månadsförsäljning</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Aktiva ordrar</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Med tryck</strong></td>
-									<td class="border-bottom border-right uk-text-left" style="width:14%;"><strong>Leveranser i dag</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Dagsförsäljning</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Ordrar i dag</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Månadsförsäljning</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Aktiva ordrar</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Med tryck</strong></td>
+									<td class="border-bottom border-right uk-text-left"><strong>Leveranser i dag</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Snitt i dag</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Årsförsäljning</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Antal kunder</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-left"><strong>Aktiva produkter</strong></td>
 								</tr>
 							</thead>
 							<tbody>
@@ -43,6 +47,10 @@
 									<td class="border-bottom border-right uk-width-auto">{{ shop.ActiveOrders }}</td>
 									<td class="border-bottom border-right uk-width-auto">{{ shop.OrdersWithPrint }}</td>
 									<td class="border-bottom border-right uk-width-auto">{{ shop.ItemsShipped }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.AvgSaleToday }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.TotalSaleCurrentYear }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.NumberOfCustomers }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto">{{ shop.ActiveProducts }}</td>
 								</tr>
 							</tbody>
 							<tfoot>
@@ -54,9 +62,14 @@
 									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ActiveOrders }}</strong></td>
 									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.OrdersWithPrint }}</strong></td>
 									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ItemsShipped }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.SaleAverage }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentYear }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.NumberOfCustomers }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right"><strong>{{ dashBoard.Summary.ActiveProducts }}</strong></td>
 								</tr>
 								<tr>
-									<td class="border-bottom border-right uk-text-right uk-text-small" colspan="7">
+									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary">TOGGLE EXT</button></td>
+									<td class="border-bottom border-right uk-text-right uk-text-small" :colspan="isExtended ? 10 : 6">
 										 (priser ex moms)
 									</td>
 								</tr>
@@ -74,6 +87,7 @@ export default {
 		return {
 			userDetails: [],
 			dashBoard: null,
+			isExtended: false,
 		}
 	},
 	mounted () {
@@ -87,6 +101,21 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
+		async getDashboardExtended() {
+            let _this = this
+			_this.isExtended = !_this.isExtended
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Dashboard/GetDashboardExtended')
+            .then(function (dashboard) {
+                _this.dashBoard = dashboard
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
+
 	},
     async fetch () {
         try {
