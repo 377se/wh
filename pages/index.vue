@@ -14,11 +14,6 @@
 			</div>
 		</div>
 		<div id="sc-page-content">
-			<ScCard class="uk-margin-medium-bottom">
-				<ScCardBody>
-                    Välkommen {{ userDetails.Firstname }}!
-				</ScCardBody>
-			</ScCard>
 			<ScCard>
 				<ScCardBody>
 					<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
