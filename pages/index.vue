@@ -46,6 +46,15 @@
 								</tr>
 							</tbody>
 							<tfoot>
+								<tr class="uk-text-small uk-table-middle">
+									<td class="border-bottom border-right"><strong>Totalt:</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleToday }}</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.OrdersToday }}</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentMonth }}</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ActiveOrders }}</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.OrdersWithPrint }}</strong></td>
+									<td class="border-bottom border-right"><strong>{{ dashBoard.Summary.ItemsShipped }}</strong></td>
+								</tr>
 								<tr>
 									<td class="border-bottom border-right uk-text-right uk-text-small" colspan="7">
 										 (priser ex moms)
