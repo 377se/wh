@@ -37,31 +37,31 @@
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
 									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleToday | thousandsDelimiter }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersWithPrint | thousandsDelimiter }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ItemsShipped | thousandsDelimiter }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.AvgSaleToday | thousandsDelimiter }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentYear | thousandsDelimiter }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.NumberOfCustomers | thousandsDelimiter }}</td>
-									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveProducts | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleToday | removeDecimals | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | removeDecimals | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | removeDecimals | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | removeDecimals | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersWithPrint | removeDecimals | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ItemsShipped | removeDecimals | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.AvgSaleToday | removeDecimals | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentYear | removeDecimals | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.NumberOfCustomers | removeDecimals | thousandsDelimiter }}</td>
+									<td v-if="isExtended" class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveProducts | removeDecimals | thousandsDelimiter }}</td>
 								</tr>
 							</tbody>
 							<tfoot>
 								<tr class="uk-text-small uk-table-middle">
 									<td class="border-bottom border-right uk-text-left"><strong>Totalt:</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleToday | thousandsDelimiter }}</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersToday | thousandsDelimiter }}</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentMonth | thousandsDelimiter }}</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveOrders | thousandsDelimiter }}</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersWithPrint | thousandsDelimiter }}</strong></td>
-									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ItemsShipped | thousandsDelimiter }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.SaleAverage | thousandsDelimiter }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentYear | thousandsDelimiter }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.NumberOfCustomers | thousandsDelimiter }}</strong></td>
-									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveProducts | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleToday | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersToday | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentMonth | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveOrders | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.OrdersWithPrint | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ItemsShipped | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.SaleAverage | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.TotalSaleCurrentYear | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.NumberOfCustomers | removeDecimals | thousandsDelimiter }}</strong></td>
+									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveProducts | removeDecimals | thousandsDelimiter }}</strong></td>
 								</tr>
 								<tr>
 									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary uk-button-small">{{ isExtended ? 'VISA MINDRE' : 'VISA MER' }}</button></td>
