@@ -17,6 +17,15 @@
 
 			<!-- TOP-AREA -->
 
+			<!-- FÖRSÄLJINGSGRAF -->
+			<ScCard class="uk-margin-medium-bottom">
+				<ScCardBody class="sc-chart-chartjs">
+					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="cjs.lineChart.options"></ChartJsLine>
+				</ScCardBody>
+			</ScCard>
+
+
+
 			<!-- DASHBOARD - STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody>
@@ -174,9 +183,60 @@
     </div>
 </template>
 <script>
+import { scColors } from '~/assets/js/utils';
+
+// import Chart from '~/components/chartjs/defaults'
+// import ChartJsBar from '~/components/chartjs/Bar'
+import ChartJsLine from '~/components/chartjs/Line'
+// import ChartJsDoughnut from '~/components/chartjs/Doughnut'
+// import ChartJsPie from '~/components/chartjs/Pie'
+// import ChartJsPolarArea from '~/components/chartjs/PolarArea'
+
 export default {
+	components: {
+		// BillboardChart: process.client ? () => import('~/components/billboard-charts/Chart') : null,
+		ChartJsLine,
+	},
 	data () {
 		return {
+			color: (process.client) ? Chart.helpers.color : '#fff',
+			cjs: {
+				lineChart: {
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						title: {
+							display: true,
+							text: 'Månadsförsäljning'
+						},
+						tooltips: {
+							mode: 'index',
+							intersect: false
+						},
+						hover: {
+							mode: 'nearest',
+							intersect: true
+						},
+						scales: {
+							xAxes: [{
+								display: true,
+								scaleLabel: {
+									display: true,
+									labelString: 'Månad'
+								}
+							}],
+							yAxes: [{
+								display: true,
+								scaleLabel: {
+									display: true,
+									labelString: 'Summa'
+								}
+							}]
+						}
+					}
+				},
+			},
+			// seed: Date.now(),
 			userDetails: [],
 			dashBoard: null,
 			isExtended: false,
@@ -184,9 +244,60 @@ export default {
 			activeOrdersByDate: [],
 		}
 	},
+	computed: {
+		// cjsRandData () {
+		// 	return [
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
+		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(5), // 17
+		// 		this.cjsGenerateData(5)
+		// 	]
+		// },
+		cjsLineChartData () {
+			return {
+				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
+				datasets: [{
+					label: 'Föregående år',
+					backgroundColor: scColors.multi[4],
+					borderColor: scColors.multi[4],
+					// data: this.cjsRandData[5],
+					data: [1,2,3,4,5,6,7,8,9,10,11,12],
+					fill: false,
+				}, {
+					label: 'Innevarande år',
+					fill: false,
+					backgroundColor: scColors.multi[5],
+					borderColor: scColors.multi[5],
+					// data: this.cjsRandData[6],
+					data: [12,11,10,9,8,7,6,5,4,3,2,1],
+				}]
+			}
+		},
+	},
 	mounted () {
 	},
 	methods: {
+		// cjsRandomizeData (min, max) {
+		// 	let seed = this.seed;
+		// 	min = min === undefined ? 0 : min;
+		// 	max = max === undefined ? 1 : max;
+		// 	this.seed = (seed * 9301 + 49297) % 233280;
+		// 	return min + (this.seed / 233280) * (max - min);
+		// },
+		// cjsGenerateData (items) {
+		// 	let data = [];
+		// 	for (let i = 0; i < items; i++) {
+		// 		data.push(Math.round(this.cjsRandomizeData(-100, 100)))
+		// 	}
+		// 	return data;
+		// },
+		// transparentize (color, opacity) {
+		// 	var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+		// 	return (process.client) ? this.color(color).alpha(alpha).rgbString() : color;
+		// },
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
             this.$store.commit('togglePageOverlay', false)
