@@ -88,7 +88,7 @@
 			</ScCard>
 
 			<!-- LEFT-AREA TABS -->
-			<ScCard class="uk-width-1-2">
+			<ScCard class="uk-width-1-1 uk-width-1-2@m">
 				<ScCardBody>
 					<!-- TAB-HEADLINES -->
 					<ul data-uk-tab>
@@ -154,7 +154,7 @@
 											</thead>
 											<tbody>
 												<tr v-for="orders in activeOrdersByDate.ItemList" :key="orders.Id" class="uk-table-middle">
-													<td class="border-bottom border-right uk-width-auto uk-text-left"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
+													<td class="border-bottom border-right uk-width-auto uk-text-left" style="min-width:80px;"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
 													<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
 													<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
 													<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</span></td>
@@ -178,6 +178,7 @@
 				</ScCardBody>
 			</ScCard>
 
+{{ articleList }}
 
 		</div>
     </div>
@@ -234,6 +235,7 @@ export default {
 			isExtended: false,
 			recentlyActivated: [],
 			activeOrdersByDate: [],
+			articleList: [],
 		}
 	},
 	computed: {
@@ -259,6 +261,7 @@ export default {
 		},
 	},
 	mounted () {
+		this.getArticleList(1)
 	},
 	methods: {
         hidePageOverlaySpinner () {
@@ -277,6 +280,19 @@ export default {
                 _this.dashBoard = dashboard
                 _this.hidePageOverlaySpinner()
 				_this.isExtended = !_this.isExtended
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
+		async getArticleList(typeid) {
+            let _this = this
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Dashboard/GetArticleList?typeId=' + typeid)
+            .then(function (articlelist) {
+				_this.articleList = articlelist
+                _this.hidePageOverlaySpinner()
             })
             .catch(function (error) {
                 console.log(error)
