@@ -20,7 +20,11 @@
 			<!-- FÖRSÄLJINGSGRAF -->
 			<!-- <ScCard class="uk-margin-medium-bottom">
 				<ScCardBody class="sc-chart-chartjs">
+
+
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="cjs.lineChart.options"></ChartJsLine>
+
+
 				</ScCardBody>
 			</ScCard> -->
 
@@ -200,7 +204,7 @@ export default {
 						responsive: true,
 						maintainAspectRatio: false,
 						title: {
-							display: true,
+							display: false,
 							text: 'Månadsförsäljning'
 						},
 						tooltips: {
@@ -215,16 +219,16 @@ export default {
 							xAxes: [{
 								display: true,
 								scaleLabel: {
-									display: true,
+									display: false,
 									labelString: 'Månad'
 								}
 							}],
 							yAxes: [{
 								display: true,
 								scaleLabel: {
-									display: true,
+									display: false,
 									labelString: 'Summa'
-								}
+								},
 							}]
 						}
 					}
@@ -236,6 +240,8 @@ export default {
 			recentlyActivated: [],
 			activeOrdersByDate: [],
 			articleList: [],
+			thisYear: '2021',
+			previousYear: '2020',
 		}
 	},
 	computed: {
@@ -243,19 +249,21 @@ export default {
 			return {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [{
-					label: 'Föregående år',
+					label: this.previousYear,
+					steppedLine: false,
+					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					// data: this.cjsRandData[5],
-					data: [1,2,3,4,5,6,7,8,9,10,11,12],
+					data: [78000,86000,93456,67887,112345,98654,76895,58789,102345,79763,56789,84927],
 					fill: false,
 				}, {
-					label: 'Innevarande år',
-					fill: false,
+					label: this.thisYear,
+					steppedLine: false,
+					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					// data: this.cjsRandData[6],
-					data: [12,11,10,9,8,7,6,5,4,3,2,1],
+					data: [84927,67887,93456,56789,112345,79763,0,0,0,0,0,0],
+					fill: false,
 				}]
 			}
 		},
