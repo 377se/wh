@@ -88,7 +88,7 @@
 			</ScCard>
 
 			<!-- LEFT-AREA TABS -->
-			<ScCard class="uk-width-1-1 uk-width-1-2@m">
+			<ScCard class="uk-width-1-1 uk-width-1-2@s">
 				<ScCardBody>
 					<!-- TAB-HEADLINES -->
 					<ul data-uk-tab>
