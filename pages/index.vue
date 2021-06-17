@@ -17,8 +17,8 @@
 			<!-- STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody>
-					<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
-						<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+					<div class="uk-width-1-1 uk-overflow-auto">
+						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 							<thead>
 								<tr>
 									<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
@@ -64,8 +64,8 @@
 									<td v-if="isExtended" class="border-bottom border-right uk-text-right"><strong>{{ dashBoard.Summary.ActiveProducts | thousandsDelimiter }}</strong></td>
 								</tr>
 								<tr>
-									<td><button @click="getDashboardExtended" class="uk-button uk-button-primary uk-button-small">{{ isExtended ? 'VISA MINDRE' : 'VISA MER' }}</button></td>
-									<td class="border-bottom border-right uk-text-right uk-text-small" :colspan="isExtended ? 10 : 6">
+									<td colspan="2"><button @click="getDashboardExtended" class="uk-button uk-button-primary uk-button-small">{{ isExtended ? 'VISA MINDRE' : 'VISA MER' }}</button></td>
+									<td class="border-bottom border-right uk-text-right uk-text-small" :colspan="isExtended ? 9 : 5">
 										 (priser ex moms)
 									</td>
 								</tr>
