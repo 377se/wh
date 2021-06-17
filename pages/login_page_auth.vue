@@ -2,7 +2,7 @@
   <section>
     <div class="uk-background-muted">
       <div class="uk-container uk-container-xsmall uk-padding">
-        <div class="uk-flex uk-flex-center uk-margin-large-bottom uk-margin-large-top"><img style="width:540px;" src="~/assets/img/logo-green.png"></div>
+        <div class="uk-flex uk-flex-center uk-margin-large-bottom uk-margin-large-top" style="object-fit: contain;"><img src="~/assets/img/logo-green.png"></div>
         <form
           method="post"
           @submit.prevent="login">
