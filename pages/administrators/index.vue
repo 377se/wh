@@ -32,7 +32,7 @@
                                     <td style="width: 200px;" class="border-bottom border-left">
                                         <strong>Senast inloggad</strong>
                                     </td>
-                                    <td style="width: 55px;" class="border-bottom border-left">
+                                    <td style="width: 55px;" class="border-bottom border-left uk-text-center">
                                         <strong>Aktiv</strong>
                                     </td>
                                 </thead>
@@ -53,8 +53,8 @@
                                         <td style="width: 200px;" class="border-bottom border-left">
                                             {{ admin.LoginDate }}
                                         </td>
-                                        <td style="width: 55px;" class="border-bottom border-left">
-                                            <div :class="{'uk-badge md-bg-green-600': admin.Active === 1, 'uk-badge md-bg-red-600': admin.Active === 0 }">{{ admin.Active ? 'AKTIV' : 'INAKTIV'}}</div>
+                                        <td style="width: 55px;" class="border-bottom border-left uk-text-center">
+                                            <div :class="{'uk-badge md-bg-green-600': admin.Active === 1, 'uk-badge md-bg-red-600': admin.Active === 0 }"><i v-if="admin.Active" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i><i v-else class="mdi mdi-close-circle-outline md-color-red-600"></i></div>
                                         </td>
                                     </tr>
                                 </tbody>
