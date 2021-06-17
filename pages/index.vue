@@ -145,11 +145,11 @@
 											</thead>
 											<tbody>
 												<tr v-for="orders in activeOrdersByDate.ItemList" :key="orders.Id" class="uk-table-middle">
-													<td class="border-bottom border-right uk-width-auto uk-text-left"><nuxt-link :to="orders.Url"><div>{{ orders.OrderDate }}</div></nuxt-link></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ orders.ShopName }}</div></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right"><div>{{ orders.NumberOfOrders }}</div></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}"><div>{{ orders.NumberOfOrdersPrinted }}</div></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}"><div>{{ orders.NumberOfOrdersWithAddons }}</div></td>
+													<td class="border-bottom border-right uk-width-auto uk-text-left"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
+													<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
+													<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
+													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</td>
+													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}">{{ orders.NumberOfOrdersWithAddons }}</td>
 												</tr>
 											</tbody>
 											<tfoot>
