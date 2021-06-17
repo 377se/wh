@@ -20,7 +20,12 @@
                         <ScCard>
                             <ScCardHeader separator>
                                 <ScCardTitle>
-                                    {{ adminDetails.Firstname }} {{ adminDetails.Lastname }}
+                                    <div class="uk-flex uk-flex-between">
+                                        {{ adminDetails.Firstname }} {{ adminDetails.Lastname }}
+                                        <button @click="$router.go(-1)" class="sc-button sc-button-mini">
+                                            TILLBAKA TILL ADMINLISTA
+                                        </button>
+                                    </div>
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
