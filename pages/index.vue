@@ -148,8 +148,8 @@
 													<td class="border-bottom border-right uk-width-auto uk-text-left"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
 													<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
 													<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right" :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}">{{ orders.NumberOfOrdersWithAddons }}</td>
+													<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</span></td>
+													<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}">{{ orders.NumberOfOrdersWithAddons }}</span></td>
 												</tr>
 											</tbody>
 											<tfoot>
