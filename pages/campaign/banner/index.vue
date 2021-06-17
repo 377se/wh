@@ -71,7 +71,7 @@
                                 </table>
                             </div>
                             <!-- EDIT BANNER -->
-                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera banner</h3>
                                     <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>

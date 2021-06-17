@@ -117,7 +117,7 @@
                                 </tbody>
                             </table>
                             <!-- EDIT ADRESS -->
-                            <div v-if="adressEditorVisible" :class="{'uk-width-1-3': adressEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="adressEditorVisible" :class="{'uk-width-1-3': adressEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera address</h3>
                                     <span class="closeicon" @click="adressEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
@@ -348,7 +348,7 @@
                                 </div>
                             </div>
                             <!-- EDIT ORDERITEM -->
-                            <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera produkt</h3>
                                     <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
@@ -422,7 +422,7 @@
                                 </button>
                             </div>
                             <!-- ADD ORDERITEM -->
-                            <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left">
+                            <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
                                     <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Lägg till produkt</h3>
                                     <span class="closeicon" @click="addEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
