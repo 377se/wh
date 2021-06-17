@@ -3,7 +3,7 @@ import { version } from '~~/package.json';
 export const state = () => ({
 	userDetails: [],
 	vxAppVersion: version,
-	vxSidebarMainExpanded: false,
+	vxSidebarMainExpanded: true,
 	vxSidebarMainAccordionMode: true,
 	vxSidebarMainScrollToActive: false,
 	vxSidebarMiniActive: false,
