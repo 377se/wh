@@ -18,11 +18,11 @@
 			<!-- TOP-AREA -->
 
 			<!-- FÖRSÄLJINGSGRAF -->
-			<ScCard class="uk-margin-medium-bottom">
+			<!-- <ScCard class="uk-margin-medium-bottom">
 				<ScCardBody class="sc-chart-chartjs">
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="cjs.lineChart.options"></ChartJsLine>
 				</ScCardBody>
-			</ScCard>
+			</ScCard> -->
 
 
 
@@ -184,17 +184,10 @@
 </template>
 <script>
 import { scColors } from '~/assets/js/utils';
-
-// import Chart from '~/components/chartjs/defaults'
-// import ChartJsBar from '~/components/chartjs/Bar'
 import ChartJsLine from '~/components/chartjs/Line'
-// import ChartJsDoughnut from '~/components/chartjs/Doughnut'
-// import ChartJsPie from '~/components/chartjs/Pie'
-// import ChartJsPolarArea from '~/components/chartjs/PolarArea'
 
 export default {
 	components: {
-		// BillboardChart: process.client ? () => import('~/components/billboard-charts/Chart') : null,
 		ChartJsLine,
 	},
 	data () {
@@ -236,7 +229,6 @@ export default {
 					}
 				},
 			},
-			// seed: Date.now(),
 			userDetails: [],
 			dashBoard: null,
 			isExtended: false,
@@ -245,17 +237,6 @@ export default {
 		}
 	},
 	computed: {
-		// cjsRandData () {
-		// 	return [
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(6),
-		// 		this.cjsGenerateData(6), this.cjsGenerateData(6), this.cjsGenerateData(5), // 17
-		// 		this.cjsGenerateData(5)
-		// 	]
-		// },
 		cjsLineChartData () {
 			return {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
@@ -280,24 +261,6 @@ export default {
 	mounted () {
 	},
 	methods: {
-		// cjsRandomizeData (min, max) {
-		// 	let seed = this.seed;
-		// 	min = min === undefined ? 0 : min;
-		// 	max = max === undefined ? 1 : max;
-		// 	this.seed = (seed * 9301 + 49297) % 233280;
-		// 	return min + (this.seed / 233280) * (max - min);
-		// },
-		// cjsGenerateData (items) {
-		// 	let data = [];
-		// 	for (let i = 0; i < items; i++) {
-		// 		data.push(Math.round(this.cjsRandomizeData(-100, 100)))
-		// 	}
-		// 	return data;
-		// },
-		// transparentize (color, opacity) {
-		// 	var alpha = opacity === undefined ? 0.5 : 1 - opacity;
-		// 	return (process.client) ? this.color(color).alpha(alpha).rgbString() : color;
-		// },
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
             this.$store.commit('togglePageOverlay', false)
