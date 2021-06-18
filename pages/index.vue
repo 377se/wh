@@ -16,23 +16,21 @@
 		<div v-if="dashBoard" id="sc-page-content">
 
 
-			<!-- INFO-MODAL -->
+			<!-- DAILY SALES MODAL -->
+			<div id="dailysales-modal" class="uk-modal-full" uk-modal>
 
-			<div id="info-modal" class="uk-modal-full uk-modal" uk-modal>
-				<div class="uk-modal-dialog">
-					<div class="uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
-						<div class="uk-flex basket-ribbon uk-position-relative">
-							<h3 style="color:#fff;line-height:80px;margin-left:12px;">TITLE</h3>
-							<button
-								id="close-basket"
-								class="uk-offcanvas-close uk-icon uk-close"
-								style="color:#fff;top:27px;right:16px;"
-								type="button"
-								uk-close
-								uk-toggle="target: #info-modal"/>
-						</div>
-							{{ articleList[0] }}
+				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
+					<div class="uk-flex basket-ribbon uk-position-relative">
+						<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAILY SALES</h4>
+						<button
+							id="close-basket"
+							class="uk-offcanvas-close uk-icon uk-close"
+							style="color:#fff;top:14px;right:12px;"
+							type="button"
+							uk-close
+							uk-toggle="target: #dailysales-modal"/>
 					</div>
+						{{ dailySales }}
 				</div>
 			</div>
 
@@ -41,15 +39,9 @@
 			<!-- FÖRSÄLJINGSGRAF -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody class="sc-chart-chartjs">
-
-
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="cjs.lineChart.options"></ChartJsLine>
-
-
 				</ScCardBody>
 			</ScCard>
-
-
 
 			<!-- DASHBOARD - STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
@@ -74,7 +66,7 @@
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
 									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleToday | thousandsDelimiter }}</td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click="showDailySales(shop.ShopId, '2021-06-18')" href="#">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
@@ -206,7 +198,6 @@
 			<!-- RIGHT-AREA -->
 			<ScCard class="uk-width-1-1 uk-width-1-2@s">
 				<ScCardBody>
-					<div @click="showModal">OPEN MODAL</div>
 				</ScCardBody>
 			</ScCard>
 
@@ -281,6 +272,7 @@ export default {
 			activeOrdersByDate: [],
 			articleList: [],
 			monthlySalesTwoLatestYears: [],
+			dailySales: [],
 		}
 	},
 	computed: {
@@ -346,8 +338,22 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
         },
-		showModal() {
-					UIkit.modal('#info-modal').show()
+		async getDailySales(shopid, date) {
+            let _this = this
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Dashboard/GetDailySales?shopId=' + shopid + '&date=' + '2021-06-18')
+            .then(function (dailysales) {
+				_this.dailySales = dailysales
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
+		showDailySales(shopid, date) {
+			this.getDailySales(shopid, date)
+			UIkit.modal('#dailysales-modal').show()
 		},
 	},
     async fetch () {
@@ -387,24 +393,27 @@ export default {
     .border-bottom {
         border-bottom: 1px solid #ccc;
     }
-	#info-modal .uk-offcanvas-bar{
-	color:#333;
+	.uk-offcanvas-bar {
+		color:#333;
 	}
-	#info-modal.uk-modal-full {
-	background: rgba(0, 0, 0, 0.6);
+	.uk-modal-full {
+		background: rgba(0, 0, 0, 0.6);
 	}
-	#info-modal .uk-modal-dialog {
-	margin-left: auto;
-	width:55vw !important;
-	max-width: 800px !important;
-		@media only screen and (max-width: 600px) {
-			width:85vw !important;
-			max-width: 800px !important;
-		}
+	.uk-modal-dialog {
+		margin-left: auto;
+		width:55vw !important;
+		max-width: 800px !important;
+			@media only screen and (max-width: 600px) {
+				width:85vw !important;
+				max-width: 800px !important;
+			}
 	}
 	.basket-ribbon{
-		height:80px;
-		background: #567;
+		height:50px;
+		background: #00838F;
+	}
+	.cursor-pointer {
+		cursor: pointer;
 	}
 
 </style>
