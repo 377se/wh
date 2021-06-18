@@ -15,10 +15,31 @@
 		</div>
 		<div v-if="dashBoard" id="sc-page-content">
 
+
+			<!-- INFO-MODAL -->
+
+			<div id="info-modal" class="uk-modal-full uk-modal" uk-modal>
+				<div class="uk-modal-dialog">
+					<div class="uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
+						<div class="uk-flex basket-ribbon uk-position-relative">
+							<h3 style="color:#fff;line-height:80px;margin-left:12px;">TITLE</h3>
+							<button
+								id="close-basket"
+								class="uk-offcanvas-close uk-icon uk-close"
+								style="color:#fff;top:27px;right:16px;"
+								type="button"
+								uk-close
+								uk-toggle="target: #info-modal"/>
+						</div>
+							{{ articleList[0] }}
+					</div>
+				</div>
+			</div>
+
 			<!-- TOP-AREA -->
 
 			<!-- FÖRSÄLJINGSGRAF -->
-			<!-- <ScCard class="uk-margin-medium-bottom">
+			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody class="sc-chart-chartjs">
 
 
@@ -26,7 +47,7 @@
 
 
 				</ScCardBody>
-			</ScCard> -->
+			</ScCard>
 
 
 
@@ -182,7 +203,12 @@
 				</ScCardBody>
 			</ScCard>
 
-{{ articleList }}
+			<!-- RIGHT-AREA -->
+			<ScCard class="uk-width-1-1 uk-width-1-2@s">
+				<ScCardBody>
+					<div @click="showModal">OPEN MODAL</div>
+				</ScCardBody>
+			</ScCard>
 
 		</div>
     </div>
@@ -240,8 +266,7 @@ export default {
 			recentlyActivated: [],
 			activeOrdersByDate: [],
 			articleList: [],
-			thisYear: '2021',
-			previousYear: '2020',
+			monthlySalesTwoLatestYears: [],
 		}
 	},
 	computed: {
@@ -249,20 +274,20 @@ export default {
 			return {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [{
-					label: this.previousYear,
+					label: this.monthlySalesTwoLatestYears[0].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					data: [78000,86000,93456,67887,112345,98654,76895,58789,102345,79763,56789,84927],
+					data: this.monthlySalesTwoLatestYears[0].MonthlySale,
 					fill: false,
 				}, {
-					label: this.thisYear,
+					label: this.monthlySalesTwoLatestYears[1].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					data: [84927,67887,93456,56789,112345,79763,0,0,0,0,0,0],
+					data: this.monthlySalesTwoLatestYears[1].MonthlySale,
 					fill: false,
 				}]
 			}
@@ -307,20 +332,24 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
         },
-
+		showModal() {
+					UIkit.modal('#info-modal').show()
+		},
 	},
     async fetch () {
         try {
-            const [ userdetails, dashboard, recentlyactivated, activeordersbydate ] = await Promise.all([
+            const [ userdetails, dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears ] = await Promise.all([
 				await this.$axios.$get('/webapi/admin/GetCurrentUser'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
+				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
             ])
             this.userDetails = userdetails
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
+            this.monthlySalesTwoLatestYears = monthlysalestwolatestyears
         } catch (err) {
             console.log(err);
         }
@@ -344,4 +373,24 @@ export default {
     .border-bottom {
         border-bottom: 1px solid #ccc;
     }
+	#info-modal .uk-offcanvas-bar{
+	color:#333;
+	}
+	#info-modal.uk-modal-full {
+	background: rgba(0, 0, 0, 0.6);
+	}
+	#info-modal .uk-modal-dialog {
+	margin-left: auto;
+	width:55vw !important;
+	max-width: 800px !important;
+		@media only screen and (max-width: 600px) {
+			width:85vw !important;
+			max-width: 800px !important;
+		}
+	}
+	.basket-ribbon{
+		height:80px;
+		background: #567;
+	}
+
 </style>
