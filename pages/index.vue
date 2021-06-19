@@ -38,8 +38,8 @@
 
 			<!-- FÖRSÄLJINGSGRAF -->
 			<ScCard class="uk-margin-medium-bottom">
-				<ScCardBody class="sc-chart-chartjs">
-					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="cjs.lineChart.options"></ChartJsLine>
+				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
+					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
 				</ScCardBody>
 			</ScCard>
 
@@ -198,6 +198,7 @@
 			<!-- RIGHT-AREA -->
 			<ScCard class="uk-width-1-1 uk-width-1-2@s">
 				<ScCardBody>
+
 				</ScCardBody>
 			</ScCard>
 
@@ -215,56 +216,6 @@ export default {
 	data () {
 		return {
 			color: (process.client) ? Chart.helpers.color : '#fff',
-			cjs: {
-				lineChart: {
-					options: {
-						responsive: true,
-						maintainAspectRatio: false,
-						title: {
-							display: false,
-							text: 'Månadsförsäljning'
-						},
-						tooltips: {
-							mode: 'index',
-							intersect: false
-						},
-						hover: {
-							mode: 'nearest',
-							intersect: true
-						},
-						scales: {
-							xAxes: [{
-								display: true,
-								scaleLabel: {
-									display: false,
-									labelString: 'Månad'
-								}
-							}],
-							yAxes: [{
-								display: true,
-								scaleLabel: {
-									display: false,
-									labelString: 'Summa'
-								},
-								ticks: {
-									beginAtZero: true,
-									stepSize: 200000,
-									// Return an empty string to draw the tick line but hide the tick label
-									// Return `null` or `undefined` to hide the tick line entirely
-									userCallback: function(value, index, values) {
-										// Convert the number to a string and splite the string every 3 charaters from the end
-										value = value.toString();
-										value = value.split(/(?=(?:...)*$)/);
-										// Convert the array to a string and format the output
-										value = value.join(' ');
-										return value + ' kr';
-									}
-          						}
-							}]
-						},
-					}
-				},
-			},
 			userDetails: [],
 			dashBoard: null,
 			isExtended: false,
@@ -296,6 +247,49 @@ export default {
 					data: this.monthlySalesTwoLatestYears[1].MonthlySale,
 					fill: false,
 				}]
+			}
+		},
+		lineChart () {
+			return {
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					title: {
+						display: false,
+						text: 'Månadsförsäljning'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false
+					},
+					hover: {
+						mode: 'nearest',
+						intersect: true
+					},
+					scales: {
+						xAxes: [{
+							display: true,
+							scaleLabel: {
+								display: false,
+								labelString: 'Månad'
+							}
+						}],
+						yAxes: [{
+							display: true,
+							scaleLabel: {
+								display: false,
+								labelString: 'Summa'
+							},
+							ticks: {
+								beginAtZero: true,
+								stepSize: 200000,
+								callback: (value) => {
+									return Intl.NumberFormat().format((value)) + ' kr';
+								},
+							}
+						}]
+					},
+				}
 			}
 		},
 	},
