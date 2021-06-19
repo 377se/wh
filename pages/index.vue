@@ -66,7 +66,7 @@
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
 									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click="showDailySales(shop.ShopId, '2021-06-18')" href="#">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, '2021-06-18')">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
