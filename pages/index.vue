@@ -6,6 +6,25 @@
     </div>
  	<div v-else id="sc-page-wrapper">
 		{{ hidePageOverlaySpinner() }}
+
+		<!-- DAILY SALES MODAL -->
+		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
+
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
+				<div class="uk-flex basket-ribbon uk-position-relative">
+					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAILY SALES</h4>
+					<button
+						id="close-basket"
+						class="uk-offcanvas-close uk-icon uk-close"
+						style="color:#fff;top:14px;right:12px;"
+						type="button"
+						uk-close
+						uk-toggle="target: #dailysales-modal"/>
+				</div>
+					{{ dailySales }}
+			</div>
+		</div>
+
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
@@ -16,23 +35,6 @@
 		<div v-if="dashBoard" id="sc-page-content">
 
 
-			<!-- DAILY SALES MODAL -->
-			<div id="dailysales-modal" class="uk-modal-full" uk-modal>
-
-				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
-					<div class="uk-flex basket-ribbon uk-position-relative">
-						<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAILY SALES</h4>
-						<button
-							id="close-basket"
-							class="uk-offcanvas-close uk-icon uk-close"
-							style="color:#fff;top:14px;right:12px;"
-							type="button"
-							uk-close
-							uk-toggle="target: #dailysales-modal"/>
-					</div>
-						{{ dailySales }}
-				</div>
-			</div>
 
 			<!-- TOP-AREA -->
 
