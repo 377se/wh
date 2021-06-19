@@ -8,7 +8,7 @@
 		{{ hidePageOverlaySpinner() }}
 
 		<!-- DAILY SALES MODAL -->
-		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
+		<div id="dailysales-modal" class="uk-modal-full uk-modal" uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
@@ -68,7 +68,7 @@
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
 									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, '2021-06-18')">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, todaysDate)">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
@@ -218,6 +218,7 @@ export default {
 	data () {
 		return {
 			color: (process.client) ? Chart.helpers.color : '#fff',
+			todaysDate: '',
 			userDetails: [],
 			dashBoard: null,
 			isExtended: false,
@@ -297,8 +298,20 @@ export default {
 	},
 	mounted () {
 		this.getArticleList(1)
+		this.getTodaysDate()
 	},
 	methods: {
+		getTodaysDate() {
+			let d = new Date(),
+				month = '' + (d.getMonth() + 1),
+				day = '' + d.getDate(),
+				year = d.getFullYear()
+			if (month.length < 2)
+				month = '0' + month
+			if (day.length < 2)
+				day = '0' + day
+			this.todaysDate = [year, month, day].join('-')
+		},
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
             this.$store.commit('togglePageOverlay', false)
@@ -337,7 +350,7 @@ export default {
 		async getDailySales(shopid, date) {
             let _this = this
             _this.showPageOverlaySpinner()
-            await this.$axios.$get('/webapi/Dashboard/GetDailySales?shopId=' + shopid + '&date=' + '2021-06-18')
+            await this.$axios.$get('/webapi/Dashboard/GetDailySales?shopId=' + shopid + '&date=' + date)
             .then(function (dailysales) {
 				_this.dailySales = dailysales
                 _this.hidePageOverlaySpinner()
