@@ -8,7 +8,7 @@
 		{{ hidePageOverlaySpinner() }}
 
 		<!-- DAILY SALES MODAL -->
-		<div id="dailysales-modal" class="uk-modal-full uk-modal" uk-modal>
+		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
