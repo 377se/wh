@@ -12,7 +12,7 @@
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
-					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAILY SALES</h4>
+					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAGSFÖRSÄLJNING</h4>
 					<button
 						id="close-basket"
 						class="uk-offcanvas-close uk-icon uk-close"
@@ -21,7 +21,41 @@
 						uk-close
 						uk-toggle="target: #dailysales-modal"/>
 				</div>
-					{{ dailySales }}
+
+
+				<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+					<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+						<thead>
+							<tr>
+								<td colspan="4" class="border-bottom border-right uk-text-left">
+									<div class="uk-flex uk-flex-between">
+										<div><strong>Dagens sålda artiklar på {{ this.shopName }}</strong></div>
+										<div class="uk-badge md-bg-green-600">{{ dailySales.length }}</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="border-bottom border-right uk-text-left"></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Artikel</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>ArtikelNr</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Antal</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="article in dailySales" :key="article.ArticleId" class="uk-table-middle">
+								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left">
+									<nuxt-link :to="article.Url">
+										<div>{{ article.TeamName | toUppercase }}</div>
+										<div>{{ article.ArticleName }}</div>
+									</nuxt-link>
+								</td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.ArticleNumber }}</div></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.NumberOfItems }}</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 
@@ -68,7 +102,7 @@
 							<tbody>
 								<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
 									<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, todaysDate)">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, shop.ShopName, todaysDate)">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
 									<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.ActiveOrders | thousandsDelimiter }}</td>
@@ -227,6 +261,7 @@ export default {
 			articleList: [],
 			monthlySalesTwoLatestYears: [],
 			dailySales: [],
+			shopName: '',
 		}
 	},
 	computed: {
@@ -349,6 +384,7 @@ export default {
         },
 		async getDailySales(shopid, date) {
             let _this = this
+			_this.dailySales = []
             _this.showPageOverlaySpinner()
             await this.$axios.$get('/webapi/Dashboard/GetDailySales?shopId=' + shopid + '&date=' + date)
             .then(function (dailysales) {
@@ -356,11 +392,14 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
             .catch(function (error) {
-                console.log(error)
+				console.log(error)
                 _this.hidePageOverlaySpinner()
             })
         },
-		showDailySales(shopid, date) {
+		showDailySales(shopid, shopname, date) {
+			this.shopName = shopname
+			console.log(shopname)
+
 			this.getDailySales(shopid, date)
 			UIkit.modal('#dailysales-modal').show()
 		},
