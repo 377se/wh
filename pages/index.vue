@@ -198,7 +198,7 @@
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
-					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAGSFÖRSÄLJNING</h4>
+						<h4 style="color:#fff;line-height:50px;margin-left:12px;">Dagens sålda artiklar på {{ this.shopName }}</h4>
 					<button
 						id="close-basket"
 						class="uk-offcanvas-close uk-icon uk-close"
@@ -212,16 +212,16 @@
 				<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
 					<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 						<thead>
-							<tr>
+							<!-- <tr>
 								<td colspan="4" class="border-bottom border-right uk-text-left">
 									<div class="uk-flex uk-flex-between">
 										<div><strong>Dagens sålda artiklar på {{ this.shopName }}</strong></div>
 										<div class="uk-badge md-bg-green-600">{{ dailySales.length }}</div>
 									</div>
 								</td>
-							</tr>
+							</tr> -->
 							<tr>
-								<td class="border-bottom border-right uk-text-left"></td>
+								<td class="border-bottom border-right uk-text-center"><div class="uk-badge md-bg-green-600">{{ dailySales.length }}</div></td>
 								<td class="border-bottom border-right uk-text-left"><strong>Artikel</strong></td>
 								<td class="border-bottom border-right uk-text-left"><strong>ArtikelNr</strong></td>
 								<td class="border-bottom border-right uk-text-left"><strong>Antal</strong></td>
