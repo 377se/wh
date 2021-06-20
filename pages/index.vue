@@ -7,6 +7,7 @@
  	<div v-else id="sc-page-wrapper">
 		{{ hidePageOverlaySpinner() }}
 
+		<!-- PAGE-AREA -->
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
@@ -16,17 +17,13 @@
 		</div>
 		<div v-if="dashBoard" id="sc-page-content">
 
-
-
 			<!-- TOP-AREA -->
-
 			<!-- FÖRSÄLJINGSGRAF -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
 				</ScCardBody>
 			</ScCard>
-
 			<!-- DASHBOARD - STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody>
@@ -88,106 +85,115 @@
 				</ScCardBody>
 			</ScCard>
 
-			<!-- LEFT-AREA TABS -->
-			<ScCard class="uk-width-1-1 uk-width-1-2@s">
-				<ScCardBody>
-					<!-- TAB-HEADLINES -->
-					<ul data-uk-tab>
-						<li class="uk-active">
-							<a href="javascript:void(0)">
-								SENASTE
-							</a>
-						</li>
-						<li>
-							<a href="javascript:void(0)">
-								PER DATUM
-							</a>
-						</li>
-					</ul>
-					<!-- TAB CONTENT -->
-					<ul class="uk-switcher">
-						<!-- 10 SENASTE -->
-						<li class="uk-active">
-							<ScCard>
-								<ScCardBody>
-									<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
-										<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
-											<thead>
-												<tr>
-													<td colspan="2" class="border-bottom border-right uk-text-left">
-														<div class="uk-flex uk-flex-between">
-															<div><strong>Senaste produkterna</strong></div>
-															<div class="uk-badge md-bg-green-600">{{ recentlyActivated.length }}</div>
-														</div>
-													</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="article in recentlyActivated" :key="article.ArticleId" class="uk-table-middle">
-													<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-left">
-														<nuxt-link :to="article.Url">
-															<div>{{ article.TeamName | toUppercase }}</div>
-															<div>{{ article.ArticleName }}</div>
-														</nuxt-link>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</ScCardBody>
-							</ScCard>
-						</li>
-						<!-- PER DATUM -->
-						<li>
-							<ScCard>
-								<ScCardBody>
-									<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
-										<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
-											<thead>
-												<tr>
-													<td class="border-bottom border-right uk-text-left"><strong>Datum</strong></td>
-													<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
-													<td class="border-bottom border-right uk-text-right"><strong>Antal</strong></td>
-													<td class="border-bottom border-right uk-text-right"><strong>Antal utskrivna</strong></td>
-													<td class="border-bottom border-right uk-text-right"><strong>Antal med tryck</strong></td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr v-for="orders in activeOrdersByDate.ItemList" :key="orders.Id" class="uk-table-middle">
-													<td class="border-bottom border-right uk-width-auto uk-text-left" style="min-width:80px;"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</span></td>
-													<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}">{{ orders.NumberOfOrdersWithAddons }}</span></td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr class="uk-text-small uk-table-middle">
-													<td colspan="2" class="border-bottom border-right uk-text-left"></td>
-													<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrders }}</strong></td>
-													<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrdersPrinted }}</strong></td>
-													<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrdersWithAddons }}</strong></td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								</ScCardBody>
-							</ScCard>
-						</li>
-					</ul>
-				</ScCardBody>
-			</ScCard>
-
-			<!-- RIGHT-AREA -->
-			<ScCard class="uk-width-1-1 uk-width-1-2@s">
-				<ScCardBody>
-
-				</ScCardBody>
-			</ScCard>
+			<div class="uk-child-width-1-2@s uk-grid" data-uk-grid>
+				<!-- LEFT-AREA -->
+				<div>
+				<ScCard>
+					<ScCardBody>
+						<!-- TAB-HEADLINES -->
+						<ul data-uk-tab>
+							<li class="uk-active">
+								<a href="javascript:void(0)">
+									SENASTE
+								</a>
+							</li>
+							<li>
+								<a href="javascript:void(0)">
+									PER DATUM
+								</a>
+							</li>
+						</ul>
+						<!-- TAB CONTENT -->
+						<ul class="uk-switcher">
+							<!-- 10 SENASTE -->
+							<li class="uk-active">
+								<ScCard>
+									<ScCardBody>
+										<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+											<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+												<thead>
+													<tr>
+														<td colspan="2" class="border-bottom border-right uk-text-left">
+															<div class="uk-flex uk-flex-between">
+																<div><strong>Senaste produkterna</strong></div>
+																<div class="uk-badge md-bg-green-600">{{ recentlyActivated.length }}</div>
+															</div>
+														</td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="article in recentlyActivated" :key="article.ArticleId" class="uk-table-middle">
+														<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+														<td class="border-bottom border-right uk-width-auto uk-text-left">
+															<nuxt-link :to="article.Url">
+																<div>{{ article.TeamName | toUppercase }}</div>
+																<div>{{ article.ArticleName }}</div>
+															</nuxt-link>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</ScCardBody>
+								</ScCard>
+							</li>
+							<!-- PER DATUM -->
+							<li>
+								<ScCard>
+									<ScCardBody>
+										<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+											<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+												<thead>
+													<tr>
+														<td class="border-bottom border-right uk-text-left"><strong>Datum</strong></td>
+														<td class="border-bottom border-right uk-text-left"><strong>Shop</strong></td>
+														<td class="border-bottom border-right uk-text-right"><strong>Antal</strong></td>
+														<td class="border-bottom border-right uk-text-right"><strong>Antal utskrivna</strong></td>
+														<td class="border-bottom border-right uk-text-right"><strong>Antal med tryck</strong></td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="orders in activeOrdersByDate.ItemList" :key="orders.Id" class="uk-table-middle">
+														<td class="border-bottom border-right uk-width-auto uk-text-left" style="min-width:80px;"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
+														<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
+														<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
+														<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</span></td>
+														<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-orange-600': orders.NumberOfOrders == orders.NumberOfOrdersWithAddons}">{{ orders.NumberOfOrdersWithAddons }}</span></td>
+													</tr>
+												</tbody>
+												<tfoot>
+													<tr class="uk-text-small uk-table-middle">
+														<td colspan="2" class="border-bottom border-right uk-text-left"></td>
+														<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrders }}</strong></td>
+														<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrdersPrinted }}</strong></td>
+														<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrdersWithAddons }}</strong></td>
+													</tr>
+												</tfoot>
+											</table>
+										</div>
+									</ScCardBody>
+								</ScCard>
+							</li>
+						</ul>
+					</ScCardBody>
+				</ScCard>
+				</div>
+				<!-- RIGHT-AREA -->
+				<div>
+				<ScCard class="md-bg-cyan-800">
+					<ScCardBody>
+					<div class="uk-text-light">
+						<ul>
+							<li class="uk-light" v-for="row in dashboardInformationList" :key="row.TypeId"><a @click.prevent="showArticleList(row.TypeId, row.Name)">{{ row.Name }}</a></li>
+						</ul>
+					</div>
+					</ScCardBody>
+				</ScCard>
+				</div>
+			</div>
 
 		</div>
-				<!-- DAILY SALES MODAL -->
+		<!-- DAILY SALES MODAL -->
 		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
@@ -238,6 +244,47 @@
 				</div>
 			</div>
 		</div>
+		<!-- ARTICLE-LIST MODAL -->
+		<div id="article-list-modal" class="uk-modal-full" uk-modal>
+
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
+				<div class="uk-flex basket-ribbon uk-position-relative">
+					<h4 style="color:#fff;line-height:50px;margin-left:12px;">{{articleListName}}</h4>
+					<button
+						id="close-basket"
+						class="uk-offcanvas-close uk-icon uk-close"
+						style="color:#fff;top:14px;right:12px;"
+						type="button"
+						uk-close
+						uk-toggle="target: #article-list-modal"/>
+				</div>
+				<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+					<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+						<thead>
+							<tr>
+								<td class="border-bottom border-right uk-text-left"></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Artikel</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>ArtikelNr</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Antal</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="article in articleList" :key="article.ArticleId" class="uk-table-middle">
+								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left">
+									<nuxt-link :to="article.Url">
+										<div>{{ article.TeamName | toUppercase }}</div>
+										<div>{{ article.ArticleName }}</div>
+									</nuxt-link>
+								</td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.ArticleNumber }}</div></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.NumberOfItems }}</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
     </div>
 </template>
@@ -259,8 +306,10 @@ export default {
 			recentlyActivated: [],
 			activeOrdersByDate: [],
 			articleList: [],
+			articleListName: '',
 			monthlySalesTwoLatestYears: [],
 			dailySales: [],
+			dashboardInformationList: [],
 			shopName: '',
 		}
 	},
@@ -369,8 +418,9 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
         },
-		async getArticleList(typeid) {
+		async getArticleList(typeid, articlelistname) {
             let _this = this
+			_this.articleListName = articlelistname
             _this.showPageOverlaySpinner()
             await this.$axios.$get('/webapi/Dashboard/GetArticleList?typeId=' + typeid)
             .then(function (articlelist) {
@@ -398,26 +448,30 @@ export default {
         },
 		showDailySales(shopid, shopname, date) {
 			this.shopName = shopname
-			console.log(shopname)
-
 			this.getDailySales(shopid, date)
 			UIkit.modal('#dailysales-modal').show()
+		},
+		showArticleList(typeid, articlelistname) {
+			this.getArticleList(typeid, articlelistname)
+			UIkit.modal('#article-list-modal').show()
 		},
 	},
     async fetch () {
         try {
-            const [ userdetails, dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears ] = await Promise.all([
+            const [ userdetails, dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
 				await this.$axios.$get('/webapi/admin/GetCurrentUser'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
 				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
+				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
             ])
             this.userDetails = userdetails
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
             this.monthlySalesTwoLatestYears = monthlysalestwolatestyears
+            this.dashboardInformationList = dashboardinformationlist
         } catch (err) {
             console.log(err);
         }
