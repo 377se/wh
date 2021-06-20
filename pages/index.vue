@@ -7,58 +7,6 @@
  	<div v-else id="sc-page-wrapper">
 		{{ hidePageOverlaySpinner() }}
 
-		<!-- DAILY SALES MODAL -->
-		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
-
-			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
-				<div class="uk-flex basket-ribbon uk-position-relative">
-					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAGSFÖRSÄLJNING</h4>
-					<button
-						id="close-basket"
-						class="uk-offcanvas-close uk-icon uk-close"
-						style="color:#fff;top:14px;right:12px;"
-						type="button"
-						uk-close
-						uk-toggle="target: #dailysales-modal"/>
-				</div>
-
-
-				<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
-					<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
-						<thead>
-							<tr>
-								<td colspan="4" class="border-bottom border-right uk-text-left">
-									<div class="uk-flex uk-flex-between">
-										<div><strong>Dagens sålda artiklar på {{ this.shopName }}</strong></div>
-										<div class="uk-badge md-bg-green-600">{{ dailySales.length }}</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="border-bottom border-right uk-text-left"></td>
-								<td class="border-bottom border-right uk-text-left"><strong>Artikel</strong></td>
-								<td class="border-bottom border-right uk-text-left"><strong>ArtikelNr</strong></td>
-								<td class="border-bottom border-right uk-text-left"><strong>Antal</strong></td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="article in dailySales" :key="article.ArticleId" class="uk-table-middle">
-								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
-								<td class="border-bottom border-right uk-width-auto uk-text-left">
-									<nuxt-link :to="article.Url">
-										<div>{{ article.TeamName | toUppercase }}</div>
-										<div>{{ article.ArticleName }}</div>
-									</nuxt-link>
-								</td>
-								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.ArticleNumber }}</div></td>
-								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.NumberOfItems }}</div></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
@@ -239,6 +187,58 @@
 			</ScCard>
 
 		</div>
+				<!-- DAILY SALES MODAL -->
+		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
+
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
+				<div class="uk-flex basket-ribbon uk-position-relative">
+					<h4 style="color:#fff;line-height:50px;margin-left:12px;">DAGSFÖRSÄLJNING</h4>
+					<button
+						id="close-basket"
+						class="uk-offcanvas-close uk-icon uk-close"
+						style="color:#fff;top:14px;right:12px;"
+						type="button"
+						uk-close
+						uk-toggle="target: #dailysales-modal"/>
+				</div>
+
+
+				<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+					<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+						<thead>
+							<tr>
+								<td colspan="4" class="border-bottom border-right uk-text-left">
+									<div class="uk-flex uk-flex-between">
+										<div><strong>Dagens sålda artiklar på {{ this.shopName }}</strong></div>
+										<div class="uk-badge md-bg-green-600">{{ dailySales.length }}</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="border-bottom border-right uk-text-left"></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Artikel</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>ArtikelNr</strong></td>
+								<td class="border-bottom border-right uk-text-left"><strong>Antal</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="article in dailySales" :key="article.ArticleId" class="uk-table-middle">
+								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left">
+									<nuxt-link :to="article.Url">
+										<div>{{ article.TeamName | toUppercase }}</div>
+										<div>{{ article.ArticleName }}</div>
+									</nuxt-link>
+								</td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.ArticleNumber }}</div></td>
+								<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ article.NumberOfItems }}</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
     </div>
 </template>
 <script>
