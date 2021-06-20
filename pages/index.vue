@@ -194,7 +194,7 @@
 
 		</div>
 		<!-- DAILY SALES MODAL -->
-		<div id="dailysales-modal" class="uk-modal-full" uk-modal>
+		<div id="dailysales-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
@@ -245,7 +245,7 @@
 			</div>
 		</div>
 		<!-- ARTICLE-LIST MODAL -->
-		<div id="article-list-modal" class="uk-modal-full" uk-modal>
+		<div id="article-list-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
@@ -381,7 +381,6 @@ export default {
 		},
 	},
 	mounted () {
-		this.getArticleList(1)
 		this.getTodaysDate()
 	},
 	methods: {
