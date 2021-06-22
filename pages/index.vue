@@ -21,7 +21,9 @@
 			<!-- FÖRSÄLJINGSGRAF -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
-					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
+					<client-only>
+						<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
+					</client-only>
 				</ScCardBody>
 			</ScCard>
 			<!-- DASHBOARD - STATISTIK -->
