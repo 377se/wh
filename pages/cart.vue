@@ -1,5 +1,11 @@
 <template>
-	<div id="sc-page-wrapper">
+	<div v-if="$fetchState.pending">
+        <div id="sc-page-wrapper">
+            {{ showPageOverlaySpinner() }}
+        </div>
+    </div>
+	<div v-else id="sc-page-wrapper">
+		{{ hidePageOverlaySpinner() }}
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
@@ -63,6 +69,7 @@
 			</ScCard>
 		</div>
 	</div>
+
 </template>
 
 <script>
@@ -159,19 +166,24 @@ export default {
 		},
 	},
 	methods: {
-		async loadProducts() {
-			await this.$axios.$get('/webapi/Cart/GetCartList')
-			.then(products => {
-				this.products = products
-				this.isLoading = false
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
-    	},
-    },
-	mounted() {
-        this.loadProducts()
+		hidePageOverlaySpinner () {
+            this.$store.commit('toggleProgressOverlay', false);
+            this.$store.commit('togglePageOverlay', false)
+        },
+        showPageOverlaySpinner () {
+            this.$store.commit('toggleProgressOverlay', true);
+            this.$store.commit('togglePageOverlay', true)
+        },
+	},
+    async fetch () {
+        try {
+            const [ products ] = await Promise.all([
+				await this.$axios.$get('/webapi/Cart/GetCartList'),
+            ])
+			this.products = products
+        } catch (err) {
+            console.log(err);
+        }
     },
 }
 </script>
