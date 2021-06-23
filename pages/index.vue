@@ -1,4 +1,5 @@
 <template>
+			<client-only>
 
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
@@ -23,13 +24,11 @@
 		<div id="sc-page-content">
 
 			<!-- FÖRSÄLJINGSGRAF -->
-			<client-only>
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
 				</ScCardBody>
 			</ScCard>
-			</client-only>
 
 			<!-- DASHBOARD - STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
@@ -285,6 +284,7 @@
 		</div>
 
 	</div>
+			</client-only>
 
 </template>
 <script>
