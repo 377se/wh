@@ -195,7 +195,7 @@
 			</div>
 
 		</div>
-		<!-- DAILY SALES MODAL -->
+		<!-- DAILY SALES MODAL
 		<div id="dailysales-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
@@ -237,8 +237,8 @@
 				</div>
 			</div>
 		</div>
-		<!-- ARTICLE-LIST MODAL -->
-		<div id="article-list-modal" class="uk-modal-full uk-modal" data-uk-modal>
+		 ARTICLE-LIST MODAL -->
+		<!-- <div id="article-list-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
 				<div class="uk-flex basket-ribbon uk-position-relative">
@@ -276,7 +276,7 @@
 					</table>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
     </div>
 </template>
