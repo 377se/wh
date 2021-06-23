@@ -54,7 +54,7 @@
 		"jquery": "^3.5.1",
 		"jquery.fancytree": "^2.37.0",
 		"jquery.steps": "^1.1.1",
-		"lodash": "^4.17.20",
+		"lodash": "^4.17.21",
 		"node-sass": "^5.0.0",
 		"node-waves": "^0.7.6",
 		"numeral": "^2.0.6",
