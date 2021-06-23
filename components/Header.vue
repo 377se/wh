@@ -529,7 +529,7 @@ export default {
 		async logout() {
 			await this.$axios.$post('/webapi/Logout/PostLogout')
 			this.$cookies.remove('wh-377')
-			this.$store.commit('setIsLoggedIn', false)
+			await this.$store.commit('setIsLoggedIn', false)
           	// this.$router.push('/')
 			location.reload('/')
 		},

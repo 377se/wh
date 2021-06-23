@@ -165,7 +165,7 @@ export const getters = {
 export const actions = {
   async nuxtServerInit({ getters, commit, dispatch }, context) {
 		if(context.app.$cookies.get('wh-377') && context.app.$cookies.get('wh-377')!=undefined){
-			commit('setIsLoggedIn', true)
+			await commit('setIsLoggedIn', true)
 		}
 	}
 }
