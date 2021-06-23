@@ -171,24 +171,24 @@ export default {
 			UIkit.modal('#article-list-modal').show()
 		},
 	},
-    // async fetch () {
-    //     try {
-    //         const [ dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
-	// 			await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
-	// 			await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
-	// 			await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
-	// 			await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
-	// 			await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
-    //         ])
-    //         this.dashBoard = dashboard
-    //         this.recentlyActivated = recentlyactivated
-    //         this.activeOrdersByDate = activeordersbydate
-    //         this.monthlySalesTwoLatestYears = monthlysalestwolatestyears
-    //         this.dashboardInformationList = dashboardinformationlist
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // },
+    async fetch () {
+        try {
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
+				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
+				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
+				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
+				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
+				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
+            ])
+            this.dashBoard = dashboard
+            this.recentlyActivated = recentlyactivated
+            this.activeOrdersByDate = activeordersbydate
+            this.monthlySalesTwoLatestYears = monthlysalestwolatestyears
+            this.dashboardInformationList = dashboardinformationlist
+        } catch (err) {
+            console.log(err);
+        }
+    },
 }
 </script>
 
