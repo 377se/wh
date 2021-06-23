@@ -25,7 +25,7 @@
 
 			<!-- FÖRSÄLJINGSGRAF -->
 			<ScCard class="uk-margin-medium-bottom">
-				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
+				<ScCardBody v-if="monthlySalesLatestYears.length > 0" class="sc-chart-chartjs">
 					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
 				</ScCardBody>
 			</ScCard>
@@ -306,7 +306,7 @@ export default {
 			activeOrdersByDate: [],
 			articleList: [],
 			articleListName: '',
-			monthlySalesTwoLatestYears: [],
+			monthlySalesLatestYears: [],
 			dailySales: [],
 			dashboardInformationList: [],
 			shopName: '',
@@ -316,23 +316,35 @@ export default {
 		cjsLineChartData () {
 			return {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
-				datasets: [{
-					label: this.monthlySalesTwoLatestYears[0].Year,
+				datasets: [
+				{
+					label: this.monthlySalesLatestYears[0].Year,
+					steppedLine: false,
+					lineTension: 0.3,
+					backgroundColor: scColors.multi[3],
+					borderColor: scColors.multi[3],
+					data: this.monthlySalesLatestYears[0].MonthlySale,
+					fill: false,
+				},
+				{
+					label: this.monthlySalesLatestYears[1].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					data: this.monthlySalesTwoLatestYears[0].MonthlySale,
+					data: this.monthlySalesLatestYears[1].MonthlySale,
 					fill: false,
-				}, {
-					label: this.monthlySalesTwoLatestYears[1].Year,
+				},
+				{
+					label: this.monthlySalesLatestYears[2].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					data: this.monthlySalesTwoLatestYears[1].MonthlySale,
+					data: this.monthlySalesLatestYears[2].MonthlySale,
 					fill: false,
-				}]
+				},
+				]
 			}
 		},
 		lineChart () {
@@ -456,7 +468,7 @@ export default {
 	},
     async fetch () {
         try {
-            const [ dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
@@ -466,7 +478,7 @@ export default {
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
-            this.monthlySalesTwoLatestYears = monthlysalestwolatestyears
+            this.monthlySalesLatestYears = monthlysaleslatestyears
             this.dashboardInformationList = dashboardinformationlist
         } catch (err) {
             console.log(err);
