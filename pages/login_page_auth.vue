@@ -94,8 +94,8 @@ export default {
         if(logmein.data.ErrorList){
           this.errors = response.data.ErrorList
         }else{
-          this.$store.commit('setIsLoggedIn', true)
-          location.reload('/')
+          await this.$store.commit('setIsLoggedIn', true)
+          this.$router.push('/')
         }
 
       }catch(err){
