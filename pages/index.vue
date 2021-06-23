@@ -202,18 +202,17 @@
 
 		<!-- DAILY SALES MODAL -->
 		<div id="dailysales-modal" class="uk-modal-full uk-modal" data-uk-modal>
-
-			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
-				<div class="uk-flex basket-ribbon uk-position-relative">
-						<h4 style="color:#fff;line-height:50px;margin-left:12px;">Dagens sålda artiklar på {{ this.shopName }}</h4>
-					<button
-						class="uk-offcanvas-close uk-icon uk-close"
-						style="color:#fff;top:14px;right:12px;"
-						type="button"
-						uk-close
-						uk-toggle="target: #dailysales-modal"/>
-				</div>
-
+			<div class="uk-modal-header basket-ribbon">
+				<!-- sticky -->
+				<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Dagsförsäljning - {{ this.shopName }}</h4>
+				<button
+					class="uk-offcanvas-close uk-icon uk-close"
+					style="color:#fff;top:14px;right:12px;"
+					type="button"
+					uk-close
+					uk-toggle="target: #dailysales-modal"/>
+      		</div>
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
 				<div class="uk-width-1-1 uk-overflow-auto">
 					<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -245,16 +244,18 @@
 		 <!-- ARTICLE-LIST MODAL -->
 		<div id="article-list-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
-			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" style="padding:0px;height:100vh;background:#ffffff;" uk-overflow-auto>
-				<div class="uk-flex basket-ribbon uk-position-relative">
-					<h4 style="color:#fff;line-height:50px;margin-left:12px;">{{articleListName}}</h4>
-					<button
-						class="uk-offcanvas-close uk-icon uk-close"
-						style="color:#fff;top:14px;right:12px;"
-						type="button"
-						uk-close
-						uk-toggle="target: #article-list-modal"/>
-				</div>
+			<div class="uk-modal-header basket-ribbon">
+				<!-- sticky -->
+				<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">{{ articleListName }}</h4>
+				<button
+					class="uk-offcanvas-close uk-icon uk-close"
+					style="color:#fff;top:14px;right:12px;"
+					type="button"
+					uk-close
+					uk-toggle="target: #dailysales-modal"/>
+      		</div>
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+
 				<div class="uk-width-1-1 uk-overflow-auto">
 					<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 						<thead>
@@ -496,7 +497,7 @@ export default {
 	.uk-modal-full {
 		background: rgba(0, 0, 0, 0.6);
 	}
-	.uk-modal-dialog {
+	.uk-modal-dialog, .uk-modal-header {
 		margin-left: auto;
 		width:55vw !important;
 		max-width: 800px !important;
@@ -505,8 +506,12 @@ export default {
 				max-width: 800px !important;
 			}
 	}
+	.uk-modal-header {
+		min-height: 50px;
+		height: auto;
+		padding: 0px;
+	}
 	.basket-ribbon{
-		height:50px;
 		background: #00838F;
 	}
 	.cursor-pointer {
