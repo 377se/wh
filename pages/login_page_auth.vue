@@ -95,7 +95,7 @@ export default {
           this.errors = response.data.ErrorList
         }else{
           this.$store.commit('setIsLoggedIn', true)
-          this.$router.push('/')
+          location.reload('/')
         }
 
       }catch(err){
