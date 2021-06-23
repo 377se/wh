@@ -18,6 +18,10 @@
 			</div>
 		</div>
 
+		<div v-if="dashBoard" id="sc-page-content">
+
+		</div>
+
 	</div>
 </template>
 <script>
