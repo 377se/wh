@@ -25,7 +25,7 @@
 							:columns="columns"
 							:rows="products"
 							style-class="vgt-table"
-							:search-options="{ enabled: true }"
+							:search-options="{ enabled: false }"
 							:pagination-options="{
 								enabled: false,
 								mode: 'pages',
