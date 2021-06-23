@@ -292,7 +292,6 @@ export default {
 		return {
 			color: (process.client) ? Chart.helpers.color : '#fff',
 			todaysDate: '',
-			userDetails: [],
 			dashBoard: null,
 			isExtended: false,
 			recentlyActivated: [],
@@ -449,15 +448,13 @@ export default {
 	},
     async fetch () {
         try {
-            const [ userdetails, dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
-				await this.$axios.$get('/webapi/admin/GetCurrentUser'),
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysalestwolatestyears, dashboardinformationlist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
 				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
             ])
-            this.userDetails = userdetails
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
