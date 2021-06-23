@@ -22,6 +22,13 @@
 
 		<div id="sc-page-content">
 
+			<!-- FÖRSÄLJINGSGRAF -->
+			<ScCard class="uk-margin-medium-bottom">
+				<ScCardBody v-if="monthlySalesTwoLatestYears.length > 0" class="sc-chart-chartjs">
+					<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
+				</ScCardBody>
+			</ScCard>
+
 			<!-- DASHBOARD - STATISTIK -->
 			<ScCard class="uk-margin-medium-bottom">
 				<ScCardBody>
