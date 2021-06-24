@@ -380,7 +380,7 @@ export default {
 							},
 							ticks: {
 								beginAtZero: true,
-								stepSize: 200000,
+								stepSize: 500000,
 								callback: (value) => {
 									return Intl.NumberFormat().format((value)) + ' kr';
 								},
