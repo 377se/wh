@@ -70,6 +70,9 @@ export default {
   components:{
     ButtonSubmit,
   },
+  mounted () {
+    this.$store.getters['isLoggedIn'] == true ? this.$router.push('/') : ''
+  },
   data() {
     return {
       form:{
@@ -95,7 +98,7 @@ export default {
           this.errors = response.data.ErrorList
         }else{
           await this.$store.commit('setIsLoggedIn', true)
-          this.$router.push('/')
+          location.reload()
         }
 
       }catch(err){
