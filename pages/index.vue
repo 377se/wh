@@ -252,7 +252,7 @@
 					style="color:#fff;top:14px;right:12px;"
 					type="button"
 					uk-close
-					uk-toggle="target: #dailysales-modal"/>
+					uk-toggle="target: #article-list-modal"/>
       		</div>
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
