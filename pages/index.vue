@@ -228,7 +228,7 @@
 							<tr v-for="article in dailySales" :key="article.ArticleId" class="uk-table-middle">
 								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
 								<td class="border-bottom border-right uk-width-auto uk-text-left">
-									<nuxt-link :to="article.Url">
+									<nuxt-link :to="article.Url" uk-toggle="target: #dailysales-modal">
 										<div>{{ article.TeamName | toUppercase }}</div>
 										<div>{{ article.ArticleName }}</div>
 									</nuxt-link>
@@ -270,7 +270,7 @@
 							<tr v-for="article in articleList" :key="article.ArticleId" class="uk-table-middle">
 								<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
 								<td class="border-bottom border-right uk-width-auto uk-text-left">
-									<nuxt-link :to="article.Url">
+									<nuxt-link :to="article.Url" uk-toggle="target: #article-list-modal">
 										<div>{{ article.TeamName | toUppercase }}</div>
 										<div>{{ article.ArticleName }}</div>
 									</nuxt-link>
