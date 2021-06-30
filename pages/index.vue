@@ -2,7 +2,7 @@
 
 <client-only>
 
-	<div>
+	<div class="uk-width-1-1 uk-position-relative">
 
 		<div v-if="$fetchState.pending" class="no-print">
 			<div id="sc-page-wrapper">
@@ -733,6 +733,7 @@ export default {
 	}
 
 	.inventory-note-container {
+		width: 100%;
 		margin: 60px 0 0 0px;
 		font-size: 12px;
 		font-family: 'Roboto', sans-serif;
@@ -740,7 +741,7 @@ export default {
 	}
 
 	.all-inventory-notes {
-		width: 950px;
+		// width: 950px;
 		margin: 0 auto;
 	}
 
