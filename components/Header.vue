@@ -483,7 +483,7 @@ export default {
 		}
 	},
 	mounted () {
-		this.loadUserDetails()
+		this.isLoggedIn ? this.loadUserDetails() : null
 		const self = this;
 		self.$nextTick(() => {
 			if(scMq.mediumMin() || this.$store.getters['sidebarOffcanvasState']) {
