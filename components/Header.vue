@@ -532,7 +532,7 @@ export default {
 			.then(res => {
 				_this.$store.commit('setIsLoggedIn', false)
 				_this.$cookies.remove('wh-377')
-				_this.$router.push('/')
+				location.reload('/')
 			})
 			.catch(function (error) {
 				console.log(error)
