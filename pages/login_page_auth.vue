@@ -71,7 +71,8 @@ export default {
     ButtonSubmit,
   },
   mounted () {
-    // this.$store.getters['isLoggedIn'] == true ? this.$router.push('/') : ''
+    this.$store.getters['isLoggedIn'] ? this.$router.push('/') : ''
+
   },
   data() {
     return {
