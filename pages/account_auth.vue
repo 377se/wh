@@ -34,8 +34,9 @@ export default {
 			})
     	},
 		async logout() {
+			let _this = this
 			await this.$axios.$post('/webapi/Logout/PostLogout')
-			this.$cookies.remove('wh-377')
+			_this.$cookies.remove('wh-377')
 			await this.$store.commit('setIsLoggedIn', false)
           	this.$router.push('/')
 		},
