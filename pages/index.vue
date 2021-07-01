@@ -288,9 +288,9 @@
 						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 							<thead>
 								<tr>
-									<td class="border-bottom border-right uk-text-center"><div class="uk-badge md-bg-green-600">{{ articleList.length }}</div></td>
+									<td class="border-bottom border-right uk-text-center" style="width: 50px;"><div class="uk-badge md-bg-green-600">{{ articleList.length }}</div></td>
 									<td colspan="2" class="border-bottom border-right uk-text-right">
-										<a v-print="printInventoryNotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi-printer uk-display-inline uk-margin-small-right"></a>
+										<a v-if="articleListTypeId == 1" v-print="printInventoryNotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi-printer uk-display-inline uk-margin-small-right"></a>
 									</td>
 								</tr>
 							</thead>
@@ -303,7 +303,7 @@
 											<div>{{ article.ArticleName }}</div>
 										</nuxt-link>
 									</td>
-									<td class="border-bottom border-right uk-width-auto uk-text-left">
+									<td v-if="articleListTypeId == 1" class="border-bottom border-right uk-width-auto uk-text-left" style="width: 80px;">
 										<button class="uk-button uk-button-primary uk-button-small">DÖLJ</button>
 									</td>
 								</tr>
@@ -490,6 +490,7 @@ export default {
 			recentlyActivated: [],
 			activeOrdersByDate: [],
 			articleList: [],
+			articleListTypeId: null,
 			articleListName: '',
 			monthlySalesLatestYears: [],
 			dailySales: [],
@@ -648,6 +649,7 @@ export default {
 			UIkit.modal('#dailysales-modal').show()
 		},
 		showArticleList(typeid, articlelistname) {
+			this.articleListTypeId = typeid
 			this.getArticleList(typeid, articlelistname)
 			UIkit.modal('#article-list-modal').show()
 		},
