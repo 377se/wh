@@ -50,7 +50,9 @@
                                         </div>
                                     </div>
                                     <div class="uk-width-1-2 uk-margin-medium-bottom uk-margin-medium-top" v-if="extensionList.length != 0">
-                                        {{ extensionList.Summary[0].Name }}: {{ extensionList.Summary[0].ItemsSold }}
+                                        <div v-for="(item, index) in extensionList.Summary" :key="index">
+                                            {{ item.Name }}: {{ item.ItemsSold }}
+                                        </div>
                                     </div>
                                 </div>
 							</div>
