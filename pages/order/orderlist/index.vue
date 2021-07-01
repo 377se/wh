@@ -32,25 +32,31 @@
                                     </client-only>
                                     </div>
                                 </div>
-                            <div v-if="shopId" class="uk-grid-small uk-flex-between" uk-grid>
-                                <div>
-                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="printDeliveryNotes('all-delivery-notes')">
-                                        SKRIV UT FÖLJESEDEL
-                                    </button>
+                            <div v-if="shopId">
+                                <div class="uk-grid-small uk-flex-between" uk-grid>
+                                    <div class="uk-width-auto">
+                                        <div class="sc-button sc-button-disabled sc-button-small">
+                                                Markerade ordrar: {{ numberOfSelected }}
+                                        </div>
+                                    </div>
+                                    <div class="uk-width-auto uk-grid-small uk-flex-right" uk-grid>
+                                        <div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                                SKRIV UT FÖLJESEDEL
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="setOrderAsDelivered()">
+                                                SÄTT SOM LEVERERAT
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="sendOrderDelayed()">
+                                                FÖRSENAD ORDER
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDelivered()">
-                                        SÄTT SOM LEVERERAT
-                                    </button>
-                                </div>
-                                <div>
-                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderDelayed()">
-                                        FÖRSENAD ORDER
-                                    </button>
-                                </div>
-                                <div class="sc-button sc-button-disabled">
-                                        Markerade ordrar: {{ numberOfSelected }}
-					            </div>
                             </div>
                             <Alert
                                 :errorlist="this.errors ? this.errors : []"
