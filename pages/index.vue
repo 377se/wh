@@ -777,18 +777,18 @@ export default {
 		.all-inventory-notes {
 			margin-bottom: 60px !important;
 		}
+		.items tbody tr {
+			font-size: 12px;
+			border: solid #333;
+			border-width: 0 0 1px 0;
+			height: 65px;
+		}
 	}
 	.items {
 		clear: both;
 		width: 100%;
 		margin: 30px 0 30px 0;
 		border-collapse: collapse;
-	}
-	.items tbody tr {
-		font-size: 12px;
-		border: solid #333;
-		border-width: 0 0 1px 0;
-		height: 65px;
 	}
 	.items th {
 		text-transform: uppercase;
