@@ -571,7 +571,7 @@
 											</div>
 										</ScCardHeader>
 										<ScCardContent>
-											<ScCardBody>
+											<ScCardBody :key="coolKeyUsedToRedoRender">
 												<VueGoodTable
 													v-if="updateTheBloodyTable == true"
 													:columns="columns_articleAssortment"
@@ -597,12 +597,14 @@
 														</span>
 														<input class="uk-input"
 															v-else-if="props.column.field === 'Correction'"
-															v-on:blur="updateArticleAssortment(props.row)"
+															@keyup.tab="updateArticleAssortment(props.row)"
+															@keyup.enter="updateArticleAssortment(props.row)"
 															v-model="props.row.Correction"
 														>
 														<input class="uk-input"
 															v-else-if="props.column.field === 'Delivery'"
-															v-on:blur="updateArticleAssortment(props.row)"
+															@keyup.tab="updateArticleAssortment(props.row)"
+															@keyup.enter="updateArticleAssortment(props.row)"
 															v-model="props.row.Delivery"
 														>
 														<span v-else-if="props.column.field === 'WaitingForDelivery'">
@@ -614,7 +616,10 @@
 													</template>
 												</VueGoodTable>
 												<div class="uk-text-small uk-margin-medium-top">Inköpspris:</div>
-												<div><input class="uk-input uk-width-1-4" v-model="articleDetails.PurchasePrice" :placeholder="articleDetails.PurchasePrice"></div>
+												<div>
+													<input class="uk-input uk-width-1-4" v-model="articleDetails.PurchasePrice" :placeholder="articleDetails.PurchasePrice">
+												</div>
+												<div class="uk-text-small uk-margin-medium-top">Använd TAB eller RETURN för att spara/uppdatera tabellen!</div>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -780,6 +785,7 @@ export default {
 	},
 	data () {
 		return {
+			coolKeyUsedToRedoRender: 0,
 			files: [],
 			cardArticleSaleFullScreen: false,
 			cardPrefsFullScreen: false,
@@ -1105,7 +1111,6 @@ export default {
 		},
 		async updateArticleAssortment(articleAssortmentRow) {
 			let _this = this
-			_this.isLoading = true
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleAssortment?purchasePrice=' + this.articleDetails.PurchasePrice, articleAssortmentRow)
 			.then(function (response) {
 				if(response.StockId !== ''){
@@ -1113,17 +1118,16 @@ export default {
 					_this.articleAssortmentHistory = response.History
 					delete response.History
 					_this.$store.commit('updateArticleAssortment', response)
-					_this.updateTheBloodyTable = false
-					setTimeout(() => {
-						_this.updateTheBloodyTable = true
-					}, 10);
-					_this.isLoading = false
+					_this.forceRerenderOfAssortmentTable()
 				}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
 		},
+		forceRerenderOfAssortmentTable() {
+      		this.coolKeyUsedToRedoRender += 1
+    	},
 		async updateStatusId(shop) {
 			let _this = this
 			_this.isLoading = true
