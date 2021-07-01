@@ -1,8 +1,8 @@
 <template>
-  <draggable tag="ul" :list="SubItemList" @end="$store.commit('setListUpdated')" group="sub">
-    <li class="dragArea" v-for="el in SubItemList" :key="el.Name">
+  <draggable tag="ul" :SubItemList="SubItemList" @end="$store.commit('setListUpdated')">
+    <li class="dragArea" v-for="el in SubItemList" :key="el.SortOrder">
       <div @click.prevent="$store.commit('setCategoryId', el.CategoryId)">{{ el.Name }}</div>
-      <nested-draggable v-if="el.SubItemList" :SubItemList="el.SubItemList"/>
+      <nested-draggable :SubItemList="el.SubItemList"/>
     </li>
   </draggable>
 </template>
@@ -26,8 +26,9 @@ export default {
   font-size: 13px;
   cursor: pointer;
   line-height: 1.3;
-  min-height: 23px;
-  list-style: none;
+  min-height: 43px;
+  list-style: disc;
+  outline: 1px dashed;
 }
 .mainTree {
   padding-left: 0;

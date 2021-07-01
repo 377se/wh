@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="uk-grid-column-medium" uk-grid>
-                            <div v-if="menu" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
+                            <div v-if="SubItemList" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
                                 <ScCard>
                                     <ScCardBody>
                                         <!-- NYTT MENYVAL -->
@@ -42,7 +42,7 @@
                                             </ScInput>
                                         </div>
                                         <!-- VISA HEL MENY -->
-                                        <Nested class="mainTree" :SubItemList="menu" @end="$store.commit('setListUpdated')"/>
+                                        <Nested :SubItemList="SubItemList" @end="$store.commit('setListUpdated')"/>
                                     </ScCardBody>
                                 </ScCard>
                             </div>
@@ -219,7 +219,7 @@ export default {
             shops: [],
             shopId: 0,
             shopOptionsList: [],
-            menu: null,
+            SubItemList: null,
             newMenuItemContainer: {},
             editMenuItem: null,
             menuImage: null,
@@ -292,12 +292,12 @@ export default {
         },
         async getMenuByShopId() {
 			let _this = this
-            _this.menu = []
+            _this.SubItemList = []
             _this.editMenuItem = null
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Menu/GetMenuByShopId?shopId=' + _this.shopId)
 			.then(function (menu) {
-                _this.menu = menu
+                _this.SubItemList = menu
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -308,9 +308,9 @@ export default {
         async sortMenu() {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.menu)
+			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.SubItemList)
 			.then(function (menu) {
-                _this.menu = menu
+                _this.SubItemList = menu
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
