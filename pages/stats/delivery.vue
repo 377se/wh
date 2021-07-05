@@ -17,7 +17,7 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody>
-                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel"></div>
+                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal">
                                 <div class="uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                     <client-only>
