@@ -304,7 +304,7 @@
 										</nuxt-link>
 									</td>
 									<td v-if="articleListTypeId == 1" class="border-bottom border-right uk-width-auto uk-text-left" style="width: 80px;">
-										<button class="uk-button uk-button-primary uk-button-small">DÖLJ</button>
+										<button class="uk-button uk-button-primary uk-button-small" @click="updateArticleStatusById(article)">DÖLJ</button>
 									</td>
 								</tr>
 							</tbody>
@@ -629,6 +629,17 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
         },
+		async updateArticleStatusById(article) {
+			let _this = this
+            await this.$axios.$post('/webapi/Article/UpdateArticleStatusById', article)
+            .then(function (articlelist) {
+				_this.articleList = articlelist
+			})
+            .catch(function (error) {
+				console.log(error)
+            _this.hidePageOverlaySpinner()
+            })
+		},
 		async getDailySales(shopid, date) {
             let _this = this
 			_this.dailySales = []
