@@ -177,7 +177,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="javascript:void(0)" @click.prevent="logout()">
+									<a href="javascript:void(0)" @click.prevent="logout">
 										Logout
 									</a>
 								</li>
@@ -526,17 +526,8 @@ export default {
 		isActiveLang (code) {
 			return code === this.vxActiveLocale
 		},
-		async logout() {
-			let _this = this
-			await _this.$axios.$post('/webapi/Logout/PostLogout')
-			.then(res => {
-				_this.$store.commit('setIsLoggedIn', false)
-				_this.$cookies.remove('wh-377', {domain: window.location.hostname})
-				location.reload('/')
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
+		logout() {
+			this.$store.dispatch('logout').then(() => location.reload('/'))
 		},
 	}
 }

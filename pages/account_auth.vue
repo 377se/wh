@@ -9,7 +9,7 @@
 					<div class="uk-margin-small-top uk-margin-bottom">
 						Email: {{ userDetails.Email }}
 					</div>
-					<a class="sc-button sc-button-default sc-button-outline" href="javascript:void(0)" @click="logout()">
+					<a class="sc-button sc-button-default sc-button-outline" href="javascript:void(0)" @click="logout">
 						Logout
 					</a>
 				</ScCardBody>
@@ -33,17 +33,8 @@ export default {
 				console.log(error)
 			})
     	},
-		async logout() {
-			let _this = this
-			await _this.$axios.$post('/webapi/Logout/PostLogout')
-			.then(res => {
-				_this.$store.commit('setIsLoggedIn', false)
-				_this.$cookies.remove('wh-377', {domain: window.location.hostname})
-				location.reload('/')
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
+		logout() {
+			this.$store.dispatch('logout').then(() => location.reload('/'))
 		},
 	},
 	data: () => ({

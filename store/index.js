@@ -163,9 +163,20 @@ export const getters = {
 };
 
 export const actions = {
-  async nuxtServerInit({ getters, commit, dispatch }, context) {
+  	async nuxtServerInit({ getters, commit, dispatch }, context) {
 		if(context.app.$cookies.get('wh-377') && context.app.$cookies.get('wh-377')!=undefined){
 			await commit('setIsLoggedIn', true)
 		}
-	}
+	},
+	logout({commit}) {
+		return this.$axios.$post('/webapi/Logout/PostLogout')
+		.then(() => {
+			commit('setIsLoggedIn', false)
+			this.$cookies.remove('wh-377', {domain: window.location.hostname})
+			return true
+		})
+		.catch(function (error) {
+			console.log(error)
+		})
+	},
 }
