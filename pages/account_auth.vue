@@ -38,7 +38,7 @@ export default {
 			await _this.$axios.$post('/webapi/Logout/PostLogout')
 			.then(res => {
 				_this.$store.commit('setIsLoggedIn', false)
-				_this.$cookies.remove('wh-377')
+				_this.$cookies.remove('wh-377', {domain: window.location.hostname})
 				location.reload('/')
 			})
 			.catch(function (error) {

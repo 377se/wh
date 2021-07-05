@@ -99,7 +99,7 @@ export default {
           this.errors = response.data.ErrorList
         }else{
           await this.$store.commit('setIsLoggedIn', true)
-          //location.reload()
+          location.reload()
         }
 
       }catch(err){
