@@ -15,57 +15,74 @@
                 </div>
             </div>
             <div id="sc-page-content">
-                <ScCard>
-                    <ScCardBody>
-                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal">
-                                <div class="uk-width-1-1">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <client-only>
-                                        <Select2
-                                            id="select-shopOptionsList"
-                                            v-model="shopId"
-                                            :options="shopOptionsList"
-                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop för att få ut leveranslista', 'closeOnSelect': true }"
-                                            @select="getShippingStats"
-                                        >
-                                        </Select2>
-                                    </client-only>
+                <div class="uk-grid uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@s" uk-grid uk-margin>
+                    <div>
+                        <ScCard>
+                            <ScCardHeader separator>
+                                <ScCardTitle>
+                                    30 senaste dagarna
+                                </ScCardTitle>
+                            </ScCardHeader>
+                            <ScCardBody>
+                                <div v-if="shopId" class="uk-overflow-auto">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove deliverylist">
+                                        <thead>
+                                            <tr class="uk-padding-remove-bottom">
+                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 150px;">Datum</th>
+                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 70px;">Antal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="delivery in deliveryList" :key="delivery.Id" class="uk-table-middle">
+                                                <td class="border-bottom border-left" style="text-align: left; width: 150px;">{{ delivery.ItemDate }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: left; width: 70px;">{{ delivery.NumberOfItems }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </ScCardBody>
+                        </ScCard>
+                    </div>
+                    <div class="uk-flex-first uk-flex-last@s">
+                        <ScCard>
+                            <ScCardHeader separator>
+                                <ScCardTitle>
+                                    Filtrera
+                                </ScCardTitle>
+                            </ScCardHeader>
+                            <ScCardBody>
+                                <div>
+                                    <Alert
+                                        :errorlist="this.errors ? this.errors : []"
+                                        :message="this.message ? this.message : ''"
+                                        :alertClass="'uk-alert-danger'"
+                                        id=1
+                                    />
+                                    <Alert
+                                        :errorlist="this.errors ? this.errors : []"
+                                        :message="this.message ? this.message : ''"
+                                        :alertClass="'uk-alert-success'"
+                                        id=2
+                                    />
+                                    <div class="uk-width-1-1">
+                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                        <client-only>
+                                            <Select2
+                                                id="select-shopOptionsList"
+                                                v-model="shopId"
+                                                :options="shopOptionsList"
+                                                :settings="{ 'width': '100%', 'placeholder': 'Välj shop för att få ut leveranslista', 'closeOnSelect': true }"
+                                                @select="getShippingStats"
+                                            >
+                                            </Select2>
+                                        </client-only>
+                                        </div>
                                     </div>
                                 </div>
-                            <Alert
-                                :errorlist="this.errors ? this.errors : []"
-                                :message="this.message ? this.message : ''"
-                                :alertClass="'uk-alert-danger'"
-                                id=1
-                            />
-                            <Alert
-                                :errorlist="this.errors ? this.errors : []"
-                                :message="this.message ? this.message : ''"
-                                :alertClass="'uk-alert-success'"
-                                id=2
-                            />
-                        </div>
-                        <div v-if="shopId" class="uk-overflow-auto">
-                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove deliverylist">
-                                <thead>
-                                    <tr class="uk-padding-remove-bottom">
-                                        <th colspan="2" class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 150px;"><strong>Senaste 30 dagarna</strong></th>
-                                    </tr>
-                                    <tr class="uk-padding-remove-bottom">
-                                        <th class="border-bottom border-left uk-text-small" style="text-align: left; width: 150px;">Datum</th>
-                                        <th class="border-bottom border-left border-right uk-text-small" style="text-align: left; width: 70px;">Antal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="delivery in deliveryList" :key="delivery.Id" class="uk-table-middle">
-                                        <td class="border-bottom border-left" style="text-align: left; width: 150px;">{{ delivery.ItemDate }}</td>
-                                        <td class="border-bottom border-left border-right" style="text-align: left; width: 70px;">{{ delivery.NumberOfItems }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ScCardBody>
-                </ScCard>
+                            </ScCardBody>
+                        </ScCard>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
