@@ -83,7 +83,6 @@
                                                     v-model="currentStatsObject.ShopId"
                                                     :options="shopOptionsList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true }"
-                                                    @select="postReturnOrderStats"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -96,7 +95,6 @@
                                                     v-model="currentStatsObject.CountryId"
                                                     :options="countryList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Land', 'closeOnSelect': true }"
-                                                    @select="postReturnOrderStats"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -109,7 +107,6 @@
                                                     v-model="currentStatsObject.TeamId"
                                                     :options="teamList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Lag', 'closeOnSelect': true }"
-                                                    @select="postReturnOrderStats"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -122,7 +119,6 @@
                                                     v-model="currentStatsObject.Year"
                                                     :options="yearList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true }"
-                                                    @select="postReturnOrderStats"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -135,12 +131,14 @@
                                                     v-model="currentStatsObject.Month"
                                                     :options="monthList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true }"
-                                                    @select="postReturnOrderStats"
                                                 >
                                                 </Select2>
                                             </client-only>
+
+                                            <div class="uk-width-1-1 uk-margin-large-top"><button @click="postReturnOrderStats" class="uk-button uk-align-center">HÄMTA STATISTIK</button></div>
+                                            <div class="uk-width-1-1"><button @click="resetFilter" class="uk-align-center uk-button" >NOLLSTÄLL FILTER</button></div>
+
                                         </div>
-                                        <button class="uk-margin-medium-top uk-button uk-button-primare uk-button-small" @click.prevent="resetFilter">NOLLSTÄLL FILTER</button>
                                     </div>
                                 </div>
                             </ScCardBody>

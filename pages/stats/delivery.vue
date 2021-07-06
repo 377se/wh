@@ -15,8 +15,8 @@
                 </div>
             </div>
             <div id="sc-page-content">
-                <div class="uk-grid uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@s" uk-grid uk-margin>
-                    <div>
+                <div class="uk-grid uk-grid-medium" uk-grid uk-margin>
+                    <div class="uk-width-1-1 uk-width-2-3@m">
                         <ScCard>
                             <ScCardHeader separator>
                                 <ScCardTitle>
@@ -24,7 +24,7 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                <div v-if="shopId" class="uk-overflow-auto">
+                                <div v-if="deliveryList" class="uk-overflow-auto">
                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove deliverylist">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
@@ -33,7 +33,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="delivery in deliveryList" :key="delivery.Id" class="uk-table-middle">
+                                            <tr v-for="delivery in deliveryList.ItemList" :key="delivery.Id" class="uk-table-middle">
                                                 <td class="border-bottom border-left" style="text-align: left; width: 150px;">{{ delivery.ItemDate }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; width: 70px;">{{ delivery.NumberOfItems }}</td>
                                             </tr>
@@ -43,7 +43,7 @@
                             </ScCardBody>
                         </ScCard>
                     </div>
-                    <div class="uk-flex-first uk-flex-last@s">
+                    <div class="uk-width-1-1 uk-width-1-3@m uk-flex-first uk-flex-last@m">
                         <ScCard>
                             <ScCardHeader separator>
                                 <ScCardTitle>
@@ -66,16 +66,16 @@
                                     />
                                     <div class="uk-width-1-1">
                                         <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                        <client-only>
-                                            <Select2
-                                                id="select-shopOptionsList"
-                                                v-model="shopId"
-                                                :options="shopOptionsList"
-                                                :settings="{ 'width': '100%', 'placeholder': 'Välj shop för att få ut leveranslista', 'closeOnSelect': true }"
-                                                @select="getShippingStats"
-                                            >
-                                            </Select2>
-                                        </client-only>
+                                            <client-only>
+                                                <Select2
+                                                    id="select-shopOptionsList"
+                                                    v-model="currentStatsObject.ShopId"
+                                                    :options="shopOptionsList"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj shop för att få ut leveranslista', 'closeOnSelect': true }"
+                                                >
+                                                </Select2>
+                                            </client-only>
+                                            <button @click="postShippingStats" class="uk-button uk-margin-large-top uk-align-center">HÄMTA STATISTIK</button>
                                         </div>
                                     </div>
                                 </div>
@@ -103,6 +103,8 @@ export default {
             shopOptionsList: [],
             errors: null,
             message: '',
+            emptyStatsObject: {},
+            currentStatsObject: {},
         }
     },
     watch: {
@@ -120,12 +122,12 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
-        async getShippingStats() {
+        async postShippingStats() {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Stats/GetShippingStats?shopId=' + _this.shopId)
+			await this.$axios.$post('/webapi/Stats/PostShippingStats', _this.currentStatsObject)
 			.then(function (deliverylist) {
-                _this.deliveryList = deliverylist.ItemList
+                _this.deliveryList = deliverylist
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -136,9 +138,12 @@ export default {
     },
     async fetch () {
         try {
-            const [ shops ] = await Promise.all([
+            const [ emptystatsobject, shops ] = await Promise.all([
+                this.$axios.$get('/webapi/Stats/GetEmptyStatsObject'),
                 this.$axios.$get('/webapi/Shop/GetShopList'),
             ])
+            this.emptyStatsObject = emptystatsobject
+            this.currentStatsObject = emptystatsobject
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
         } catch (err) {
             console.log(err);
