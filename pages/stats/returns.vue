@@ -135,8 +135,10 @@
                                                 </Select2>
                                             </client-only>
 
-                                            <div class="uk-width-1-1 uk-margin-large-top"><button @click="postReturnOrderStats" class="uk-button uk-align-center">HÄMTA STATISTIK</button></div>
-                                            <div class="uk-width-1-1"><button @click="resetFilter" class="uk-align-center uk-button" >NOLLSTÄLL FILTER</button></div>
+                                            <div class="uk-flex uk-margin-medium-top">
+                                                <div class="uk-width-1-1"><button @click="postReturnOrderStats" class="uk-button uk-button-small uk-align-center">HÄMTA STATISTIK</button></div>
+                                                <div class="uk-width-1-1"><button @click="resetFilter" class="uk-align-center uk-button uk-button-small" >NOLLSTÄLL FILTER</button></div>
+                                            </div>
 
                                         </div>
                                     </div>
