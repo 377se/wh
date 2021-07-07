@@ -5,3 +5,4 @@ dist/
 static/sw.js
 *.zip
 .vscode
+.idea
