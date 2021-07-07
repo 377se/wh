@@ -29,14 +29,14 @@
                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove printlist">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30px;">Antal</th>
+                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 30px;">Antal</th>
                                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Lag</th>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 170px;">Produkt</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="print in printStats.ItemList" :key="print.Id" class="uk-table-middle">
-                                                <td class="border-bottom border-left" style="text-align: center; ">{{ print.NumberOfItems }}</td>
+                                                <td class="border-bottom border-left" style="text-align: right; ">{{ print.NumberOfItems | thousandsDelimiter }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ print.Team }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ print.Name }}</td>
                                             </tr>
