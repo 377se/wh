@@ -148,7 +148,7 @@
                         <ScCard v-if="returnOrderStats.TotalValue">
                             <ScCardBody class="uk-text-center md-bg-cyan-800">
                                 <div class="uk-width-1-1">
-                                    <div class="summary uk-light">{{ returnOrderStats.TotalValue | thousandsDelimiter }}</div>
+                                    <div class="summary uk-light">{{ returnOrderStats.TotalValue | thousandsDelimiter }} kr</div>
                                     <div class="uk-light">ex. moms</div>
                                 </div>
                             </ScCardBody>
