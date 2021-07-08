@@ -1,8 +1,15 @@
 <template>
-  <draggable tag="ul" :SubItemList="SubItemList" @end="$store.commit('setListUpdated')">
-    <li class="dragArea" v-for="el in SubItemList" :key="el.SortOrder">
-      <div @click.prevent="$store.commit('setCategoryId', el.CategoryId)">{{ el.Name }}</div>
-      <nested-draggable :SubItemList="el.SubItemList"/>
+    <draggable  
+        class="dragArea" 
+        ghost-class="ghost"
+        tag="ul" 
+        :list="SubItemList" 
+        @end="$store.commit('setListUpdated')" 
+        :group="{ name: 'g1' }
+    ">
+    <li v-for="el in SubItemList" :key="el.name">
+      <p @click="$store.commit('setCategoryId', el.CategoryId)">{{ el.Name }}</p>
+      <nested-draggable :SubItemList="el.SubItemList" />
     </li>
   </draggable>
 </template>
@@ -13,24 +20,30 @@ export default {
     SubItemList: {
       required: true,
       type: Array
-    },
+    }
   },
   components: {
     draggable
   },
-  name: "nested-draggable",
-}
+  name: "nested-draggable"
+};
 </script>
-<style scoped>
-.dragArea {
-  font-size: 13px;
-  cursor: pointer;
-  line-height: 1.3;
-  min-height: 43px;
-  list-style: disc;
-  outline: 1px dashed;
-}
-.mainTree {
-  padding-left: 0;
-}
+<style lang="scss" scoped>
+    .dragArea {
+        font-size: 14px;
+        height: auto;
+        list-style-type: none;
+        padding: 0;
+        & p {
+            margin: 0;
+            cursor: pointer;
+        }
+        & ol, ul {
+            padding: 0 0 0 15px;
+        }
+    }
+    .ghost {
+        opacity: 0.5;
+        background: #c8ebfb;
+    }
 </style>

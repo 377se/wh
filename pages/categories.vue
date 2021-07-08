@@ -31,8 +31,8 @@
                             </client-only>
                             </div>
                         </div>
-                        <div class="uk-grid-column-medium" uk-grid>
-                            <div v-if="SubItemList" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
+                        <div class="uk-grid uk-grid-column-medium" uk-grid>
+                            <div v-if="currentMenu" class="uk-width-1-1" :class="{'uk-width-1-2' : editMenuItem }">
                                 <ScCard>
                                     <ScCardBody>
                                         <!-- NYTT MENYVAL -->
@@ -42,7 +42,8 @@
                                             </ScInput>
                                         </div>
                                         <!-- VISA HEL MENY -->
-                                        <Nested :SubItemList="SubItemList" @end="$store.commit('setListUpdated')"/>
+                                        <nesteddraggable :SubItemList="currentMenu" />
+                                        <!-- <rawdisplayer :value="currentMenu" /> -->
                                     </ScCardBody>
                                 </ScCard>
                             </div>
@@ -73,7 +74,7 @@
                                                 <!-- BILDUPPLADDNING -->
                                                 <img :src="editMenuItem.ImageName">
 												<div class="uk-padding-small uk-padding-remove-horizontal">
-													<FileUpload 
+													<FileUpload
 													:categoryId="editMenuItem.CategoryId"
 													:menuImage="this.menuImage"
 													@updateMenuImage="getMenuItemById(editMenuItem.CategoryId)"
@@ -194,20 +195,22 @@
 
 <script>
 import Alert from '~/components/Alert'
-import Nested from '~/components/nested'
 import ScInput from '~/components/Input'
 import ScTextarea from '~/components/Textarea'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import FileUpload from '~/components/FileUploadMenus'
 import draggable from 'vuedraggable'
+import nesteddraggable from "~/components/nested"
+import rawdisplayer from '~/components/rawdisplayer'
 import _ from 'lodash'
 
 export default {
     order: 15,
 	components: {
 		Alert,
-		Nested,
         draggable,
+        nesteddraggable,
+        rawdisplayer,
 		ScInput,
 		ScTextarea,
 		PrettyCheck,
@@ -219,14 +222,18 @@ export default {
             shops: [],
             shopId: 0,
             shopOptionsList: [],
-            SubItemList: null,
+            currentMenu: [],
+            testMenu: [
+                {val1: 'val1'},
+                {val2: 'val2'},
+                {val3: 'val3'},
+            ],
             newMenuItemContainer: {},
             editMenuItem: null,
             menuImage: null,
             articleImages: [],
             errors: null,
             message: '',
-            drag: false,
         }
     },
     watch: {
@@ -292,12 +299,12 @@ export default {
         },
         async getMenuByShopId() {
 			let _this = this
-            _this.SubItemList = []
+            _this.currentMenu = []
             _this.editMenuItem = null
             _this.showPageOverlaySpinner()
 			await this.$axios.$get('/webapi/Menu/GetMenuByShopId?shopId=' + _this.shopId)
 			.then(function (menu) {
-                _this.SubItemList = menu
+                _this.currentMenu = menu
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -308,9 +315,9 @@ export default {
         async sortMenu() {
 			let _this = this
             _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.SubItemList)
+			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.currentMenu)
 			.then(function (menu) {
-                _this.SubItemList = menu
+                _this.currentMenu = menu
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -336,6 +343,9 @@ export default {
             _this.showPageOverlaySpinner()
             await this.$axios.$post('/webapi/Menu/PostUpdateMenuItem', _this.editMenuItem)
             .then(function (menu) {
+                setTimeout(() => {
+                    _this.getMenuByShopId(_this.shopId)
+                }, 100)
                 _this.hidePageOverlaySpinner()
             })
             .catch(function (error) {
