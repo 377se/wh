@@ -51,7 +51,10 @@
                                 <ScCard>
                                     <ScCardHeader separator>
                                         <ScCardTitle>
-                                            <img style="width: 50px; margin-right: 5px;" :src="editMenuItem.ImageName"> {{ editMenuItem.SeoList[0].Name }}
+                                            <div class="uk-flex uk-flex-between">
+                                                <div><img style="width: 50px; margin-right: 5px;" :src="editMenuItem.ImageName"> {{ editMenuItem.SeoList[0].Name }}</div>
+                                                <span class="closeicon" @click="editMenuItem = null"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                            </div>
                                         </ScCardTitle>
                                     </ScCardHeader>
                                     <ScCardBody>
@@ -394,5 +397,8 @@ export default {
     .ghost {
     opacity: 0.5;
     background: #c8ebfb;
+    }
+    .closeicon {
+        cursor: pointer;
     }
 </style>
