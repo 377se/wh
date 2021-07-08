@@ -32,6 +32,7 @@
                         </ul>
                         <!-- TAB-CONTENT - TOPSELLING -->
 					    <ul class="uk-switcher">
+                            <!-- SKAPA NY PRODUKT -->
                             <li class="uk-active">
                                 <Alert
                                     :errorlist="this.errors ? this.errors : []"
@@ -74,97 +75,64 @@
                                 </div>
                                 <button @click="postCreateArticle" class="uk-button uk-align-left">SKAPA PRODUKT</button>
                             </li>
+                            <!-- KOPIERA BEFINTLIG PRODUKT -->
                             <li>
-                                <!-- ArtikelNr -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="searchedArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber()">
-                                        <label>ArtikelNr</label>
-                                    </ScInput>
-                                </div>
                                 <Alert
-                                    :message="errors"
+                                    :errorlist="this.errors ? this.errors : []"
+                                    :message="this.message ? this.message : ''"
                                     :alertClass="'uk-alert-danger'"
                                     id=2
                                 />
-                                <div v-if="currentCopyArticle && !errors" :class="{ 'uk-flex': !errors }">
-                                    <div class="uk-margin-small-right uk-width-1-4" :class="{ 'uk-hidden': errors }">
-                                        <img :src="currentCopyArticle.ProductImage">
-                                    </div>
-                                    <div :class="{ 'uk-width-3-4': !errorsArticleDetails }">
-                                        <!-- Produktnamn -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="currentCopyArticle.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
-                                                <label>Produktnamn</label>
-                                            </ScInput>
-                                        </div>
-                                        <!-- Storlek -->
-                                        <div class="uk-margin-medium-bottom uk-width-1-1">
-                                            <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                            <label class="select-label" for="select-paymentOptionsList">Storlek</label>
+                                <p>{{currentCopyArticle}}</p>
+                                <!-- Produkt som skall kopieras (ArtikelNr) -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="searchedArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber()">
+                                        <label>Produkt som skall kopieras (ArtikelNr)</label>
+                                    </ScInput>
+                                </div>
+                                <!-- Produkt som skall kopieras (Produktnamn) -->
+                                <div class="uk-margin">
+                                    <ScInput v-model="foundCopyArticle.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
+                                        <label>Produkt som skall kopieras (Produktnamn)</label>
+                                    </ScInput>
+                                </div>
+
+                                <div :class="{ 'uk-hidden': errors }">
+
+                                    <img :src="foundCopyArticle.ProductImage">
+
+                                    <!-- LAG -->
+                                    <div class="uk-margin uk-width-1-1">
+                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                            <label class="select-label" for="select-team">Lag</label>
                                             <client-only>
                                                 <Select2
-                                                    id="select-sizeOptionsList"
-                                                    v-model="currentCopyArticle.StockId"
-                                                    :options="sizeOptionsList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj storlek', 'closeOnSelect': true }"
+                                                    id="select-team"
+                                                    v-model.number="currentCopyArticle.TeamId"
+                                                    :options="teamList"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj lag', 'closeOnSelect': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
-                                            </div>
                                         </div>
-                                        <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="currentCopyArticle.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
-                                                <label>Pris</label>
-                                            </ScInput>
-                                        </div>
-                                        <div v-if="currentCopyArticle.HasPrint" class="uk-flex">
-                                            <div class="uk-width-1-2 uk-margin-small-right">
-                                                <!-- Tryck - Namn -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCopyArticle.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Tryck - Namn</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Tryck - Nummer -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCopyArticle.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Tryck - Nummer</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Tryck - Patch -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <PrettyCheck v-model="currentCopyArticle.PrintOptionList[2].IsChecked" class="p-icon">
-                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
-                                                    </PrettyCheck>
-                                                </div>
-                                            </div>
-                                            <div class="uk-width-1-2">
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCopyArticle.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCopyArticle.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCopyArticle.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="postCopyArticle">
-                                            KOPIERA PRODUKT
-                                        </button>
+                                    </div>
+                                    <!-- Produktnamn -->
+                                    <div class="uk-margin-medium-bottom">
+                                        <ScInput v-model="currentCopyArticle.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Produktnamn</label>
+                                        </ScInput>
+                                    </div>
+                                    <!-- Artikelnummer -->
+                                    <div class="uk-margin-medium-bottom">
+                                        <ScInput v-model="currentCopyArticle.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Artikelnummer</label>
+                                        </ScInput>
                                     </div>
                                 </div>
+
+                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="postCopyArticle">
+                                    KOPIERA PRODUKT
+                                </button>
                             </li>
                         </ul>
                     </ScCardBody>
@@ -191,7 +159,9 @@
                 currentArticle: {},
                 emptyCopyArticle: {},
                 currentCopyArticle: {},
+                foundCopyArticle: {},
                 sizeTypeList: [],
+                teamList: [],
                 errors: '',
                 message: '',
                 searchedArticleNumber: '',
@@ -209,6 +179,7 @@
             async postCreateArticle() {
                 let _this = this
                 _this.showPageOverlaySpinner()
+                _this.errors = null
                 await this.$axios.$post('/webapi/Article/PostCreateArticle', _this.currentArticle)
                 .then(function (currentarticle) {
                     try {
@@ -231,12 +202,14 @@
             async postCopyArticle() {
                 let _this = this
                 _this.showPageOverlaySpinner()
+                _this.errors = null
+                _this.$store.commit('setAlertHidden', 2)
                 await this.$axios.$post('/webapi/Article/PostCopyArticle', _this.currentCopyArticle)
-                .then(function (currentarticle) {
+                .then(function (currentcopyarticle) {
                     try {
                         if (currentarticle.ErrorList != null ) {
-                            _this.errors = currentarticle.ErrorList
-                            _this.$store.commit('setAlertVisible', 1)
+                            _this.errors = currentcopyarticle.ErrorList
+                            _this.$store.commit('setAlertVisible', 2)
                         } else {
                             _this.currentArticle = currentarticle
                         }
@@ -252,17 +225,15 @@
             },
             async getArticleDetailsByArticleNumber() {
                 let _this = this
-                _this.errors = null
-                _this.$store.commit('setAlertHidden', 2)
                 _this.showPageOverlaySpinner()
                 await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + _this.searchedArticleNumber)
                 .then(function (response) {
-                    _this.currentCopyArticle = response
+                    _this.foundCopyArticle = response
+                    // _this.currentCopyArticle.ArticleId = response.ArticleId
                     try {
                         if ( response.ErrorList != null ) {
                             _this.errors = response.ErrorList
                             _this.hidePageOverlaySpinner()
-                            _this.$store.commit('setAlertVisible', 2)
                         } else {
                             _this.hidePageOverlaySpinner()
                         }
@@ -278,16 +249,18 @@
         },
         async fetch () {
             try {
-                const [emptyarticle, emptycopyarticle, sizetypelist] = await Promise.all([
+                const [emptyarticle, emptycopyarticle, sizetypelist, teamlist ] = await Promise.all([
                     this.$axios.$get('/webapi/Article/GetArticleCreate'),
                     this.$axios.$get('/webapi/Article/GetArticleCopy'),
                     this.$axios.$get('/webapi/Metadata/GetSizeTypeList'),
+                    this.$axios.$get('/webapi/Metadata/GetTeamList'),
                 ])
                 this.emptyArticle = emptyarticle
                 this.currentArticle = emptyarticle
                 this.emptyCopyArticle = emptycopyarticle
                 this.currentCopyArticle = emptycopyarticle
                 this.sizeTypeList = sizetypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+                this.teamList = teamlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             } catch (err) {
                 console.log(err);
             }
