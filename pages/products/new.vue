@@ -73,7 +73,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <button @click="postCreateArticle" class="uk-button uk-align-left">SKAPA PRODUKT</button>
+                                <button @click="postCreateArticle" class="uk-button uk-button-primary uk-align-left">SKAPA PRODUKT</button>
                             </li>
                             <!-- KOPIERA BEFINTLIG PRODUKT -->
                             <li>
@@ -188,6 +188,8 @@
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             _this.currentArticle = currentarticle
+                            _this.hidePageOverlaySpinner()
+                            _this.$router.push(currentarticle.Url)
                         }
                     } catch(err) {
                         console.log(err)
