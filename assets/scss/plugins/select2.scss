@@ -188,10 +188,8 @@
 	}
 }
 
-.uk-modal-page {
-	.select2-container {
-		z-index: $z-index-modal + 100;
-	}
+.select2-container {
+	z-index: $z-index + 500;
 }
 
 
@@ -221,7 +219,7 @@
     font-size: 0.75rem;
 }
 .select-label {
-	z-index: 1001;
+	z-index: $z-index + 501;
 }
 .sc-input-wrapper {
     position: relative;
