@@ -4,10 +4,10 @@
 $z-index:								1000 !default;
 $z-index-app:							$z-index + 10000;
 $z-index-tooltip:						$z-index + 600;
-$z-index-modal:							$z-index + 500;
-$z-index-header:						$z-index + 400;
+$z-index-modal:							$z-index + 701;
+$z-index-header:						$z-index + 510;
 $z-index-sidebar:						$z-index + 300;
-$z-index-overlay:						$z-index + 200;
+$z-index-overlay:						$z-index + 700;
 $z-index-fab:							$z-index + 150;
 $z-index-sticky:						$z-index + 100;
 $z-index-topbar:						$z-index - 100;
