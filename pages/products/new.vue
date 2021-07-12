@@ -83,7 +83,7 @@
                                     :alertClass="'uk-alert-danger'"
                                     id=2
                                 />
-                                <p>{{currentCopyArticle}}</p>
+                                <!-- <p>{{currentCopyArticle}}</p> -->
                                 <!-- Produkt som skall kopieras (ArtikelNr) -->
                                 <div class="uk-margin">
                                     <ScInput v-model="searchedArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber()">
@@ -97,7 +97,7 @@
                                     </ScInput>
                                 </div>
 
-                                <div :class="{ 'uk-hidden': errors }">
+                                <div>
 
                                     <img :src="foundCopyArticle.ProductImage">
 
@@ -118,7 +118,7 @@
                                     </div>
                                     <!-- Produktnamn -->
                                     <div class="uk-margin-medium-bottom">
-                                        <ScInput v-model="currentCopyArticle.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <ScInput v-model="currentCopyArticle.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Produktnamn</label>
                                         </ScInput>
                                     </div>
@@ -210,11 +210,12 @@
                 await this.$axios.$post('/webapi/Article/PostCopyArticle', _this.currentCopyArticle)
                 .then(function (currentcopyarticle) {
                     try {
-                        if (currentarticle.ErrorList != null ) {
+                        if (currentcopyarticle.ErrorList != null ) {
                             _this.errors = currentcopyarticle.ErrorList
                             _this.$store.commit('setAlertVisible', 2)
                         } else {
-                            _this.currentArticle = currentarticle
+                            _this.hidePageOverlaySpinner()
+                            _this.$router.push(currentcopyarticle.Url)
                         }
                     } catch(err) {
                         console.log(err)
@@ -232,7 +233,7 @@
                 await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + _this.searchedArticleNumber)
                 .then(function (response) {
                     _this.foundCopyArticle = response
-                    // _this.currentCopyArticle.ArticleId = response.ArticleId
+                    _this.currentCopyArticle.ArticleId = response.ArticleId
                     try {
                         if ( response.ErrorList != null ) {
                             _this.errors = response.ErrorList
