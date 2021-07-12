@@ -1,10 +1,11 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ this.showPageOverlaySpinner() }}
+		{{ showPageOverlaySpinner() }}
 	</div>
 </div>
 <div v-else>
+	{{ hidePageOverlaySpinner() }}
  	<div id="sc-page-wrapper">
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -71,43 +72,43 @@
 												</ScInput>
 												<!-- Produktnamn -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Produktnamn</label>
 													</ScInput>
 												</div>
 												<!-- Produktnamn - sv -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ArticleNameList[0].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ArticleNameList[0].ArticleName" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Produktnamn - sv</label>
 													</ScInput>
 												</div>
 												<!-- Produktnamn - no -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ArticleNameList[1].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ArticleNameList[1].ArticleName" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Produktnamn - no</label>
 													</ScInput>
 												</div>
 												<!-- Produktnamn - fi -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ArticleNameList[3].ArticleName" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ArticleNameList[3].ArticleName" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Produktnamn - fi</label>
 													</ScInput>
 												</div>
 												<!-- Artikelnummer -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ArticleNumber" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ArticleNumber" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Artikelnummer</label>
 													</ScInput>
 												</div>
 												<!-- Hyllplats -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.Shelf" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.Shelf" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Hyllplats</label>
 													</ScInput>
 												</div>
 												<!-- Publiceringsdatum -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.PublishDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj publiceringsdatum..." state="fixed" mode="outline" @input="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.PublishDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj publiceringsdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
 														<label>Publiceringsdatum</label>
 													</ScInput>
 												</div>
@@ -121,7 +122,6 @@
 																v-model="articleDetails.TeamId"
 																:options="teamInfo"
 																:settings="{ 'width': '100%', 'placeholder': 'Välj lag...', 'closeOnSelect': true }"
-																@select="updateArticleDetails()"
 															>
 																<option v-if="isLoading = false" :value="articleDetails.TeamId">{{ teamInfo.find(x => x.id === articleDetails.TeamId).text }}</option>
 															</Select2>
@@ -138,7 +138,6 @@
 																v-model="articleDetails.BrandId"
 																:options="brandInfo"
 																:settings="{ 'width': '100%', 'placeholder': 'Välj varumärke...', 'closeOnSelect': true }"
-																@select="updateArticleDetails()"
 															>
 																<option v-if="isLoading = false" :value="articleDetails.BrandId">{{ brandInfo.find(x => x.id === articleDetails.BrandId).text }}</option>
 															</Select2>
@@ -155,7 +154,6 @@
 															v-model="articleDetails.MaterialId"
 															:options="materialInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj material...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.MaterialId">{{ materialInfo.find(x => x.id === articleDetails.MaterialId).text }}</option>
 														</Select2>
@@ -172,7 +170,6 @@
 															v-model="articleDetails.ProductTypeId"
 															:options="productTypeInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj produkttyp...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.ProductTypeId">{{ productTypeInfo.find(x => x.id === articleDetails.ProductTypeId).text }}</option>
 														</Select2>
@@ -184,7 +181,7 @@
 													<label class="uk-text-small">Färg(er)</label>
 														<ul class="uk-list uk-column-1-3 uk-margin-remove-top" style="grid-column-gap: 0px; -moz-column-gap: 0px; column-gap: 0px;">
 															<li v-for="color in articleDetails.ColorList" :key="color.ColorId" class="uk-text-small" style="padding: 3px 3px 3px 2px">
-																<PrettyCheck v-model="color.IsSelected" class="p-icon" @change="updateArticleDetails()">
+																<PrettyCheck v-model="color.IsSelected" class="p-icon">
 																	<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ color.Description }}</span>
 																</PrettyCheck>
 
@@ -202,7 +199,6 @@
 															v-model="articleDetails.GenderId"
 															:options="genderInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj kön...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.GenderId">{{ genderInfo.find(x => x.id === articleDetails.GenderId).text }}</option>
 														</Select2>
@@ -219,7 +215,6 @@
 															v-model="articleDetails.SizeGuideId"
 															:options="sizeGuideInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj storleksguide...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.SizeGuideId">{{ genderInfo.find(x => x.id === articleDetails.SizeGuideId).text }}</option>
 														</Select2>
@@ -236,7 +231,6 @@
 															v-model="articleDetails.WashingId"
 															:options="washingGuideInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj tvättråd...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.WashingId">{{ genderInfo.find(x => x.id === articleDetails.WashingId).text }}</option>
 														</Select2>
@@ -253,7 +247,6 @@
 															v-model="articleDetails.TariffId"
 															:options="tariffsInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj tariffkod...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.TariffId">{{ genderInfo.find(x => x.id === articleDetails.TariffId).text }}</option>
 														</Select2>
@@ -270,7 +263,6 @@
 															v-model="articleDetails.VatTypeId"
 															:options="vatTypeInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj momstyp...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.VatTypeId">{{ genderInfo.find(x => x.id === articleDetails.VatTypeId).text }}</option>
 														</Select2>
@@ -287,7 +279,6 @@
 															v-model="articleDetails.LandOfOriginId"
 															:options="landOfOriginInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj ursprungsland...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.LandOfOriginId">{{ genderInfo.find(x => x.id === articleDetails.LandOfOriginId).text }}</option>
 														</Select2>
@@ -296,13 +287,13 @@
 												</div>
 												<!-- Vikt -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.Weight" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.Weight" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Vikt</label>
 													</ScInput>
 												</div>
 												<!-- Inköpspris -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.PurchasePrice" state="fixed" mode="outline" v-on:blur="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.PurchasePrice" state="fixed" mode="outline"  extra-classes="uk-form-small">
 														<label>Inköpspris</label>
 													</ScInput>
 												</div>
@@ -316,7 +307,6 @@
 															v-model="articleDetails.MemberPackageTypeId"
 															:options="memberPackageInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj medlemspaket...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.MemberPackageTypeId">{{ genderInfo.find(x => x.id === articleDetails.MemberPackageTypeId).text }}</option>
 														</Select2>
@@ -328,7 +318,7 @@
 													<div class="">
 														<ul class="uk-list uk-margin-remove-top">
 															<li class="uk-text-small" style="padding: 3px 3px 3px 2px">
-																<PrettyCheck v-model="articleDetails.ContainsPrint" class="p-icon" @change="updateArticleDetails()">
+																<PrettyCheck v-model="articleDetails.ContainsPrint" class="p-icon">
 																	<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Färdigt tryck</span>
 																</PrettyCheck>
 															</li>
@@ -345,7 +335,6 @@
 															v-model="articleDetails.PrintTypeId"
 															:options="printTypeInfo"
 															:settings="{ 'width': '100%', 'placeholder': 'Välj tryck...', 'closeOnSelect': true }"
-															@select="updateArticleDetails()"
 														>
 															<option v-if="isLoading = false" :value="articleDetails.PrintTypeId">{{ genderInfo.find(x => x.id === articleDetails.PrintTypeId).text }}</option>
 														</Select2>
@@ -354,9 +343,13 @@
 												</div>
 												<!-- Releasedate preorder -->
 												<div class="uk-margin">
-													<ScInput v-model="articleDetails.ReleaseDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj releasedate preorder..." state="fixed" mode="outline" @input="updateArticleDetails()" extra-classes="uk-form-small">
+													<ScInput v-model="articleDetails.ReleaseDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj releasedate preorder..." state="fixed" mode="outline" extra-classes="uk-form-small">
 														<label>Releasedate preorder</label>
 													</ScInput>
+												</div>
+												<div class="uk-flex">
+													<button class="uk-button uk-button-primary" @click="updateArticleDetails">UPPDATERA</button>
+													<button v-if="articleDetails.IsDeleteable" class="uk-button uk-button-primary" @click="deleteArticle">RADERA</button>
 												</div>
 											</ScCardBody>
 										</ScCardContent>
@@ -1076,6 +1069,28 @@ export default {
 				console.log(error)
 			})
 		},
+		async deleteArticle() {
+			let _this = this
+			await UIkit.modal.confirm('Vill du verkligen radera artikeln?', { labels: { ok: 'Yeah', cancel: 'Nope' } }).then(function () {
+				_this.showPageOverlaySpinner()
+				 _this.$axios.$post('/webapi/Article/PostDeleteArticle', _this.articleDetails)
+				.then(function (response) {
+					if(response.Id == 1){
+						_this.hidePageOverlaySpinner()
+						UIkit.modal.alert('Denna artikel har nu raderats från sortimentet!').then(function() {
+							_this.$router.push('/')
+						})
+					} else {
+						console.log(error)
+					}
+				})
+				.catch(function (error) {
+					console.log(error)
+				})
+			}, function () {
+				_this.hidePageOverlaySpinner()
+			})
+		},
 		async updateImageSorting() {
 			let _this = this
 			_this.isLoading = true
@@ -1144,17 +1159,15 @@ export default {
 				console.log(error)
 			})
 		},
-		showPageOverlaySpinner () {
-			this.$store.commit('togglePageOverlay', true)
-			this.$store.commit('toggleProgressOverlay', true);
-			setTimeout(() => {
-				this.$store.commit('toggleProgressOverlay', false);
-				setTimeout(() => {
-					this.$store.commit('togglePageOverlay', false)
-				})
-			}, 500)
+		hidePageOverlaySpinner () {
+			this.$store.commit('toggleProgressOverlay', false);
+			this.$store.commit('togglePageOverlay', false)
 		},
-	},
+		showPageOverlaySpinner () {
+			this.$store.commit('toggleProgressOverlay', true);
+			this.$store.commit('togglePageOverlay', true)
+		},
+},
 	async fetch () {
 		try {
 			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory, shopListByArticle, articleImages, articleSale] = await Promise.all([
