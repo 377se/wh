@@ -178,6 +178,7 @@
             },
             async postCreateArticle() {
                 let _this = this
+                _this.$store.commit('setAlertHidden', 1)
                 _this.showPageOverlaySpinner()
                 _this.errors = null
                 await this.$axios.$post('/webapi/Article/PostCreateArticle', _this.currentArticle)
