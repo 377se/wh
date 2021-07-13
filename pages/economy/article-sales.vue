@@ -200,7 +200,7 @@
                         <ScCard v-if="articleSaleStats.TotalValue">
                             <ScCardBody class="uk-text-center md-bg-cyan-800">
                                 <div class="uk-width-1-1">
-                                    <div class="summary uk-light">{{ articleSaleStats.TotalValue | thousandsDelimiter }} kr</div>
+                                    <div class="summary uk-light">{{ articleSaleStats.TotalValue | thousandsDelimiter }}</div>
                                     <div class="uk-light">försäljning ex. moms</div>
                                 </div>
                             </ScCardBody>
