@@ -18,7 +18,7 @@
                 <div class="uk-grid uk-grid-medium" uk-grid uk-margin>
                     <!-- LIST -->
                     <div class="uk-width-1-1 uk-width-3-4@m">
-                        <ScCard>
+                        <ScCard class="uk-card-small">
                             <ScCardHeader separator>
                                 <ScCardTitle>
                                     Statistik
@@ -58,7 +58,7 @@
                     </div>
                     <!-- FILTERMENUS -->
                     <div class="uk-width-1-1 uk-width-1-4@m uk-flex-first uk-flex-last@m" uk-margin>
-                        <ScCard>
+                        <ScCard class="uk-card-small">
                             <ScCardHeader separator>
                                 <ScCardTitle>
                                     Filtrera
@@ -189,9 +189,9 @@
                                             </ScInput>
                                         </div>
 
-                                        <div class="uk-flex uk-flex-column uk-margin-medium-top">
-                                            <div class="uk-width-1-1"><button @click="postArticleSaleStats" class="uk-button uk-button-small uk-align-center">HÄMTA STATISTIK</button></div>
-                                            <div class="uk-width-1-1"><button @click="resetFilter" class="uk-align-center uk-button uk-button-small" >NOLLSTÄLL FILTER</button></div>
+                                        <div class="uk-width-1-1 uk-flex uk-flex-between uk-margin-medium-top">
+                                            <div><button @click="postArticleSaleStats" class="sc-button sc-button-mini uk-align-center">HÄMTA STATISTIK</button></div>
+                                            <div><button @click="resetFilter" class="uk-align-center sc-button sc-button-mini" >NOLLSTÄLL</button></div>
                                         </div>
                                     </div>
                                 </div>
