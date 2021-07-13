@@ -45,9 +45,9 @@
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ProductName }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.BrandName }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ArticleNumber }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: center; ">{{ article.Quantity }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.TotalSale }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.GrossMargin }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: center; ">{{ article.Quantity | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.TotalSale | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.GrossMargin | thousandsDelimiter }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.GrossMarginPercent }}</td>
                                             </tr>
                                         </tbody>
@@ -86,7 +86,7 @@
                                                     id="select-shopOptionsList"
                                                     v-model="currentStatsObject.ShopId"
                                                     :options="shopOptionsList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -98,7 +98,7 @@
                                                     id="select-leagueList"
                                                     v-model="currentStatsObject.LeagueId"
                                                     :options="leagueList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Liga', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Liga', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -110,7 +110,7 @@
                                                     id="select-teamList"
                                                     v-model="currentStatsObject.TeamId"
                                                     :options="teamList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Lag', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Lag', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -122,7 +122,7 @@
                                                     id="select-brandList"
                                                     v-model="currentStatsObject.BrandId"
                                                     :options="brandList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Märke', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Märke', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -134,7 +134,7 @@
                                                     id="select-productTypeList"
                                                     v-model="currentStatsObject.ProductTypeId"
                                                     :options="productTypeList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Produkttyp', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Produkttyp', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -146,7 +146,7 @@
                                                     id="select-countryList"
                                                     v-model="currentStatsObject.CountryId"
                                                     :options="countryList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Land', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Land', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -158,7 +158,7 @@
                                                     id="select-yearList"
                                                     v-model="currentStatsObject.Year"
                                                     :options="yearList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -170,7 +170,7 @@
                                                     id="select-monthList"
                                                     v-model="currentStatsObject.Month"
                                                     :options="monthList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
