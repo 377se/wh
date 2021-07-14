@@ -84,6 +84,7 @@
 		"vue-swipe-actions": "^2.0.0-beta.20",
 		"vue-template-compiler": "^2.6.12",
 		"vue-visible": "^1.0.2",
+		"vue-xlsx": "^0.2.1",
 		"vue2-google-maps": "^0.10.7",
 		"vue2-perfect-scrollbar": "^1.5.0",
 		"vue2-touch-events": "^3.1.1",
