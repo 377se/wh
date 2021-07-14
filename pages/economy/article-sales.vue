@@ -190,7 +190,7 @@
                                         </div>
 
                                         <div class="uk-width-1-1 uk-flex uk-flex-between uk-margin-medium-top">
-                                            <div><button @click="postArticleSaleStats" class="sc-button sc-button-mini uk-align-center">HÄMTA STATISTIK</button></div>
+                                            <div><button @click="postArticleSaleStats" class="sc-button sc-button-primary sc-button-mini uk-align-center">HÄMTA STATISTIK</button></div>
                                             <div><button @click="resetFilter" class="uk-align-center sc-button sc-button-mini" >NOLLSTÄLL</button></div>
                                         </div>
                                     </div>
@@ -273,6 +273,7 @@ export default {
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/economy/PostArticleSaleStats', _this.currentStatsObject)
 			.then(function (articlesalestats) {
+                articlesalestats.ArticleList.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Inga artiklar hittades!</p>') : null
                 _this.articleSaleStats = articlesalestats
                 _this.hidePageOverlaySpinner()
 			})
