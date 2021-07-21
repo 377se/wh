@@ -895,15 +895,15 @@ export default {
     .wastebasket, .editicon, .addicon, .closeicon {
 		cursor: pointer;
 	}
-.slide-fade-enter-active {
+.slide-enter-active {
   transition: all 1s ease;
 }
-.slide-fade-leave-active {
+.slide-leave-active {
   transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
+.slide-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
+  transform: translateX(200px);
 }
 
 </style>
