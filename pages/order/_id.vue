@@ -901,7 +901,7 @@ export default {
 .slide-leave-active {
   transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-enter, .slide-fade-leave-to
+.slide-enter, .slide-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(200px);
 }
