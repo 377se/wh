@@ -905,7 +905,7 @@ export default {
 }
 .slide-enter, .slide-leave-to
 {
-//   transform: translateX(200px);
+  transform: translateX(100%);
 }
 
 </style>
