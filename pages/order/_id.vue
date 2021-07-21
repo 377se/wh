@@ -901,7 +901,7 @@ export default {
   transition: all 1s ease;
 }
 .slide-leave-active {
-  transition: all 1s ease;
+  transition: all 0s ease;
 }
 .slide-enter, .slide-leave-to
 {
