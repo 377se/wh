@@ -90,7 +90,7 @@
                                             <client-only>
                                                 <Select2
                                                     id="select-shopOptionsList"
-                                                    v-model="currentStatsObject.ShopId"
+                                                    v-model.number="currentStatsObject.ShopId"
                                                     :options="shopOptionsList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
@@ -102,7 +102,7 @@
                                             <client-only>
                                                 <Select2
                                                     id="select-currencyList"
-                                                    v-model="currentStatsObject.currencyId"
+                                                    v-model.number="currentStatsObject.CurrencyId"
                                                     :options="currencyList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Valuta', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
@@ -114,7 +114,7 @@
                                             <client-only>
                                                 <Select2
                                                     id="select-yearList"
-                                                    v-model="currentStatsObject.Year"
+                                                    v-model.number="currentStatsObject.Year"
                                                     :options="yearList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
@@ -126,7 +126,7 @@
                                             <client-only>
                                                 <Select2
                                                     id="select-monthList"
-                                                    v-model="currentStatsObject.Month"
+                                                    v-model.number="currentStatsObject.Month"
                                                     :options="monthList"
                                                     :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true, 'allowClear': true }"
                                                 >
@@ -144,7 +144,7 @@
                                                         :key="sheet.name"
                                                         :sheet-name="sheet.name"
                                                     />
-                                                    <XlsxDownload filename="OrderStats.xlsx">
+                                                    <XlsxDownload :filename="(currentStatsObject.ShopId != 0 ? shopOptionsList.find(shop => shop.id == currentStatsObject.ShopId).text : '') + '-' + (currentStatsObject.Year != 0 ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' + (currentStatsObject.Year != 0 ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' + (currentStatsObject.CurrencyId != 0 ? currencyList.find(currency => currency.id == currentStatsObject.CurrencyId).text : '') + '.xlsx'">
                                                         <button class="sc-button sc-button-mini uk-align-center">EXCEL</button>
                                                     </XlsxDownload>
                                                 </XlsxWorkbook>
@@ -204,6 +204,7 @@ export default {
             shopId: 0,
             emptyStatsObject: {},
             currentStatsObject: {},
+            fileName: '',
             orderStats: {},
             yearList: [],
             yearId: 0,
@@ -214,6 +215,7 @@ export default {
         }
     },
     watch: {
+
     },
 	mounted: function () {
     },
