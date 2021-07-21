@@ -223,18 +223,18 @@
                          <div class="uk-flex">
                              <!-- ORDERINNEHÅLL -->
                             <div class="uk-width-1-1 uk-overflow-auto" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
-                                <table class="uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
+                                <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td v-if="paymentTypeId != 0" class="border-bottom"></td>
-                                            <td class="border-bottom"></td>
-                                            <td class="border-bottom"></td>
-                                            <td class="border-bottom border-right"></td>
-                                            <td class="border-bottom border-right"><strong>Produkt</strong></td>
-                                            <td class="border-bottom border-right"><strong>Artikelnummer</strong></td>
-                                            <td class="border-bottom border-right uk-text-center"><strong>Storlek</strong></td>
-                                            <td class="border-bottom border-right uk-text-center"><strong>Antal</strong></td>
-                                            <td class="border-bottom uk-text-right"><strong>Pris</strong></td>
+                                            <td v-if="paymentTypeId != 0" class="border-bottom border-left"></td>
+                                            <td class="border-bottom border-left border-top"></td>
+                                            <td class="border-bottom border-left border-top"></td>
+                                            <td class="border-bottom border-right border-left border-top"></td>
+                                            <td class="border-bottom border-right border-top"><strong>Produkt</strong></td>
+                                            <td class="border-bottom border-right border-top"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right border-top uk-text-center"><strong>Storlek</strong></td>
+                                            <td class="border-bottom border-right border-top uk-text-center"><strong>Antal</strong></td>
+                                            <td class="border-bottom uk-text-right border-top border-right"><strong>Pris</strong></td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -244,7 +244,7 @@
                                                     <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small"></span>
                                                 </PrettyCheck>
                                             </td>
-                                            <td class="border-bottom border-right uk-text-center">
+                                            <td class="border-bottom border-right border-left uk-text-center">
                                                 <div class="editicon" @click="getItemToEdit(orderItemInList.ItemId)"> <!-- EDITERA PRODUKT -->
                                                     <i class="mdi mdi-file-edit md-color-green-600"></i>
                                                                             </div>
@@ -283,7 +283,7 @@
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
-                                            <td class="border-bottom border-right uk-text-center" :class="{'border-left': paymentTypeId != 0 }">
+                                            <td class="border-bottom border-right border-left uk-text-center" :class="{'border-left': paymentTypeId != 0 }">
                                                 <div @click="startAddItem()"><i class="addicon mdi mdi-plus-circle-outline md-color-green-600"></i></div> <!-- LÄGG TILL PRODUKT -->
                                             </td>
                                             <td></td>
@@ -348,79 +348,81 @@
                                 </div>
                             </div>
                             <!-- EDIT ORDERITEM -->
-                            <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
-                                <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera produkt</h3>
-                                    <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
-                                </div>
-                                <!-- Pris -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="orderItem.Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Pris</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Storlek -->
-                                <div v-if="orderItem.StockList.length !== 1" class="uk-margin-medium-bottom uk-width-1-1">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <label class="select-label" for="select-sizeOptionsList">Storlek</label>
-                                    <client-only>
-                                        <Select2
-                                            id="select-sizeOptionsList"
-                                            v-model="orderItem.StockId"
-                                            :options="orderItem.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
-                                            :settings="{ 'width': '100%', 'closeOnSelect': true }"
-                                        >
-                                        </Select2>
-                                    </client-only>
+                            <transition name="slide">
+                                <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                                    <div class="uk-flex uk-flex-between">
+                                        <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera produkt</h3>
+                                        <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                     </div>
-                                </div>
-                                <!-- Tryck -->
-                                <div v-if="orderItem.HasPrint == true" class="uk-flex">
-                                    <div class="uk-width-1-2 uk-margin-small-right">
-                                        <!-- Tryck - Namn -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="orderItem.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Tryck - Namn</label>
-                                            </ScInput>
-                                        </div>
-                                        <!-- Tryck - Nummer -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="orderItem.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Tryck - Nummer</label>
-                                            </ScInput>
-                                        </div>
-                                        <!-- Tryck - Patch -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <PrettyCheck v-model="orderItem.PrintOptionList[2].IsChecked" class="p-icon">
-                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
-                                            </PrettyCheck>
+                                    <!-- Pris -->
+                                    <div class="uk-margin">
+                                        <ScInput v-model="orderItem.Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <label>Pris</label>
+                                        </ScInput>
+                                    </div>
+                                    <!-- Storlek -->
+                                    <div v-if="orderItem.StockList.length !== 1" class="uk-margin-medium-bottom uk-width-1-1">
+                                        <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                        <label class="select-label" for="select-sizeOptionsList">Storlek</label>
+                                        <client-only>
+                                            <Select2
+                                                id="select-sizeOptionsList"
+                                                v-model="orderItem.StockId"
+                                                :options="orderItem.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
+                                                :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                            >
+                                            </Select2>
+                                        </client-only>
                                         </div>
                                     </div>
-                                    <div class="uk-width-1-2">
-                                        <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="orderItem.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Pris</label>
-                                            </ScInput>
+                                    <!-- Tryck -->
+                                    <div v-if="orderItem.HasPrint == true" class="uk-flex">
+                                        <div class="uk-width-1-2 uk-margin-small-right">
+                                            <!-- Tryck - Namn -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="orderItem.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Tryck - Namn</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Tryck - Nummer -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="orderItem.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Tryck - Nummer</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Tryck - Patch -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <PrettyCheck v-model="orderItem.PrintOptionList[2].IsChecked" class="p-icon">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
+                                                </PrettyCheck>
+                                            </div>
                                         </div>
-                                        <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="orderItem.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Pris</label>
-                                            </ScInput>
-                                        </div>
-                                        <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="orderItem.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Pris</label>
-                                            </ScInput>
+                                        <div class="uk-width-1-2">
+                                            <!-- Pris -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="orderItem.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Pris -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="orderItem.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Pris -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="orderItem.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
                                         </div>
                                     </div>
+                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateItem()">
+                                        UPPDATERA
+                                    </button>
                                 </div>
-                                 <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateItem()">
-                                    UPPDATERA
-                                </button>
-                            </div>
+                            </transition>
                             <!-- ADD ORDERITEM -->
                             <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
@@ -893,4 +895,15 @@ export default {
     .wastebasket, .editicon, .addicon, .closeicon {
 		cursor: pointer;
 	}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+}
+
 </style>
