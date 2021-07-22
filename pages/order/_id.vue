@@ -104,10 +104,10 @@
                                             <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small" @blur="updateOrder()"></textarea>
                                             <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
                                                 <div class="uk-flex uk-flex-left uk-width-1-1">
-                                                    <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                                         SKRIV UT
                                                     </button>
-                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="setOrderAsDeliveredByOrderId()">
                                                         SÄTT SOM LEVERERAD
                                                     </button>
                                                 </div>
@@ -222,133 +222,131 @@
                     <ScCardBody>
                          <div class="uk-flex">
                              <!-- ORDERINNEHÅLL -->
-                            <transition name="slide">
-                                <div class="uk-width-1-1 uk-overflow-auto" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
-                                    <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
-                                        <thead>
-                                            <tr>
-                                                <td v-if="paymentTypeId != 0" class="border-bottom border-left"></td>
-                                                <td class="border-bottom border-left border-top"></td>
-                                                <td class="border-bottom border-left border-top"></td>
-                                                <td class="border-bottom border-right border-left border-top"></td>
-                                                <td class="border-bottom border-right border-top"><strong>Produkt</strong></td>
-                                                <td class="border-bottom border-right border-top"><strong>Artikelnummer</strong></td>
-                                                <td class="border-bottom border-right border-top uk-text-center"><strong>Storlek</strong></td>
-                                                <td class="border-bottom border-right border-top uk-text-center"><strong>Antal</strong></td>
-                                                <td class="border-bottom uk-text-right border-top border-right"><strong>Pris</strong></td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="orderItemInList in orderContent.OrderItemList" :key="orderItemInList.ItemId" class="uk-table-middle">
-                                                <td v-if="paymentTypeId != 0" class="border-bottom border-right uk-text-center">
-                                                    <PrettyCheck v-model="orderItemInList.IsSelected" class="p-icon">
-                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small"></span>
-                                                    </PrettyCheck>
-                                                </td>
-                                                <td class="border-bottom border-right border-left uk-text-center">
-                                                    <div class="editicon" @click="getItemToEdit(orderItemInList.ItemId)"> <!-- EDITERA PRODUKT -->
-                                                        <i class="mdi mdi-file-edit md-color-green-600"></i>
-                                                                                </div>
-                                                </td>
-                                                <td class="border-bottom border-right uk-text-center">
-                                                    <div class="wastebasket" @click="deleteItem(orderItemInList.ItemId)"> <!-- TA BORT PRODUKT -->
-                                                                                    <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
-                                                                                </div>
-                                                </td>
-                                                <td class="border-bottom border-right image-column-width"><img :src="orderItemInList.ImageName"></td>
-                                                <td class="border-bottom border-right uk-width-auto">
-                                                    <nuxt-link :to="orderItemInList.Url">
-                                                        <div>{{ orderItemInList.TeamName }}</div>
-                                                        <div>{{ orderItemInList.ProductName }}</div>
-                                                    </nuxt-link>
-                                                </td>
-                                                <td class="border-bottom border-right uk-width-auto">{{ orderItemInList.ArticleNumber }}</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-center">
-                                                    <div v-if="paymentTypeId == 8">
-                                                        <client-only>
-                                                            <Select2
-                                                                :id="'select-sizeList-' + orderItemInList.ArticleNumber"
-                                                                v-model="orderItemInList.SizeId"
-                                                                :options="orderItemInList.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
-                                                                :settings="{ 'width': '100%', 'closeOnSelect': true }"
-                                                            >
-                                                            </Select2>
-                                                        </client-only>
-                                                    </div>
-                                                    <div v-else>
-                                                        {{ orderItemInList.SizeDisplay }}
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td v-if="paymentTypeId != 0"></td>
-                                                <td class="border-bottom border-right border-left uk-text-center" :class="{'border-left': paymentTypeId != 0 }">
-                                                    <div @click="startAddItem()"><i class="addicon mdi mdi-plus-circle-outline md-color-green-600"></i></div> <!-- LÄGG TILL PRODUKT -->
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="border-right"></td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Ordersumma</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td v-if="paymentTypeId != 0"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="border-right"></td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">
-                                                    <div>Frakt & hantering</div>
-                                                </td>
-                                                <td class="border-bottom border-right uk-text-right">
-                                                    <div class="uk-flex uk-flex-middle">
-                                                        <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrder()">
-                                                        </ScInput>
-                                                        <div>&nbsp;{{ orderInfo.Currency }}</div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td v-if="paymentTypeId != 0"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="border-right"></td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2"><strong>Totalt</strong></td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total | thousandsDelimiter }} {{ orderInfo.Currency }}</strong></td>
-                                            </tr>
-                                            <tr class="uk-table-middle">
-                                                <td v-if="paymentTypeId != 0"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="border-right"></td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Varav moms</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.Vat | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
-                                        <div class="uk-flex uk-flex-right uk-width-1-1">
-                                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="sendOrderConfirmation()">
-                                                SKICKA ORDERBEKRÄFTELSE
-                                            </button>
-                                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
-                                                VISA FÖLJESEDEL
-                                            </button>
-                                            <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="sendOrderConfirmation()">
-                                                TILLDELA MEDLEMSRABATT
-                                            </button>
-                                        </div>
+                            <div class="uk-width-1-1 uk-overflow-auto" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
+                                <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
+                                    <thead>
+                                        <tr>
+                                            <td v-if="paymentTypeId != 0" class="border-bottom border-left"></td>
+                                            <td class="border-bottom border-left border-top"></td>
+                                            <td class="border-bottom border-left border-top"></td>
+                                            <td class="border-bottom border-right border-left border-top"></td>
+                                            <td class="border-bottom border-right border-top"><strong>Produkt</strong></td>
+                                            <td class="border-bottom border-right border-top"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right border-top uk-text-center"><strong>Storlek</strong></td>
+                                            <td class="border-bottom border-right border-top uk-text-center"><strong>Antal</strong></td>
+                                            <td class="border-bottom uk-text-right border-top border-right"><strong>Pris</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="orderItemInList in orderContent.OrderItemList" :key="orderItemInList.ItemId" class="uk-table-middle">
+                                            <td v-if="paymentTypeId != 0" class="border-bottom border-right uk-text-center">
+                                                <PrettyCheck v-model="orderItemInList.IsSelected" class="p-icon">
+                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small"></span>
+                                                </PrettyCheck>
+                                            </td>
+                                            <td class="border-bottom border-right border-left uk-text-center">
+                                                <div class="editicon" @click="getItemToEdit(orderItemInList.ItemId)"> <!-- EDITERA PRODUKT -->
+                                                    <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                                            </div>
+                                            </td>
+                                            <td class="border-bottom border-right uk-text-center">
+                                                <div class="wastebasket" @click="deleteItem(orderItemInList.ItemId)"> <!-- TA BORT PRODUKT -->
+                                                                                <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                                            </div>
+                                            </td>
+                                            <td class="border-bottom border-right image-column-width"><img :src="orderItemInList.ImageName"></td>
+                                            <td class="border-bottom border-right uk-width-auto">
+                                                <nuxt-link :to="orderItemInList.Url">
+                                                    <div>{{ orderItemInList.TeamName }}</div>
+                                                    <div>{{ orderItemInList.ProductName }}</div>
+                                                </nuxt-link>
+                                            </td>
+                                            <td class="border-bottom border-right uk-width-auto">{{ orderItemInList.ArticleNumber }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">
+                                                <div v-if="paymentTypeId == 8">
+                                                    <client-only>
+                                                        <Select2
+                                                            :id="'select-sizeList-' + orderItemInList.ArticleNumber"
+                                                            v-model="orderItemInList.SizeId"
+                                                            :options="orderItemInList.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
+                                                            :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                                        >
+                                                        </Select2>
+                                                    </client-only>
+                                                </div>
+                                                <div v-else>
+                                                    {{ orderItemInList.SizeDisplay }}
+                                                </div>
+                                            </td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                        </tr>
+                                        <tr class="uk-table-middle">
+                                            <td v-if="paymentTypeId != 0"></td>
+                                            <td class="border-bottom border-right border-left uk-text-center" :class="{'border-left': paymentTypeId != 0 }">
+                                                <div @click="startAddItem()"><i class="addicon mdi mdi-plus-circle-outline md-color-green-600"></i></div> <!-- LÄGG TILL PRODUKT -->
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="border-right"></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Ordersumma</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                        </tr>
+                                        <tr class="uk-table-middle">
+                                            <td v-if="paymentTypeId != 0"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="border-right"></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">
+                                                <div>Frakt & hantering</div>
+                                            </td>
+                                            <td class="border-bottom border-right uk-text-right">
+                                                <div class="uk-flex uk-flex-middle">
+                                                    <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrder()">
+                                                    </ScInput>
+                                                    <div>&nbsp;{{ orderInfo.Currency }}</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="uk-table-middle">
+                                            <td v-if="paymentTypeId != 0"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="border-right"></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2"><strong>Totalt</strong></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total | thousandsDelimiter }} {{ orderInfo.Currency }}</strong></td>
+                                        </tr>
+                                        <tr class="uk-table-middle">
+                                            <td v-if="paymentTypeId != 0"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="border-right"></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Varav moms</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.Vat | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
+                                    <div class="uk-flex uk-flex-right uk-width-1-1">
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="sendOrderConfirmation()">
+                                            SKICKA ORDERBEKRÄFTELSE
+                                        </button>
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
+                                            VISA FÖLJESEDEL
+                                        </button>
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="sendOrderConfirmation()">
+                                            TILLDELA MEDLEMSRABATT
+                                        </button>
                                     </div>
                                 </div>
-                            </transition>
+                            </div>
                             <!-- EDIT ORDERITEM -->
                             <transition name="slide">
                                 <div v-if="updateEditorVisible" :class="{'uk-width-1-3': updateEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
@@ -426,101 +424,103 @@
                                 </div>
                             </transition>
                             <!-- ADD ORDERITEM -->
-                            <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
-                                <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Lägg till produkt</h3>
-                                    <span class="closeicon" @click="addEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
-                                </div>
-                                <!-- ArtikelNr -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetails(articleNumber)">
-                                        <label>ArtikelNr</label>
-                                    </ScInput>
-                                </div>
-                                <div v-if="articleDetails" class="uk-flex">
-                                    <div class="uk-margin-small-right uk-width-1-4">
-                                        <img :src="articleDetails.ProductImage">
+                            <transition name="slide">
+                                <div v-if="addEditorVisible" :class="{'uk-width-1-3': addEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                                    <div class="uk-flex uk-flex-between">
+                                        <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Lägg till produkt</h3>
+                                        <span class="closeicon" @click="addEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                     </div>
-                                    <div :class="{ 'uk-width-3-4': !errors }">
-                                        <!-- Produktnamn -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
-                                                <label>Produktnamn</label>
-                                            </ScInput>
+                                    <!-- ArtikelNr -->
+                                    <div class="uk-margin">
+                                        <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetails(articleNumber)">
+                                            <label>ArtikelNr</label>
+                                        </ScInput>
+                                    </div>
+                                    <div v-if="articleDetails" class="uk-flex">
+                                        <div class="uk-margin-small-right uk-width-1-4">
+                                            <img :src="articleDetails.ProductImage">
                                         </div>
-                                        <!-- Storlek -->
-                                        <div class="uk-margin-medium-bottom uk-width-1-1">
-                                            <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                            <label class="select-label" for="select-paymentOptionsList">Storlek</label>
-                                            <client-only>
-                                                <Select2
-                                                    id="select-sizeOptionsList"
-                                                    v-model="articleDetails.StockId"
-                                                    :options="sizeOptionsList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj storlek', 'closeOnSelect': true }"
-                                                >
-                                                </Select2>
-                                            </client-only>
+                                        <div :class="{ 'uk-width-3-4': !errors }">
+                                            <!-- Produktnamn -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="articleDetails.ProductName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
+                                                    <label>Produktnamn</label>
+                                                </ScInput>
                                             </div>
-                                        </div>
-                                        <!-- Pris -->
-                                        <div class="uk-margin-medium-bottom">
-                                            <ScInput v-model="articleDetails.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
-                                                <label>Pris</label>
-                                            </ScInput>
-                                        </div>
-                                        <!-- Tryck -->
-                                        <div v-if="articleDetails.HasPrint" class="uk-flex">
-                                            <div class="uk-width-1-2 uk-margin-small-right">
-                                                <!-- Tryck - Namn -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="articleDetails.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Tryck - Namn</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Tryck - Nummer -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="articleDetails.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Tryck - Nummer</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Tryck - Patch -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <PrettyCheck v-model="articleDetails.PrintOptionList[2].IsChecked" class="p-icon">
-                                                        <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
-                                                    </PrettyCheck>
+                                            <!-- Storlek -->
+                                            <div class="uk-margin-medium-bottom uk-width-1-1">
+                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                <label class="select-label" for="select-paymentOptionsList">Storlek</label>
+                                                <client-only>
+                                                    <Select2
+                                                        id="select-sizeOptionsList"
+                                                        v-model="articleDetails.StockId"
+                                                        :options="sizeOptionsList"
+                                                        :settings="{ 'width': '100%', 'placeholder': 'Välj storlek', 'closeOnSelect': true }"
+                                                    >
+                                                    </Select2>
+                                                </client-only>
                                                 </div>
                                             </div>
-                                            <div class="uk-width-1-2">
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="articleDetails.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
+                                            <!-- Pris -->
+                                            <div class="uk-margin-medium-bottom">
+                                                <ScInput v-model="articleDetails.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Tryck -->
+                                            <div v-if="articleDetails.HasPrint" class="uk-flex">
+                                                <div class="uk-width-1-2 uk-margin-small-right">
+                                                    <!-- Tryck - Namn -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.PrintOptionList[0].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Tryck - Namn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Tryck - Nummer -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.PrintOptionList[1].Value" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Tryck - Nummer</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Tryck - Patch -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <PrettyCheck v-model="articleDetails.PrintOptionList[2].IsChecked" class="p-icon">
+                                                            <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Tryck - Patch</span>
+                                                        </PrettyCheck>
+                                                    </div>
                                                 </div>
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="articleDetails.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
-                                                </div>
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="articleDetails.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                        <label>Pris</label>
-                                                    </ScInput>
+                                                <div class="uk-width-1-2">
+                                                    <!-- Pris -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.PrintOptionList[0].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Pris</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Pris -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.PrintOptionList[1].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Pris</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Pris -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="articleDetails.PrintOptionList[2].Price" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Pris</label>
+                                                        </ScInput>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div v-if="errors" class="uk-alert-danger uk-padding-small uk-border-rounded uk-margin-medium-bottom">
+                                                {{ errors[0].Value }}
+                                            </div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="addItem(orderInfo.OrderId)">
+                                                LÄGG TILL PRODUKT
+                                            </button>
                                         </div>
-                                        <div v-if="errors" class="uk-alert-danger uk-padding-small uk-border-rounded uk-margin-medium-bottom">
-                                            {{ errors[0].Value }}
-                                        </div>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="addItem(orderInfo.OrderId)">
-                                            LÄGG TILL PRODUKT
-                                        </button>
                                     </div>
                                 </div>
-                            </div>
+                            </transition>
                         </div>
                     </ScCardBody>
                 </ScCard>
@@ -897,15 +897,14 @@ export default {
     .wastebasket, .editicon, .addicon, .closeicon {
 		cursor: pointer;
 	}
-.slide-enter-active {
-  transition: all 1s ease;
-}
-.slide-leave-active {
-  transition: all 0s ease;
-}
-.slide-enter, .slide-leave-to
-{
-  transform: translateX(100%);
-}
+    .slide-enter-active {
+        transition: all 0.8s;
+    }
+    .slide-leave-active {
+        transition: all 0.5s;
+    }
+    .slide-enter, .slide-leave-to {
+        transform: translateX(300%);
+    }
 
 </style>
