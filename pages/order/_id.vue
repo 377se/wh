@@ -259,6 +259,7 @@
                                                 <nuxt-link :to="orderItemInList.Url">
                                                     <div>{{ orderItemInList.TeamName }}</div>
                                                     <div>{{ orderItemInList.ProductName }}</div>
+                                                    <div>{{ orderItemInList.AddonValue }}</div>
                                                 </nuxt-link>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto">{{ orderItemInList.ArticleNumber }}</td>
