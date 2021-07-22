@@ -55,7 +55,7 @@
                                                 id="select-sizetypeid"
                                                 v-model="currentArticle.SizeTypeId"
                                                 :options="sizeTypeList"
-                                                :settings="{ 'width': '100%', 'placeholder': 'Välj storlekstyp', 'closeOnSelect': true }"
+                                                :settings="{ 'width': '100%', 'placeholder': 'Välj storlekstyp', 'closeOnSelect': true,  'allowClear': true }"
                                             >
                                             </Select2>
                                         </client-only>
@@ -110,7 +110,7 @@
                                                     id="select-team"
                                                     v-model.number="currentCopyArticle.TeamId"
                                                     :options="teamList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj lag', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj lag', 'closeOnSelect': true,  'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>

@@ -159,7 +159,7 @@
                                             id="select-countryList"
                                             v-model="adressItem.CountryId"
                                             :options="countries.map(({ CountryId, Name }) => ({ id: CountryId, text: Name }))"
-                                            :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                            :settings="{ 'width': '100%', 'closeOnSelect': true,  'allowClear': true }"
                                         >
                                         </Select2>
                                     </client-only>
@@ -226,7 +226,7 @@
                                 <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td v-if="paymentTypeId != 0" class="border-bottom border-left"></td>
+                                            <td v-if="paymentTypeId != 0" class="border-top border-bottom border-left"></td>
                                             <td class="border-bottom border-left border-top"></td>
                                             <td class="border-bottom border-left border-top"></td>
                                             <td class="border-bottom border-right border-left border-top"></td>
@@ -239,8 +239,8 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="orderItemInList in orderContent.OrderItemList" :key="orderItemInList.ItemId" class="uk-table-middle">
-                                            <td v-if="paymentTypeId != 0" class="border-bottom border-right uk-text-center">
-                                                <PrettyCheck v-model="orderItemInList.IsSelected" class="p-icon">
+                                            <td v-if="paymentTypeId != 0" class="border-bottom border-left border-right uk-text-center">
+                                                <PrettyCheck v-model="orderItemInList.IsSelected" class="p-icon uk-align-center">
                                                     <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small"></span>
                                                 </PrettyCheck>
                                             </td>

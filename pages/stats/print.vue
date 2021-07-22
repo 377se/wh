@@ -76,7 +76,7 @@
                                                     id="select-shopOptionsList"
                                                     v-model="currentStatsObject.ShopId"
                                                     :options="shopOptionsList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true,  'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -88,7 +88,7 @@
                                                     id="select-teamList"
                                                     v-model="currentStatsObject.TeamId"
                                                     :options="teamList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Lag', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Lag', 'closeOnSelect': true,  'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -100,7 +100,7 @@
                                                     id="select-yearList"
                                                     v-model="currentStatsObject.Year"
                                                     :options="yearList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'År', 'closeOnSelect': true,  'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -112,7 +112,7 @@
                                                     id="select-monthList"
                                                     v-model="currentStatsObject.Month"
                                                     :options="monthList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Månad', 'closeOnSelect': true,  'allowClear': true }"
                                                 >
                                                 </Select2>
                                             </client-only>

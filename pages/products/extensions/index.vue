@@ -135,7 +135,7 @@
                                             id="select-shopOptionsList"
                                             v-model="shopId"
                                             :options="shopOptionsList"
-                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true,  'allowClear': true }"
                                             @select="getExtensionListByExtensionTypeId"
                                         >
                                         </Select2>
