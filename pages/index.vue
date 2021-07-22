@@ -314,7 +314,7 @@
 			</div>
 
 			<!-- PRINTINFO MODAL -->
-			<div id="print-info-modal" class="uk-modal-full uk-modal" data-uk-modal>
+			<div v-if="nameAndNumberInformation" id="print-info-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
 				<div class="uk-modal-header basket-ribbon">
 					<!-- sticky -->
@@ -664,26 +664,38 @@ export default {
 			this.getArticleList(typeid, articlelistname)
 			UIkit.modal('#article-list-modal').show()
 		},
-		showPrintInfo() {
-			UIkit.modal('#print-info-modal').show()
+		async showPrintInfo() {
+			let _this = this
+			_this.nameAndNumberInformation = null
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Order/GetNameAndNumberInformation')
+            .then(function (nameandnumberinformation) {
+				_this.nameAndNumberInformation = nameandnumberinformation
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+				console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+			setTimeout(() => {
+				UIkit.modal('#print-info-modal').show()
+			}, 200);
 		},
 	},
     async fetch () {
         try {
-            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, nameandnumberinformation ] = await Promise.all([
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
 				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
-				await this.$axios.$get('/webapi/Order/GetNameAndNumberInformation'),
             ])
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
             this.monthlySalesLatestYears = monthlysaleslatestyears
             this.dashboardInformationList = dashboardinformationlist
-			this.nameAndNumberInformation = nameandnumberinformation
         } catch (err) {
             console.log(err);
         }
