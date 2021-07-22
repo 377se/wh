@@ -108,8 +108,9 @@
                                             <img :src="article.ImageName">
                                         </td>
                                         <td class="border-top border-left border-right" colspan="6">
-                                            {{ article.TeamName }}<br>
-                                            {{ article.ProductName }}<br>
+                                            <div>{{ article.TeamName }}</div>
+                                            <div>{{ article.ProductName }}</div>
+                                            <div>{{ article.AddonValue }}</div>
                                         </td>
                                     </tr>
                                 </tbody>
