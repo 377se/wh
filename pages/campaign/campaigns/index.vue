@@ -90,7 +90,7 @@
 
         <!-- CAMPAIGN-EDIT MODAL -->
         <div v-if="campaignBeingEdited" id="campaign-edit-modal" class="uk-modal-full uk-modal" data-uk-modal>
-            <div class="uk-modal-header basket-ribbon">
+            <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
                 <!-- sticky -->
                 <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Redigera kampanj</h4>
                 <button
@@ -100,8 +100,9 @@
                     uk-close
                     uk-toggle="target: #campaign-edit-modal"/>
             </div>
-            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
-                {{ campaignBeingEdited }}
+            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+                <Rawdisplayer :value="campaignBeingEdited" />
+                <Rawdisplayer :value="productTypeList" />
             </div>
         </div>
 
@@ -109,11 +110,17 @@
 </template>
 
 <script>
+import Rawdisplayer from '~/components/rawdisplayer'
+
 export default {
+	components: {
+		Rawdisplayer,
+	},
     data() {
         return {
             campaignList: null,
             campaignBeingEdited: null,
+            productTypeList: [],
         }
     },
     methods: {
@@ -127,19 +134,34 @@ export default {
         },
         async getCampaignById(campaignid) {
             let _this = this
-            _this.showPageOverlaySpinner()
+            // _this.showPageOverlaySpinner()
             try {
                 const [ campaignbeingedited ] = await Promise.all([
                     this.$axios.$get('/webapi/Campaign/GetCampaignById?campaignId=' + campaignid ),
             ])
 			    _this.campaignBeingEdited = campaignbeingedited
-                _this.hidePageOverlaySpinner()
+                campaignbeingedited.CampaignTypeId === 2 ? _this.getProductTypeList() : null
+                // _this.hidePageOverlaySpinner()
             } catch (err) {
                 console.log(err);
             }
             setTimeout(() => {
                 UIkit.modal('#campaign-edit-modal').show()
             }, 200)
+		},
+        async getProductTypeList() {
+            let _this = this
+            // _this.showPageOverlaySpinner()
+            try {
+                const [ producttypelist ] = await Promise.all([
+                    this.$axios.$get('/webapi/Metadata/GetProductTypeList' ),
+            ])
+            // this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			    _this.productTypeList = producttypelist
+                // _this.hidePageOverlaySpinner()
+            } catch (err) {
+                console.log(err);
+            }
 		},
     },
     async fetch () {
