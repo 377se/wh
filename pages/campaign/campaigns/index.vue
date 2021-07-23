@@ -109,6 +109,9 @@
                 <div v-if="!campaignBeingEdited.IsActive" class="uk-label uk-label-danger uk-border-rounded uk-margin-medium-top uk-margin-large-bottom">
                     Denna kampanj är inaktiv
                 </div>
+                <div v-else class="uk-label uk-label-success uk-border-rounded uk-margin-medium-top uk-margin-large-bottom">
+                    Denna kampanj är aktiv
+                </div>
 
                 <div class="uk-grid uk-child-width-1-1 uk-child-width-1-2@s" uk-grid>
 
