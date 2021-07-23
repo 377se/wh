@@ -229,7 +229,7 @@
 
 			<!-- DAILY SALES MODAL -->
 			<div id="dailysales-modal" class="uk-modal-full uk-modal" data-uk-modal>
-				<div class="uk-modal-header basket-ribbon">
+				<div class="uk-modal-header basket-ribbon uk-animation-slide-right">
 					<!-- sticky -->
 					<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Dagsförsäljning - {{ this.shopName }}</h4>
 					<button
@@ -239,7 +239,7 @@
 						uk-close
 						uk-toggle="target: #dailysales-modal"/>
 				</div>
-				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
 					<div class="uk-width-1-1 uk-overflow-auto">
 						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -272,7 +272,7 @@
 			<!-- ARTICLE-LIST MODAL -->
 			<div id="article-list-modal" class="uk-modal-full uk-modal" data-uk-modal>
 
-				<div class="uk-modal-header basket-ribbon">
+				<div class="uk-modal-header basket-ribbon uk-animation-slide-right">
 					<!-- sticky -->
 					<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">{{ articleListName }}</h4>
 					<button
@@ -282,7 +282,7 @@
 						uk-close
 						uk-toggle="target: #article-list-modal"/>
 				</div>
-				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
 					<div class="uk-width-1-1 uk-overflow-auto">
 						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -314,9 +314,8 @@
 			</div>
 
 			<!-- PRINTINFO MODAL -->
-			<div v-if="nameAndNumberInformation" id="print-info-modal" class="uk-modal-full uk-modal" data-uk-modal>
-
-				<div class="uk-modal-header basket-ribbon">
+			<div id="print-info-modal" class="uk-modal-full uk-modal" data-uk-modal>
+				<div class="uk-modal-header basket-ribbon uk-animation-slide-right">
 					<!-- sticky -->
 					<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Tryckinformation</h4>
 					<button
@@ -326,7 +325,7 @@
 						uk-close
 						uk-toggle="target: #print-info-modal"/>
 				</div>
-				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
 					<div class="uk-width-1-1 uk-overflow-auto">
 
@@ -350,7 +349,7 @@
 
 							<!-- TECKEN -->
 							<li class="uk-active">
-								<ScCard>
+								<ScCard v-if="nameAndNumberInformation">
 									<ScCardBody>
 										<div class="uk-width-1-1 uk-overflow-auto">
 											<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -382,7 +381,7 @@
 
 							<!-- PATCHAR -->
 							<li>
-								<ScCard>
+								<ScCard v-if="nameAndNumberInformation">
 									<ScCardBody>
 										<div class="uk-width-1-1 uk-overflow-auto">
 											<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
