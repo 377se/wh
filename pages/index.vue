@@ -36,7 +36,7 @@
 				</ScCard>
 
 				<!-- DASHBOARD - STATISTIK -->
-				<ScCard class="uk-margin-medium-bottom">
+				<ScCard v-if="dashBoard" class="uk-margin-medium-bottom">
 					<ScCardBody>
 						<div class="uk-width-1-1 uk-overflow-auto">
 							<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
@@ -155,7 +155,7 @@
 									</li>
 									<!-- PER DATUM -->
 									<li>
-										<ScCard>
+										<ScCard v-if="activeOrdersByDate">
 											<ScCardBody>
 												<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
 													<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
