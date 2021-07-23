@@ -142,13 +142,13 @@
                             </div>
                             <!-- Startdatum -->
                             <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.FromDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <ScInput v-model="campaignBeingEdited.FromDate" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
                                     <label>Startdatum</label>
                                 </ScInput>
                             </div>
                             <!-- Slutdatum -->
                             <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.ValidThru" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <ScInput v-model="campaignBeingEdited.ValidThru" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
                                     <label>Slutdatum</label>
                                 </ScInput>
                             </div>
