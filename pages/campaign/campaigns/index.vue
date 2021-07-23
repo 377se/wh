@@ -100,7 +100,153 @@
                     uk-close
                     uk-toggle="target: #campaign-edit-modal"/>
             </div>
-            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:20px;height:100vh;background:#ffffff;">
+
+                <div class="uk-width-1-1 uk-flex uk-flex-middle">
+                    <img class="uk-margin-small-right" :src="campaignBeingEdited.ImageName">
+                    <h3 class="uk-margin-remove"><strong>{{ campaignBeingEdited.Name }}</strong></h3>
+                </div>
+                <div v-if="!campaignBeingEdited.IsActive" class="uk-label uk-label-danger uk-border-rounded uk-margin-medium-top uk-margin-large-bottom">
+                    Denna kampanj är inaktiv
+                </div>
+
+                <div class="uk-grid uk-child-width-1-1 uk-child-width-1-2@s" uk-grid>
+
+                        <div>
+                            <!-- KampanjId -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.CampaignId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                    <label>KampanjId</label>
+                                </ScInput>
+                            </div>
+                            <!-- Minsta ordersumma -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.MinOrderSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                    <label>Minsta ordersumma</label>
+                                </ScInput>
+                            </div>
+                            <!-- Triggersumma -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                    <label>Triggersumma</label>
+                                </ScInput>
+                            </div>
+                            <!-- Kickback-summa -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                    <label>Kickback-summa</label>
+                                </ScInput>
+                            </div>
+                            <!-- Startdatum -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.FromDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                    <label>Startdatum</label>
+                                </ScInput>
+                            </div>
+                            <!-- Slutdatum -->
+                            <div class="uk-margin">
+                                <ScInput v-model="campaignBeingEdited.ValidThru" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                    <label>Slutdatum</label>
+                                </ScInput>
+                            </div>
+                            <!-- Produkttyp -->
+                            <div v-if="productTypeList.length != 0" class="uk-margin-medium-top">
+                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <label class="uk-text-small">Produkttyp</label>
+                                    <ul class="uk-list uk-textarea">
+                                        <li v-for="product in productTypeList" :key="product.Id" class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                            <PrettyCheck v-model="product.IsSelected" class="p-icon">
+                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ product.Name }}</span>
+                                            </PrettyCheck>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 1">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Fri frakt</div>
+                        <div class="uk-text-small"><strong>Minsta ordersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Lägsta ordersumman (SEK) som ska aktivera kampanjen.</div>
+                        <div class="uk-text-small"><strong>Triggersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Den summa som börjar trigga information till kunden i stil med "Du har bara x kronor kvar till fri frakt"</div>
+                        <div class="uk-text-small"><strong>Kickbacksumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Ej aktiv för denna kampanjtyp</div>
+                        <div class="uk-text-small"><strong>Start- och slutdatum</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Format: 2017-04-17 23:59:00</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 2">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">En klassisk "ta 3 produkter, betala för 2". Den billigaste produkten blir gratis.</div>
+                        <div class="uk-text-small"><strong>Minsta ordersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Ej aktiv för denna kampanjtyp</div>
+                        <div class="uk-text-small"><strong>Triggersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Ej aktiv för denna kampanjtyp</div>
+                        <div class="uk-text-small"><strong>Kickbacksumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Ej aktiv för denna kampanjtyp</div>
+                        <div class="uk-text-small"><strong>Start- och slutdatum</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Format: 2017-04-17 23:59:00</div>
+                        <div class="uk-text-small"><strong>Produkttyp</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här klickar du i den/de produkttyper vars produkter ska triggas av 3 för 2-erbjudandet</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 3">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">När kunden passerat en triggersumma läggs en frivara i varukorgen.</div>
+                        <div class="uk-text-small"><strong>Minsta ordersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Minsta ordersumma för att trigga gratisprodukt</div>
+                        <div class="uk-text-small"><strong>Start- och slutdatum</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Format: 2017-04-17 23:59:00</div>
+                        <div class="uk-text-small"><strong>Koppla artikel</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här väljer du den artikel som ska bli "frivara" när ordersumman uppnåtts.</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 4">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">En kraftigt nedsatt vara om kunden överstiger ett visst belopp. När kunden passerat en triggersumma ska man upplysas om detta erbjudande.</div>
+                        <div class="uk-text-small"><strong>Minsta ordersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Den summa som ska trigga kampanjen</div>
+                        <div class="uk-text-small"><strong>Triggersumma</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Den summa som börjar trigga information till kunden i stil med "Du kan nu köpa produkten X för Y kr."</div>
+                        <div class="uk-text-small"><strong>Start- och slutdatum</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Format: 2017-04-17 23:59:00</div>
+                        <div class="uk-text-small"><strong>Koppla artikel</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här väljer du den artikel som ska erbjudas när ordersumman uppnåtts.</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 5">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">En kraftigt nedsatt vara X om kunden köper produkt Y.</div>
+                        <div class="uk-text-small"><strong>Triggerartikel</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här väljer du den artikel som ska trigga ett specialpris på en annan produkt.</div>
+                        <div class="uk-text-small"><strong>Koppla artikel</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här väljer du den artikel som ska erbjudas.</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+                    <div v-if="campaignBeingEdited.CampaignTypeId === 6">
+                        <div class="uk-text-small"><strong>Information</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Handlar man en specifik produkt ska det ge kickback i form av coins på kontot.</div>
+                        <div class="uk-text-small"><strong>Kickback-summa</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Det värde som ska sättas in på kundens konto vid köp av triggerprodukt.</div>
+                        <div class="uk-text-small"><strong>Start- och slutdatum</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Format: 2017-04-17 23:59:00</div>
+                        <div class="uk-text-small"><strong>Triggerartikel</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Här väljer du den artikel som ska trigga cashback. Fler artiklar kan väljas som trigger.</div>
+                        <div class="uk-text-small"><strong>Språk</strong></div>
+                        <div class="uk-text-small uk-margin-small-bottom">Välj språk där denna kampanj ska vara aktiv</div>
+                    </div>
+
+                </div>
+
                 <Rawdisplayer :value="campaignBeingEdited" />
                 <Rawdisplayer :value="productTypeList" />
             </div>
@@ -111,16 +257,27 @@
 
 <script>
 import Rawdisplayer from '~/components/rawdisplayer'
+import ScInput from '~/components/Input'
+import { Swedish } from "flatpickr/dist/l10n/sv.js"
+import PrettyCheck from 'pretty-checkbox-vue/check'
+
+if(process.client) {
+	require('~/plugins/flatpickr');
+}
 
 export default {
 	components: {
 		Rawdisplayer,
+		ScInput,
+		PrettyCheck,
+		Swedish,
 	},
     data() {
         return {
             campaignList: null,
             campaignBeingEdited: null,
-            productTypeList: [],
+            productTypeList: null,
+            Swedish,
         }
     },
     methods: {
@@ -134,14 +291,14 @@ export default {
         },
         async getCampaignById(campaignid) {
             let _this = this
-            // _this.showPageOverlaySpinner()
+            _this.campaignBeingEdited = []
+            _this.productTypeList = []
             try {
                 const [ campaignbeingedited ] = await Promise.all([
                     this.$axios.$get('/webapi/Campaign/GetCampaignById?campaignId=' + campaignid ),
             ])
 			    _this.campaignBeingEdited = campaignbeingedited
                 campaignbeingedited.CampaignTypeId === 2 ? _this.getProductTypeList() : null
-                // _this.hidePageOverlaySpinner()
             } catch (err) {
                 console.log(err);
             }
@@ -151,14 +308,11 @@ export default {
 		},
         async getProductTypeList() {
             let _this = this
-            // _this.showPageOverlaySpinner()
             try {
                 const [ producttypelist ] = await Promise.all([
                     this.$axios.$get('/webapi/Metadata/GetProductTypeList' ),
             ])
-            // this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			    _this.productTypeList = producttypelist
-                // _this.hidePageOverlaySpinner()
             } catch (err) {
                 console.log(err);
             }
@@ -178,6 +332,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	@import '~scss/vue/_pretty_checkboxes';
     .border-all {
         border: 1px solid #ccc;
     }
