@@ -616,6 +616,7 @@ export default {
         },
 		async getArticleList(typeid, articlelistname) {
             let _this = this
+			_this.articleList = []
 			_this.articleListName = articlelistname
             _this.showPageOverlaySpinner()
             await this.$axios.$get('/webapi/Dashboard/GetArticleList?typeId=' + typeid)
@@ -656,12 +657,16 @@ export default {
 		showDailySales(shopid, shopname, date) {
 			this.shopName = shopname
 			this.getDailySales(shopid, date)
-			UIkit.modal('#dailysales-modal').show()
+			setTimeout(() => {
+				UIkit.modal('#dailysales-modal').show()
+			}, 200)
 		},
 		showArticleList(typeid, articlelistname) {
 			this.articleListTypeId = typeid
 			this.getArticleList(typeid, articlelistname)
-			UIkit.modal('#article-list-modal').show()
+			setTimeout(() => {
+				UIkit.modal('#article-list-modal').show()
+			}, 200)
 		},
 		async showPrintInfo() {
 			let _this = this
@@ -678,7 +683,7 @@ export default {
             })
 			setTimeout(() => {
 				UIkit.modal('#print-info-modal').show()
-			}, 200);
+			}, 200)
 		},
 	},
     async fetch () {
