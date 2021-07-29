@@ -51,19 +51,19 @@
                                             <tbody>
                                                 <tr v-for="(brand, index) in shop.Sales" :key="index" class="uk-table-middle">
                                                     <td class="border-bottom border-left" style="text-align: left;">{{ brand.BrandName }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jan }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Feb }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Mar }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Apr }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.May }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jun }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jul }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Aug }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Sep }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Oct }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Nov }}</td>
-                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Dec }}</td>
-                                                    <td class="border-bottom border-left border-right" style="text-align: right;">{{ brand.TotalSales }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jan | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Feb | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Mar | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Apr | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.May | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jun | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Jul | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Aug | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Sep | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Oct | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Nov | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: right;">{{ brand.Dec | thousandsDelimiter }}</td>
+                                                    <td class="border-bottom border-left border-right" style="text-align: right;">{{ brand.TotalSales | thousandsDelimiter }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
