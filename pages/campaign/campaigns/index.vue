@@ -115,59 +115,64 @@
 
                 <div class="uk-grid uk-child-width-1-1 uk-child-width-1-2@s" uk-grid>
 
-                        <div>
-                            <!-- KampanjId -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.CampaignId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                                    <label>KampanjId</label>
-                                </ScInput>
-                            </div>
-                            <!-- Minsta ordersumma -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.MinOrderSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                                    <label>Minsta ordersumma</label>
-                                </ScInput>
-                            </div>
-                            <!-- Triggersumma -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                                    <label>Triggersumma</label>
-                                </ScInput>
-                            </div>
-                            <!-- Kickback-summa -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                                    <label>Kickback-summa</label>
-                                </ScInput>
-                            </div>
-                            <!-- Startdatum -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.FromDate" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
-                                    <label>Startdatum</label>
-                                </ScInput>
-                            </div>
-                            <!-- Slutdatum -->
-                            <div class="uk-margin">
-                                <ScInput v-model="campaignBeingEdited.ValidThru" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
-                                    <label>Slutdatum</label>
-                                </ScInput>
-                            </div>
-                            <!-- Produkttyp -->
-                            <div v-if="productTypeList.length != 0" class="uk-margin-medium-top">
-                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <label class="uk-text-small">Produkttyp</label>
-                                    <ul class="uk-list uk-textarea">
-                                        <li v-for="product in productTypeList" :key="product.Id" class="uk-text-small" style="padding: 3px 3px 3px 2px">
-                                            <PrettyCheck v-model="product.IsSelected" class="p-icon">
-                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ product.Name }}</span>
-                                            </PrettyCheck>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <!-- FORM -->
 
-
+                    <div>
+                        <!-- KampanjId -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.CampaignId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                <label>KampanjId</label>
+                            </ScInput>
                         </div>
+                        <!-- Minsta ordersumma -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.MinOrderSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                <label>Minsta ordersumma</label>
+                            </ScInput>
+                        </div>
+                        <!-- Triggersumma -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                <label>Triggersumma</label>
+                            </ScInput>
+                        </div>
+                        <!-- Kickback-summa -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.TriggerSum" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                                <label>Kickback-summa</label>
+                            </ScInput>
+                        </div>
+                        <!-- Startdatum -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.FromDate" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <label>Startdatum</label>
+                            </ScInput>
+                        </div>
+                        <!-- Slutdatum -->
+                        <div class="uk-margin">
+                            <ScInput v-model="campaignBeingEdited.ValidThru" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <label>Slutdatum</label>
+                            </ScInput>
+                        </div>
+                        <!-- Produkttyp -->
+                        <div v-if="productTypeList.length != 0" class="uk-margin-medium-top">
+                            <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                <label class="uk-text-small">Produkttyp</label>
+                                <ul class="uk-list uk-textarea">
+                                    <li v-for="product in productTypeList" :key="product.Id" class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                        <PrettyCheck v-model="product.IsSelected" class="p-icon">
+                                            <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ product.Name }}</span>
+                                        </PrettyCheck>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- INFO-TEXT -->
 
                     <div v-if="campaignBeingEdited.CampaignTypeId === 1">
                         <div class="uk-text-small"><strong>Information</strong></div>
