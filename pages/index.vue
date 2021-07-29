@@ -692,7 +692,7 @@ export default {
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
-				await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesTwoLatestYears'),
+				await this.$axios.$get('/webapi/Dashboard/GetMonthlySales'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
             ])
             this.dashBoard = dashboard
