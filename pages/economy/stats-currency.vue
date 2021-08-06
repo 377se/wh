@@ -211,11 +211,11 @@ export default {
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Economy/StatsByCurrency', _this.currentStatsObject)
 			.then(function (statsbycurrency) {
-                statsbycurrency.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>') : null
+                statsbycurrency.ItemList.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>') : null
                 statsbycurrency.ItemList.push(_this.createSummaryObject(statsbycurrency.ItemList))
                 _this.sheets[0].name = 'Statistik per valuta'
                 _this.sheets[0].data = statsbycurrency.ItemList
-                _this.statsByCurrencyWithSummary = _this.sheets[0].data
+                _this.statsByCurrencyWithSummary = statsbycurrency.ItemList
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -223,35 +223,22 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
-        createSummaryObject(statsbycurrency) {
-            let statsWithoutSummary = _.clone(statsbycurrency)
-            return statsWithoutSummary.reduce( ( previousValue, currentValue ) => {
-                    return {
-                        "ShopName": null,
-                        "OrderId": null,
-                        "ParentOrderId": null,
-                        "Year": null,
-                        "OrderDate": null,
-                        "ShippingDate": null,
-                        "ConversionRate": null,
-                        "Ordersum": previousValue.Ordersum + currentValue.Ordersum,
-                        "Extra": null,
-                        "ShippingAndHandling": null,
-                        "OrderTotal": previousValue.OrderTotal + currentValue.OrderTotal,
-                        "OrderTotalExVat": previousValue.OrderTotalExVat + currentValue.OrderTotalExVat,
-                        "Vat": null,
-                        "Discount": null,
-                        "InvoiceNumber": null,
-                        "Currency": null,
-                        "PaymentMethod": null,
-                        "TransactionCreated": null,
-                        "AccountId": null,
-                        "Reference": null,
-                        "HasBeenShipped": null,
-                        "Flag": null
-                    }
-                }
+        createSummaryObject(orderlist) {
+            let summaryObject = Object.assign({}, orderlist[0])
+            Object.keys(summaryObject).forEach(k => summaryObject[k] = null)
+            summaryObject.Ordersum = itemlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return accumulatedValue + currentValue.Ordersum
+                }, 0
             )
+            summaryObject.OrderTotal = itemlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return accumulatedValue + currentValue.OrderTotal
+                }, 0
+            )
+            summaryObject.OrderTotalExVat = itemlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return accumulatedValue + currentValue.OrderTotalExVat
+                }, 0
+            )
+            return summaryObject
         },
     },
     async fetch () {
