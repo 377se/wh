@@ -55,6 +55,8 @@
                                     :columns="columns_total"
                                     :rows="stockValueList.ItemList"
                                     style-class="vgt-table"
+                                    :fixed-header="true"
+                                    max-height="600px"
                                     :search-options="{ enabled: false }"
                                     :pagination-options="{ enabled: true, mode: 'pages', perPage: 20, position: 'top', perPageDropdown: [10, 20, 30, 40, 50], dropdownAllowAll: true, setCurrentPage: 1, nextLabel: 'nästa', prevLabel: 'föregående', rowsPerPageLabel: 'Produkter per sida', ofLabel: 'av', pageLabel: 'Sida', allLabel: 'Alla' }"
                                 >
@@ -78,6 +80,8 @@
                                     :columns="columns_team"
                                     :rows="stockValueByTeam.ItemList"
                                     style-class="vgt-table"
+                                    :fixed-header="true"
+                                    max-height="600px"
                                     :search-options="{ enabled: false }"
                                     :pagination-options="{ enabled: false, mode: 'pages', perPage: 10, position: 'top', perPageDropdown: [10, 20, 30, 40, 50], dropdownAllowAll: true, setCurrentPage: 1, nextLabel: 'nästa', prevLabel: 'föregående', rowsPerPageLabel: 'Produkter per sida', ofLabel: 'av', pageLabel: 'sida', allLabel: 'Alla' }"
                                 >
@@ -98,6 +102,8 @@
                                     :columns="columns_brand"
                                     :rows="stockValueByBrand.ItemList"
                                     style-class="vgt-table"
+                                    :fixed-header="true"
+                                    max-height="600px"
                                     :search-options="{ enabled: false }"
                                     :pagination-options="{ enabled: false, mode: 'pages', perPage: 10, position: 'top', perPageDropdown: [10, 20, 30, 40, 50], dropdownAllowAll: true, setCurrentPage: 1, nextLabel: 'nästa', prevLabel: 'föregående', rowsPerPageLabel: 'Produkter per sida', ofLabel: 'av', pageLabel: 'sida', allLabel: 'Alla' }"
                                 >
