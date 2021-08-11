@@ -25,26 +25,40 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                <div class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
+                                <div class="uk-overflow-auto" style="height:800px;">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;">OrderId</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">Datum</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30px;">Valuta</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 60px;">Summa</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 60px;">Total</th>
-                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 60px;">Total ex VAT</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;">OrderId</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Shop</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">Datum</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">Lev. dat</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 50px;">Summa</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Extra</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 50px;">Lev. kost</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 50px;">Total ex VAT</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 40px;">VAT</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 40px;">Valuta</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 60px;">Bet. metod</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 70px;">Trans. skapad</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="(order, index) in statsByCurrencyWithSummary" :key="index" class="uk-table-middle">
-                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left; ">{{ order.OrderId }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.OrderId }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ order.OrderDate }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.ShippingDate }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Ordersum | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Extra | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.ShippingAndHandling | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotal | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotalExVat | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Vat | thousandsDelimiter }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.Currency }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Ordersum }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotal }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotalExVat }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.PaymentMethod }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.TransactionCreated }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -129,7 +143,13 @@
                                             <div>
                                                 <XlsxWorkbook>
                                                     <XlsxSheet v-for="sheet in sheets" :collection="sheet.data" :key="sheet.name" :sheet-name="sheet.name" />
-                                                    <XlsxDownload :filename="(currentStatsObject.Year != 0 ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' + (currentStatsObject.Month != 0 ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' + currentStatsObject.MerchantId + '-' + currentStatsObject.Currency + '.xlsx'">
+                                                    <XlsxDownload :filename="
+                                                        'Försäljning' + '-' +
+                                                        (currentStatsObject.ShopId != null ? shopList.find(shop => shop.id == currentStatsObject.ShopId).text : '') + '-' +
+                                                        (currentStatsObject.Year != null ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' +
+                                                        (currentStatsObject.Month != null ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' +
+                                                        (currentStatsObject.CurrencyId != null ? currencyList.find(currency => currency.id == currentStatsObject.CurrencyId).text : '') + '.xlsx'
+                                                    ">
                                                         <button ref="downloadExtendedStats" class="sc-button sc-button-mini uk-align-center">EXPORTERA EXCEL</button>
                                                     </XlsxDownload>
                                                 </XlsxWorkbook>
@@ -211,31 +231,47 @@ export default {
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Economy/StatsByCurrency', _this.currentStatsObject)
 			.then(function (statsbycurrency) {
-                statsbycurrency.ItemList.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>') : null
-                statsbycurrency.ItemList.push(_this.createSummaryObject(statsbycurrency.ItemList))
-                _this.sheets[0].name = 'Statistik per valuta'
-                _this.sheets[0].data = statsbycurrency.ItemList
-                _this.statsByCurrencyWithSummary = statsbycurrency.ItemList
+                if (statsbycurrency.ItemList.length == 0) {
+                    UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>')
+                } else {
+                    statsbycurrency.ItemList.push(_this.createSummaryObject(statsbycurrency.ItemList))
+                    _this.sheets[0].name = 'Statistik per valuta'
+                    _this.sheets[0].data = statsbycurrency.ItemList
+                    _this.statsByCurrencyWithSummary = statsbycurrency.ItemList
+                }
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
                 console.log(error)
+                UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>')
                 _this.hidePageOverlaySpinner()
 			})
 		},
         createSummaryObject(orderlist) {
             let summaryObject = Object.assign({}, orderlist[0])
             Object.keys(summaryObject).forEach(k => summaryObject[k] = null)
-            summaryObject.Ordersum = itemlist.reduce( ( accumulatedValue, currentValue ) => {
-                    return accumulatedValue + currentValue.Ordersum
+            summaryObject.Ordersum = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.Ordersum)
                 }, 0
             )
-            summaryObject.OrderTotal = itemlist.reduce( ( accumulatedValue, currentValue ) => {
-                    return accumulatedValue + currentValue.OrderTotal
+            summaryObject.Extra = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.Extra)
                 }, 0
             )
-            summaryObject.OrderTotalExVat = itemlist.reduce( ( accumulatedValue, currentValue ) => {
-                    return accumulatedValue + currentValue.OrderTotalExVat
+            summaryObject.ShippingAndHandling = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.ShippingAndHandling)
+                }, 0
+            )
+            summaryObject.OrderTotal = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.OrderTotal)
+                }, 0
+            )
+            summaryObject.OrderTotalExVat = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.OrderTotalExVat)
+                }, 0
+            )
+            summaryObject.Vat = orderlist.reduce( ( accumulatedValue, currentValue ) => {
+                    return parseInt(accumulatedValue + currentValue.Vat)
                 }, 0
             )
             return summaryObject
@@ -244,22 +280,22 @@ export default {
     async fetch () {
         try {
             const [ emptystatsobject, shoplist, yearlist, monthlist, currencylist ] = await Promise.all([
-                this.$axios.$get('/webapi/Stats/GetEmptyStatsObject'),
+                this.$axios.$get('/webapi/Economy/GetEmptyEconomyStatsObject'),
                 this.$axios.$get('/webapi/Shop/GetShopList'),
                 this.$axios.$get('/webapi/Utility/GetYearList'),
                 this.$axios.$get('/webapi/Utility/GetMonthList'),
                 this.$axios.$get('/webapi/Economy/GetCurrencyList'),
             ])
-            // this.emptyStatsObject = emptystatsobject
             this.emptyStatsObject = {
-                "ShopId": 1,
-                "Year": 2021,
-                "Month": 1,
-                "MerchantId": 1,
-                "CurrencyId": 1,
-                "VatType1": 0.0,
-                "VatType2": 0.0,
+                "ShopId": null,
+                "Year": null,
+                "Month": null,
+                "MerchantId": null,
+                "CurrencyId": null,
+                "VatType1": null,
+                "VatType2": null,
             }
+            // this.emptyStatsObject = emptystatsobject
             this.currentStatsObject = this.emptyStatsObject
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
@@ -273,6 +309,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
     .border-all {
         border: 1px solid #ccc;
     }
