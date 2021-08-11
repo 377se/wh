@@ -162,15 +162,6 @@
                             </ScCardBody>
                         </ScCard>
 
-                        <!-- <ScCardBody v-if="statsByCurrency.length > 0" class="uk-text-center md-bg-cyan-800">
-                            <div class="uk-width-1-1 uk-flex uk-flex-around uk-flex-wrap uk-padding-small">
-                                <div class="uk-padding-small">
-                                    <div class="summary uk-light">{{ statsByCurrency.length | thousandsDelimiter }}</div>
-                                    <div class="uk-light">filer</div>
-                                </div>
-                            </div>
-                        </ScCardBody> -->
-
                     </div>
                 </div>
             </div>
