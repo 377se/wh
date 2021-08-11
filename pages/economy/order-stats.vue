@@ -25,21 +25,21 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                <div class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderstatslist">
+                                <div class="uk-overflow-auto" style="height:800px;">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderstatslist" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: center; width: 20px;"></th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 40px;">Id</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 80px;">Shop</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">O Date</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">S Date</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Sum</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">S & H</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total ex VAT</th>
-                                                <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">VAT</th>
-                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 60px;">P M</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: center; width: 20px;"></th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 40px;">Id</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 80px;">Shop</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">O Date</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">S Date</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Sum</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">S & H</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total ex VAT</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">VAT</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 60px;">P M</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -144,7 +144,11 @@
                                                         :key="sheet.name"
                                                         :sheet-name="sheet.name"
                                                     />
-                                                    <XlsxDownload :filename="(currentStatsObject.ShopId != 0 ? shopOptionsList.find(shop => shop.id == currentStatsObject.ShopId).text : '') + '-' + (currentStatsObject.Year != 0 ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' + (currentStatsObject.Year != 0 ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' + (currentStatsObject.CurrencyId != 0 ? currencyList.find(currency => currency.id == currentStatsObject.CurrencyId).text : '') + '.xlsx'">
+                                                    <XlsxDownload :filename="
+                                                        (currentStatsObject.ShopId != 0 ? shopOptionsList.find(shop => shop.id == currentStatsObject.ShopId).text : '') + '-' + 
+                                                        (currentStatsObject.Year != 0 ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' + 
+                                                        (currentStatsObject.Year != 0 ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' + 
+                                                        (currentStatsObject.CurrencyId != 0 ? currencyList.find(currency => currency.id == currentStatsObject.CurrencyId).text : '') + '.xlsx'">
                                                         <button class="sc-button sc-button-mini uk-align-center">EXCEL</button>
                                                     </XlsxDownload>
                                                 </XlsxWorkbook>
@@ -271,6 +275,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
     .border-all {
         border: 1px solid #ccc;
     }
