@@ -160,14 +160,22 @@ export default {
         },
         async postInternalInvoice() {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.internalInvoiceStats = []
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Economy/PostInternalInvoice', _this.currentStatsObject)
 			.then(function (internalinvoicestats) {
-                _this.internalInvoiceStats = internalinvoicestats
+                if (internalinvoicestats.ErrorList != null) {
+                    _this.errors = internalinvoicestats.ErrorList
+                    _this.$store.commit('setAlertVisible', 1)
+                } else {
+                    _this.internalInvoiceStats = internalinvoicestats
+                }
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
                 console.log(error)
+                UIkit.modal.alert('<p class="uk-modal-body">Ett fel uppstod!</p>')
                 _this.hidePageOverlaySpinner()
 			})
 		},
@@ -190,7 +198,7 @@ export default {
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.monthList = monthlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
         } catch (err) {
-            console.log(err);
+            console.log(err)
         }
     },
 }
