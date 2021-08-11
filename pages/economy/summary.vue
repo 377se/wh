@@ -69,14 +69,14 @@
                                     </div>
                                 </div>
                                 <div v-if="economyMonthlyReview" class="uk-margin-medium-top">
-                                    <div class="uk-overflow-auto">
-                                        <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="table-layout: fixed;">
+                                    <div class="uk-overflow-auto" style="height:600px;">
+                                        <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
                                             <thead>
                                                 <tr class="uk-padding-remove-bottom">
-                                                    <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 120px;">Datum</th>
-                                                    <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 120px;">Summa</th>
-                                                    <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 120px;">Frakt</th>
-                                                    <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 120px;">Totalt</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 120px;">Datum</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 120px;">Summa</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 120px;">Frakt</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 120px;">Totalt</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -151,11 +151,11 @@
                         <ScCardBody v-if="economyMonthlyReview" class="uk-text-center md-bg-cyan-800">
                             <div class="uk-width-1-1 uk-flex uk-flex-around uk-flex-wrap uk-padding-small">
                                 <div class="uk-padding-small">
-                                    <div class="summary uk-light">{{ economyMonthlyReview.Ordersum | thousandsDelimiter }}</div>
+                                    <div class="summary uk-light">{{ parseInt(economyMonthlyReview.Ordersum | thousandsDelimiter) }}</div>
                                     <div class="uk-light">ex. moms</div>
-                                    <div class="summary uk-light uk-margin-medium-top">{{ economyMonthlyReview.Shipping | thousandsDelimiter }}</div>
+                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Shipping | thousandsDelimiter) }}</div>
                                     <div class="uk-light">frakt ex. moms</div>
-                                    <div class="summary uk-light uk-margin-medium-top">{{ economyMonthlyReview.Total | thousandsDelimiter }}</div>
+                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Total | thousandsDelimiter) }}</div>
                                     <div class="uk-light">totalt ex. moms</div>
                                 </div>
                             </div>
@@ -336,6 +336,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
     .border-all {
         border: 1px solid #ccc;
     }
