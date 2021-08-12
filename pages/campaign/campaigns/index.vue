@@ -26,15 +26,15 @@
                         </ScCardTitle>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-overflow-auto">
-                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                        <div class="uk-overflow-auto" style="max-height:600px;">
+                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                 <thead>
                                     <tr class="uk-padding-remove-bottom">
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30%;">Kampanjtyp</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
-                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Dagar kvar</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30%;">Kampanjtyp</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
+                                        <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Dagar kvar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -61,15 +61,15 @@
                         </ScCardTitle>
                     </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-overflow-auto">
-                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                        <div class="uk-overflow-auto" style="max-height:600px;">
+                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                 <thead>
                                     <tr class="uk-padding-remove-bottom">
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30%;">Kampanjtyp</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
-                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Dagar kvar</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 30%;">Kampanjtyp</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
+                                        <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
+                                        <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Dagar kvar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -341,6 +341,11 @@ export default {
 
 <style lang="scss" scoped>
 	@import '~scss/vue/_pretty_checkboxes';
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
     .border-all {
         border: 1px solid #ccc;
     }

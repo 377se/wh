@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div v-if="economyMonthlyReview" class="uk-margin-medium-top">
-                                    <div class="uk-overflow-auto" style="height:600px;">
+                                    <div class="uk-overflow-auto" style="max-height:600px;">
                                         <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
                                             <thead>
                                                 <tr class="uk-padding-remove-bottom">
@@ -180,7 +180,7 @@
             <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:20px;height:100vh;background:#ffffff;">
 
                 <div class="uk-overflow-auto">
-                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                         <thead>
                             <tr class="uk-padding-remove-bottom">
                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: center; width: 50px;"><span class="uk-badge md-bg-green-600">{{ dateViewedInModal.length }}</span></th>

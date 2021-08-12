@@ -51,16 +51,16 @@
                                     <!-- TAB-CONTENT - NORDIC LICENSE -->
                                     <ul class="uk-switcher">
                                         <li v-for="(currency, index) in nordicLicenseStats.ItemList" :key="index">
-                                            <div class="uk-overflow-auto">
-                                                <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                            <div class="uk-overflow-auto border-top" style="max-height:800px;">
+                                                <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                                     <thead>
                                                         <tr class="uk-padding-remove-bottom">
-                                                            <th class="border-top border-bottom border-left uk-text-small" style="text-align: center; width: 8%;">Antal</th>
-                                                            <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 24%;">Artikelnummer</th>
-                                                            <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 32%;">Produkt</th>
-                                                            <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 10%;">Inköpspris</th>
-                                                            <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 10%;">Totalt</th>
-                                                            <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 10%;">Genomsnitt</th>
+                                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="text-align: center; width: 8%;">Antal</th>
+                                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="text-align: left; width: 24%;">Artikelnummer</th>
+                                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="text-align: left; width: 32%;">Produkt</th>
+                                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="text-align: right; width: 10%;">Inköpspris</th>
+                                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="text-align: right; width: 10%;">Totalt</th>
+                                                            <th class="sticky-headers border-bottom border-left border-right uk-text-small" style="text-align: right; width: 10%;">Genomsnitt</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -123,7 +123,7 @@
                                                 <XlsxWorkbook>
                                                     <XlsxSheet
                                                         v-for="sheet in sheets"
-                                                        :collection="sheet.data"
+                                                        :collection="sheet.data != null ? sheet.data : null"
                                                         :key="sheet.name"
                                                         :sheet-name="sheet.name"
                                                     />
@@ -213,7 +213,10 @@ export default {
 			.then(function (nordiclicensestats) {
                 nordiclicensestats.ItemList.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Inga artiklar hittades!</p>') : null
                 _this.nordicLicenseStats = nordiclicensestats
-                if (nordiclicensestats.ItemList.length != 0) {
+                if (nordiclicensestats.ItemList[0].StatsList.length != 0 ||
+                    nordiclicensestats.ItemList[1].StatsList.length != 0 ||
+                    nordiclicensestats.ItemList[2].StatsList.length != 0 ||
+                    nordiclicensestats.ItemList[3].StatsList.length != 0) {
                     _this.sheets[0].data = nordiclicensestats.ItemList[0].StatsList
                     _this.sheets[1].data = nordiclicensestats.ItemList[1].StatsList
                     _this.sheets[2].data = nordiclicensestats.ItemList[2].StatsList
@@ -243,6 +246,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: -1px; /* Don't forget this, required for the stickiness */
+    }
     .border-all {
         border: 1px solid #ccc;
     }

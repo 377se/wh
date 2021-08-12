@@ -15,26 +15,15 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody class="uk-padding-remove uk-text-small" separator>
-                        <div class="uk-overflow-auto">
-                            <table class="uk-card uk-table uk-table-small uk-table-middle uk-text-small uk-margin-remove-bottom">
+                        <div class="uk-overflow-auto" style="max-height:900px;">
+                            <table class="uk-card uk-table uk-table-small uk-table-middle uk-text-small uk-margin-remove-bottom" style="border-collapse: separate;">
                                 <thead>
-                                    <td style="width: 55px;" class="border-bottom">
-                                    </td>
-                                    <td style="width: 200px;" class="border-bottom border-left">
-                                        <strong>Namn</strong>
-                                    </td>
-                                    <td style="width: 200px;" class="border-bottom border-left">
-                                        <strong>Användarnamn</strong>
-                                    </td>
-                                    <td style="width: 200px;" class="border-bottom border-left">
-                                        <strong>Email</strong>
-                                    </td>
-                                    <td style="width: 200px;" class="border-bottom border-left">
-                                        <strong>Senast inloggad</strong>
-                                    </td>
-                                    <td style="width: 55px;" class="border-bottom border-left uk-text-center">
-                                        <strong>Aktiv</strong>
-                                    </td>
+                                    <th style="width: 55px;" class="sticky-headers border-bottom"></th>
+                                    <th style="width: 200px;" class="sticky-headers border-bottom border-left">Namn</th>
+                                    <th style="width: 200px;" class="sticky-headers border-bottom border-left">Användarnamn</th>
+                                    <th style="width: 200px;" class="sticky-headers border-bottom border-left">Email</th>
+                                    <th style="width: 200px;" class="sticky-headers border-bottom border-left">Senast inloggad</th>
+                                    <th style="width: 55px;" class="sticky-headers border-bottom border-left uk-text-center">Aktiv</th>
                                 </thead>
                                 <tbody>
                                     <tr v-for="admin in adminList" :key="admin.AdminId">
@@ -99,6 +88,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
     .row {
         height: 50px;
     }

@@ -25,7 +25,7 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                <div class="uk-overflow-auto" style="height:800px;">
+                                <div class="uk-overflow-auto" style="max-height:800px;">
                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderstatslist" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">

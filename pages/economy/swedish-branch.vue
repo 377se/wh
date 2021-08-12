@@ -27,7 +27,7 @@
                             <ScCardBody>
                                 <!-- SWEDISH BRANCH STATS -->
                                 <div v-if="swedishBranchStats" class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" colspan="5">
@@ -68,7 +68,7 @@
                             <ScCardBody>
                                 <!-- SWEDISH BRANCH ORDERS -->
                                 <div class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" colspan="5">
@@ -101,7 +101,7 @@
                             <ScCardBody>
                                 <!-- SWEDISH BRANCH RATING -->
                                 <div class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" colspan="5">

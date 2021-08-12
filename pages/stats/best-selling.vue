@@ -49,7 +49,7 @@
 					    <ul class="uk-switcher">
                             <li v-for="(shop, index) in topSelling" :key="index">
                                 <div class="uk-overflow-auto">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
                                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;"></th>
