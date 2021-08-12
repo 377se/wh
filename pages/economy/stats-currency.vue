@@ -16,56 +16,7 @@
             </div>
             <div id="sc-page-content">
                 <div class="uk-grid uk-grid-medium" uk-grid uk-margin>
-                    <!-- LIST -->
-                    <div class="uk-width-1-1 uk-width-3-4@m">
-                        <ScCard class="uk-card-small">
-                            <ScCardHeader separator>
-                                <ScCardTitle>
-                                    Sökresultat
-                                </ScCardTitle>
-                            </ScCardHeader>
-                            <ScCardBody>
-                                <div class="uk-overflow-auto" style="height:800px;">
-                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist" style="width:99.9%; position: relative; height:600px; border-collapse: separate;">
-                                        <thead>
-                                            <tr class="uk-padding-remove-bottom">
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;">OrderId</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Shop</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">Datum</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 70px;">Lev. dat</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 50px;">Summa</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Extra</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 50px;">Lev. kost</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Total</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 50px;">Total ex VAT</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 40px;">VAT</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 40px;">Valuta</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 60px;">Bet. metod</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 70px;">Trans. skapad</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(order, index) in statsByCurrencyWithSummary" :key="index" class="uk-table-middle">
-                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.OrderId }}</td>
-                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.ShopName }}</td>
-                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.OrderDate }}</td>
-                                                <td class="border-bottom border-left" style="text-align: left; ">{{ order.ShippingDate }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Ordersum | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Extra | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.ShippingAndHandling | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotal | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.OrderTotalExVat | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ order.Vat | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.Currency }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.PaymentMethod }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ order.TransactionCreated }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </ScCardBody>
-                        </ScCard>
-                    </div>
+
                     <!-- FILTERMENUS -->
                     <div class="uk-width-1-1 uk-width-1-4@m uk-flex-first uk-flex-last@m" uk-margin>
                         <ScCard class="uk-card-small">
@@ -89,18 +40,6 @@
                                         id=2
                                     />
                                     <div class="uk-width-1-1">
-                                        <!-- SHOP -->
-                                        <div class="uk-margin-medium-top sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                            <client-only>
-                                                <Select2
-                                                    id="select-shopList"
-                                                    v-model.number="currentStatsObject.ShopId"
-                                                    :options="shopList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true, 'allowClear': true }"
-                                                >
-                                                </Select2>
-                                            </client-only>
-                                        </div>
                                         <!-- ÅR -->
                                         <div class="uk-margin-medium-top sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                             <client-only>
@@ -125,18 +64,6 @@
                                                 </Select2>
                                             </client-only>
                                         </div>
-                                        <!-- VALUTA -->
-                                        <div class="uk-margin-medium-top sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                            <client-only>
-                                                <Select2
-                                                    id="select-currencyList"
-                                                    v-model.number="currentStatsObject.CurrencyId"
-                                                    :options="currencyList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Valuta', 'closeOnSelect': true, 'allowClear': true }"
-                                                >
-                                                </Select2>
-                                            </client-only>
-                                        </div>
 
                                         <div class="uk-width-1-1 uk-flex uk-flex-column uk-flex-middle uk-margin-medium-top uk-margin-small-bottom">
                                             <div><button @click="getStatsByCurrency" class="sc-button sc-button-primary sc-button-mini uk-align-center uk-margin-small-bottom">HÄMTA STATISTIK</button></div>
@@ -145,10 +72,8 @@
                                                     <XlsxSheet v-for="sheet in sheets" :collection="sheet.data" :key="sheet.name" :sheet-name="sheet.name" />
                                                     <XlsxDownload :filename="
                                                         'Försäljning' + '-' +
-                                                        (currentStatsObject.ShopId != null ? shopList.find(shop => shop.id == currentStatsObject.ShopId).text : '') + '-' +
-                                                        (currentStatsObject.Year != null ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' +
-                                                        (currentStatsObject.Month != null ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '-' +
-                                                        (currentStatsObject.CurrencyId != null ? currencyList.find(currency => currency.id == currentStatsObject.CurrencyId).text : '') + '.xlsx'
+                                                        (currentStatsObject.Year != 0 ? yearList.find(year => year.id == currentStatsObject.Year).text : '') + '-' +
+                                                        (currentStatsObject.Month != 0 ? monthList.find(month => month.id == currentStatsObject.Month).text : '') + '.xlsx'
                                                     ">
                                                         <button ref="downloadExtendedStats" class="sc-button sc-button-mini uk-align-center">EXPORTERA EXCEL</button>
                                                     </XlsxDownload>
@@ -189,7 +114,10 @@ export default {
             errors: null,
             message: '',
             sheets: [
-                { name: '1', data: null },
+                { name: 'SEK', data: null },
+                { name: 'NOK', data: null },
+                { name: 'EUR', data: null },
+                { name: 'DKK', data: null },
             ],
             emptyStatsObject: {},
             currentStatsObject: {},
@@ -199,6 +127,7 @@ export default {
             yearList: null,
             monthList: null,
             currencyList: null,
+            componentKey: 0,
         }
     },
     watch: {
@@ -222,14 +151,31 @@ export default {
             _this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Economy/StatsByCurrency', _this.currentStatsObject)
 			.then(function (statsbycurrency) {
-                if (statsbycurrency.ItemList.length == 0) {
-                    UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>')
-                } else {
-                    statsbycurrency.ItemList.push(_this.createSummaryObject(statsbycurrency.ItemList))
-                    _this.sheets[0].name = 'Statistik per valuta'
-                    _this.sheets[0].data = statsbycurrency.ItemList
-                    _this.statsByCurrencyWithSummary = statsbycurrency.ItemList
-                }
+                statsbycurrency.forEach((orderlist, index) => {
+                const rearrangedList = orderlist.ItemList.map(order => { return {
+                    'OrderId': order.OrderId,
+                    'ShopName': order.ShopName,
+                    'OrderDate': order.OrderDate,
+                    'InvoiceNumber': order.InvoiceNumber,
+                    'ShippingDate': order.ShippingDate,
+                    'Ordersum': order.Ordersum,
+                    'Extra': order.Extra,
+                    'ShippingAndHandling': order.ShippingAndHandling,
+                    'OrderTotal': order.OrderTotal,
+                    'OrderTotalExVat': order.OrderTotalExVat,
+                    'Vat': order.Vat,
+                    'Currency': order.Currency,
+                    'PaymentMethod': order.PaymentMethod,
+                    'TransactionCreated': order.TransactionCreated,
+                    'AccountId': order.AccountId,
+                    'Reference': order.Reference,
+                    'CustomerName': order.CustomerName,
+                    }})
+                    rearrangedList.push(_this.createSummaryObject(rearrangedList))
+                    _this.sheets[index].data = rearrangedList
+                })
+                _this.statsByCurrencyWithSummary = statsbycurrency
+                _this.forceRerender()
                 _this.hidePageOverlaySpinner()
 			})
 			.catch(function (error) {
@@ -267,26 +213,20 @@ export default {
             )
             return summaryObject
         },
+        forceRerender() {
+            this.componentKey += 1;
+        },
     },
     async fetch () {
         try {
             const [ emptystatsobject, shoplist, yearlist, monthlist, currencylist ] = await Promise.all([
-                this.$axios.$get('/webapi/Economy/GetEmptyEconomyStatsObject'),
+                this.$axios.$get('/webapi/Stats/GetEmptyStatsObject'),
                 this.$axios.$get('/webapi/Shop/GetShopList'),
                 this.$axios.$get('/webapi/Utility/GetYearList'),
                 this.$axios.$get('/webapi/Utility/GetMonthList'),
                 this.$axios.$get('/webapi/Economy/GetCurrencyList'),
             ])
-            this.emptyStatsObject = {
-                "ShopId": null,
-                "Year": null,
-                "Month": null,
-                "MerchantId": null,
-                "CurrencyId": null,
-                "VatType1": null,
-                "VatType2": null,
-            }
-            // this.emptyStatsObject = emptystatsobject
+            this.emptyStatsObject = emptystatsobject
             this.currentStatsObject = this.emptyStatsObject
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
