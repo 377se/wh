@@ -40,13 +40,13 @@
                                                     <tr class="uk-table-middle uk-relative" :key="maincat.CategoryId">
                                                         <td class="sticky-subheaders" style="text-align: left; border-collapse: collapse;">{{ maincat.Name }}</td>
                                                         <td v-for="year in maincat.SaleList" :key="year.Year" class="sticky-subheaders uk-text-small" style="text-align: right; width: 120px; border-collapse: collapse;">{{ parseInt(year.OrderTotal) | thousandsDelimiter }}</td>
-                                                        <td v-for="(col, index) in yearsContainer.length - maincat.SaleList.length" :key="index" class="sticky-subheaders"></td>
+                                                        <td v-for="(col, index) in yearsContainer.length - maincat.SaleList.length" :key="index" class="sticky-subheaders uk-text-small" style="text-align: right; width: 120px; border-collapse: collapse;">0</td>
                                                     </tr>
                                                     <tr v-for="cat in maincat.SubList" :key="cat.CategoryId" class="uk-table-middle">
                                                         <td class="border-left border-bottom borde-right" style="text-align: left; border-collapse: collapse; padding-left:30px;">{{ cat.Name }}</td>
                                                         <template v-for="year in yearsContainer">
                                                             <td v-if="getTotalForYearSubCat(year, cat.SaleList) != 0" :key="year" class="uk-text-small border-left border-bottom borde-right" style="text-align: right; width: 120px; border-collapse: collapse;">{{ parseInt(getTotalForYearSubCat(year, cat.SaleList))  | thousandsDelimiter }}</td>
-                                                            <td v-else class="border-all" :key="year" style="text-align: right; width: 120px; border-collapse: collapse;">0</td>
+                                                            <td v-else class="uk-text-small border-left border-bottom borde-right" :key="year" style="text-align: right; width: 120px; border-collapse: collapse;">0</td>
                                                         </template>
                                                     </tr>
                                                 </template>
