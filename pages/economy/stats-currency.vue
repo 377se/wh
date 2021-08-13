@@ -177,11 +177,11 @@ export default {
                 _this.statsByCurrencyWithSummary = statsbycurrency
                 _this.forceRerender()
                 _this.hidePageOverlaySpinner()
-                UIkit.modal.dialog('<p class="uk-modal-body">Din statistik är nu hämtad och färdig att exporteras!</p>')
+                UIkit.modal.alert('<p class="uk-modal-body">Din statistik är nu hämtad och färdig att exporteras!</p>')
 			})
 			.catch(function (error) {
                 console.log(error)
-                UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>')
+                UIkit.modal.default('<p class="uk-modal-body">Ingen statistik hittades!</p>')
                 _this.hidePageOverlaySpinner()
 			})
 		},
