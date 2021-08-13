@@ -177,6 +177,7 @@ export default {
                 _this.statsByCurrencyWithSummary = statsbycurrency
                 _this.forceRerender()
                 _this.hidePageOverlaySpinner()
+                UIkit.modal.dialog('<p class="uk-modal-body">Din statistik är nu hämtad och färdig att exporteras!</p>')
 			})
 			.catch(function (error) {
                 console.log(error)
