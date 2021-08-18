@@ -59,9 +59,13 @@
                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.Voucher }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Konto-id</strong></td>
+                                        <td class="border-bottom border-right uk-width-1-5"><strong>Merchant-id</strong></td>
                                         <td v-if="orderInfo.AccountId" class="border-bottom uk-width-4-5">{{ orderInfo.AccountId }}</td>
                                         <td v-else class="border-bottom uk-width-4-5"><span class="uk-badge md-bg-gray-600">Denna order saknar information om provider-Id</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-bottom border-right uk-width-1-5"><strong>Klarna-Id</strong></td>
+                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.KlarnaPurchaseId }}</td>
                                     </tr>
                                     <tr>
                                         <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
@@ -697,11 +701,10 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.orderContent = _this.orderContentInitial
-                        _this.orderContent.OrderItemList.forEach(item => {
-                            item.IsSelected = false
-                        })
+                        _this.orderContent.OrderItemList.forEach(item => { item.IsSelected = false })
                         _this.paymentTypeId = 0
                         _this.hidePageOverlaySpinner()
+                        _this.$router.push('/order/' + response.OrderId)
                     }
                 } catch(err) {
                     console.log(err)
