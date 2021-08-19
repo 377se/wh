@@ -32,8 +32,8 @@
                                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 27%;">Datum</th>
                                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 25%;">Fakturanummer</th>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 25%;">Berörda ordrar</th>
-                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 12%;">Produkter</th>
-                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 10%;"></th>
+                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: center; width: 10%;">Produkter</th>
+                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: center; width: 10%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -41,10 +41,10 @@
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.CreatedDate }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.InvoiceNumber }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.OrdersShipped }}</td>
-                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">
+                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: center;">
                                                     <button class="sc-button sc-button-mini uk-align-center" @click="getProducts(waybill.WaybillId)">VISA</button>
                                                 </td>
-                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: left; ">
+                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: center; ">
                                                     <button @click="printWayBill(waybill.WaybillId)" class="sc-button sc-button-mini uk-align-center">SKRIV&nbsp;UT</button>
                                                 </td>
                                             </tr>
