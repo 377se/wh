@@ -41,7 +41,9 @@
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.CreatedDate }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.InvoiceNumber }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.OrdersShipped }}</td>
-                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;"><button class="sc-button sc-button-mini uk-align-center" @click="getProducts(waybill.WaybillId)" data-uk-toggle>VISA</button></td>
+                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">
+                                                    <button class="sc-button sc-button-mini uk-align-center" @click="getProducts(waybill.WaybillId)">VISA</button>
+                                                </td>
                                                 <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: left; ">
                                                     <button @click="printWayBill(waybill.WaybillId)" class="sc-button sc-button-mini uk-align-center">SKRIV&nbsp;UT</button>
                                                 </td>
@@ -93,7 +95,7 @@
                             </ScCardBody>
                         </ScCard>
                         <!-- DETALJVY LEVERERADE PRODUKTER MODAL -->
-                        <div v-if="waybillDetails.length > 0" id="modal-products" class="uk-modal uk-modal-full uk-animation-slide-right" data-uk-modal>
+                        <div id="modal-products" class="uk-modal-full uk-modal" data-uk-modal>
                             <div>
                                 <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
                                     <!-- sticky -->
@@ -105,7 +107,7 @@
                                         uk-close
                                         uk-toggle="target: #dailysales-modal"/>
                                 </div>
-                                <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+                                <div v-if="waybillDetails != null" class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" style="padding:0px;height:100vh;background:#ffffff;">
                                     <!-- SUMMERING -->
                                     <div class="uk-width-1-1" uk-margin>
                                         <ScCard class="uk-card-small">
@@ -133,7 +135,7 @@
                                     </div>
                                     <!-- LIST -->
                                     <div class="uk-width-1-1">
-                                        <ScCard class="uk-card-small">
+                                        <ScCard class="uk-card-small" :key="render">
                                             <ScCardBody>
                                                 <div class="uk-overflow-auto">
                                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove waybilllist">
@@ -187,10 +189,11 @@ export default {
 		return {
             errors: null,
             message: '',
+            render: false,
             emptyStatsObject: {},
             currentStatsObject: {},
             waybillList: [],
-            waybillDetails: [],
+            waybillDetails: null,
             invoice: null,
         }
     },
@@ -218,18 +221,17 @@ export default {
         },
         async getProducts(waybillid) {
             let _this = this
-            _this.waybillDetails = []
+            _this.waybillDetails = null
             try {
                 const [ waybilldetails ] = await Promise.all([
-                    this.$axios.$get('/webapi/Waybill/GetWaybillDetails?waybillId=' + waybillid ),
-            ])
-			    _this.waybillDetails = waybilldetails
+                    this.$axios.$get('/webapi/Waybill/GetWaybillDetails?waybillId=' + waybillid )
+                ])
+                _this.waybillDetails = waybilldetails
+                UIkit.modal('#modal-products').show()
+                _this.render = !_this.render
             } catch (err) {
                 console.log(err);
             }
-            setTimeout(() => {
-                UIkit.modal('#modal-products').show()
-            }, 200)
 		},
     },
     async fetch () {
