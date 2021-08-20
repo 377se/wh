@@ -121,38 +121,6 @@
 								</ul>
 								<!-- TAB CONTENT -->
 								<ul class="uk-switcher">
-									<!-- 10 SENASTE -->
-									<li class="uk-active">
-										<ScCard>
-											<ScCardBody>
-												<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
-													<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
-														<thead>
-															<tr>
-																<td colspan="2" class="border-bottom border-right uk-text-left">
-																	<div class="uk-flex uk-flex-between">
-																		<div><strong>Senaste produkterna</strong></div>
-																		<div class="uk-badge md-bg-green-600">{{ recentlyActivated.length }}</div>
-																	</div>
-																</td>
-															</tr>
-														</thead>
-														<tbody>
-															<tr v-for="article in recentlyActivated" :key="article.ArticleId" class="uk-table-middle">
-																<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
-																<td class="border-bottom border-right uk-width-auto uk-text-left">
-																	<nuxt-link :to="article.Url">
-																		<div>{{ article.TeamName | toUppercase }}</div>
-																		<div>{{ article.ArticleName }}</div>
-																	</nuxt-link>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-											</ScCardBody>
-										</ScCard>
-									</li>
 									<!-- PER DATUM -->
 									<li>
 										<ScCard v-if="activeOrdersByDate">
@@ -185,6 +153,38 @@
 																<td class="border-bottom border-right uk-text-right"><strong>{{ activeOrdersByDate.Summary.NumberOfOrdersWithAddons }}</strong></td>
 															</tr>
 														</tfoot>
+													</table>
+												</div>
+											</ScCardBody>
+										</ScCard>
+									</li>
+									<!-- 10 SENASTE -->
+									<li class="uk-active">
+										<ScCard>
+											<ScCardBody>
+												<div class="uk-width-1-1 extensionlist-container uk-overflow-auto">
+													<table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+														<thead>
+															<tr>
+																<td colspan="2" class="border-bottom border-right uk-text-left">
+																	<div class="uk-flex uk-flex-between">
+																		<div><strong>Senaste produkterna</strong></div>
+																		<div class="uk-badge md-bg-green-600">{{ recentlyActivated.length }}</div>
+																	</div>
+																</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr v-for="article in recentlyActivated" :key="article.ArticleId" class="uk-table-middle">
+																<td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+																<td class="border-bottom border-right uk-width-auto uk-text-left">
+																	<nuxt-link :to="article.Url">
+																		<div>{{ article.TeamName | toUppercase }}</div>
+																		<div>{{ article.ArticleName }}</div>
+																	</nuxt-link>
+																</td>
+															</tr>
+														</tbody>
 													</table>
 												</div>
 											</ScCardBody>
