@@ -72,6 +72,16 @@
                             />
                         </div>
                         <div v-if="shopId" class="uk-overflow-auto">
+                        <div uk-scrollspy="cls: uk-animation-fade; target: #sticky-down-right; delay: 500; repeat: true;">
+                            <button
+                                v-waves.button.light
+                                class="sc-button sc-button-primary sc-button-small uk-margin-medium-top sticky-down-right"
+                                href="#"
+                                uk-totop
+                                uk-scroll
+                            >
+                            </button>
+                        </div>
                             <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
                                 <thead :class="{ 'hide': index !== 0 }">
                                     <tr class="uk-padding-remove-bottom">
@@ -297,5 +307,11 @@ export default {
     }
     .orderlist {
         table-layout: fixed;
+    }
+    .sticky-down-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1;
     }
 </style>
