@@ -52,7 +52,7 @@
                         :rows="products"
                         style-class="vgt-table"
                         :search-options="{ 
-                            enabled: true,
+                            enabled: false,
                             trigger: 'enter',
                         }"
                         :pagination-options="{
