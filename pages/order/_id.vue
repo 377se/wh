@@ -541,7 +541,7 @@
             <div>
                 <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
                     <!-- sticky -->
-                    <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Redigera mail till kund</h4>
+                    <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Skicka mail till kund</h4>
                     <button
                         class="uk-offcanvas-close uk-icon uk-close"
                         style="color:#fff;top:14px;right:12px;"
