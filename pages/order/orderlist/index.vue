@@ -17,7 +17,7 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody>
-                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 60">
+                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 45">
                                 <div class="uk-margin-medium-bottom uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                                     <client-only>
@@ -150,6 +150,7 @@ export default {
             orderList: [],
             orders: [],
             shopId: null,
+            orderDate: null,
             shopOptionsList: [],
             errors: null,
             message: '',
@@ -258,7 +259,7 @@ export default {
             _this.resetIsSelected()
             _this.orders = []
             _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Order/GetOrderlist?shopId=' + _this.shopId +'&orderdate=2021-04-14&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1')
+			await this.$axios.$get('/webapi/Order/GetOrderlist?shopId=' + _this.shopId +'&orderdate=' + _this.orderDate + '&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1')
 			.then(function (orderlist) {
                 _this.orderList = orderlist
                 _this.resetIsSelected()
@@ -276,6 +277,15 @@ export default {
                 this.$axios.$get('/webapi/Shop/GetShopList'),
             ])
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+            if (this.$route.query.shopId || this.$route.query.orderDate) {
+                if (this.$route.query.shopId) {
+                    this.shopId = this.$route.query.shopId
+                }
+                if (this.$route.query.orderDate) {
+                    this.orderDate = this.$route.query.orderDate
+                }
+                this.getOrderList()
+            }
         } catch (err) {
             console.log(err);
         }
