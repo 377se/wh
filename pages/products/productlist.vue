@@ -51,7 +51,10 @@
                         :columns="columns"
                         :rows="products"
                         style-class="vgt-table"
-                        :search-options="{ enabled: true }"
+                        :search-options="{ 
+                            enabled: true,
+                            trigger: 'enter',
+                        }"
                         :pagination-options="{
                             enabled: true,
                             mode: 'pages',
