@@ -110,12 +110,12 @@
 								<ul data-uk-tab>
 									<li class="uk-active">
 										<a href="javascript:void(0)">
-											SENASTE
+											PER DATUM
 										</a>
 									</li>
 									<li>
 										<a href="javascript:void(0)">
-											PER DATUM
+											SENASTE
 										</a>
 									</li>
 								</ul>
@@ -138,7 +138,7 @@
 														</thead>
 														<tbody>
 															<tr v-for="orders in activeOrdersByDate.ItemList" :key="orders.Id" class="uk-table-middle">
-																<td class="border-bottom border-right uk-width-auto uk-text-left" style="min-width:80px;"><nuxt-link :to="orders.Url">{{ orders.OrderDate }}</nuxt-link></td>
+																<td class="border-bottom border-right uk-width-auto uk-text-left" style="min-width:80px;"><nuxt-link :to="`/order/orderlist?orderDate=${orders.OrderDate}&shopId=${orders.ShopId}`">{{ orders.OrderDate }}</nuxt-link></td>
 																<td class="border-bottom border-right uk-width-auto uk-text-left">{{ orders.ShopName }}</td>
 																<td class="border-bottom border-right uk-width-auto uk-text-right">{{ orders.NumberOfOrders }}</td>
 																<td class="border-bottom border-right uk-width-auto uk-text-right"><span :class="{'uk-badge md-bg-green-600': orders.NumberOfOrders == orders.NumberOfOrdersPrinted}">{{ orders.NumberOfOrdersPrinted }}</span></td>
