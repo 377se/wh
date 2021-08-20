@@ -123,8 +123,6 @@ export default {
             productStatusList: [],
 			products: [],
 			selections: [],
-			shopId: 1,
-			selectionId: 1,
 		}
     },
 	mounted() {
@@ -236,8 +234,6 @@ export default {
             this.currentStatsObject = emptystatsobject
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.productStatusList = productstatuslist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-            this.currentStatsObject.shopId = 1
-            this.currentStatsObject.StatusId = 1
         } catch (err) {
             console.log(err);
         }
