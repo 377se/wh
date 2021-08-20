@@ -111,8 +111,11 @@
                                                     <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                                         SKRIV UT
                                                     </button>
-                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="setOrderAsDeliveredByOrderId()">
                                                         SÄTT SOM LEVERERAD
+                                                    </button>
+                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="getEmptyEmailObject()">
+                                                        MAILA KUND
                                                     </button>
                                                 </div>
                                             </div>
@@ -532,11 +535,54 @@
             </div>
         </div>
         <Deliverynotes v-if="showDeliveryNote" :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" />
+
+        <!-- MAIL-EDITOR -->
+        <div id="mail-editor" class="uk-modal-full uk-modal" data-uk-modal>
+            <div>
+                <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
+                    <!-- sticky -->
+                    <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Redigera mail till kund</h4>
+                    <button
+                        class="uk-offcanvas-close uk-icon uk-close"
+                        style="color:#fff;top:14px;right:12px;"
+                        type="button"
+                        uk-close
+                        uk-toggle="target: #mail-editor"/>
+                </div>
+                <div v-if="emptyEmail != null" class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" style="padding:0px;height:100vh;background:#ffffff;">
+                    <div class="uk-width-1-1" uk-margin>
+                        <ScCard class="uk-card-small">
+                                <ScCardBody class="uk-height-1-1">
+                                    <div class="uk-width-1-1 uk-padding-small">
+                                        <!-- Titel -->
+                                        <div class="uk-margin">
+                                            <ScInput v-model="emptyEmail.Title" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                                                <label>Titel</label>
+                                            </ScInput>
+                                        </div>
+                                        <div class="uk-margin">
+                                            <ScTextarea v-model="emptyEmail.Text" :rows="30" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <label>Text</label>
+                                            </ScTextarea>
+                                        </div>
+                                        <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="sendOrderMail()">
+                                            SKICKA
+                                        </button>
+                                    </div>
+                                </ScCardBody>
+                        </ScCard>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 
 <script>
 import ScInput from '~/components/Input'
+import ScTextarea from '~/components/Textarea'
 import Alert from '~/components/Alert'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import Deliverynotes from '~/components/Deliverynotes'
@@ -545,6 +591,7 @@ import Print from '~/plugins/directives/vue-print-nb/printarea.js'
 export default {
     components: {
 		ScInput,
+		ScTextarea,
 		PrettyCheck,
 		Deliverynotes,
 		Alert,
@@ -560,6 +607,7 @@ export default {
             orderProcessTypeList: [],
             paymentTypeId: 0,
             orderInfo: {},
+            emptyEmail: {},
             orderContent: {},
             orderContentInitial: {},
             orderItem: null,
@@ -848,6 +896,45 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async getEmptyEmailObject() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+            try {
+                const emptyemail = await this.$axios.$get('/webapi/OrderHandling/GetEmptyEmailObject?orderId=' + this.$route.params.id)
+                if (emptyemail.ErrorList != null ) {
+                    _this.errors = emptyemail.ErrorList
+                    _this.hidePageOverlaySpinner()
+                } else {
+                    _this.emptyEmail = emptyemail
+                    _this.hidePageOverlaySpinner()
+                    UIkit.modal('#mail-editor').show()
+                }
+            } catch(err) {
+                console.log(err)
+            }
+		},
+        async sendOrderMail() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+            await this.$axios.$post('/webapi/OrderHandling/SendOrderMail', _this.emptyEmail )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        UIkit.modal.dialog('<p class="uk-modal-body">Ditt mail har skickats!</p>')
+                        _this.hidePageOverlaySpinner()
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+		},
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
             this.$store.commit('togglePageOverlay', false)
@@ -910,5 +997,24 @@ export default {
     .slide-enter, .slide-leave-to {
         transform: translateX(300%);
     }
+
+    // MAIL-EDITOR
+    .uk-modal-dialog, .uk-modal-header {
+        margin-left: auto;
+        width:55vw !important;
+        max-width: 800px !important;
+        @media only screen and (max-width: 600px) {
+            width:85vw !important;
+            max-width: 800px !important;
+        }
+	}
+    .uk-modal-header {
+		min-height: 50px;
+		height: auto;
+		padding: 0px;
+	}
+	.basket-ribbon{
+		background: #00838F;
+	}
 
 </style>
