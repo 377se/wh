@@ -72,20 +72,17 @@
                         {{ this.products.length }}
                     </div>
                         <template slot="table-row" slot-scope="props">
-                            <img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
-                            <span v-else-if="props.column.field === 'Category'">
-                                {{ props.row.Category }}
+							<img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
+                            <span v-if="props.column.field === 'ArticleName'">
+                                <nuxt-link :to="props.row.Url">{{ props.row.ArticleName }}</nuxt-link>
                             </span>
-                            <nuxt-link v-else-if="props.column.field === 'ProductName'" :to="props.row.Url">
-                                <div>{{ props.row.ProductName }}</div>
-                            </nuxt-link>
                             <span v-else-if="props.column.field === 'ArticleNumber'">
                                 {{ props.row.ArticleNumber }}
                             </span>
                             <input
                                 class="uk-input"
                                 v-else-if="props.column.field === 'Shelf'"
-                                v-on:blur="updateArticleDetails(props.row)"
+                                v-on:blur="updateShelf(props.row)"
                                 v-model="props.row.Shelf"
                             >
                             <span v-else-if="props.column.field === 'Price'">
@@ -94,11 +91,7 @@
                             <span v-else-if="props.column.field === 'PriceOnSale'">
                                 {{ props.row.PriceOnSale }}
                             </span>
-                            <span v-else-if="props.column.field === 'ItemsInStock'"
-                            :class="[
-                                {'uk-label uk-label-danger': props.row.ItemsInStock < 1 },
-                                {'uk-label uk-label-warning': props.row.ItemsInStock < 11 && props.row.ItemsInStock >= 1 },
-                                ]">
+                            <span v-else-if="props.column.field === 'ItemsInStock'">
                                 {{ props.row.ItemsInStock }}
                             </span>
                             <span v-else>
@@ -138,26 +131,16 @@ export default {
 	computed: {
 		columns () {
 			return [
-				{
+                {
 					label: '',
 					field: 'ImageName',
 					sortable: false,
 					tdClass: 'uk-text-center uk-text-nowrap',
                     width: '33px',
 				},
-				{
-					label: 'Kategori',
-					field: 'Category',
-					sortable: true,
-					type: 'string',
-					filterOptions: {
-						enabled: true
-					},
-                    width: '10%',
-				},
-				{
+                {
 					label: 'Produktnamn',
-					field: 'ProductName',
+					field: 'ArticleName',
 					sortable: true,
 					type: 'string',
 					filterOptions: {
@@ -186,28 +169,6 @@ export default {
                     tdClass: 'uk-text-center',
 				},
 				{
-					label: 'Utpris',
-					field: 'Price',
-					sortable: true,
-					type: 'number',
-					filterOptions: {
-						enabled: true
-					},
-                    tdClass: 'uk-text-center',
-                    thClass: 'uk-text-left',
-				},
-				{
-					label: 'REA',
-					field: 'PriceOnSale',
-					sortable: true,
-                    type: 'number',
-					filterOptions: {
-						enabled: true
-					},
-					thClass: 'uk-text-left',
-                    tdClass: 'uk-text-center',
-				},
-				{
 					label: 'Lagersaldo',
 					field: 'ItemsInStock',
 					sortable: true,
@@ -215,54 +176,43 @@ export default {
 					filterOptions: {
 						enabled: true
 					},
-					thClass: 'uk-text-left',
-                    tdClass: 'uk-text-center',
-				},
-				{
-					label: 'Pub.datum',
-					field: 'PublishDate',
-					sortable: true,
-					filterOptions: {
-						enabled: true
-					},
-                    type: 'date',
-					dateInputFormat: 'yyyy-MM-dd',
-					dateOutputFormat: 'MMM do yyyy',
-					thClass: 'uk-text-left',
-					tdClass: 'uk-text-nowrap uk-text-left'
+					thClass: 'uk-text-right',
+                    tdClass: 'uk-text-right',
 				},
 			]
 		},
 	},
 	methods: {
 		async loadProducts() {
-            this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Article/ArticleListByStatus', this.currentStatsObject)
-			.then(products => {
-				this.products = products
-                this.hidePageOverlaySpinner()
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
+            let _this = this
+            _this.showPageOverlaySpinner()
+            try {
+                const [ products ] = await Promise.all([
+                    this.$axios.$post('/webapi/Article/ArticleListByStatus', _this.currentStatsObject)
+                ])
+                _this.products = products
+                _this.hidePageOverlaySpinner()
+            } catch (error) {
+                console.log(error)
+            }
     	},
-		async updateArticleDetails(articleDetails) {
+		async updateShelf(articledetails) {
 			let _this = this
-			// _this.isUpdating = true
-			await this.$axios.$post('/webapi/ControlCenter/PostUpdate', articleDetails)
-			.then(function (response) {
-				if(response.Message !== ''){
-					// setTimeout(() => {
-					// 	_this.isUpdating = false
-					// }, 1000)
-					_this.showPageOverlaySpinner()
+            _this.showPageOverlaySpinner()
+            try {
+                const [ response ] = await Promise.all([
+                    this.$axios.$post('/webapi/Article/UpdateShelf', articledetails)
+                ])
+                if(response.ErrorList != null) {
+                    _this.hidePageOverlaySpinner()
+                    console.log('Something fucked up!')
 				} else {
-
+                    console.log("Something didn't fuck up!")
         		}
-			})
-			.catch(function (error) {
-				console.log(error)
-			})
+                _this.hidePageOverlaySpinner()
+            } catch (error) {
+                console.log(error)
+            }
 		},
         hidePageOverlaySpinner () {
             this.$store.commit('toggleProgressOverlay', false);
