@@ -554,6 +554,11 @@
                         <ScCard class="uk-card-small">
                                 <ScCardBody class="uk-height-1-1">
                                     <div class="uk-width-1-1 uk-padding-small">
+                                        <Alert
+                                            :errorlist="errors"
+                                            :alertClass="'uk-alert-danger'"
+                                            id=1
+                                        />
                                         <!-- Titel -->
                                         <div class="uk-margin">
                                             <ScInput v-model="emptyEmail.Title" state="fixed" mode="outline"  extra-classes="uk-form-small">
@@ -916,11 +921,13 @@ export default {
         async sendOrderMail() {
 			let _this = this
             _this.showPageOverlaySpinner()
+            _this.$store.commit('setAlertHidden', 1)
             await this.$axios.$post('/webapi/OrderHandling/SendOrderMail', _this.emptyEmail )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
                         _this.hidePageOverlaySpinner()
                     } else {
                         UIkit.modal.dialog('<p class="uk-modal-body">Ditt mail har skickats!</p>')
