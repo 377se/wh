@@ -565,10 +565,12 @@
                                                 <label>Titel</label>
                                             </ScInput>
                                         </div>
-                                        <div class="uk-margin">
-                                            <ScTextarea v-model="emptyEmail.Text" :rows="30" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                                <label>Text</label>
-                                            </ScTextarea>
+                                        <div class="uk-margin editor-styles">
+                                            <client-only>
+                                                <ckeditor v-model="emptyEmail.Text" :editor="editor" :config="editorConfig"></ckeditor>
+                                            </client-only>
+                                            <!-- <ScTextarea v-model="emptyEmail.Text" :rows="30" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            </ScTextarea> -->
                                         </div>
                                         <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right" @click.prevent="sendOrderMail()">
                                             SKICKA
@@ -592,6 +594,9 @@ import Alert from '~/components/Alert'
 import PrettyCheck from 'pretty-checkbox-vue/check'
 import Deliverynotes from '~/components/Deliverynotes'
 import Print from '~/plugins/directives/vue-print-nb/printarea.js'
+if(process.client) {
+	require('~/plugins/ckeditor');
+}
 
 export default {
     components: {
@@ -613,6 +618,9 @@ export default {
             paymentTypeId: 0,
             orderInfo: {},
             emptyEmail: {},
+            editorConfig: {
+                toolbar: [ 'bold', 'italic', 'link', 'undo', 'redo', 'numberedList', 'bulletedList' ],
+            },
             orderContent: {},
             orderContentInitial: {},
             orderItem: null,
@@ -631,7 +639,9 @@ export default {
 
     },
     computed: {
-
+		editor () {
+			return process.client ? require('@ckeditor/ckeditor5-build-classic') : null
+		}
     },
     methods: {
         async deleteItem(itemId) {
@@ -911,6 +921,7 @@ export default {
                     _this.hidePageOverlaySpinner()
                 } else {
                     _this.emptyEmail = emptyemail
+                    _this.emptyEmail.Text = ''
                     _this.hidePageOverlaySpinner()
                     UIkit.modal('#mail-editor').show()
                 }
@@ -1023,5 +1034,4 @@ export default {
 	.basket-ribbon{
 		background: #00838F;
 	}
-
 </style>
