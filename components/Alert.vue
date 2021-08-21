@@ -5,8 +5,9 @@
     class="alert uk-margin-bottom" 
     >
     <div
-      v-for="error in errorlist"
-      :key="error.Name"
+      v-for="(error, index) in errorlist"
+      :key="index"
+      :class="{'uk-margin-small-top': index != 0}"
     >
       {{ error.Value }}
     </div>
