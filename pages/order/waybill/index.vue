@@ -33,7 +33,6 @@
                                                 <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 25%;">Fakturanummer</th>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 25%;">Berörda ordrar</th>
                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: center; width: 10%;">Produkter</th>
-                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: center; width: 10%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -41,11 +40,8 @@
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.CreatedDate }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.InvoiceNumber }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.OrdersShipped }}</td>
-                                                <td class="border-bottom border-left uk-overflow-hidden" style="text-align: center;">
-                                                    <button class="sc-button sc-button-mini uk-align-center" @click="getProducts(waybill.WaybillId)">VISA</button>
-                                                </td>
-                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: center; ">
-                                                    <button @click="printWayBill(waybill.WaybillId)" class="sc-button sc-button-mini uk-align-center">SKRIV&nbsp;UT</button>
+                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: center;">
+                                                    <button class="sc-button sc-button-mini uk-align-center" @click="getProducts(waybill.WaybillId, 1)">VISA</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -59,7 +55,7 @@
                         <ScCard class="uk-card-small">
                             <ScCardHeader separator>
                                 <ScCardTitle>
-                                    Sök inom period
+                                    Skapa underlag
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
@@ -82,14 +78,13 @@
                                     <div class="uk-width-1-1">
                                         <!-- Fakturanummer (ex SDN05005) -->
                                         <div class="uk-margin uk-margin-large-top">
-                                            <ScInput v-model.number="invoice" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                                            <ScInput v-model="currentWayBill.InvoiceNumber" state="fixed" mode="outline"  extra-classes="uk-form-small">
                                                 <label>Fakturanummer (ex SDN05005)</label>
                                             </ScInput>
                                         </div>
                                         <div class="uk-width-1-1 uk-flex uk-flex-center uk-margin-medium-top uk-margin-medium-bottom">
-                                            <div><button @click="createWaybillList" class="sc-button sc-button-primary uk-align-center uk-margin-medium-right">SKAPA UNDERLAG</button></div>
+                                            <div><button @click="createWaybill" class="sc-button sc-button-primary uk-align-center uk-margin-medium-right">SKAPA UNDERLAG</button></div>
                                         </div>
-
                                     </div>
                                 </div>
                             </ScCardBody>
@@ -112,7 +107,7 @@
                                     <div class="uk-width-1-1" uk-margin>
                                         <ScCard class="uk-card-small">
                                                 <ScCardBody class="uk-text-center">
-                                                    <div class="uk-width-1-1 uk-flex uk-flex-around uk-padding-small">
+                                                    <div class="uk-width-1-1 uk-flex uk-flex-around uk-flex-middle uk-padding-small">
                                                         <div>
                                                             <div class="summary ">{{ waybillDetails.Details.TotalAmount | thousandsDelimiter }}</div>
                                                             <div class="">totalt värde</div>
@@ -128,6 +123,9 @@
                                                         <div>
                                                             <div class="summary ">{{ waybillDetails.Details.NumberOfParcels | thousandsDelimiter }}</div>
                                                             <div class="">paket</div>
+                                                        </div>
+                                                        <div>
+                                                            <button v-print="printWaybill" class="sc-button sc-button-primary uk-align-center">SKRIV&nbsp;UT</button>
                                                         </div>
                                                     </div>
                                                 </ScCardBody>
@@ -173,34 +171,160 @@
                 </div>
             </div>
         </div>
+
+        <!-- TULLSEDEL - UTSKRIFT -->
+        <div v-if="waybillDetails" id="page-wrap-waybill" style="clear: both; page-break-after: always;" class="waybill-printed">
+
+            <div id="header">Invoice</div>
+
+            <div id="invoicedetails">
+                Invoice date: {{ waybillDetails.Details.InvoiceDate }}<br />
+                Invoice no: {{ waybillDetails.Details.InvoiceNumber }}<br />
+                Terms of payment: 30 days net<br />
+                Terms of delivery: DAP - Oslo<br />
+                <br />
+                <strong>SENDER</strong><br />
+                377 Sport AB<br />
+                Stensätravägen 9A<br />
+                127 39 Skärholmen<br />
+                SWEDEN<br />
+                EORI: SE5566841465
+
+            </div>
+
+           <div id="consignee">
+                <strong>CONSIGNEE</strong><br />
+                377 Sport AS<br />
+                c/o Praksisutvikling AS<br />
+                Postboks 169<br />
+                0130 Oslo<br />
+                NORWAY<br />
+                VAT: NO 913 444 019<br />
+                <br />
+                Number of parcels: {{ waybillDetails.Details.NumberOfParcels }}<br />
+                Weight: {{ waybillDetails.Details.TotalWeight }} kg
+
+            </div>
+
+            <div id="buyer">
+                <strong>BUYER</strong><br />
+                377 Sport AS<br />
+                c/o Praksisutvikling AS<br />
+                Postboks 169<br />
+                0130 Oslo<br />
+                NORWAY<br />
+                VAT: NO 913 444 019<br />
+                <br />
+                Contact person: Svein Berntzen<br />
+                Phone: +47 917 05 561<br />
+                E-mail: svein@nettregnskap.net<br />
+
+            </div>
+
+            <div style="clear: both"></div>
+
+            <div class="order">
+                <table class="items">
+                    <thead>
+                        <tr>
+                            <th>SI.NO</th>
+                            <th>DESCRIPTION</th>
+                            <th>COUNTRY</th>
+                            <th style="text-align: center;">TARIFF.NO</th>
+                            <th style="text-align: center;">WEIGHT</th>
+                            <th style="text-align: center;">QTY</th>
+                            <th style="text-align: right;">PRICE/U</th>
+                            <th style="text-align: right;">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-if="waybillDetails != null">
+                            <tr v-for="article in waybillDetails.ArticleList" :key="article.SnNo" class="item-row">
+                                <td class="sino">{{ article.SnNo }}</td>
+                                <td class="description"><br />{{ article.Description }}</td>
+                                <td class="country">{{ article.Origin }}</td>
+                                <td class="tariff">{{ article.Tariff }}</td>
+                                <td class="weight">{{ article.TotalWeight }}</td>
+                                <td class="qty">{{ article.NumberOfItems }}</td>
+                                <td class="price">{{ article.Price }}</td>
+                                <td class="amount">{{ article.Amount }}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                    <tfoot>
+                        <tr class="summary-row">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="amount" colspan="2">SEK<br />
+                                {{ waybillDetails.Details.TotalAmount | thousandsDelimiter }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="terms">
+                <p>
+                    The exporter of the products covered by this document (Aut. no) declares that, except where otherwise clearly indicated, these products are of EEA/TR preferential origin.<br />
+                    Tollkredit number 33072841.
+                </p>
+            </div>
+
+            <div class="terms signature">
+                <p>
+                    2021-08-18 Signature:
+                </p>
+            </div>
+
+            <div class="terms">
+                <p>
+                    Address: 377 Sport AB, Stensätravägen 9A, 127 39 Skärholmen, SWEDEN<br />
+                    Phone: +46 8 6585 377, E-mail: invoice@377.se, VAT: SE556684-1465
+                </p>
+            </div>
+
+        </div>
+
     </div>
 </template>
 
 <script>
 import Alert from '~/components/Alert'
 import ScInput from '~/components/Input'
+import print from '~/plugins/directives/vue-print-nb'
+
 
 export default {
 	components: {
 		Alert,
 		ScInput,
     },
+    directives: {
+        print,
+    },
     data () {
 		return {
+            printWaybill: {
+                id: "page-wrap-waybill",
+            },
             errors: null,
             message: '',
             render: false,
-            emptyStatsObject: {},
-            currentStatsObject: {},
+            emptyWayBill: {},
+            currentWayBill: {},
             waybillList: [],
             waybillDetails: null,
-            invoice: null,
         }
     },
     watch: {
 
     },
 	mounted: function () {
+        this.$store.commit('setAlertHidden', 1)
     },
     computed: {
     },
@@ -213,24 +337,44 @@ export default {
             this.$store.commit('toggleProgressOverlay', true);
             this.$store.commit('togglePageOverlay', true)
         },
-        createWaybillList() {
-
-        },
-        printWaybill() {
-
-        },
-        async getProducts(waybillid) {
+        async createWaybill() {
             let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.showPageOverlaySpinner()
+            await this.$axios.$post('/webapi/Waybill/PostCreateWaybill', _this.currentWayBill)
+			.then(function (res) {
+                if (res.ErrorList != null) {
+                    _this.errors = res.ErrorList
+                    _this.$store.commit('setAlertVisible', 1)
+                    _this.hidePageOverlaySpinner()
+                } else {
+                    _this.$fetch()
+                    _this.hidePageOverlaySpinner()
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.hidePageOverlaySpinner()
+			})
+        },
+        async getProducts(waybillid, type) {
+            let _this = this
+            _this.showPageOverlaySpinner()
             _this.waybillDetails = null
             try {
                 const [ waybilldetails ] = await Promise.all([
                     this.$axios.$get('/webapi/Waybill/GetWaybillDetails?waybillId=' + waybillid )
                 ])
+                _this.hidePageOverlaySpinner()
                 _this.waybillDetails = waybilldetails
-                UIkit.modal('#modal-products').show()
-                _this.render = !_this.render
+                if (type == 1) {
+                    setTimeout(() => {
+                        UIkit.modal('#modal-products').show()
+                        _this.render = !_this.render
+                    }, 200)
+                }
             } catch (err) {
-                console.log(err);
+                console.log(err)
             }
 		},
     },
@@ -291,5 +435,183 @@ export default {
 	.basket-ribbon{
 		background: #00838F;
 	}
+
+
+    // PRINT STYLES
+    .waybill-printed {
+        margin: 0 0 50px 0;
+        padding: 50px 50px;
+        background-color: #fff;
+        display: none;
+    }
+    @media print {
+        .waybill-printed {
+            // margin: 30px 60px 60px 30px  !important;
+            padding: 40px;
+            display: block;
+        }
+    }
+
+
+
+    #page-wrap-waybill {
+        width: 900px;
+        margin: 0 auto;
+    }
+    #page-wrap-waybill > div,
+    #page-wrap-waybill > textarea {
+        border: 0;
+        font: 13px;
+        line-height: 18px;
+        overflow: hidden;
+        resize: none;
+    }
+    table {
+        border-collapse: collapse;
+    }
+    table td,
+    table th {
+        border: 0;
+        padding: 10px;
+    }
+    #header {
+        font-family: "Roboto Condensed", sans-serif;
+        font-weight: 700;
+        color: #333;
+        font-size: 30px;
+        line-height: 48px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        margin-bottom: 20px;
+    }
+    #invoicedetails,
+    #consignee {
+        width: 33.333%;
+        float: left;
+    }
+    #buyer {
+        width: 33.333%;
+        float: right;
+    }
+    .meta {
+        margin-bottom: 28px;
+        width: 350px;
+        float: right;
+    }
+    .meta td {
+        text-align: right;
+        border: 0;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+        padding-top: 12px;
+    }
+    .meta td.meta-head {
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+    }
+    .items {
+        clear: both;
+        width: 100%;
+        margin: 30px 0 30px 0;
+        border: 0;
+    }
+    .items tbody {
+        height: 420px;
+    }
+    .items th {
+        background: #333;
+        font-family: "Roboto Condensed", sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        text-align: left;
+        color: #fff;
+    }
+    .items tr.item-row td {
+        border: 0;
+        vertical-align: middle;
+        border-bottom: 1px solid #ccc;
+    }
+    .items tr.summary-row td {
+        border: 0;
+        vertical-align: middle;
+    }
+    .items tr.summary-row td.amount {
+        font-weight: bold;
+    }
+    .items tr.blank td {
+        border: 0;
+    }
+    tr.item-row,
+    tr.summary-row,
+    tr.blank {
+        height: 30px;
+    }
+    tr.blank.spread {
+        height: auto;
+    }
+    .items td.total-line {
+        border: 0;
+        border-bottom: 1px solid #ccc !important;
+        padding: 14px 10px 10px 0px;
+    }
+    .items td.total-value {
+        border: 0;
+        border-bottom: 1px solid #ccc !important;
+        padding: 14px 10px 10px 0px;
+    }
+    @media print {
+        .items th {
+            background: #333 !important;
+            -webkit-print-color-adjust: exact;
+            color: #fff !important;
+            font-size: 10px;
+        }
+        .items tr {
+            font-size: 12px;
+        }
+    }
+    .product_category {
+        font-weight: 700;
+        font-size: 0.8em;
+        text-transform: uppercase;
+    }
+    .terms p {
+        text-align: left;
+        margin: 0;
+        background: #f5f5f5;
+        padding: 20px;
+    }
+    @media print {
+        .terms p {
+            background: #f5f5f5 !important;
+            -webkit-print-color-adjust: exact;
+            color: #000 !important;
+            font-size: 10px;
+        }
+    }
+    .terms h5 {
+        margin-top: 20px;
+        text-transform: uppercase;
+        font: 13px Helvetica, Sans-Serif;
+        font-weight: bold;
+    }
+    .signature {
+        font-weight: bold;
+        height: 40px;
+    }
+    .weight,
+    .tariff,
+    .qty {
+        text-align: center;
+    }
+    .price,
+    .amount {
+        text-align: right;
+    }
+
 
 </style>
