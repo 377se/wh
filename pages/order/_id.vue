@@ -18,14 +18,25 @@
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardHeader separator>
-                        <div class="uk-flex uk-flex-middle">
+                        <div class="uk-flex uk-flex-middle uk-flex-wrap">
                             <div class="uk-flex-1">
                                 <ScCardTitle>
                                     Orderinformation
                                 </ScCardTitle>
                             </div>
-                            <ScCardActions>
-                            </ScCardActions>
+                            <div class="uk-padding-small uk-padding-remove-horizontal">
+                                <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
+                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                        SKRIV UT
+                                    </button>
+                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                        SÄTT SOM LEVERERAD
+                                    </button>
+                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-top uk-margin-remove-top@s" @click.prevent="getEmptyEmailObject()">
+                                        MAILA KUND
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </ScCardHeader>
                     <ScCardBody>
@@ -106,19 +117,6 @@
                                         <td class="border-right uk-width-1-5"><strong>Kommentar</strong></td>
                                         <td class="uk-width-4-5">
                                             <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small" @blur="updateOrder()"></textarea>
-                                            <div class="uk-grid-small uk-padding-small uk-padding-remove-horizontal" uk-grid>
-                                                <div class="uk-flex uk-flex-left uk-width-1-1">
-                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="printDeliveryNotes('all-delivery-notes')">
-                                                        SKRIV UT
-                                                    </button>
-                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="setOrderAsDeliveredByOrderId()">
-                                                        SÄTT SOM LEVERERAD
-                                                    </button>
-                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="getEmptyEmailObject()">
-                                                        MAILA KUND
-                                                    </button>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
