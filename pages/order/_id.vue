@@ -58,7 +58,7 @@
                                             </div>
                                         </div>
                                     </ScCardHeader>
-                                    <ScCardBody :key="render">
+                                    <ScCardBody :key="render" class="uk-padding-remove">
                                         <div class="uk-flex uk-overflow-auto">
                                             <table :class="{'uk-width-1-1 uk-width-2-3@m': adressEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
                                                 <tbody>
@@ -135,14 +135,15 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="border-right uk-width-1-5"><strong>Kommentar</strong></td>
-                                                        <td class="uk-width-4-5">
+                                                        <td class="border-right border-bottom uk-width-1-5"><strong>Kommentar</strong></td>
+                                                        <td class="uk-width-4-5 border-bottom">
                                                             <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small"></textarea>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>
-                                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click="updateOrder()">
+                                                        <td></td>
+                                                        <td class="uk-align-right">
+                                                            <button v-waves.button.light class="sc-button sc-button-primary uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click="updateOrder()">
                                                                 SPARA
                                                             </button>
                                                         </td>
