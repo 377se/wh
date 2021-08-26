@@ -504,7 +504,7 @@
 												<div id="sortableImages" class="uk-flex uk-flex-wrap" data-uk-sortable>
 													<div v-for="item in sortableOrder" :key="item.ImageId" class="uk-width-1-4 sc-round" :data-id="item.ImageId">
 														<div class="sc-padding-small uk-position-relative">
-															<img :src="item.Name">
+															<div uk-lightbox><a :href="item.Url"><img :src="item.Name"></a></div>
 															<div class="wasteBasket" @click="deleteImage(item)">
 																<i class="mdi mdi-delete-forever md-color-red-600"></i>
 															</div>
@@ -1093,14 +1093,14 @@ export default {
 		},
 		async updateImageSorting() {
 			let _this = this
-			_this.isLoading = true
+			_this.showPageOverlaySpinner()
 			await this.$axios.$post('/webapi/Article/PostUpdateImageSorting', _this.articleImages)
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
-					_this.isLoading = false
+					_this.message = response.Message
+					_this.hidePageOverlaySpinner()
 				} else {
-
+					_this.hidePageOverlaySpinner()
         		}
 			})
 			.catch(function (error) {
