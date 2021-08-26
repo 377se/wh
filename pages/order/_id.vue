@@ -17,178 +17,239 @@
             </div>
             <div id="sc-page-content">
                 <ScCard>
-                    <ScCardHeader separator>
-                        <div class="uk-flex uk-flex-middle uk-flex-wrap">
-                            <div class="uk-flex-1">
-                                <ScCardTitle>
-                                    Orderinformation
-                                </ScCardTitle>
-                            </div>
-                            <div class="uk-padding-small uk-padding-remove-horizontal">
-                                <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
-                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="printDeliveryNotes('all-delivery-notes')">
-                                        SKRIV UT
-                                    </button>
-                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="setOrderAsDeliveredByOrderId()">
-                                        SÄTT SOM LEVERERAD
-                                    </button>
-                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-top uk-margin-remove-top@s" @click.prevent="getEmptyEmailObject()">
-                                        MAILA KUND
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </ScCardHeader>
                     <ScCardBody>
-                        <div class="uk-flex uk-overflow-auto">
-                            <table :class="{'uk-width-1-1 uk-width-2-3@m': adressEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
-                                <tbody>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Kund</strong></td>
-                                        <td class="border-bottom uk-width-4-5">
-                                            <div class="uk-flex uk-flex-between">
-                                                <div>
-                                                    <div>{{ orderInfo.Address.FirstName }} {{ orderInfo.Address.LastName}}</div>
-                                                    <div>{{ orderInfo.Address.Address1 }}</div>
-                                                    <div>{{ orderInfo.Address.PostalCode }} {{ orderInfo.Address.City}}</div>
-                                                    <div>{{ orderInfo.Address.Country }}</div>
-                                                    <div>{{ orderInfo.Address.Email }}</div>
-                                                    <div>{{ orderInfo.Address.Mobile }}</div>
-                                                </div>
-                                                 <div class="editicon" @click="getAdressToEdit(orderInfo.Address.AddressId)"> <!-- EDITERA ADDRESS -->
-                                                    <i class="mdi mdi-file-edit md-color-green-600"></i>
+                        <!-- TAB-HEADLINES -->
+                        <ul data-uk-tab>
+                            <li class="uk-active">
+                                <a href="javascript:void(0)">
+                                    ORDERINFORMATION
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    ORDERHÄNDELSER
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- TAB-CONTENT -->
+                        <ul class="uk-switcher tabevents">
+                            <li id="orderinfo" class="uk-active">
+                                <!-- ORDERINFORMATION -->
+                                <ScCard>
+                                    <ScCardHeader separator>
+                                        <div class="uk-flex uk-flex-middle uk-flex-wrap">
+                                            <div class="uk-flex-1">
+                                                <ScCardTitle>
+                                                    Orderinformation
+                                                </ScCardTitle>
+                                            </div>
+                                            <div class="uk-padding-small uk-padding-remove-horizontal">
+                                                <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
+                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                                        SKRIV UT
+                                                    </button>
+                                                    <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="setOrderAsDeliveredByOrderId()">
+                                                        SÄTT SOM LEVERERAD
+                                                    </button>
+                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-top uk-margin-remove-top@s" @click.prevent="getEmptyEmailObject()">
+                                                        MAILA KUND
+                                                    </button>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Orderdatum</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.OrderDate }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Voucherkod</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.Voucher }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Merchant-id</strong></td>
-                                        <td v-if="orderInfo.AccountId" class="border-bottom uk-width-4-5">{{ orderInfo.AccountId }}</td>
-                                        <td v-else class="border-bottom uk-width-4-5"><span class="uk-badge md-bg-gray-600">Denna order saknar information om provider-Id</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Klarna-Id</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.KlarnaPurchaseId }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.TrackingNumber }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Betalningsmetod</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.PaymentMethod }}, {{ orderInfo.Currency }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Leveransdatum</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.ShippingDate }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Följesedel</strong></td>
-                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.HasBeenPrinted ? 'Utskriven' : 'Ej utskriven' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom border-right uk-width-1-5"><strong>Status</strong></td>
-                                        <td class="border-bottom uk-width-4-5">
-                                            <div class="uk-width-1-1">
-                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                                <client-only>
-                                                    <Select2
-                                                        id="select-statusList"
-                                                        v-model="orderInfo.StatusId"
-                                                        :options="orderInfo.StatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
-                                                        :settings="{ 'width': '100%', 'closeOnSelect': true }"
-                                                        @change="updateOrder()"
-                                                    >
-                                                    </Select2>
-                                                </client-only>
+                                        </div>
+                                    </ScCardHeader>
+                                    <ScCardBody :key="render">
+                                        <div class="uk-flex uk-overflow-auto">
+                                            <table :class="{'uk-width-1-1 uk-width-2-3@m': adressEditorVisible }" class="uk-card uk-box-shadow-small uk-table uk-table-small uk-text-small uk-margin-remove-bottom">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Kund</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <div class="uk-flex uk-flex-between">
+                                                                <div>
+                                                                    <div>{{ orderInfo.Address.FirstName }} {{ orderInfo.Address.LastName}}</div>
+                                                                    <div>{{ orderInfo.Address.Address1 }}</div>
+                                                                    <div>{{ orderInfo.Address.PostalCode }} {{ orderInfo.Address.City}}</div>
+                                                                    <div>{{ orderInfo.Address.Country }}</div>
+                                                                    <div>{{ orderInfo.Address.Email }}</div>
+                                                                    <div>{{ orderInfo.Address.Mobile }}</div>
+                                                                </div>
+                                                                <div class="editicon" @click="getAdressToEdit(orderInfo.Address.AddressId)"> <!-- EDITERA ADDRESS -->
+                                                                    <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Orderdatum</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.OrderDate }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Voucherkod</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.Voucher }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Merchant-id</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <ScInput v-model="orderInfo.AccountId" state="fixed" mode="outline" extra-classes="uk-form-small" :disabled="accountIdHasData"></ScInput>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Klarna-Id</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <ScInput v-model="orderInfo.KlarnaPurchaseId" state="fixed" mode="outline" extra-classes="uk-form-small" :disabled="klarnaPurchaseIdHasData"></ScInput>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.TrackingNumber }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Betalningsmetod</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.PaymentMethod }}, {{ orderInfo.Currency }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Leveransdatum</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.ShippingDate }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Följesedel</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.HasBeenPrinted ? 'Utskriven' : 'Ej utskriven' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Status</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <div class="uk-width-1-1">
+                                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                                <client-only>
+                                                                    <Select2
+                                                                        id="select-statusList"
+                                                                        v-model="orderInfo.StatusId"
+                                                                        :options="orderInfo.StatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
+                                                                        :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                                                    >
+                                                                    </Select2>
+                                                                </client-only>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-right uk-width-1-5"><strong>Kommentar</strong></td>
+                                                        <td class="uk-width-4-5">
+                                                            <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small"></textarea>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click="updateOrder()">
+                                                                SPARA
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!-- EDIT ADRESS -->
+                                            <div v-if="adressEditorVisible" :class="{'uk-width-1-3': adressEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                                                <div class="uk-flex uk-flex-between">
+                                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera address</h3>
+                                                    <span class="closeicon" @click="adressEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                                 </div>
+                                                <!-- För- och efternamn -->
+                                                <div class="uk-margin">
+                                                    <div class="uk-flex uk-flex-between">
+                                                        <ScInput v-model="adressItem.FirstName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Förnamn</label>
+                                                        </ScInput>
+                                                        <ScInput v-model="adressItem.LastName" state="fixed" mode="outline" extra-classes="uk-form-small uk-margin-small-left">
+                                                            <label>Efternamn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                </div>
+                                                <!-- Gatuaddress -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="adressItem.Address1" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                        <label>Gatuaddress</label>
+                                                    </ScInput>
+                                                </div>
+                                            <!-- Postadress -->
+                                                <div class="uk-margin">
+                                                    <div class="uk-flex uk-flex-between">
+                                                        <ScInput v-model="adressItem.PostalCode" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <label>Postnummer</label>
+                                                        </ScInput>
+                                                        <ScInput v-model="adressItem.City" state="fixed" mode="outline" extra-classes="uk-form-small uk-margin-small-left">
+                                                            <label>Stad</label>
+                                                        </ScInput>
+                                                    </div>
+                                                </div>
+                                                <!-- Land -->
+                                                <div class="uk-margin-medium-bottom uk-width-1-1">
+                                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                    <label class="select-label" for="select-countryList">Land</label>
+                                                    <client-only>
+                                                        <Select2
+                                                            id="select-countryList"
+                                                            v-model="adressItem.CountryId"
+                                                            :options="countries.map(({ CountryId, Name }) => ({ id: CountryId, text: Name }))"
+                                                            :settings="{ 'width': '100%', 'closeOnSelect': true,  'allowClear': true }"
+                                                        >
+                                                        </Select2>
+                                                    </client-only>
+                                                    </div>
+                                                </div>
+                                                <!-- Email -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="adressItem.Email" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                        <label>Email</label>
+                                                    </ScInput>
+                                                </div>
+                                                <!-- Mobile -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="adressItem.Mobile" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                        <label>Mobil</label>
+                                                    </ScInput>
+                                                </div>
+                                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateAdress()">
+                                                    UPPDATERA
+                                                </button>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-right uk-width-1-5"><strong>Kommentar</strong></td>
-                                        <td class="uk-width-4-5">
-                                            <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small" @blur="updateOrder()"></textarea>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- EDIT ADRESS -->
-                            <div v-if="adressEditorVisible" :class="{'uk-width-1-3': adressEditorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
-                                <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera address</h3>
-                                    <span class="closeicon" @click="adressEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
-                                </div>
-                                <!-- För- och efternamn -->
-                                <div class="uk-margin">
-                                    <div class="uk-flex uk-flex-between">
-                                        <ScInput v-model="adressItem.FirstName" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>Förnamn</label>
-                                        </ScInput>
-                                        <ScInput v-model="adressItem.LastName" state="fixed" mode="outline" extra-classes="uk-form-small uk-margin-small-left">
-                                            <label>Efternamn</label>
-                                        </ScInput>
-                                    </div>
-                                </div>
-                                <!-- Gatuaddress -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="adressItem.Address1" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Gatuaddress</label>
-                                    </ScInput>
-                                </div>
-                               <!-- Postadress -->
-                                <div class="uk-margin">
-                                    <div class="uk-flex uk-flex-between">
-                                        <ScInput v-model="adressItem.PostalCode" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>Postnummer</label>
-                                        </ScInput>
-                                        <ScInput v-model="adressItem.City" state="fixed" mode="outline" extra-classes="uk-form-small uk-margin-small-left">
-                                            <label>Stad</label>
-                                        </ScInput>
-                                    </div>
-                                </div>
-                                <!-- Land -->
-                                <div class="uk-margin-medium-bottom uk-width-1-1">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <label class="select-label" for="select-countryList">Land</label>
-                                    <client-only>
-                                        <Select2
-                                            id="select-countryList"
-                                            v-model="adressItem.CountryId"
-                                            :options="countries.map(({ CountryId, Name }) => ({ id: CountryId, text: Name }))"
-                                            :settings="{ 'width': '100%', 'closeOnSelect': true,  'allowClear': true }"
-                                        >
-                                        </Select2>
-                                    </client-only>
-                                    </div>
-                                </div>
-                                <!-- Email -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="adressItem.Email" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Email</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Mobile -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="adressItem.Mobile" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Mobil</label>
-                                    </ScInput>
-                                </div>
-                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateAdress()">
-                                    UPPDATERA
-                                </button>
-                            </div>
-                        </div>
+                                        </div>
+                                    </ScCardBody>
+                                </ScCard>
+                            </li>
+                            <li id="orderevents">
+                                <!-- ORDERHÄNDELSER -->
+                                <ScCard>
+                                    <ScCardHeader separator>
+                                        <ScCardTitle>
+                                            Orderhändelser
+                                        </ScCardTitle>
+                                    </ScCardHeader>
+                                    <ScCardBody>
+                                        <div class="uk-overflow-auto">
+                                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist">
+                                                <thead>
+                                                    <tr class="uk-padding-remove-bottom">
+                                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Tid</th>
+                                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 80%;">Händelse</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="orderevent in orderLog" :key="orderevent.Id" class="uk-table-middle">
+                                                        <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left; ">{{ orderevent.CreatedDate }}</td>
+                                                        <td class="border-bottom border-left border-right" style="text-align: left; ">{{ orderevent.Description }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </ScCardBody>
+                                </ScCard>
+                            </li>
+                        </ul>
                     </ScCardBody>
                 </ScCard>
+                <!-- ORDERINNEHÅLL -->
                 <ScCard class="uk-margin-medium-top">
                     <ScCardHeader separator>
                         <div class="uk-flex uk-flex-middle">
@@ -609,17 +670,21 @@ export default {
 		return {
             errors: null,
             message: null,
+            render: false,
             adressEditorVisible: false,
             updateEditorVisible: false,
             addEditorVisible: false,
             orderProcessTypeList: [],
             paymentTypeId: 0,
             orderInfo: {},
+            klarnaPurchaseIdHasData: null,
+            accountIdHasData: null,
             emptyEmail: {},
             editorConfig: {
                 toolbar: [ 'bold', 'italic', 'link', 'undo', 'redo', 'numberedList', 'bulletedList' ],
             },
             orderContent: {},
+            orderLog: [],
             orderContentInitial: {},
             orderItem: null,
             adressItem: null,
@@ -633,13 +698,21 @@ export default {
     watch: {
 
     },
-	mounted: function () {
-
+    created () {
+        },
+	mounted () {
+        this.$nextTick(() => {
+            let _this = this
+            // GET ORDEREVENTS WHEN TAB IS CLICKED
+            UIkit.util.on(document, 'beforeshow', function (event, area) {
+                event.target.id == 'orderevents' ? _this.getOrderLog() : ''
+            })
+        })
     },
     computed: {
 		editor () {
 			return process.client ? require('@ckeditor/ckeditor5-build-classic') : null
-		}
+		},
     },
     methods: {
         async deleteItem(itemId) {
@@ -741,6 +814,13 @@ export default {
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.orderInfo = response
+                        _this.orderInfo.KlarnaPurchaseId != null
+                        ? _this.klarnaPurchaseIdHasData = true
+                        : _this.klarnaPurchaseIdHasData = false
+                        _this.orderInfo.AccountId != null
+                        ? _this.accountIdHasData = true
+                        : _this.accountIdHasData = false
+                        _this.render = !_this.render
                         _this.hidePageOverlaySpinner()
                     }
                 } catch(err) {
@@ -909,6 +989,22 @@ export default {
                 _this.hidePageOverlaySpinner()
 			})
 		},
+        async getOrderLog() {
+			let _this = this
+            _this.showPageOverlaySpinner()
+            try {
+                const orderlog = await this.$axios.$get('/webapi/Log/GetOrderLog?orderId=' + this.$route.params.id)
+                if (orderlog.ErrorList != null ) {
+                    _this.errors = orderlog.ErrorList
+                    _this.hidePageOverlaySpinner()
+                } else {
+                    _this.orderLog = orderlog
+                    _this.hidePageOverlaySpinner()
+                }
+            } catch(err) {
+                console.log(err)
+            }
+		},
         async getEmptyEmailObject() {
 			let _this = this
             _this.showPageOverlaySpinner()
@@ -974,6 +1070,14 @@ export default {
             this.orderContentInitial = orderContent
             this.countries = countries
             this.orderProcessTypeList = orderProcessTypeList
+
+            this.orderInfo.KlarnaPurchaseId != null
+            ? this.klarnaPurchaseIdHasData = true
+            : this.klarnaPurchaseIdHasData = false
+            this.orderInfo.AccountId != null
+            ? this.accountIdHasData = true
+            : this.accountIdHasData = false
+
             this.hidePageOverlaySpinner()
         } catch (err) {
             console.log(err);
