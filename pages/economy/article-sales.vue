@@ -30,18 +30,20 @@
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
                                                 <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;"></th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 18%;">Produktnamn</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 16%;">Märke</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 19%;">Art. nummer</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: center; width: 7%;">Ant sålda</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 10%;">Försälj. ex.moms</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 8%;">Bruttom kr</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 8%;">Bruttom %</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Lag</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Produktnamn</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 80px;">Märke</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 120px;">Art. nummer</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: center; width: 40px;">Ant sålda</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Försälj. ex.moms</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Bruttom kr</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 40px;">Bruttom %</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="article in articleSaleStats.ArticleList" :key="article.ArticleId" class="uk-table-middle">
                                                 <td class="border-bottom border-left border-right" style="text-align: left; "><img :src="article.ImageName"></td>
+                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.Category }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ProductName }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.BrandName }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ArticleNumber }}</td>
