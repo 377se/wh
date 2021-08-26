@@ -57,7 +57,7 @@
 								</thead>
 								<tbody>
 									<tr v-for="shop in dashBoard.ItemList" :key="shop.shopId" class="uk-table-middle">
-										<td class="border-bottom border-right uk-width-auto uk-text-left">{{ shop.ShopName }}</td>
+										<td class="border-bottom border-right uk-width-auto uk-text-left"><nuxt-link :to="`/order/orderlist?shopId=${shop.ShopId}`">{{ shop.ShopName }}</nuxt-link></td>
 										<td class="border-bottom border-right uk-width-auto uk-text-right"><a @click.prevent="showDailySales(shop.ShopId, shop.ShopName, todaysDate)">{{ shop.TotalSaleToday | thousandsDelimiter }}</a></td>
 										<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.OrdersToday | thousandsDelimiter }}</td>
 										<td class="border-bottom border-right uk-width-auto uk-text-right">{{ shop.TotalSaleCurrentMonth | thousandsDelimiter }}</td>
