@@ -36,7 +36,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(waybill, index) in waybillList" :key="index" class="uk-table-middle">
+                                            <tr v-for="(waybill, index) in waybillList.slice((pageNum-1) * numberViewed, pageNum * numberViewed)" :key="index" class="uk-table-middle">
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.CreatedDate }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.InvoiceNumber }}</td>
                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left;">{{ waybill.OrdersShipped }}</td>
@@ -47,6 +47,18 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <!-- PAGINATION -->
+                                <ul class="uk-pagination uk-flex-center uk-margin-bottom">
+                                    <li v-if="pageNum > 1">
+                                        <a href="#" @click.prevent="previous"><span uk-pagination-previous></span>Föregående</a>
+                                    </li>
+                                    <li>
+                                        <span>{{ pageNum }}/{{ totalPages }}</span>
+                                    </li>
+                                    <li v-if="pageNum < totalPages">
+                                        <a href="#" @click.prevent="next">Nästa<span uk-pagination-next></span></a>
+                                    </li>
+                                </ul>
                             </ScCardBody>
                         </ScCard>
                     </div>
@@ -318,6 +330,8 @@ export default {
             currentWayBill: {},
             waybillList: [],
             waybillDetails: null,
+            pageNum: 1,
+            numberViewed: 10,
         }
     },
     watch: {
@@ -327,6 +341,9 @@ export default {
         this.$store.commit('setAlertHidden', 1)
     },
     computed: {
+        totalPages() {
+            return parseInt(this.waybillList.length / this.numberViewed)
+        },
     },
     methods: {
         hidePageOverlaySpinner () {
@@ -377,6 +394,16 @@ export default {
                 console.log(err)
             }
 		},
+        next() {
+            if (this.pageNum < this.totalPages) {
+                this.pageNum = parseInt(this.pageNum) + 1
+            }
+        },
+        previous(){
+            if (this.pageNum > 1) {
+                this.pageNum = parseInt(this.pageNum) - 1
+            }
+        }
     },
     async fetch () {
         try {
