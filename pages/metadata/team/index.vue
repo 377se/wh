@@ -302,9 +302,6 @@
 	table.vgt-table th {
         font-size: 0.6rem;
     }
-	.vgt-inner-wrap .footer__row-count__label {
-        font-size: 0.6rem;
-    }
     .cursor-pointer {
         cursor: pointer;
     }
