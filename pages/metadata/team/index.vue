@@ -20,9 +20,15 @@
                 <div class="uk-width-1-1 uk-width-2-3@m">
                     <ScCard>
                         <ScCardHeader separator>
-                            <ScCardTitle>
-                                Laglista
-                            </ScCardTitle>
+                            <div class="uk-flex uk-flex-between">
+                                <ScCardTitle>
+                                    Laglista
+                                </ScCardTitle>
+                                <div>
+                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createTeam()">NYTT LAG
+                                    </button>
+                                </div>
+                            </div>
                         </ScCardHeader>
                         <ScCardBody>
                             <VueGoodTable
@@ -66,8 +72,11 @@
                 <div class="uk-width-1-1 uk-width-1-3@m uk-flex-first uk-flex-last@m" uk-margin>
                     <ScCard>
                         <ScCardHeader separator>
-                            <ScCardTitle>
+                            <ScCardTitle v-if="currentTeamObject.Id">
                                 Redigera lag
+                            </ScCardTitle>
+                            <ScCardTitle v-else>
+                                Skapa lag
                             </ScCardTitle>
                         </ScCardHeader>
                         <ScCardBody>
@@ -77,6 +86,17 @@
                                     :alertClass="'uk-alert-danger'"
                                     id=1
                                 />
+                                <!-- BILDUPPLADDNING -->
+                                <template v-if="currentTeamObject.Id">
+                                    <img :src="currentTeamObject.ImageName">
+                                    <div class="uk-padding-small uk-padding-remove-horizontal">
+                                        <FileUpload
+                                            :teamId="currentTeamObject.Id"
+                                            :teamImage="this.teamImage"
+                                            @updateTeamImage="getTeamToEdit(currentTeamObject.Id)"
+                                        />
+                                    </div>
+                                </template>
                                 <!-- Namn -->
                                 <div class="uk-margin-medium-bottom">
                                     <ScInput v-model="currentTeamObject.Name" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -96,22 +116,7 @@
                                         </Select2>
                                     </client-only>
                                 </div>
-                                <!-- BILDUPPLADDNING -->
-                                <template v-if="currentTeamObject.Id">
-                                    <img :src="currentTeamObject.ImageName">
-                                    <div class="uk-padding-small uk-padding-remove-horizontal">
-                                        <FileUpload
-                                            :teamId="currentTeamObject.Id"
-                                            :teamImage="this.teamImage"
-                                            @updateTeamImage="getTeamToEdit(currentTeamObject.Id)"
-                                        />
-                                    </div>
-                                </template>
                                 <div class="uk-flex uk-flex-around">
-                                    <div>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createTeam()">SKAPA
-                                        </button>
-                                    </div>
                                     <div v-if="currentTeamObject.Id">
                                         <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateTeam()">
                                             UPPDATERA
@@ -201,6 +206,8 @@
                         _this.hidePageOverlaySpinner()
                     } else {
                         _this.currentTeamObject = res
+                        // Update teamlist
+                        _this.teamListMeta.push(_this.currentTeamObject)
                         _this.hidePageOverlaySpinner()
                     }
                 })
