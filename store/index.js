@@ -179,4 +179,12 @@ export const actions = {
 			console.log(error)
 		})
 	},
+	setBusyOn({commit}) {
+		commit('toggleProgressOverlay', true)
+		commit('togglePageOverlay', true)
+	},
+	setBusyOff({commit}) {
+		commit('toggleProgressOverlay', false)
+		commit('togglePageOverlay', false)
+	},
 }
