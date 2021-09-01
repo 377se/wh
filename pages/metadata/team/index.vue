@@ -24,10 +24,6 @@
                                 <ScCardTitle>
                                     Laglista
                                 </ScCardTitle>
-                                <div>
-                                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createTeam()">NYTT LAG
-                                    </button>
-                                </div>
                             </div>
                         </ScCardHeader>
                         <ScCardBody>
@@ -87,6 +83,7 @@
                                     id=1
                                 />
                                 <!-- BILDUPPLADDNING -->
+
                                 <template v-if="currentTeamObject.Id">
                                     <img :src="currentTeamObject.ImageName">
                                     <div class="uk-padding-small uk-padding-remove-horizontal">
@@ -97,6 +94,7 @@
                                         />
                                     </div>
                                 </template>
+
                                 <!-- Namn -->
                                 <div class="uk-margin-medium-bottom">
                                     <ScInput v-model="currentTeamObject.Name" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -117,7 +115,11 @@
                                     </client-only>
                                 </div>
                                 <div class="uk-flex uk-flex-around">
-                                    <div v-if="currentTeamObject.Id">
+                                    <div v-if="!currentTeamObject.Id">
+                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createTeam()">NYTT LAG
+                                        </button>
+                                    </div>
+                                    <div v-else>
                                         <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateTeam()">
                                             UPPDATERA
                                         </button>
