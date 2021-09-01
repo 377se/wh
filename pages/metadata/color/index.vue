@@ -13,8 +13,9 @@
                 </div>
             </div>
         </div>
-            <div id="sc-page-content">
-                <div class="uk-width-1-1">
+        <div id="sc-page-content">
+            <div class="uk-grid uk-grid-medium" uk-grid uk-margin>
+                <div class="uk-width-1-1 uk-width-2-3@m">
                     <ScCard>
                         <ScCardHeader separator>
                             <ScCardTitle>
@@ -26,20 +27,16 @@
                                 <table class="uk-table uk-table-small uk-text-small uk-margin-remove border-left border-top" style="border-collapse: separate;">
                                     <thead>
                                         <tr class="uk-padding-remove-bottom">
-                                            <th class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">Svenska</th>
-                                            <th class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">Norska</th>
-                                            <th class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">Danska</th>
-                                            <th class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">Engelska</th>
-                                            <th class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">Finska</th>
+                                            <th v-for="(header, index) in colorList.HeaderList" :key="index" class="sticky-headers border-bottom border-right uk-text-small" style="text-align: left; width: 20%;">{{ header.Name }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="(colorrow, index) in colorList"
+                                            v-for="(colorrow, index) in colorList.ColorList"
                                             :key="index"
                                             class="uk-table-middle"
                                         >
-                                            <td v-for="(color, index) in colorrow.ItemList.filter(item => {return (item.Description !='' || item.Description != null) ? item.Description : ''})" :key="index" class="border-right border-bottom" style="text-align: left;">
+                                            <td v-for="color in colorrow.ItemList" :key="color.LanguageId" class="border-right border-bottom" style="text-align: left;">
                                                 <ScInput v-model="color.Description" state="fixed" mode="outline"  extra-classes="uk-form-small" @blur="updateColor(color)">
                                                 </ScInput>
                                             </td>
@@ -50,6 +47,38 @@
                         </ScCardBody>
                     </ScCard>
                 </div>
+                <div class="uk-width-1-1 uk-width-1-3@m uk-flex-first uk-flex-last@m" uk-margin>
+                    <ScCard>
+                        <ScCardHeader separator>
+                            <ScCardTitle>
+                                Ny färg
+                            </ScCardTitle>
+                        </ScCardHeader>
+                        <ScCardBody>
+                            <div class="uk-width-1-1">
+                                <Alert
+                                    :errorlist="errors"
+                                    :alertClass="'uk-alert-danger'"
+                                    id=1
+                                />
+                                <!-- Namn -->
+                                <div class="uk-margin-medium-bottom">
+                                    <ScInput v-model="currentColorObject.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Namn (svenska)</label>
+                                    </ScInput>
+                                </div>
+                                <div class="uk-flex uk-flex-start">
+                                    <div>
+                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createColor()">
+                                            SPARA
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ScCardBody>
+                    </ScCard>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -81,6 +110,26 @@
                 .then(function (color) {
                     _this.$fetch()
                     _this.$store.dispatch('setBusyOff')
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    _this.$store.dispatch('setBusyOff')
+                })
+            },
+            async createColor() {
+                let _this = this
+                _this.$store.dispatch('setBusyOn')
+                await this.$axios.$post('/webapi/Metadata/CreateColor', _this.currentColorObject)
+                .then(function (res) {
+                    if (res.ErrorList != null) {
+                        _this.errors = res.ErrorList
+                        _this.$store.commit('setAlertVisible', 1)
+                        _this.hidePageOverlaySpinner()
+                    } else {
+                        UIkit.modal.dialog('<p class="uk-modal-body">En ny färg har skapats!</p>')
+                        _this.$fetch()
+                        _this.$store.dispatch('setBusyOff')
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
