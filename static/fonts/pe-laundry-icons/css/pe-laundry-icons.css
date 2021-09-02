@@ -1,0 +1,500 @@
+@font-face {
+  font-family: 'pe-laundry-icons';
+  src: url("../fonts/pe-laundry-icons.eot?-wv3uko");
+  src: url("../fonts/pe-laundry-icons.eot?#iefix-wv3uko") format("embedded-opentype"), url("../fonts/pe-laundry-icons.woff?-wv3uko") format("woff"), url("../fonts/pe-laundry-icons.ttf?-wv3uko") format("truetype"), url("../fonts/pe-laundry-icons.svg?-wv3uko#pe-laundry-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="pe-ly-"], [class*=" pe-ly-"] {
+  font-family: 'pe-laundry-icons';
+  display: inline-block;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pe-ly-bleach-chlorine:before {
+  content: "\e600";
+}
+
+.pe-ly-bleach-non-chlorine:before {
+  content: "\e601";
+}
+
+.pe-ly-bleach:before {
+  content: "\e602";
+}
+
+.pe-ly-dry-clean-any-delicate:before {
+  content: "\e603";
+}
+
+.pe-ly-dry-clean-any-low-h:before {
+  content: "\e604";
+}
+
+.pe-ly-dry-clean-any-low-m:before {
+  content: "\e605";
+}
+
+.pe-ly-dry-clean-any-no-steam:before {
+  content: "\e606";
+}
+
+.pe-ly-dry-clean-any-resistant:before {
+  content: "\e607";
+}
+
+.pe-ly-dry-clean-any-short:before {
+  content: "\e608";
+}
+
+.pe-ly-dry-clean-any-solvent:before {
+  content: "\e609";
+}
+
+.pe-ly-dry-clean-low-heat:before {
+  content: "\e60a";
+}
+
+.pe-ly-dry-clean-low-moisture:before {
+  content: "\e60b";
+}
+
+.pe-ly-dry-clean-no-steam:before {
+  content: "\e60c";
+}
+
+.pe-ly-dry-clean-not-trichlo-delicate:before {
+  content: "\e60d";
+}
+
+.pe-ly-dry-clean-not-trichlo-resistant:before {
+  content: "\e60e";
+}
+
+.pe-ly-dry-clean-not-trichlo:before {
+  content: "\e60f";
+}
+
+.pe-ly-dry-clean-petro-delicate:before {
+  content: "\e610";
+}
+
+.pe-ly-dry-clean-petro-resistant:before {
+  content: "\e611";
+}
+
+.pe-ly-dry-clean-petro:before {
+  content: "\e612";
+}
+
+.pe-ly-dry-clean-short-cycle:before {
+  content: "\e613";
+}
+
+.pe-ly-dry-clean:before {
+  content: "\e614";
+}
+
+.pe-ly-dry-drip-shade:before {
+  content: "\e615";
+}
+
+.pe-ly-dry-drip:before {
+  content: "\e616";
+}
+
+.pe-ly-dry-flat-shade:before {
+  content: "\e617";
+}
+
+.pe-ly-dry-flat:before {
+  content: "\e618";
+}
+
+.pe-ly-dry-line-shade:before {
+  content: "\e619";
+}
+
+.pe-ly-dry-line:before {
+  content: "\e61a";
+}
+
+.pe-ly-hand-wash:before {
+  content: "\e61b";
+}
+
+.pe-ly-iron-high-not-steam:before {
+  content: "\e61c";
+}
+
+.pe-ly-iron-high:before {
+  content: "\e61d";
+}
+
+.pe-ly-iron-low-not-steam:before {
+  content: "\e61e";
+}
+
+.pe-ly-iron-low:before {
+  content: "\e61f";
+}
+
+.pe-ly-iron-med-not-steam:before {
+  content: "\e620";
+}
+
+.pe-ly-iron-medium:before {
+  content: "\e621";
+}
+
+.pe-ly-iron-not-steam:before {
+  content: "\e622";
+}
+
+.pe-ly-iron-steam:before {
+  content: "\e623";
+}
+
+.pe-ly-iron:before {
+  content: "\e624";
+}
+
+.pe-ly-machine-30:before {
+  content: "\e625";
+}
+
+.pe-ly-machine-30c:before {
+  content: "\e626";
+}
+
+.pe-ly-machine-40:before {
+  content: "\e627";
+}
+
+.pe-ly-machine-40c:before {
+  content: "\e628";
+}
+
+.pe-ly-machine-50:before {
+  content: "\e629";
+}
+
+.pe-ly-machine-50c:before {
+  content: "\e62a";
+}
+
+.pe-ly-machine-60:before {
+  content: "\e62b";
+}
+
+.pe-ly-machine-60c:before {
+  content: "\e62c";
+}
+
+.pe-ly-machine-70:before {
+  content: "\e62d";
+}
+
+.pe-ly-machine-70c:before {
+  content: "\e62e";
+}
+
+.pe-ly-machine-95:before {
+  content: "\e62f";
+}
+
+.pe-ly-machine-95c:before {
+  content: "\e630";
+}
+
+.pe-ly-machine-cool:before {
+  content: "\e631";
+}
+
+.pe-ly-machine-delicate-30:before {
+  content: "\e632";
+}
+
+.pe-ly-machine-delicate-30c:before {
+  content: "\e633";
+}
+
+.pe-ly-machine-delicate-40:before {
+  content: "\e634";
+}
+
+.pe-ly-machine-delicate-40c:before {
+  content: "\e635";
+}
+
+.pe-ly-machine-delicate-50:before {
+  content: "\e636";
+}
+
+.pe-ly-machine-delicate-50c:before {
+  content: "\e637";
+}
+
+.pe-ly-machine-delicate-60:before {
+  content: "\e638";
+}
+
+.pe-ly-machine-delicate-60c:before {
+  content: "\e639";
+}
+
+.pe-ly-machine-delicate-70:before {
+  content: "\e63a";
+}
+
+.pe-ly-machine-delicate-70c:before {
+  content: "\e63b";
+}
+
+.pe-ly-machine-delicate-95:before {
+  content: "\e63c";
+}
+
+.pe-ly-machine-delicate-95c:before {
+  content: "\e63d";
+}
+
+.pe-ly-machine-delicate-cool:before {
+  content: "\e63e";
+}
+
+.pe-ly-machine-delicate-hot-4:before {
+  content: "\e63f";
+}
+
+.pe-ly-machine-delicate-hot-5:before {
+  content: "\e640";
+}
+
+.pe-ly-machine-delicate-hot-6:before {
+  content: "\e641";
+}
+
+.pe-ly-machine-delicate-hot:before {
+  content: "\e642";
+}
+
+.pe-ly-machine-delicate-warm:before {
+  content: "\e643";
+}
+
+.pe-ly-machine-delicate:before {
+  content: "\e644";
+}
+
+.pe-ly-machine-hot-4:before {
+  content: "\e645";
+}
+
+.pe-ly-machine-hot-5:before {
+  content: "\e646";
+}
+
+.pe-ly-machine-hot-6:before {
+  content: "\e647";
+}
+
+.pe-ly-machine-hot:before {
+  content: "\e648";
+}
+
+.pe-ly-machine-resistant-30:before {
+  content: "\e649";
+}
+
+.pe-ly-machine-resistant-30c:before {
+  content: "\e64a";
+}
+
+.pe-ly-machine-resistant-40:before {
+  content: "\e64b";
+}
+
+.pe-ly-machine-resistant-40c:before {
+  content: "\e64c";
+}
+
+.pe-ly-machine-resistant-50:before {
+  content: "\e64d";
+}
+
+.pe-ly-machine-resistant-50c:before {
+  content: "\e64e";
+}
+
+.pe-ly-machine-resistant-60:before {
+  content: "\e64f";
+}
+
+.pe-ly-machine-resistant-60c:before {
+  content: "\e650";
+}
+
+.pe-ly-machine-resistant-70:before {
+  content: "\e651";
+}
+
+.pe-ly-machine-resistant-70c:before {
+  content: "\e652";
+}
+
+.pe-ly-machine-resistant-95:before {
+  content: "\e653";
+}
+
+.pe-ly-machine-resistant-95c:before {
+  content: "\e654";
+}
+
+.pe-ly-machine-resistant-cool:before {
+  content: "\e655";
+}
+
+.pe-ly-machine-resistant-hot-4:before {
+  content: "\e656";
+}
+
+.pe-ly-machine-resistant-hot-5:before {
+  content: "\e657";
+}
+
+.pe-ly-machine-resistant-hot-6:before {
+  content: "\e658";
+}
+
+.pe-ly-machine-resistant-hot:before {
+  content: "\e659";
+}
+
+.pe-ly-machine-resistant-warm:before {
+  content: "\e65a";
+}
+
+.pe-ly-machine-resistant:before {
+  content: "\e65b";
+}
+
+.pe-ly-machine-warm:before {
+  content: "\e65c";
+}
+
+.pe-ly-machine-wash:before {
+  content: "\e65d";
+}
+
+.pe-ly-not-bleach-1:before {
+  content: "\e65e";
+}
+
+.pe-ly-not-bleach-2:before {
+  content: "\e65f";
+}
+
+.pe-ly-not-dry-clean-1:before {
+  content: "\e660";
+}
+
+.pe-ly-not-dry-clean-2:before {
+  content: "\e661";
+}
+
+.pe-ly-not-dry:before {
+  content: "\e662";
+}
+
+.pe-ly-not-iron:before {
+  content: "\e663";
+}
+
+.pe-ly-not-tumble-dry:before {
+  content: "\e664";
+}
+
+.pe-ly-not-wash:before {
+  content: "\e665";
+}
+
+.pe-ly-not-wring:before {
+  content: "\e666";
+}
+
+.pe-ly-tumble-dry-delicate:before {
+  content: "\e667";
+}
+
+.pe-ly-tumble-dry-high-delicate:before {
+  content: "\e668";
+}
+
+.pe-ly-tumble-dry-high-resistant:before {
+  content: "\e669";
+}
+
+.pe-ly-tumble-dry-high:before {
+  content: "\e66a";
+}
+
+.pe-ly-tumble-dry-low-delicate:before {
+  content: "\e66b";
+}
+
+.pe-ly-tumble-dry-low-resistant:before {
+  content: "\e66c";
+}
+
+.pe-ly-tumble-dry-low:before {
+  content: "\e66d";
+}
+
+.pe-ly-tumble-dry-med-delicate:before {
+  content: "\e66e";
+}
+
+.pe-ly-tumble-dry-med-resistant:before {
+  content: "\e66f";
+}
+
+.pe-ly-tumble-dry-medium:before {
+  content: "\e670";
+}
+
+.pe-ly-tumble-dry-no-heat-delicate:before {
+  content: "\e671";
+}
+
+.pe-ly-tumble-dry-no-heat-resistant:before {
+  content: "\e672";
+}
+
+.pe-ly-tumble-dry-no-heat:before {
+  content: "\e673";
+}
+
+.pe-ly-tumble-dry-resistant:before {
+  content: "\e674";
+}
+
+.pe-ly-tumble-dry:before {
+  content: "\e675";
+}
+
+.pe-ly-wool:before {
+  content: "\e676";
+}
+
+.pe-ly-wring:before {
+  content: "\e677";
+}
