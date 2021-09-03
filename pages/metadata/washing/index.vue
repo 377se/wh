@@ -86,7 +86,8 @@
                                     </div>
                                     <!-- IKONER -->
                                     <div v-if="currentWashingObject.Id != 0" class="uk-grid uk-grid-medium" uk-grid uk-margin>
-                                        <div v-for="icon in currentWashingObject.ItemList" :key="icon.IconId">
+                                    <label class="uk-text-small">Markera tvättråd och tryck på uppdatera</label>
+                                        <div v-for="(icon, index) in sortedItemList" :key="index">
                                             <div :class="{ selected: icon.IsSelected }" @click="icon.IsSelected = !icon.IsSelected"><span :class="`${icon.ImageName} pe-2x pe-va`"></span></div>
                                         </div>
                                     </div>
@@ -122,6 +123,14 @@ export default {
         }
     },
     computed: {
+        sortedItemList: function() {
+            return this.currentWashingObject.ItemList.sort((p1,p2) => {
+                if(p2['IsSelected'] < p1['IsSelected']) return -1; if(p2['IsSelected'] > p1['IsSelected']) return 1;
+                return 0
+            })
+        }
+    },
+    watch: {
     },
     methods: {
         async createWashingInstruction() {
