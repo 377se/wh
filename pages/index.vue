@@ -53,7 +53,7 @@
 							</ScCardActions>
 						</div>
 					</ScCardHeader>
-					<ScCardBody v-if="monthlySalesLatestYears.length > 0 && shopidForMonthlyGraph == 0" class="sc-chart-chartjs">
+					<ScCardBody>
 						<ChartJsLine chart-id="cjsLineChartDataTotal" :data="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :options="lineChart.options"></ChartJsLine>
 					</ScCardBody>
 				</ScCard>
