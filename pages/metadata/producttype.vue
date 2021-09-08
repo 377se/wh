@@ -8,7 +8,7 @@
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
-                        <h1 class="sc-top-bar-title uk-display-inline">Tvättråd</h1>
+                        <h1 class="sc-top-bar-title uk-display-inline">Produkttyper</h1>
                     </div>
                 </div>
             </div>
@@ -25,9 +25,18 @@
                             <ScCardBody>
                                 <div class="uk-overflow-auto">
                                     <table :ref="render" class="border-top uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="width:99.8%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="sticky-headers border-bottom border-left uk-text-small" style="width:50%;"><strong>Namn</strong></th>
+                                                <th class="sticky-headers border-bottom border-left border-right uk-text-small" style="width:50%; text-align: left;"><strong>Antal</strong></th>
+                                            </tr>
+                                        </thead>
                                         <draggable v-model="productTypeList" tag="tbody" @end="sortProductTypeList">
                                             <tr v-for="(producttype, index) in productTypeList" :key="index" class="uk-table-middle">
-                                                <td class="cursor-pointer link-color border-bottom border-left border-right uk-overflow-hidden" style="text-align: left; " @click="getProductTypeById(producttype.Id)">{{ producttype.Name }}</td>
+                                                <td class="cursor-pointer link-color border-bottom border-left border-right uk-overflow-hidden" style="text-align: left;" @click="getProductTypeById(producttype.Id)">{{ producttype.Name }}</td>
+                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: left;">
+                                                    {{ producttype.Items }}
+                                                </td>
                                             </tr>
                                         </draggable>
                                     </table>
