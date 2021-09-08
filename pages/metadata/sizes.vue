@@ -83,6 +83,83 @@
                                             </client-only>
                                     </div>
                                 </div>
+                                <div v-if="currentSizeObject.Id != 0" class="uk-overflow-auto uk-margin-medium-bottom">
+                                    <table :ref="render" class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="border-collapse: separate;">
+                                        <thead>
+                                            <tr class="uk-padding-remove-bottom">
+                                                <th v-for="(header, index) in currentSizeObject.HeaderList" :key="index" class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50%;">{{ header.Name }}</th>
+                                                <th class="border-left border-top border-right border-bottom"></th>
+                                            </tr>
+                                        </thead>
+                                        <draggable v-model="currentSizeObject.ItemList" tag="tbody">
+                                            <tr v-for="size in currentSizeObject.ItemList" :key="size.Sortorder" class="uk-table-middle" style="height: 50px;">
+                                                <td v-if="size.Size" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
+                                                    <ScInput v-model="size.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.Length" class="border-bottom border-left" style="text-align: left;">
+                                                    <ScInput v-model.number="size.Length" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.Width" class="border-bottom border-left" style="text-align: left; ">
+                                                    <ScInput v-model.number="size.Width" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.EU" class="border-bottom border-left" style="text-align: left;">
+                                                    <ScInput v-model="size.EU" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.UK" class="border-bottom border-left" style="text-align: left;">
+                                                    <ScInput v-model="size.UK" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.US" class="border-bottom border-left" style="text-align: left;">
+                                                    <ScInput v-model="size.US" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td class="cursor-pointer border-bottom border-left border-right" style="text-align: center; ">
+                                                    <div @click="currentSizeObject.ItemList.splice(index, 1)">
+                                                            <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-24"></i>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <template v-for="(size, index) in currentSizeObject.HeaderList">
+                                                    <td v-if="size.Name == 'Storlek'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                    <td v-if="size.Name == 'Längd'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.Length" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                    <td v-if="size.Name == 'Bredd'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.Width" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                    <td v-if="size.Name == 'EU'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.EU" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                    <td v-if="size.Name == 'UK'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.UK" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                    <td v-if="size.Name == 'US'" class="border-bottom border-left" style="text-align: left;" :key="index">
+                                                        <ScInput v-model="currentNewSize.US" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                        </ScInput>
+                                                    </td>
+                                                </template>
+                                                <td class="cursor-pointer border-bottom border-left border-right" style="text-align: center; ">
+                                                    <div @click="addSize(currentNewSize)">
+                                                            <i class="mdi mdi-plus-circle-outline md-color-green-600 sc-icon-24"></i>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </draggable>
+                                    </table>
+                                </div>
                                 <div class="uk-flex uk-flex-around">
                                     <div v-if="!currentSizeObject.Id">
                                         <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createSize()">NY&nbsp;GUIDE
@@ -97,60 +174,6 @@
                             </div>
                         </ScCardBody>
                     </ScCard>
-                    <ScCard v-if="currentSizeObject.Id != 0">
-                        <ScCardHeader separator>
-                            <div class="uk-flex uk-flex-between">
-                                <ScCardTitle>
-                                    Editera storleksbeskrivningar
-                                </ScCardTitle>
-                            </div>
-                        </ScCardHeader>
-                        <ScCardBody>
-                            <div class="uk-overflow-auto">
-                                <table :ref="render" class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="border-collapse: separate;">
-                                    <thead>
-                                        <tr class="uk-padding-remove-bottom">
-                                            <th v-for="(header, index) in currentSizeObject.HeaderList" :key="index" class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50%;">{{ header.Name }}</th>
-                                            <th class="border-left border-top border-right border-bottom"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="size in currentSizeObject.ItemList" :key="size.ItemId" class="uk-table-middle" style="height: 50px;">
-                                            <td v-if="size.Size" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
-                                                <ScInput v-model="size.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td v-if="size.Length" class="border-bottom border-left" style="text-align: left;">
-                                                <ScInput v-model.number="size.Length" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td v-if="size.Width" class="border-bottom border-left" style="text-align: left; ">
-                                                <ScInput v-model.number="size.Width" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td v-if="size.EU" class="border-bottom border-left" style="text-align: left;">
-                                                <ScInput v-model="size.EU" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td v-if="size.US" class="border-bottom border-left" style="text-align: left;">
-                                                <ScInput v-model="size.US" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td v-if="size.UK" class="border-bottom border-left" style="text-align: left;">
-                                                <ScInput v-model="size.UK" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                </ScInput>
-                                            </td>
-                                            <td class="cursor-pointer border-bottom border-left border-right" style="text-align: center; ">
-                                                <div @click="currentSizeObject.ItemList.splice(index, 1)">
-                                                        <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-24"></i>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </ScCardBody>
-                    </ScCard>
                 </div>
             </div>
         </div>
@@ -161,12 +184,14 @@
     import 'vue-good-table/dist/vue-good-table.css'
     import ScInput from '~/components/Input'
     import Alert from '~/components/Alert'
+    import draggable from 'vuedraggable'
 
     export default {
         components: {
     		Alert,
     		ScInput,
             Select2: process.client ? () => import('~/components/Select2') : null,
+            draggable,
         },
         data () {
             return {
@@ -177,9 +202,35 @@
                 currentSizeObject: {},
                 sizeList: [],
                 sizeGuideTypeList: [],
+                emptyNewSize: {
+                    Depth: null,
+                    EU: null,
+                    ItemId: 0,
+                    Length: "",
+                    Size: "",
+                    Sortorder: 0,
+                    UK: null,
+                    US: null,
+                    Volume: null,
+                    Width: "",
+                },
+                currentNewSize: {
+                    Depth: null,
+                    EU: null,
+                    ItemId: 0,
+                    Length: "",
+                    Size: "",
+                    Sortorder: 0,
+                    UK: null,
+                    US: null,
+                    Volume: null,
+                    Width: "",
+                },
             }
         },
         computed: {
+        },
+        mounted () {
         },
         methods: {
             async createSize() {
@@ -253,6 +304,10 @@
                     console.log(error)
                     _this.$store.dispatch('setBusyOff')
                 })
+            },
+            addSize(newsize) {
+                this.currentSizeObject.ItemList.push(newsize)
+                this.currentNewSize = this.emptyNewSize
             },
         },
         async fetch () {
