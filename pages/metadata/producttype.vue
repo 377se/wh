@@ -63,7 +63,7 @@
                                     <!-- Översättningar -->
                                     <div v-for="language in currentProductTypeObject.ItemList" :key="language.Id" class="uk-margin-medium-bottom uk-margin-medium-top">
                                         <ScInput v-model="language.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                            <label>{{ language.Language }}</label>
+                                            <label><img :src="language.ImageName"> {{ language.Language }}</label>
                                         </ScInput>
                                     </div>
                                     <div class="uk-flex uk-flex-around uk-margin-medium-bottom">
