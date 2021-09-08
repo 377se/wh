@@ -1,7 +1,6 @@
 <template>
     <div>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -26,42 +25,33 @@
                                             </Select2>
                                         </client-only>
                                     </div>
-                                    <div v-if="domainId" class="uk-width-1-6 uk-flex uk-flex-middle" @click="getEmptyBanner()">
-                                        <i class="addicon mdi mdi-plus-circle-outline md-color-green-600 uk-margin-small-right"></i>
-                                        <span class="addicon uk-text-middle">Skapa ny banner</span> <!-- SKAPA NY BANNER -->
-                                    </div>
                                 </div>
 							</div>
 						</div>
                         <div v-if="domainId" class="uk-flex">
                             <!-- BANNERS -->
-                            <div class="uk-width-1-1 bannerlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
-                                <table class="bannerlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+                            <div class="uk-width-2-3 uk-overflow-auto" style="max-height:800px;">
+                                <table class="uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small border-top" style="border-collapse: separate;">
                                     <thead>
                                         <tr>
-                                            <td class="border-bottom border-right" style="width:46%;"><strong>Namn</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Start</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:13%;"><strong>Slut</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;"><strong>Dagar kvar</strong></td>
-                                            <td class="border-bottom uk-text-center uk-text-middle" style="width:10%;" colspan="2">
-                                            </td>
+                                            <th class="sticky-headers border-bottom border-left uk-text-small" style="width:46%;"><strong>Namn</strong></th>
+                                            <th class="sticky-headers border-bottom border-left uk-text-center uk-text-small" style="width:13%;"><strong>Start</strong></th>
+                                            <th class="sticky-headers border-bottom border-left uk-text-center uk-text-small" style="width:13%;"><strong>Slut</strong></th>
+                                            <th class="sticky-headers border-bottom border-left uk-text-center uk-text-small" style="width:10%;"><strong>Dagar kvar</strong></th>
+                                            <th class="sticky-headers border-bottom border-left uk-text-center uk-text-middle" style="width:10%;" colspan="2">
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="banner in bannerList" :key="banner.BannerId" class="uk-table-middle">
-                                            <td class="border-bottom border-right uk-width-auto">{{ banner.Description }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ banner.StartDate }}
+                                            <td @click="getBannerToEdit(banner.BannerId)" class="border-bottom border-left uk-width-auto cursor-pointer link-color">{{ banner.Description }}</td>
+                                            <td class="border-bottom border-left uk-width-auto uk-text-center">{{ banner.StartDate }}
                                             </td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ banner.ValidThru }}
+                                            <td class="border-bottom border-left uk-width-auto uk-text-center">{{ banner.ValidThru }}
                                             </td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-center">{{ banner.DaysLeft }}
+                                            <td class="border-bottom border-left uk-width-auto uk-text-center">{{ banner.DaysLeft }}
                                             </td>
-                                            <td class="border-bottom border-right uk-text-center">
-                                                <div class="editicon" @click="getBannerToEdit(banner.BannerId)"> <!-- EDITERA BANNER -->
-                                                <i class="mdi mdi-file-edit md-color-green-600"></i>
-                                                </div>
-                                            </td>
-                                            <td class="border-bottom border-right uk-text-center">
+                                            <td class="border-bottom border-left uk-text-center">
                                                 <div class="wastebasket" @click="deleteBanner(banner.BannerId)"> <!-- TA BORT BANNER -->
                                                 <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
                                                 </div>
@@ -71,19 +61,19 @@
                                 </table>
                             </div>
                             <!-- EDIT BANNER -->
-                            <div v-if="editorVisible" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                            <div class="uk-width-1-3 uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
                                 <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera banner</h3>
-                                    <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                    <h3 v-if="currentBannerObject.BannerId == 0" class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa banner</h3>
+                                    <h3 v-else class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Redigera banner</h3>
                                 </div>
-                                <div>
+                                <div v-if="currentBannerObject.BannerId != 0" class="uk-margin">
                                 <!-- BILD -->
-                                    <img :src="bannerItem.ImageName">
+                                    <img :src="currentBannerObject.ImageName">
                                     <div class="uk-padding-small uk-padding-remove-horizontal">
                                         <FileUpload 
-                                        :bannerId="bannerItem.BannerId"
-                                        :bannerImage="this.menuImage"
-                                        @updateBannerImage="getBannerToEdit(bannerItem.BannerId)"
+                                        :bannerId="currentBannerObject.BannerId"
+                                        :bannerImage="this.bannerImage"
+                                        @updateBannerImage="getBannerToEdit(currentBannerObject.BannerId)"
                                         />
                                     </div>
                                 </div>
@@ -95,43 +85,51 @@
                                 />
                                 <!-- Description -->
                                 <div class="uk-margin">
-                                    <ScInput v-model="bannerItem.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Description</label>
+                                    <ScInput v-model="currentBannerObject.Description" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <label>Namn</label>
                                     </ScInput>
                                 </div>
                                 <!-- URL -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="bannerItem.Url" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <div v-if="currentBannerObject.BannerId != 0" class="uk-margin">
+                                    <ScInput v-model="currentBannerObject.Url" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Url</label>
                                     </ScInput>
                                 </div>
                                 <!-- Startdatum -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="bannerItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <div v-if="currentBannerObject.BannerId != 0" class="uk-margin">
+                                    <ScInput v-model="currentBannerObject.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Startdatum</label>
                                     </ScInput>
                                 </div>
                                 <!-- Slutdatum -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="bannerItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                <div v-if="currentBannerObject.BannerId != 0" class="uk-margin">
+                                    <ScInput v-model="currentBannerObject.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
                                         <label>Slutdatum</label>
                                     </ScInput>
                                 </div>
                                 <!-- Aktiv -->
-                                <div class="uk-margin uk-width-1-1">
+                                <div v-if="currentBannerObject.BannerId != 0" class="uk-margin uk-width-1-1">
                                     <div>
                                         <ul class="uk-list uk-margin-remove-top">
                                             <li class="uk-text-small">
-                                                <PrettyCheck v-model="bannerItem.IsActive" class="p-icon">
+                                                <PrettyCheck v-model="currentBannerObject.IsActive" class="p-icon">
                                                     <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
                                                 </PrettyCheck>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateBanner()">
-                                    SPARA/UPPDATERA
-                                </button>
+                                    <div class="uk-flex uk-flex-around uk-margin-medium-bottom">
+                                        <div v-if="currentBannerObject.BannerId == 0">
+                                            <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createBanner()">SKAPA&nbsp;BANNER
+                                            </button>
+                                        </div>
+                                        <div v-else>
+                                            <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateBanner()">
+                                                UPPDATERA
+                                            </button>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </ScCardBody>
@@ -166,9 +164,8 @@ export default {
             domainList: null,
             domainOptionsList: null,
             bannerList: null,
-            bannerItem: null,
+            currentBannerObject: null,
             bannerImage: null,
-            editorVisible: false,
             isNewBanner: false,
     		errors: null,
     		Swedish,
@@ -189,6 +186,7 @@ export default {
 			await this.$axios.$get('/webapi/Banner/GetBannerListByDomainId?domainId=' + this.domainId )
 			.then( bannerlist => {
 				this.bannerList = bannerlist
+                this.currentBannerObject.DomainId = this.domainId
 				{{ this.hidePageOverlaySpinner() }}
 			})
 			.catch(function (error) {
@@ -211,16 +209,15 @@ export default {
 			let _this = this
             _this.isNewBanner = false
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
-			await this.$axios.$get('/webapi/Banner/GetBanner?bannerId=' + bannerId)
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$get('/webapi/Banner/GetBannerById?bannerId=' + bannerId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
-                        _this.bannerItem = response
-                        _this.editorVisible = true
-                        _this.hidePageOverlaySpinner()
+                        _this.currentBannerObject = response
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -228,20 +225,20 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async deleteBanner(bannerId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Banner/PostDelete?bannerId=' + bannerId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.bannerList = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -249,24 +246,24 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateBanner() {
 			let _this = this
             _this.isNewBanner = true
-            _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Banner/PostUpdate', _this.bannerItem )
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/Banner/PostUpdate', _this.currentBannerObject )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.$store.commit('setAlertHidden', 1)
                         _this.getBannerListByDomainId(_this.domainId)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -274,23 +271,22 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getEmptyBanner() {
 			let _this = this
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Banner/GetEmptyObject')
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
-                        _this.bannerItem = response
-                        _this.bannerItem.DomainId = _this.domainId
-                        _this.createBanner()
-                        _this.hidePageOverlaySpinner()
+                        _this.currentBannerObject = response
+                        _this.currentBannerObject.DomainId = _this.domainId
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -298,22 +294,24 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async createBanner() {
 			let _this = this
             _this.isNewBanner = true
-            _this.editorVisible = true
-            _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/Banner/PostCreate', _this.bannerItem)
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/Banner/PostCreate', _this.currentBannerObject)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.errors = response.ErrorList
+                        _this.$store.dispatch('setBusyOff')
+                        _this.$store.commit('setAlertVisible', 1)
                     } else {
-                        _this.bannerItem = response
-                        _this.hidePageOverlaySpinner()
+                        _this.currentBannerObject = response
+                        _this.$store.dispatch('setBusyOff')
                         _this.getBannerListByDomainId()
                     }
                 } catch(err) {
@@ -322,7 +320,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         hidePageOverlaySpinner () {
@@ -334,17 +332,25 @@ export default {
             this.$store.commit('togglePageOverlay', true)
         },
     },
+    async fetch () {
+        try {
+            const [ emptybannerobject ] = await Promise.all([
+                this.$axios.$get('/webapi/Banner/GetEmptyObject'),
+            ])
+            this.emptyBannerObject = emptybannerobject
+            this.currentBannerObject = emptybannerobject
+        } catch (err) {
+            console.log(err);
+        }
+    },
 }
 </script>
 
 <style lang="scss" scoped>
-    .bannerlist {
-        line-height: 1;
-        width: 99%;
-        margin: 1px 1px;
-    }
-    .bannerlist-container {
-        height: 75vh;
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px;
     }
 	.border-all {
         border: 1px solid #ccc;
@@ -364,4 +370,10 @@ export default {
     .wastebasket, .editicon, .addicon, .closeicon {
 		cursor: pointer;
 	}
+    .cursor-pointer {
+        cursor: pointer;
+    }
+    .link-color {
+        color: #0088CC;
+    }
 </style>
