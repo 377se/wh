@@ -28,10 +28,33 @@
 
 			<!-- TOP-AREA FULL WIDTH -->
 
-				<!-- FÖRSÄLJINGSGRAF -->
+				<!-- FÖRSÄLJINGSGRAF TOTAL -->
 				<ScCard class="uk-margin-medium-bottom">
-					<ScCardBody v-if="monthlySalesLatestYears.length > 0" class="sc-chart-chartjs">
-						<ChartJsLine chart-id="cjsLineChartData" :data="cjsLineChartData" :options="lineChart.options"></ChartJsLine>
+					<ScCardHeader separator>
+						<div class="uk-flex uk-flex-middle">
+							<div class="uk-flex-1">
+								<ScCardTitle>
+									Försäljnings-grafer
+								</ScCardTitle>
+							</div>
+							<ScCardActions>
+								<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+									<client-only>
+										<Select2
+											id="select-shopList"
+											v-model="shopidForMonthlyGraph"
+											:options="shopList"
+											:settings="{ 'width': '100%', 'placeholder': 'Välj shop för att visa graf', 'closeOnSelect': true }"
+											@select="getMonthlySalesByShop"
+										>
+										</Select2>
+									</client-only>
+								</div>
+							</ScCardActions>
+						</div>
+					</ScCardHeader>
+					<ScCardBody v-if="monthlySalesLatestYears.length > 0 && shopidForMonthlyGraph == 0" class="sc-chart-chartjs">
+						<ChartJsLine chart-id="cjsLineChartDataTotal" :data="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :options="lineChart.options"></ChartJsLine>
 					</ScCardBody>
 				</ScCard>
 
@@ -472,9 +495,11 @@ import { scColors } from '~/assets/js/utils';
 import ChartJsLine from '~/components/chartjs/Line'
 import print from '~/plugins/directives/vue-print-nb'
 
+
 export default {
 	components: {
 		ChartJsLine,
+		Select2: process.client ? () => import('~/components/Select2') : null,
 	},
 	directives: { print },
 	data () {
@@ -492,6 +517,9 @@ export default {
 			articleListTypeId: null,
 			articleListName: '',
 			monthlySalesLatestYears: [],
+			monthlySalesByShop: [],
+			shopidForMonthlyGraph: 0,
+			shoplist: [],
 			dailySales: [],
 			dashboardInformationList: [],
 			shopName: '',
@@ -499,7 +527,7 @@ export default {
 		}
 	},
 	computed: {
-		cjsLineChartData () {
+		cjsLineChartDataTotal () {
 			return {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [
@@ -528,6 +556,40 @@ export default {
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
 					data: this.monthlySalesLatestYears[2].MonthlySale,
+					fill: false,
+				},
+				]
+			}
+		},
+		cjsLineChartDataByShop () {
+			return {
+				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
+				datasets: [
+				{
+					label: this.monthlySalesByShop[0].Year,
+					steppedLine: false,
+					lineTension: 0.3,
+					backgroundColor: scColors.multi[3],
+					borderColor: scColors.multi[3],
+					data: this.monthlySalesByShop[0].MonthlySale,
+					fill: false,
+				},
+				{
+					label: this.monthlySalesByShop[1].Year,
+					steppedLine: false,
+					lineTension: 0.3,
+					backgroundColor: scColors.multi[4],
+					borderColor: scColors.multi[4],
+					data: this.monthlySalesByShop[1].MonthlySale,
+					fill: false,
+				},
+				{
+					label: this.monthlySalesByShop[2].Year,
+					steppedLine: false,
+					lineTension: 0.3,
+					backgroundColor: scColors.multi[5],
+					borderColor: scColors.multi[5],
+					data: this.monthlySalesByShop[2].MonthlySale,
 					fill: false,
 				},
 				]
@@ -654,6 +716,20 @@ export default {
                 _this.hidePageOverlaySpinner()
             })
         },
+		async getMonthlySalesByShop() {
+            let _this = this
+			_this.monthlySalesByShop = []
+            _this.showPageOverlaySpinner()
+            await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesByShop?shopId=' + _this.shopidForMonthlyGraph)
+            .then(function (monthlysalesbyshop) {
+				_this.monthlySalesByShop = monthlysalesbyshop
+                _this.hidePageOverlaySpinner()
+            })
+            .catch(function (error) {
+				console.log(error)
+                _this.hidePageOverlaySpinner()
+            })
+        },
 		showDailySales(shopid, shopname, date) {
 			this.shopName = shopname
 			this.getDailySales(shopid, date)
@@ -688,18 +764,20 @@ export default {
 	},
     async fetch () {
         try {
-            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist ] = await Promise.all([
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
 				await this.$axios.$get('/webapi/Dashboard/GetMonthlySales'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
+                await this.$axios.$get('/webapi/Shop/GetShopList'),
             ])
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
             this.activeOrdersByDate = activeordersbydate
             this.monthlySalesLatestYears = monthlysaleslatestyears
             this.dashboardInformationList = dashboardinformationlist
+            this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
         } catch (err) {
             console.log(err);
         }
