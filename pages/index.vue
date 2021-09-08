@@ -37,7 +37,7 @@
 									Försäljnings-grafer
 								</ScCardTitle>
 							</div>
-							<ScCardActions>
+							<ScCardActions :key="render">
 								<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
 									<client-only>
 										<Select2
@@ -504,6 +504,7 @@ export default {
 	directives: { print },
 	data () {
 		return {
+			render: false,
 			printInventoryNotes: {
                 id: "all-inventory-notes",
             },
@@ -723,6 +724,7 @@ export default {
             await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesByShop?shopId=' + _this.shopidForMonthlyGraph)
             .then(function (monthlysalesbyshop) {
 				_this.monthlySalesByShop = monthlysalesbyshop
+				_this.render = !render
                 _this.hidePageOverlaySpinner()
             })
             .catch(function (error) {
