@@ -1,11 +1,9 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ showPageOverlaySpinner() }}
 	</div>
 </div>
 <div v-else>
-	{{ hidePageOverlaySpinner() }}
  	<div id="sc-page-wrapper">
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -177,17 +175,17 @@
 													</div>
 												</div>
 												<!-- Färg(er) -->
-												<div class="uk-margin-small-bottom uk-margin-small-top uk-width-1-1">
+												<div class="uk-margin-small-bottom uk-margin-small-top uk-width-1-1 uk-height-auto">
 													<label class="uk-text-small">Färg(er)</label>
-														<ul class="uk-list uk-column-1-3 uk-margin-remove-top" style="grid-column-gap: 0px; -moz-column-gap: 0px; column-gap: 0px;">
-															<li v-for="color in articleDetails.ColorList" :key="color.ColorId" class="uk-text-small" style="padding: 3px 3px 3px 2px">
+														<div class="uk-column-1-3 uk-margin-remove-top">
+															<div v-for="color in articleDetails.ColorList" :key="color.ColorId" class="uk-text-small" style="padding: 2px 0 0 0;">
 																<PrettyCheck v-model="color.IsSelected" class="p-icon">
 																	<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ color.Description }}</span>
 																</PrettyCheck>
 
 
-															</li>
-														</ul>
+															</div>
+														</div>
 												</div>
 												<!-- Kön -->
 												<div class="uk-margin uk-width-1-1">
@@ -1055,14 +1053,15 @@ export default {
   		},
 		async updateArticleDetails() {
 			let _this = this
-			_this.isLoading = true
+			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Article/PostUpdateArticle', _this.articleDetails)
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 					_this.isLoading = false
+					_this.$store.dispatch('setBusyOff')
 				} else {
-
+					_this.$store.dispatch('setBusyOff')
         		}
 			})
 			.catch(function (error) {
@@ -1071,12 +1070,13 @@ export default {
 		},
 		async deleteArticle() {
 			let _this = this
+			_this.$store.dispatch('setBusyOn')
 			await UIkit.modal.confirm('Vill du verkligen radera artikeln?', { labels: { ok: 'Yeah', cancel: 'Nope' } }).then(function () {
-				_this.showPageOverlaySpinner()
+				_this.$store.dispatch('setBusyOn')
 				 _this.$axios.$post('/webapi/Article/PostDeleteArticle', _this.articleDetails)
 				.then(function (response) {
 					if(response.Id == 1){
-						_this.hidePageOverlaySpinner()
+						_this.$store.dispatch('setBusyOff')
 						UIkit.modal.alert('Denna artikel har nu raderats från sortimentet!').then(function() {
 							_this.$router.push('/')
 						})
@@ -1088,19 +1088,19 @@ export default {
 					console.log(error)
 				})
 			}, function () {
-				_this.hidePageOverlaySpinner()
+				_this.$store.dispatch('setBusyOff')
 			})
 		},
 		async updateImageSorting() {
 			let _this = this
-			_this.showPageOverlaySpinner()
+			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Article/PostUpdateImageSorting', _this.articleImages)
 			.then(function (response) {
 				if(response.Message !== ''){
 					_this.message = response.Message
-					_this.hidePageOverlaySpinner()
+					_this.$store.dispatch('setBusyOff')
 				} else {
-					_this.hidePageOverlaySpinner()
+					_this.$store.dispatch('setBusyOff')
         		}
 			})
 			.catch(function (error) {
@@ -1109,15 +1109,16 @@ export default {
 		},
 		async deleteImage(image) {
 			let _this = this
-			_this.showPageOverlaySpinner()
+			_this.$store.dispatch('setBusyOn')
 			_this.isLoading = true
 			await this.$axios.$post('/webapi/Article/PostDeleteImage?articleId=' + this.$route.params.id, image)
 			.then(function (response) {
 				if(response.Message !== ''){
 					_this.articleImages = response
 					_this.isLoading = false
+					_this.$store.dispatch('setBusyOff')
 				} else {
-
+					_this.$store.dispatch('setBusyOff')
         		}
 			})
 			.catch(function (error) {
@@ -1129,7 +1130,7 @@ export default {
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleAssortment?purchasePrice=' + this.articleDetails.PurchasePrice, articleAssortmentRow)
 			.then(function (response) {
 				if(response.StockId !== ''){
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 					_this.articleAssortmentHistory = response.History
 					delete response.History
 					_this.$store.commit('updateArticleAssortment', response)
@@ -1149,7 +1150,7 @@ export default {
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleStatus', _this.articleStatusList[shop])
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 					_this.isLoading = false
 				} else {
 
@@ -1158,14 +1159,6 @@ export default {
 			.catch(function (error) {
 				console.log(error)
 			})
-		},
-		hidePageOverlaySpinner () {
-			this.$store.commit('toggleProgressOverlay', false);
-			this.$store.commit('togglePageOverlay', false)
-		},
-		showPageOverlaySpinner () {
-			this.$store.commit('toggleProgressOverlay', true);
-			this.$store.commit('togglePageOverlay', true)
 		},
 },
 	async fetch () {
