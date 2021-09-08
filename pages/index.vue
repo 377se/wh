@@ -54,7 +54,7 @@
 						</div>
 					</ScCardHeader>
 					<ScCardBody>
-						<ChartJsLine chart-id="cjsLineChartDataTotal" :data="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :options="lineChart.options"></ChartJsLine>
+						<ChartJsLine :chart-id="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :data="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :options="lineChart.options"></ChartJsLine>
 					</ScCardBody>
 				</ScCard>
 
