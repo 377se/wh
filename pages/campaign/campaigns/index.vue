@@ -149,13 +149,13 @@
                                         </div>
                                         <!-- Startdatum -->
                                         <div v-if="currentCampaignObject.CampaignId != 0" class="uk-margin-large-top">
-                                            <ScInput v-model="currentCampaignObject.FromDate" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <ScInput v-model="currentCampaignObject.FromDate" v-flatpickr="{ 'locale': Swedish, enableTime: false, enableSeconds: false }" placeholder="Välj startdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
                                                 <label>Startdatum</label>
                                             </ScInput>
                                         </div>
                                         <!-- Slutdatum -->
                                         <div v-if="currentCampaignObject.CampaignId != 0" class="uk-margin">
-                                            <ScInput v-model="currentCampaignObject.ValidThru" v-flatpickr="{ 'locale': Swedish, enableTime: true, enableSeconds: true }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                            <ScInput v-model="currentCampaignObject.ValidThru" v-flatpickr="{ 'locale': Swedish, enableTime: false, enableSeconds: false }" placeholder="Välj slutdatum..." state="fixed" mode="outline" extra-classes="uk-form-small">
                                                 <label>Slutdatum</label>
                                             </ScInput>
                                         </div>
@@ -247,7 +247,6 @@
                                         </div>
                                     </div>
 
-
                                 <!-- <Rawdisplayer :value="currentCampaignObject" /> -->
                                 <!-- <Rawdisplayer :value="productTypeList" /> -->
 
@@ -316,7 +315,9 @@ export default {
                 const [ currentcampaign ] = await Promise.all([
                     this.$axios.$get('/webapi/Campaign/GetCampaignById?campaignId=' + campaignid ),
             ])
-			    _this.currentCampaignObject = currentcampaign
+                _this.currentCampaignObject = currentcampaign
+                _this.currentCampaignObject.ArticleInfo.ArticleName = currentcampaign.ProductName
+                _this.currentCampaignObject.ArticleInfo.ImageName = currentcampaign.ProductImage
             } catch (err) {
                 console.log(err);
             }
