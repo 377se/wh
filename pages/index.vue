@@ -34,18 +34,18 @@
 						<div class="uk-flex uk-flex-middle">
 							<div class="uk-flex-1">
 								<ScCardTitle>
-									Försäljnings-grafer
+									{{ shopList.find(shop => { return shop.id == shopidForMonthlyGraph }).text }}
 								</ScCardTitle>
 							</div>
 							<ScCardActions :key="render">
-								<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+								<div class="uk-width-1-4 sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
 									<client-only>
 										<Select2
 											id="select-shopList"
 											v-model="shopidForMonthlyGraph"
 											:options="shopList"
-											:settings="{ 'width': '100%', 'placeholder': 'Välj shop för att visa graf', 'closeOnSelect': true }"
-											@select="getMonthlySalesByShop"
+											:settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true }"
+											style="width:200px;"
 										>
 										</Select2>
 									</client-only>
@@ -54,7 +54,7 @@
 						</div>
 					</ScCardHeader>
 					<ScCardBody>
-						<ChartJsLine :chart-id="shopidForMonthlyGraph == 0 ? 'cjsLineChartDataTotal' : 'cjsLineChartDataByShop'" :data="shopidForMonthlyGraph == 0 ? cjsLineChartDataTotal : cjsLineChartDataByShop" :options="lineChart.options"></ChartJsLine>
+						<ChartJsLine :key="render" chart-id="cjsLineChartDataTotal" :data="cjsLineChartDataTotal" :options="lineChart.options"></ChartJsLine>
 					</ScCardBody>
 				</ScCard>
 
@@ -520,7 +520,7 @@ export default {
 			monthlySalesLatestYears: [],
 			monthlySalesByShop: [],
 			shopidForMonthlyGraph: 0,
-			shoplist: [],
+			shopList: [],
 			dailySales: [],
 			dashboardInformationList: [],
 			shopName: '',
@@ -533,30 +533,30 @@ export default {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [
 				{
-					label: this.monthlySalesLatestYears[0].Year,
+					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[3],
 					borderColor: scColors.multi[3],
-					data: this.monthlySalesLatestYears[0].MonthlySale,
+					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].MonthlySale,
 					fill: false,
 				},
 				{
-					label: this.monthlySalesLatestYears[1].Year,
+					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					data: this.monthlySalesLatestYears[1].MonthlySale,
+					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].MonthlySale,
 					fill: false,
 				},
 				{
-					label: this.monthlySalesLatestYears[2].Year,
+					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].Year,
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					data: this.monthlySalesLatestYears[2].MonthlySale,
+					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].MonthlySale,
 					fill: false,
 				},
 				]
@@ -639,6 +639,11 @@ export default {
 				}
 			}
 		},
+	},
+	watch: {
+		shopidForMonthlyGraph(newValue, oldValue) {
+			this.render = !this.render
+		}
 	},
 	mounted () {
 		this.getTodaysDate()
@@ -780,6 +785,9 @@ export default {
             this.monthlySalesLatestYears = monthlysaleslatestyears
             this.dashboardInformationList = dashboardinformationlist
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+			this.shopList.push({ id: 0, text: 'Alla' })
+
+
         } catch (err) {
             console.log(err);
         }
