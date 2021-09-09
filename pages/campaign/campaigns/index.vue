@@ -39,7 +39,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="campaign in campaignList.filter(campaign => campaign.IsActive)" :key="campaign.CampaignId" class="uk-table-middle">
-                                                <td class="border-bottom border-left" style="text-align: left; " @click="getCampaignById(campaign.CampaignId)">{{ campaign.ShopName }}</td>
+                                                <td class="border-bottom border-left cursor-pointer" style="color: #048ACD; text-align: left; " @click="getCampaignById(campaign.CampaignId)">{{ campaign.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.Name }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.FromDate }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.ValidThru }}</td>
