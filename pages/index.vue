@@ -724,7 +724,7 @@ export default {
             await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesByShop?shopId=' + _this.shopidForMonthlyGraph)
             .then(function (monthlysalesbyshop) {
 				_this.monthlySalesByShop = monthlysalesbyshop
-				_this.render = !render
+				_this.render = !_this.render
                 _this.hidePageOverlaySpinner()
             })
             .catch(function (error) {
