@@ -16,7 +16,7 @@
                 <div class="uk-grid uk-grid-medium" uk-grid uk-margin>
                     <div class="uk-width-1-1 uk-width-2-3@m">
                         <!-- ACTIVE CAMPAIGNS -->
-                        <ScCard v-if="campaignList" class="uk-card-small">
+                        <ScCard v-if="campaignList" class="uk-card-small" :key="render">
                             <ScCardHeader separator>
                                 <ScCardTitle>
                                     <div class="uk-flex uk-flex-left uk-flex-middle">
@@ -51,7 +51,7 @@
                             </ScCardBody>
                         </ScCard>
                         <!-- INACTIVE CAMPAIGNS -->
-                        <ScCard v-if="campaignList" class="uk-card-small uk-margin-medium-top">
+                        <ScCard v-if="campaignList" class="uk-card-small uk-margin-medium-top" :key="render">
                             <ScCardHeader separator>
                                 <ScCardTitle>
                                     <div class="uk-flex uk-flex-left uk-flex-middle">
@@ -186,27 +186,29 @@
                                         </div>
                                     <!-- ArtikelNr -->
                                     <div v-if="currentCampaignObject.CampaignId != 0" class="uk-margin-medium-top">
-                                        <div class="uk-margin">
-                                            <ScInput v-model="currentCampaignObject.ArticleInfo.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetails(currentCampaignObject.ArticleInfo.ArticleNumber)">
-                                                <label>ArtikelNr</label>
-                                            </ScInput>
-                                        </div>
-                                        <div v-if="currentCampaignObject.ArticleInfo.ArticleId" class="uk-flex">
-                                            <div class="uk-margin-small-right uk-width-1-4">
-                                                <img :src="currentCampaignObject.ArticleInfo.ImageName">
+                                        <div v-if="currentCampaignObject.CampaignTypeId == 3">
+                                            <div class="uk-margin">
+                                                <ScInput v-model="currentCampaignObject.ArticleInfo.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetails(currentCampaignObject.ArticleInfo.ArticleNumber)">
+                                                    <label>ArtikelNr</label>
+                                                </ScInput>
                                             </div>
-                                            <div :class="{ 'uk-width-3-4': !errors }">
-                                                <!-- Produktnamn -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCampaignObject.ArticleInfo.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
-                                                        <label>Produktnamn</label>
-                                                    </ScInput>
+                                            <div v-if="currentCampaignObject.ArticleInfo.ArticleId" class="uk-flex">
+                                                <div class="uk-margin-small-right uk-width-1-4">
+                                                    <img :src="currentCampaignObject.ArticleInfo.ImageName">
                                                 </div>
-                                                <!-- Pris -->
-                                                <div class="uk-margin-medium-bottom">
-                                                    <ScInput v-model="currentCampaignObject.ArticleInfo.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
-                                                        <label>Pris</label>
-                                                    </ScInput>
+                                                <div :class="{ 'uk-width-3-4': !errors }">
+                                                    <!-- Produktnamn -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="currentCampaignObject.ArticleInfo.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
+                                                            <label>Produktnamn</label>
+                                                        </ScInput>
+                                                    </div>
+                                                    <!-- Pris -->
+                                                    <div class="uk-margin-medium-bottom">
+                                                        <ScInput v-model="currentCampaignObject.ArticleInfo.Price" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in pris">
+                                                            <label>Pris</label>
+                                                        </ScInput>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -299,6 +301,7 @@ export default {
         return {
             errors: null,
             message: null,
+            render: false,
             emptyCampaignObject: null,
             currentCampaignObject: null,
             campaignList: null,
@@ -316,8 +319,9 @@ export default {
                     this.$axios.$get('/webapi/Campaign/GetCampaignById?campaignId=' + campaignid ),
             ])
                 _this.currentCampaignObject = currentcampaign
-                _this.currentCampaignObject.ArticleInfo.ArticleName = currentcampaign.ProductName
-                _this.currentCampaignObject.ArticleInfo.ImageName = currentcampaign.ProductImage
+                _this.currentCampaignObject.ArticleInfo['ArticleName'] = currentcampaign.ArticleInfo.ProductName
+                _this.currentCampaignObject.ArticleInfo['ImageName'] = currentcampaign.ArticleInfo.ProductImage
+
             } catch (err) {
                 console.log(err);
             }
@@ -357,6 +361,11 @@ export default {
                     _this.$store.dispatch('setBusyOff')
                 } else {
                     _this.currentCampaignObject = updatedcampaign
+                    _this.currentCampaignObject.ArticleInfo['ArticleName'] = updatedcampaign.ArticleInfo.ProductName
+                    _this.currentCampaignObject.ArticleInfo['ImageName'] = updatedcampaign.ArticleInfo.ProductImage
+                    let foundIndex = _this.campaignList.findIndex(campaign => campaign.CampaignId == _this.currentCampaignObject.CampaignId)
+                    _this.campaignList[foundIndex] = _this.currentCampaignObject
+                    _this.render = !render
                     UIkit.modal.dialog('<p class="uk-modal-body">Kampanjen har uppdaterats!</p>')
                     _this.$store.dispatch('setBusyOff')
                 }
