@@ -1,12 +1,12 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.showPageOverlaySpinner() }}
+            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ this.hidePageOverlaySpinner() }}
+            {{ this.$store.dispatch('setBusyOff') }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -486,7 +486,7 @@ export default {
                 _this.$store.commit('setAlertVisible', 5)
                 return
             }
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.$store.commit('setAlertHidden', 2)
 			await this.$axios.$get('/webapi/Customer/GetCustomerByEmail?email=' + email + '&shopId=' + shopId)
 			.then(function (response) {
@@ -494,29 +494,29 @@ export default {
                 _this.order.CustomerId = response.CustomerId
                 try {
                     if ( response.AddressList.length === 0 ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 2)
                         _this.showAdressContainer = false
                     } else {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.showAdressContainer = true
                     }
                 } catch(err) {
                     console.log(err)
                 }
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
                 _this.$store.commit('setAlertVisible', 5)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getArticleDetailsByArticleNumber(articleNumber) {
 			let _this = this
             _this.errorsArticleDetails = null
             _this.$store.commit('setAlertHidden', 4)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.$store.commit('setAlertHidden', 3)
 			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleNumber)
 			.then(function (response) {
@@ -526,10 +526,10 @@ export default {
                 try {
                     if ( response.ErrorList != null ) {
                         _this.errorsArticleDetails = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 3)
                     } else {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -537,12 +537,12 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async postAddToCart() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Cart/PostAddToCart', _this.articleDetails)
 			.then(function (response) {
                 _this.errors = response.ErrorList
@@ -550,10 +550,10 @@ export default {
                 try {
                     if ( response.ErrorList != null ) {
                         console.log(_this.errors)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 4)
                     } else {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertHidden', 4)
                         _this.articleDetails = null
                         _this.articleNumber = null
@@ -564,35 +564,35 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async postDeleteFromCart(cartId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Cart/PostDeleteFromCart?cartId=' + cartId)
 			.then(function (response) {
                 _this.getCartBySessionId()
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async postCreateOrder() {
 			let _this = this
             _this.order.Address.Email = _this.customerEmail
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderCreate/PostCreateOrder', _this.order)
 			.then(function (response) {
                 try {
                     if ( response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.errors = response.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
                     } else {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertHidden', 1)
                         _this.articleDetails = null
                         _this.articleNumber = null
@@ -600,17 +600,17 @@ export default {
                 } catch(err) {
                     console.log(err)
                 }
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
                 _this.$router.push(response.Url)
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getCartBySessionId() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Cart/GetCartBySessionId')
 			.then(function (cart) {
                 _this.cart = cart.CartList
@@ -618,11 +618,11 @@ export default {
                 setTimeout(() => {
                     _this.updateTheBloodyTable = true
                 }, 10)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
 		hidePageOverlaySpinner () {

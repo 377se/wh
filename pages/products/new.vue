@@ -1,7 +1,7 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.showPageOverlaySpinner() }}
+            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
@@ -179,7 +179,7 @@
             async postCreateArticle() {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 _this.errors = null
                 await this.$axios.$post('/webapi/Article/PostCreateArticle', _this.currentArticle)
                 .then(function (currentarticle) {
@@ -189,22 +189,22 @@
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             _this.currentArticle = currentarticle
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$router.push(currentarticle.Url)
                         }
                     } catch(err) {
                         console.log(err)
                     }
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
             async postCopyArticle() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 _this.errors = null
                 _this.$store.commit('setAlertHidden', 2)
                 await this.$axios.$post('/webapi/Article/PostCopyArticle', _this.currentCopyArticle)
@@ -214,22 +214,22 @@
                             _this.errors = currentcopyarticle.ErrorList
                             _this.$store.commit('setAlertVisible', 2)
                         } else {
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$router.push(currentcopyarticle.Url)
                         }
                     } catch(err) {
                         console.log(err)
                     }
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
             async getArticleDetailsByArticleNumber() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + _this.searchedArticleNumber)
                 .then(function (response) {
                     _this.foundCopyArticle = response
@@ -237,9 +237,9 @@
                     try {
                         if ( response.ErrorList != null ) {
                             _this.errors = response.ErrorList
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         } else {
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -247,7 +247,7 @@
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
         },

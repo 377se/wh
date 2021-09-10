@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -180,33 +178,25 @@ export default {
     computed: {
     },
     methods: {
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
         async paymentProviderList() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Economy/PaymentProviderList', _this.currentStatsObject)
 			.then(function (paymentproviderstats) {
                 paymentproviderstats.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>') : null
                 _this.paymentProviderStats = paymentproviderstats
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async statsByPaymentProvider(MerchantId, Currency) {
 			let _this = this
             _this.currentStatsObject.MerchantId = MerchantId
             _this.currentStatsObject.Currency = Currency
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Economy/StatsByPaymentProvider', _this.currentStatsObject)
 			.then(function (extendedpaymentproviderstats) {
                 extendedpaymentproviderstats.length == 0 ? UIkit.modal.dialog('<p class="uk-modal-body">Ingen statistik hittades!</p>') : null
@@ -256,11 +246,11 @@ export default {
                 setTimeout(() => {
                     _this.$refs.downloadExtendedStats.click()
                 }, 500)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
         },
         async fetchStatsAndDownloadExcel(MerchantId, Currency) {
@@ -273,6 +263,7 @@ export default {
         },
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ emptystatsobject, yearlist, monthlist ] = await Promise.all([
                 this.$axios.$get('/webapi/economy/GetEmptyEconomyStatsObject'),
@@ -283,8 +274,10 @@ export default {
             this.currentStatsObject = emptystatsobject
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.monthList = monthlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

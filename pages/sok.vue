@@ -1,7 +1,7 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ this.showPageOverlaySpinner() }}
+		{{ this.$store.dispatch('setBusyOn') }}
 	</div>
 </div>
 <div v-else>
@@ -174,7 +174,7 @@ export default {
             await this.$axios.$post('/webapi/Search/PostSearch', _this.criteriaShit )
             .then(function (response) {
                 if(response.Message !== ''){
-                    _this.showPageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOn')
                     _this.searchResult = response
                     _this.searchList = response.SearchList
                     _this.searchHeaders = _this.buildHeaderObject(response.Headers)

@@ -273,25 +273,25 @@ export default {
     },
     methods: {
 		async getExtensionListByExtensionTypeId() {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
             this.extensionList = []
             // !this.isNewExtension ? this.extensionItem = null : null
             // !this.isNewExtension ? this.editorVisible = false : null
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId + '&shopId=' + this.shopId )
 			.then( extensionlist => {
 				this.extensionList = extensionlist
-                {{ this.hidePageOverlaySpinner() }}
+                {{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async getExtensionTypeList() {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
 			.then( extensiontypelist => {
 				this.extensionTypeOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -301,16 +301,16 @@ export default {
 			let _this = this
             _this.isNewExtension = false
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Extension/GetExtensionById?extensionId=' + extensionId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.extensionItem = response
                         _this.editorVisible = true
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -318,20 +318,20 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async deleteExtension(extensionId, shopId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Extension/PostDeleteExtension?extensionId=' + extensionId + '&shopId=' + shopId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.extensionList = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -339,7 +339,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateExtension() {
@@ -347,18 +347,18 @@ export default {
             _this.errors = null
             _this.$store.commit('setAlertHidden', 1)
             _this.isNewBanner = true
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Extension/PostUpdateExtension', _this.extensionItem )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.$store.commit('setAlertHidden', 1)
                         _this.getExtensionListByExtensionTypeId()
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -366,24 +366,24 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async sortExtensionList() {
 			let _this = this
             _this.errors = null
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Extension/SortExtensionList', _this.extensionList )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.$store.commit('setAlertHidden', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -391,24 +391,24 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getShopListByExtensionType() {
 			let _this = this
             this.shopId != 0 ? this.shopId = 0 : null
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Shop/GetShopListByExtensionType?extensionTypeId=' + _this.extensionTypeId)
 			.then(function (shops) {
                 try {
                     if (shops.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
                         _this.shopList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
                         _this.shopList.push({id: 0, text: 'Alla shopar'})
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -416,7 +416,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getEmptyExtension() {
@@ -424,15 +424,15 @@ export default {
             _this.isNewExtension = true
             _this.editorVisible = true
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Extension/GetEmptyObject?extensionTypeId=' + _this.extensionTypeId + '&shopId=' + this.shopId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.extensionItem = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -440,7 +440,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async createExtension() {
@@ -450,15 +450,15 @@ export default {
             _this.extensionTypeId == 2 ? _this.extensionItem.ShopId = 2 : null
             _this.extensionTypeId == 3 ? _this.extensionItem.ShopId = _this.shopId : null
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Extension/PostCreateExtension', _this.extensionItem)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.extensionItem = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.getExtensionListByExtensionTypeId()
                     }
                 } catch(err) {
@@ -467,26 +467,26 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getArticleDetailsByArticleNumber(articleNumber) {
 			let _this = this
             _this.$store.commit('setAlertHidden', 4)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.$store.commit('setAlertHidden', 3)
 			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleNumber)
 			.then(function (response) {
                 try {
                     if ( response.ErrorList != null ) {
                         _this.errorsArticleDetails = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 3)
                     } else {
                         _this.extensionItem.ArticleId = response.ArticleId
                         _this.extensionItem.ArticleName = response.ProductName
                         _this.extensionItem.ExtensionId == 0 ? _this.createExtension() : _this.updateExtension()
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -494,17 +494,9 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
     },
 }
 </script>

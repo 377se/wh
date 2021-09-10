@@ -240,17 +240,9 @@ export default {
         articleCount: true,
     }),
     methods: {
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
     },
     async fetch () {
-        this.showPageOverlaySpinner()
+        this.$store.dispatch('setBusyOn')
         try {
             const [ orderInfo ] = await Promise.all([
                 this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.orders + '&createUnifaunXml=' + this.isUnifaunTrue ),
@@ -259,7 +251,7 @@ export default {
         } catch (err) {
           console.log(err);
         }
-        this.hidePageOverlaySpinner()
+        this.$store.dispatch('setBusyOff')
     },
 }
 </script>

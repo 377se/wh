@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -300,50 +298,50 @@ export default {
         },
         async generateVoucher() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Voucher/GetGenerateVoucher?shopId=' + _this.newVoucher.ShopId)
             .then(function (code) {
                 _this.newVoucher.VoucherCode = code
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
         async getVoucherList() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Voucher/GetVoucherList')
             .then(function (voucherlist) {
                 _this.voucherList = voucherlist
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
         async getVoucherById(id) {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.resetAlerts()
             await this.$axios.$get('/webapi/Voucher/GetVoucherById?voucherId=' + id)
             .then(function (editedvoucher) {
                 try {
                     if (editedvoucher.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.editedVoucher = editedvoucher
                         _this.editVouchersPanel = true
-                        _this.hidePageOverlaySpinner()                    }
+                        _this.$store.dispatch('setBusyOff')                    }
                 } catch(err) {
                     console.log(err)
                 }
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
         async createVoucher() {
@@ -351,18 +349,18 @@ export default {
             _this.errors = null
             _this.message = null
             _this.resetAlerts()
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Voucher/PostCreateVoucher', _this.newVoucher)
             .then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 1)
                     }
                     if (response.Message != null) {
                         _this.message = response.Message
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 2)
                     }
                 } catch(err) {
@@ -371,7 +369,7 @@ export default {
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
         async updateVoucher() {
@@ -379,18 +377,18 @@ export default {
             _this.errors = null
             _this.message = null
             _this.resetAlerts()
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Voucher/PostUpdateVoucher', _this.editedVoucher)
             .then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 3)
                     }
                     if (response.Message != null) {
                         _this.message = response.Message
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 4)
                     }
                 } catch(err) {
@@ -400,19 +398,12 @@ export default {
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
-        },
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
         },
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ shops, newvoucher ] = await Promise.all([
                 this.$axios.$get('/webapi/Shop/GetShopList'),
@@ -421,8 +412,10 @@ export default {
             ])
             this.newVoucher = newvoucher
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

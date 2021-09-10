@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -147,42 +145,35 @@ export default {
     watch: {
     },
     methods: {
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
 		async updateAdminDetails() {
 			let _this = this
-			_this.showPageOverlaySpinner()
+			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Admin/PostUpdateAdminDetails', _this.adminDetails)
 			.then(function (admindetails) {
                 _this.adminDetails = admindetails
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
 		async updateMenuPermissions(item) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostUpdateMenuPermission?adminId='  + this.$route.params.id, item)
 			.then(function (menupermissions) {
                 _this.menuPermissions = menupermissions
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ admindetails, menupermissions ] = await Promise.all([
                 this.$axios.$get('/webapi/Admin/GetAdminDetails?adminId=' + this.$route.params.id),
@@ -190,8 +181,10 @@ export default {
             ])
             this.adminDetails = admindetails
             this.menuPermissions = menupermissions
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

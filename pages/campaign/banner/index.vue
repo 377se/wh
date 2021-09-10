@@ -182,24 +182,24 @@ export default {
     },
     methods: {
 		async getBannerListByDomainId() {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$get('/webapi/Banner/GetBannerListByDomainId?domainId=' + this.domainId )
 			.then( bannerlist => {
 				this.bannerList = bannerlist
                 this.currentBannerObject.DomainId = this.domainId
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async getDomainList() {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$get('/webapi/Metadata/GetDomainList')
 			.then( domainlist => {
 				this.domainList = domainlist
 				this.domainOptionsList = domainlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -323,14 +323,6 @@ export default {
                 _this.$store.dispatch('setBusyOff')
 			})
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
     },
     async fetch () {
         try {

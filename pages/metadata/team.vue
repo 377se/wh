@@ -1,11 +1,9 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else id="sc-page-wrapper">
-        {{ hidePageOverlaySpinner() }}
         <div id="sc-page-top-bar" class="sc-top-bar">
             <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                 <div class="uk-flex-1">
@@ -199,28 +197,28 @@
                 let _this = this
                 _this.currentTeamObject = _this.emptyTeamObject
                 _this.$store.commit('setAlertHidden', 1)
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$post('/webapi/Metadata/CreateTeam', _this.currentTeamObject)
                 .then(function (res) {
                     if (res.ErrorList != null) {
                         _this.errors = res.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.currentTeamObject = res
                         // Update teamlist
                         _this.teamListMeta.push(_this.currentTeamObject)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
             async updateTeam() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 // update team
                 await this.$axios.$post('/webapi/Metadata/UpdateTeam', _this.currentTeamObject )
                 .then(function (response) {
@@ -228,7 +226,7 @@
                         if (response.ErrorList != null ) {
                             _this.errors = response.ErrorList
                             _this.$store.commit('setAlertVisible', 1)
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         } else {
                             _this.$store.commit('setAlertHidden', 1)
                             // Update teamlist
@@ -239,7 +237,7 @@
                             })
                             // re-render table
                             _this.render = !_this.render
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -247,21 +245,21 @@
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
             async getTeamToEdit(teamId) {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Metadata/GetTeamById?teamId=' + teamId)
                 .then(function (response) {
                     try {
                         if (response.ErrorList != null ) {
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         } else {
                             _this.currentTeamObject = response
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -269,7 +267,7 @@
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 })
             },
             hidePageOverlaySpinner () {
@@ -282,6 +280,7 @@
             },
         },
         async fetch () {
+            this.$store.dispatch('setBusyOn')
             try {
                 const [ leaguelist, teamlistmeta, emptyteamobject ] = await Promise.all([
                     this.$axios.$get('/webapi/metadata/GetLeagueList'),
@@ -292,8 +291,10 @@
                 this.teamListMeta = teamlistmeta
                 this.emptyTeamObject = emptyteamobject
                 this.currentTeamObject = emptyteamobject
+                this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
+                this.$store.dispatch('setBusyOff')
             }
         },
     }

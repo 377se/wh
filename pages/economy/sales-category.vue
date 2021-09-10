@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -154,25 +152,17 @@ export default {
         forceRender() {
             this.renderAgain = this.renderAgain + 1
         },
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
         async getSalesByCategory() {
 			let _this = this
             try {
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             const [ salesbycategory ] = await Promise.all([
                 this.$axios.$post('/webapi/Economy/SalesByCategory', _this.currentStatsObject),
             ])
 			    _this.salesByCategory = salesbycategory
                 _this.forceRender()
                 _this.getMaxNumberColumns(salesbycategory)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
             }
@@ -192,6 +182,7 @@ export default {
         },
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ emptystatsobject, shoplist ] = await Promise.all([
                 this.$axios.$get('/webapi/Stats/GetEmptyStatsObject'),
@@ -200,8 +191,10 @@ export default {
             this.emptyStatsObject = emptystatsobject
             this.currentStatsObject = emptystatsobject
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

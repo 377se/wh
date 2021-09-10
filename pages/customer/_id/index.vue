@@ -1,7 +1,7 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ this.showPageOverlaySpinner() }}
+		{{ this.$store.dispatch('setBusyOn') }}
 	</div>
 </div>
 <div v-else>
@@ -409,11 +409,11 @@ export default {
                     if ( response.ErrorList != null ) {
                         _this.alertClass = 'uk-alert-danger'
                         _this.$store.commit('setAlertVisible', 0)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.alertClass = 'uk-alert-success'
                         _this.$store.commit('setAlertVisible', 0)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.updateTheBloodyTable = false
 					    setTimeout(() => {
 						    _this.updateTheBloodyTable = true
@@ -426,7 +426,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
 		async updateCoins() {
@@ -440,11 +440,11 @@ export default {
                     if ( response.ErrorList != null ) {
                         _this.alertClass = 'uk-alert-danger'
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.alertClass = 'uk-alert-success'
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.updateTheBloodyTable = false
 					    setTimeout(() => {
 						    _this.updateTheBloodyTable = true
@@ -462,7 +462,7 @@ export default {
 		async getResetLink() {
 			let _this = this
 			_this.isLoading = true
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Customer/GetResetLink?customerid=' + _this.customer.CustomerId )
 			.then(function (response) {
 					_this.resetLink = response

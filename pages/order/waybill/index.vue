@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -346,43 +344,35 @@ export default {
         },
     },
     methods: {
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
         async createWaybill() {
             let _this = this
             _this.$store.commit('setAlertHidden', 1)
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Waybill/PostCreateWaybill', _this.currentWayBill)
 			.then(function (res) {
                 if (res.ErrorList != null) {
                     _this.errors = res.ErrorList
                     _this.$store.commit('setAlertVisible', 1)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 } else {
                     _this.$fetch()
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 }
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
         },
         async getProducts(waybillid, type) {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.waybillDetails = null
             try {
                 const [ waybilldetails ] = await Promise.all([
                     this.$axios.$get('/webapi/Waybill/GetWaybillDetails?waybillId=' + waybillid )
                 ])
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
                 _this.waybillDetails = waybilldetails
                 if (type == 1) {
                     setTimeout(() => {
@@ -406,6 +396,7 @@ export default {
         }
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ emptywaybill, waybilllist ] = await Promise.all([
                 this.$axios.$get('/webapi/Waybill/GetEmptyObject'),
@@ -414,8 +405,10 @@ export default {
             this.emptyWayBill = emptywaybill
             this.currentWayBill = emptywaybill
             this.waybillList = waybilllist
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

@@ -1,11 +1,9 @@
 <template>
 	<div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
 	<div v-else id="sc-page-wrapper">
-		{{ hidePageOverlaySpinner() }}
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
 				<div class="uk-flex-1">
@@ -176,13 +174,16 @@ export default {
         },
 	},
     async fetch () {
+		this.$store.dispatch('setBusyOn')
         try {
             const [ products ] = await Promise.all([
 				await this.$axios.$get('/webapi/Cart/GetCartList'),
             ])
 			this.products = products
+			this.$store.dispatch('setBusyOff')
         } catch (err) {
-            console.log(err);
+            console.log(err)
+			this.$store.dispatch('setBusyOff')
         }
     },
 }

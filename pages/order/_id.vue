@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -718,15 +716,15 @@ export default {
     methods: {
         async deleteItem(itemId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostDeleteItem?itemId=' + itemId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderContent = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -734,7 +732,7 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         printDeliveryNotes(id) {
@@ -762,17 +760,17 @@ export default {
         async addItem(orderId) {
 			let _this = this
             _this.errors = null
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostAddItem?orderId=' + orderId, _this.articleDetails)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderContent = response
                         _this.addEditorVisible = false
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -780,21 +778,21 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateItem() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostUpdateItem', _this.orderItem )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderContent = response
                         _this.updateEditorVisible = false
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -802,17 +800,17 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateOrder() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostUpdateOrder', _this.orderInfo )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderInfo = response
                         _this.orderInfo.KlarnaPurchaseId != null
@@ -822,7 +820,7 @@ export default {
                         ? _this.accountIdHasData = true
                         : _this.accountIdHasData = false
                         _this.render = !_this.render
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -830,22 +828,22 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async processOrder() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostProcessOrder?paymentTypeId=' + _this.paymentTypeId, _this.orderContent )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderContent = _this.orderContentInitial
                         _this.orderContent.OrderItemList.forEach(item => { item.IsSelected = false })
                         _this.paymentTypeId = 0
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.$router.push('/order/' + response.OrderId)
                     }
                 } catch(err) {
@@ -854,21 +852,21 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateAdress() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Address/PostUpdateAddress?orderId=' + _this.orderInfo.OrderId, _this.adressItem )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderInfo = response
                         _this.adressEditorVisible = false
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -876,20 +874,20 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async sendOrderConfirmation() {
 			let _this = this
 			_this.message = null
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostSendOrderConfirmation?orderId=' + _this.orderInfo.OrderId )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -897,21 +895,21 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async setOrderAsDeliveredByOrderId() {
 			let _this = this
 			_this.message = null
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/OrderHandling/SetOrderAsDeliveredByOrderId?orderId=' + _this.orderInfo.OrderId )
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderInfo = response
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -919,22 +917,22 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getItemToEdit(itemId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/OrderHandling/GetOrderItem?itemId=' + itemId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.orderItem = response
                         _this.updateEditorVisible = true
                         _this.addEditorVisible = false
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -942,21 +940,21 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getAdressToEdit(adressId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Address/GetAddress?addressId=' + adressId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.adressItem = response
                         _this.adressEditorVisible = true
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -964,22 +962,22 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getArticleDetails(articleId) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Article/GetArticleDetailsByArticleNumber?articleNumber=' + articleId)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.articleDetails = response
                         _this.articleDetails.ShopId = _this.orderInfo.ShopId
                         _this.sizeOptionsList = response.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -987,20 +985,20 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getOrderLog() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             try {
                 const orderlog = await this.$axios.$get('/webapi/Log/GetOrderLog?orderId=' + this.$route.params.id)
                 if (orderlog.ErrorList != null ) {
                     _this.errors = orderlog.ErrorList
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 } else {
                     _this.orderLog = orderlog
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 }
             } catch(err) {
                 console.log(err)
@@ -1008,16 +1006,16 @@ export default {
 		},
         async getEmptyEmailObject() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             try {
                 const emptyemail = await this.$axios.$get('/webapi/OrderHandling/GetEmptyEmailObject?orderId=' + this.$route.params.id)
                 if (emptyemail.ErrorList != null ) {
                     _this.errors = emptyemail.ErrorList
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                 } else {
                     _this.emptyEmail = emptyemail
                     _this.emptyEmail.Text = ''
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                     UIkit.modal('#mail-editor').show()
                 }
             } catch(err) {
@@ -1026,7 +1024,7 @@ export default {
 		},
         async sendOrderMail() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             _this.$store.commit('setAlertHidden', 1)
             await this.$axios.$post('/webapi/OrderHandling/SendOrderMail', _this.emptyEmail )
 			.then(function (response) {
@@ -1034,10 +1032,10 @@ export default {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         UIkit.modal.dialog('<p class="uk-modal-body">Ditt mail har skickats!</p>')
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
                     console.log(err)
@@ -1045,21 +1043,13 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
     },
     async fetch () {
         try {
-            this.showPageOverlaySpinner()
+            this.$store.dispatch('setBusyOn')
             const [ orderInfo, orderContent, countries, orderProcessTypeList ] = await Promise.all([
                 this.$axios.$get('/webapi/Order/GetOrder?orderId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Order/GetOrderContent?orderId=' + this.$route.params.id),
@@ -1079,7 +1069,7 @@ export default {
             ? this.accountIdHasData = true
             : this.accountIdHasData = false
 
-            this.hidePageOverlaySpinner()
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
         }

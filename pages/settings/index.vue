@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -194,13 +192,13 @@ import Alert from '~/components/Alert'
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
                 _this.$store.commit('setAlertHidden', 2)
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Shop/GetShopSetting?shopId=' + _this.shopId)
                 .then(function (shopsettings) {
                     try {
                         if (shopsettings.ErrorList != null ) {
                             _this.errors = shopsettings.ErrorList
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             if (shopsettings.Message != null ) {
@@ -208,7 +206,7 @@ import Alert from '~/components/Alert'
                                 _this.$store.commit('setAlertVisible', 2)
                             }
                             _this.shopSettings = shopsettings
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -216,34 +214,34 @@ import Alert from '~/components/Alert'
                 })
                 .catch(function (error) {
                     console.log(error)
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
 			    })
             },
             async updateShop() {
                 let _this = this
                 _this.errors = null
                 _this.message = null
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$post('/webapi/Shop/UpdateShop', _this.shopSettings)
                 .then(function (response) {
                     try {
                         if (response.ErrorList != null ) {
                             _this.errors = response.ErrorList
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             _this.message = response.Message
                             _this.shopSettings = shopsettings
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$store.commit('setAlertVisible', 2)
                         }
                     } catch(err) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         console.log(err)
                     }
                 })
                 .catch(function (error) {
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                     console.log(error)
                 })
             },
@@ -251,39 +249,42 @@ import Alert from '~/components/Alert'
                 let _this = this
                 _this.errors = null
                 _this.message = null
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$post('/webapi/Cloudflare/ReleaseCache', _this.shopSettings)
                 .then(function (response) {
                     try {
                         if (response.ErrorList != null ) {
                             _this.errors = response.ErrorList
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             console.log(response)
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             _this.message = response.Message
-                            _this.hidePageOverlaySpinner()
+                            _this.$store.dispatch('setBusyOff')
                             _this.$store.commit('setAlertVisible', 2)
                         }
                     } catch(err) {
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         console.log(err)
                     }
                 })
                 .catch(function (error) {
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                     console.log(error)
                 })
             },
         },
         async fetch () {
+            this.$store.dispatch('setBusyOn')
             try {
                 const [shoplist] = await Promise.all([
                     this.$axios.$get('/webapi/Shop/GetShopList'),
                 ])
                 this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+                this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
+                this.$store.dispatch('setBusyOff')
             }
         },
     }

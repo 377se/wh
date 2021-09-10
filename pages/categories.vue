@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -269,109 +267,102 @@ export default {
     methods: {
 		async updateImageSorting() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostSortArticlesByCategoryId?categoryId=' + _this.categoryId, _this.articleImages)
 			.then(function (response) {
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getArticleImages() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Menu/GetArticleListByCategoryId?categoryId=' + _this.categoryId)
             .then(function (articleimages) {
                 _this.articleImages = articleimages
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
-        },
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
         },
         async getMenuByShopId() {
 			let _this = this
             _this.currentMenu = []
             _this.editMenuItem = null
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Menu/GetMenuByShopId?shopId=' + _this.shopId)
 			.then(function (menu) {
                 _this.currentMenu = menu
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async sortMenu() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostSortMenu?shopId=' + _this.shopId, _this.currentMenu)
 			.then(function (menu) {
                 _this.currentMenu = menu
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async getMenuItemById(categoryId) {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Menu/GetMenuItemById?categoryId=' + this.$store.getters.categoryIdState)
 			.then(function (editmenuitem) {
                 _this.editMenuItem = editmenuitem
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async updateMenuItem() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Menu/PostUpdateMenuItem', _this.editMenuItem)
             .then(function (menu) {
                 setTimeout(() => {
                     _this.getMenuByShopId(_this.shopId)
                 }, 100)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
         async addMenuItem() {
 			let _this = this
             _this.newMenuItemContainer.shopId = _this.shopId
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostAddMenuItem', _this.newMenuItemContainer)
 			.then(function (response) {
                 _this.getMenuByShopId()
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ shops, menuItem ] = await Promise.all([
                 this.$axios.$get('/webapi/Shop/GetShopList'),
@@ -380,8 +371,10 @@ export default {
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.shops = shops
             this.menuItem = menuItem
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
-            console.log(err);
+            console.log(err)
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

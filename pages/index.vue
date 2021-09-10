@@ -6,12 +6,10 @@
 
 		<div v-if="$fetchState.pending" class="no-print">
 			<div id="sc-page-wrapper">
-				{{ showPageOverlaySpinner() }}
 			</div>
 		</div>
 
 		<div v-else id="sc-page-wrapper" class="no-print">
-			{{ hidePageOverlaySpinner() }}
 
 			<!-- PAGE-AREA -->
 
@@ -660,41 +658,33 @@ export default {
 				day = '0' + day
 			this.todaysDate = [year, month, day].join('-')
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
 		async getDashboardExtended() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Dashboard/GetDashboardExtended')
             .then(function (dashboard) {
                 _this.dashBoard = dashboard
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 				_this.isExtended = !_this.isExtended
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
 		async getArticleList(typeid, articlelistname) {
             let _this = this
 			_this.articleList = []
 			_this.articleListName = articlelistname
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Dashboard/GetArticleList?typeId=' + typeid)
             .then(function (articlelist) {
 				_this.articleList = articlelist
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
 		async updateArticleStatusById(article) {
@@ -705,36 +695,36 @@ export default {
 			})
             .catch(function (error) {
 				console.log(error)
-            _this.hidePageOverlaySpinner()
+            _this.$store.dispatch('setBusyOff')
             })
 		},
 		async getDailySales(shopid, date) {
             let _this = this
 			_this.dailySales = []
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Dashboard/GetDailySales?shopId=' + shopid + '&date=' + date)
             .then(function (dailysales) {
 				_this.dailySales = dailysales
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
 				console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
 		async getMonthlySalesByShop() {
             let _this = this
 			_this.monthlySalesByShop = []
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Dashboard/GetMonthlySalesByShop?shopId=' + _this.shopidForMonthlyGraph)
             .then(function (monthlysalesbyshop) {
 				_this.monthlySalesByShop = monthlysalesbyshop
 				_this.render = !_this.render
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
 				console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
         },
 		showDailySales(shopid, shopname, date) {
@@ -754,15 +744,15 @@ export default {
 		async showPrintInfo() {
 			let _this = this
 			_this.nameAndNumberInformation = null
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$get('/webapi/Order/GetNameAndNumberInformation')
             .then(function (nameandnumberinformation) {
 				_this.nameAndNumberInformation = nameandnumberinformation
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
             .catch(function (error) {
 				console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             })
 			setTimeout(() => {
 				UIkit.modal('#print-info-modal').show()
@@ -770,6 +760,7 @@ export default {
 		},
 	},
     async fetch () {
+		this.$store.dispatch('setBusyOn')
         try {
             const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
@@ -786,10 +777,11 @@ export default {
             this.dashboardInformationList = dashboardinformationlist
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
 			this.shopList.push({ id: 0, text: 'Alla' })
-
+			this.$store.dispatch('setBusyOff')
 
         } catch (err) {
             console.log(err);
+			this.$store.dispatch('setBusyOff')
         }
     },
 }

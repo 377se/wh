@@ -240,7 +240,7 @@ export default {
 					// setTimeout(() => {
 					// 	_this.isUpdating = false
 					// }, 1000)
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 				} else {
 
         		}

@@ -1,11 +1,9 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
 	<div v-else>
-		{{ hidePageOverlaySpinner() }}
 		<div id="sc-page-wrapper">
 			<div id="sc-page-top-bar" class="sc-top-bar">
 				<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -201,12 +199,12 @@ export default {
 	},
 	methods: {
 		async getExceptionsByDomain(domainId) {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			this.$store.commit('setAlertHidden', 1)
 			await this.$axios.$get('/webapi/Exception/GetExceptionsByDomainId?domainId=' + this.domainId )
 			.then( logs => {
 				this.logs = logs
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -214,50 +212,42 @@ export default {
     	},
 		async getExceptionDetails(errorId) {
 			this.exceptionDetails = {}
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$get('/webapi/Exception/GetExceptionDetails?ErrorId=' + errorId )
 			.then( exceptionDetails => {
 				this.exceptionDetails = exceptionDetails
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async getDomainList() {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$get('/webapi/Exception/GetDomainList')
 			.then( domainList => {
 				this.domainList = domainList
 				this.domainOptionsList = domainList.map(({ DomainId, DomainName }) => ({ id: DomainId, text: DomainName }))
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async deleteExceptionsByDomainId(domainId) {
-			{{ this.showPageOverlaySpinner() }}
+			{{ this.$store.dispatch('setBusyOn') }}
 			await this.$axios.$post('/webapi/Exception/PostDeleteExceptionsByDomainId?domainId=' + this.domainId )
 			.then( response => {
 				this.message = response.Message
 				this.$store.commit('setAlertVisible', 1)
 				this.logs = []
 				this.getDomainList()
-				{{ this.hidePageOverlaySpinner() }}
+				{{ this.$store.dispatch('setBusyOff') }}
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
 	},
 	mounted() {
 
@@ -269,10 +259,13 @@ export default {
 		}
 	},
 	async fetch () {
+		this.$store.dispatch('setBusyOn')
         try {
             this.getDomainList()
+			this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+			this.$store.dispatch('setBusyOff')
         }
     },
 }

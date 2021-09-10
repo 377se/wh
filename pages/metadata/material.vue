@@ -124,7 +124,7 @@
                     if (res.ErrorList != null) {
                         _this.errors = res.ErrorList
                         _this.$store.commit('setAlertVisible', 1)
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                     } else {
                         UIkit.modal.dialog('<p class="uk-modal-body">Ett nytt material har skapats!</p>')
                         _this.$fetch()

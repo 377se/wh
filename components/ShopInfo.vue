@@ -177,7 +177,7 @@ export default {
 			await this.$axios.$post('/webapi/Menu/PostUpdateMenuByShop?shopId=' + _this.shopId + '&articleId=' + _this.articleId, childMenuItem)
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 					_this.isLoading = false
 				} else {
 
@@ -193,7 +193,7 @@ export default {
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleDescription', _this.shopInfo)
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.showPageOverlaySpinner()
+					_this.$store.dispatch('setBusyOn')
 					_this.isLoading = false
 				} else {
 

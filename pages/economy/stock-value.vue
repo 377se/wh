@@ -1,7 +1,7 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.showPageOverlaySpinner() }}
+            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
@@ -350,7 +350,7 @@ import { VueGoodTable } from 'vue-good-table'
             },
             async getStockValueList() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Stock/GetStockValueList')
                 .then(function (stockvaluelist) {
                     _this.stockValueList = stockvaluelist
@@ -358,11 +358,11 @@ import { VueGoodTable } from 'vue-good-table'
                 .catch(function (error) {
                     console.log(error)
                 })
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 		    },
             async getStockValueByTeam() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Stock/GetStockValueByTeam')
                 .then(function (stockvaluebyteam) {
                     _this.stockValueByTeam = stockvaluebyteam
@@ -370,11 +370,11 @@ import { VueGoodTable } from 'vue-good-table'
                 .catch(function (error) {
                     console.log(error)
                 })
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 		    },
             async getStockValueByBrand() {
                 let _this = this
-                _this.showPageOverlaySpinner()
+                _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Stock/GetStockValueByBrand')
                 .then(function (stockvaluebybrand) {
                     _this.stockValueByBrand = stockvaluebybrand
@@ -382,7 +382,7 @@ import { VueGoodTable } from 'vue-good-table'
                 .catch(function (error) {
                     console.log(error)
                 })
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 		    },
         },
         async fetch () {

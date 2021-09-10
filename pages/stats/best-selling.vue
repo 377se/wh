@@ -1,7 +1,7 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.showPageOverlaySpinner() }}
+            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>

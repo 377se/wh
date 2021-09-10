@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
 
     <div v-else id="sc-page-wrapper">
-        {{ hidePageOverlaySpinner() }}
         <div id="sc-page-top-bar" class="sc-top-bar">
             <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                 <div class="uk-flex-1">
@@ -186,45 +184,38 @@ export default {
 	methods: {
 		async loadProducts() {
             let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             try {
                 const [ products ] = await Promise.all([
                     this.$axios.$post('/webapi/Article/ArticleListByStatus', _this.currentStatsObject)
                 ])
                 _this.products = products
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             } catch (error) {
                 console.log(error)
             }
     	},
 		async updateShelf(articledetails) {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
             try {
                 const [ response ] = await Promise.all([
                     this.$axios.$post('/webapi/Article/UpdateShelf', articledetails)
                 ])
                 if(response.ErrorList != null) {
-                    _this.hidePageOverlaySpinner()
+                    _this.$store.dispatch('setBusyOff')
                     console.log('Something fucked up!')
 				} else {
                     console.log("Something didn't fuck up!")
         		}
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
             } catch (error) {
                 console.log(error)
             }
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
 	},
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ emptystatsobject, shops, productstatuslist ] = await Promise.all([
                 this.$axios.$get('/webapi/stats/GetEmptyStatsObject'),
@@ -234,8 +225,10 @@ export default {
             this.currentStatsObject = emptystatsobject
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.productStatusList = productstatuslist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }

@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -138,17 +136,9 @@ export default {
     computed: {
     },
     methods: {
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
         async getStatsByCurrency() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Economy/StatsByCurrency', _this.currentStatsObject)
 			.then(function (statsbycurrency) {
                 statsbycurrency.forEach((orderlist, index) => {
@@ -176,13 +166,13 @@ export default {
                 })
                 _this.statsByCurrencyWithSummary = statsbycurrency
                 _this.forceRerender()
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
                 UIkit.modal.alert('<p class="uk-modal-body">Din statistik är nu hämtad och färdig att exporteras!</p>')
 			})
 			.catch(function (error) {
                 console.log(error)
                 UIkit.modal.default('<p class="uk-modal-body">Ingen statistik hittades!</p>')
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         createSummaryObject(orderlist) {
@@ -219,6 +209,7 @@ export default {
         },
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ emptystatsobject, shoplist, yearlist, monthlist, currencylist ] = await Promise.all([
                 this.$axios.$get('/webapi/Stats/GetEmptyStatsObject'),
@@ -233,8 +224,10 @@ export default {
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.monthList = monthlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.currencyList = currencylist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
+            this.$store.dispatch('setBusyOff')
         }
     },
 }
