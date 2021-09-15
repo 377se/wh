@@ -215,12 +215,25 @@
                                     </div>
                                         <!-- Aktiv? -->
                                         <div v-if="currentCampaignObject.CampaignId != 0" class="uk-margin-small-top uk-margin-medium-bottom">
-                                            <PrettyCheck v-model="currentCampaignObject.IsActive" class="p-icon">
+                                            <PrettyCheck v-model="currentCampaignObject.IsActive" class="p-icon" @change="updateCampaign()">
                                                 <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
                                             </PrettyCheck>
                                         </div>
 
                                     </div>
+
+                                <div class="uk-flex uk-flex-around uk-margin-large-bottom">
+                                    <div v-if="currentCampaignObject.CampaignId == 0">
+                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createCampaign()">NY&nbsp;KAMPANJ
+                                        </button>
+                                    </div>
+                                    <div v-else>
+                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateCampaign()">
+                                            UPPDATERA
+                                        </button>
+                                    </div>
+                                </div>
+
 
                                     <!-- INFO-TEXTER -->
 
@@ -254,17 +267,6 @@
 
 
 
-                                <div class="uk-flex uk-flex-around">
-                                    <div v-if="currentCampaignObject.CampaignId == 0">
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="createCampaign()">NY&nbsp;KAMPANJ
-                                        </button>
-                                    </div>
-                                    <div v-else>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateCampaign()">
-                                            UPPDATERA
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </ScCardBody>
                     </ScCard>
