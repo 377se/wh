@@ -1,7 +1,6 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ this.$store.dispatch('setBusyOn') }}
 	</div>
 </div>
 <div v-else>
@@ -50,7 +49,7 @@
                                     </div>
 
                                     <div class="uk-margin">
-                                        <ScInput v-model="criteriaShit.searchCriteria" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                        <ScInput v-model="criteriaShit.searchCriteria" state="fixed" mode="outline" extra-classes="uk-form-small" @keyup.enter.native="getSearchResult(criteriaShit)">
                                             <label>Söksträng</label>
                                         </ScInput>
                                     </div>
@@ -158,29 +157,18 @@ export default {
 	computed: {
 	},
 	methods: {
-		showPageOverlaySpinner () {
-			this.$store.commit('togglePageOverlay', true)
-			this.$store.commit('toggleProgressOverlay', true);
-			setTimeout(() => {
-				this.$store.commit('toggleProgressOverlay', false);
-				setTimeout(() => {
-					this.$store.commit('togglePageOverlay', false)
-				})
-			}, 500)
-		},
         async getSearchResult(criteriaShit) {
             let _this = this
-            _this.isLoading = true
+            _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Search/PostSearch', _this.criteriaShit )
             .then(function (response) {
                 if(response.Message !== ''){
-                    _this.$store.dispatch('setBusyOn')
                     _this.searchResult = response
                     _this.searchList = response.SearchList
                     _this.searchHeaders = _this.buildHeaderObject(response.Headers)
                     _this.numberOfHits = response.NumberOfHits
                     _this.isSearchPerformed = true
-                    _this.isLoading = false
+                    _this.$store.dispatch('setBusyOff')
                 } else {
 
                 }
@@ -242,11 +230,13 @@ export default {
         },
 	},
 	async fetch () {
+        this.$store.dispatch('setBusyOn')
 		try {
 			const [searchCriteriaList] = await Promise.all([
 				this.$axios.$get('/webapi/Search/GetSearchCriteriaList'),
       		])
 			this.searchCriteriaList = searchCriteriaList
+            this.$store.dispatch('setBusyOff')
 		} catch (err) {
       		console.log(err);
 		}
