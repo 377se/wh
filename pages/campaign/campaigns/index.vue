@@ -38,7 +38,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="campaign in campaignList.filter(campaign => campaign.IsActive)" :key="campaign.CampaignId" class="uk-table-middle">
+                                            <tr v-for="campaign in campaignList.filter(campaign => campaign.IsActive == true)" :key="campaign.CampaignId" class="uk-table-middle">
                                                 <td class="border-bottom border-left cursor-pointer" style="color: #048ACD; text-align: left; " @click="getCampaignById(campaign.CampaignId)">{{ campaign.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.Name }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.FromDate }}</td>
@@ -73,7 +73,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="campaign in campaignList.filter(campaign => !campaign.IsActive)" :key="campaign.CampaignId" class="uk-table-middle">
+                                            <tr v-for="campaign in campaignList.filter(campaign => campaign.IsActive == false)" :key="campaign.CampaignId" class="uk-table-middle">
                                                 <td class="border-bottom border-left cursor-pointer" style="color: #048ACD; text-align: left; " @click="getCampaignById(campaign.CampaignId)">{{ campaign.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.Name }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ campaign.FromDate }}</td>
@@ -108,7 +108,7 @@
                                     <h4 class="uk-margin-remove"><strong>{{ currentCampaignObject.Name }}</strong></h4>
                                 </div>
                                 <div v-if="currentCampaignObject.CampaignId != 0">
-                                    <div v-if="!currentCampaignObject.IsActive" class="uk-label uk-label-danger uk-border-rounded uk-margin-medium-top uk-margin-small-bottom">
+                                    <div v-if="currentCampaignObject.IsActive == false" class="uk-label uk-label-danger uk-border-rounded uk-margin-medium-top uk-margin-small-bottom">
                                         Denna kampanj är inaktiv
                                     </div>
                                     <div v-else class="uk-label uk-label-success uk-border-rounded uk-margin-medium-top uk-margin-small-bottom">
