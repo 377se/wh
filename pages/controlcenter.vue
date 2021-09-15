@@ -1,5 +1,4 @@
 <template>
-<content-overlay :active="contentOverlayActive" :animate="true" :progress="progressActive">
 	<div id="sc-page-wrapper">
 		<div id="sc-page-top-bar" class="sc-top-bar">
 			<div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -211,21 +210,24 @@ export default {
 	},
 	methods: {
 		async loadProducts(selectionId) {
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/ControlCenter/GetSelectionList', { params: { selectionId: selectionId } })
 			.then(products => {
 				this.products = products
 				this.isLoading = false
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async loadSelections() {
-			this.isLoading = true
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/ControlCenter/GetControlCenterSelections')
 			.then( selections => {
 				this.selections = selections
 				this.isLoading = false
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -233,32 +235,15 @@ export default {
     	},
 		async updateArticleDetails(articleDetails) {
 			let _this = this
-			// _this.isUpdating = true
+			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/ControlCenter/PostUpdate', articleDetails)
 			.then(function (response) {
-				if(response.Message !== ''){
-					// setTimeout(() => {
-					// 	_this.isUpdating = false
-					// }, 1000)
-					_this.$store.dispatch('setBusyOn')
-				} else {
-
-        		}
+				_this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
 		},
-		showPageOverlaySpinner () {
-			this.$store.commit('togglePageOverlay', true)
-			this.$store.commit('toggleProgressOverlay', true);
-			setTimeout(() => {
-				this.$store.commit('toggleProgressOverlay', false);
-				setTimeout(() => {
-					this.$store.commit('togglePageOverlay', false)
-				})
-			}, 500)
-		}
 	},
 	mounted() {
         this.loadProducts(1)
