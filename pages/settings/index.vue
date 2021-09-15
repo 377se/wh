@@ -180,14 +180,6 @@ import Alert from '~/components/Alert'
             }
         },
         methods: {
-            hidePageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', false);
-                this.$store.commit('togglePageOverlay', false)
-            },
-            showPageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', true);
-                this.$store.commit('togglePageOverlay', true)
-            },
             async getShopSettings() {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)

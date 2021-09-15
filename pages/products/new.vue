@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -168,14 +166,6 @@
             }
         },
         methods: {
-            hidePageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', false);
-                this.$store.commit('togglePageOverlay', false)
-            },
-            showPageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', true);
-                this.$store.commit('togglePageOverlay', true)
-            },
             async postCreateArticle() {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
@@ -189,8 +179,8 @@
                             _this.$store.commit('setAlertVisible', 1)
                         } else {
                             _this.currentArticle = currentarticle
-                            _this.$store.dispatch('setBusyOff')
                             _this.$router.push(currentarticle.Url)
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -214,8 +204,8 @@
                             _this.errors = currentcopyarticle.ErrorList
                             _this.$store.commit('setAlertVisible', 2)
                         } else {
-                            _this.$store.dispatch('setBusyOff')
                             _this.$router.push(currentcopyarticle.Url)
+                            _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
                         console.log(err)
@@ -252,6 +242,7 @@
             },
         },
         async fetch () {
+            this.$store.dispatch('setBusyOn')
             try {
                 const [emptyarticle, emptycopyarticle, sizetypelist, teamlist ] = await Promise.all([
                     this.$axios.$get('/webapi/Article/GetArticleCreate'),
@@ -265,6 +256,7 @@
                 this.currentCopyArticle = emptycopyarticle
                 this.sizeTypeList = sizetypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
                 this.teamList = teamlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+                this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
             }

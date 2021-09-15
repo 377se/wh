@@ -84,21 +84,15 @@
             }
         },
         methods: {
-            hidePageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', false);
-                this.$store.commit('togglePageOverlay', false)
-            },
-            showPageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', true);
-                this.$store.commit('togglePageOverlay', true)
-            },
         },
         async fetch () {
+            this.$store.dispatch('setBusyOn')
             try {
                 const [topselling] = await Promise.all([
                     this.$axios.$get('/webapi/Stats/GetTopSelling'),
                 ])
                 this.topSelling = topselling
+                this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
             }

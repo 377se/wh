@@ -270,14 +270,6 @@
                     _this.$store.dispatch('setBusyOff')
                 })
             },
-            hidePageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', false);
-                this.$store.commit('togglePageOverlay', false)
-            },
-            showPageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', true);
-                this.$store.commit('togglePageOverlay', true)
-            },
         },
         async fetch () {
             this.$store.dispatch('setBusyOn')

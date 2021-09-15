@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -340,14 +338,6 @@ import { VueGoodTable } from 'vue-good-table'
             },
         },
         methods: {
-            hidePageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', false);
-                this.$store.commit('togglePageOverlay', false)
-            },
-            showPageOverlaySpinner () {
-                this.$store.commit('toggleProgressOverlay', true);
-                this.$store.commit('togglePageOverlay', true)
-            },
             async getStockValueList() {
                 let _this = this
                 _this.$store.dispatch('setBusyOn')
@@ -386,6 +376,7 @@ import { VueGoodTable } from 'vue-good-table'
 		    },
         },
         async fetch () {
+            this.$store.dispatch('setBusyOn')
             try {
                 const [stockvaluelist, stockvaluebyteam, stockvaluebybrand] = await Promise.all([
                     this.$axios.$get('/webapi/Stock/GetStockValueList'),
@@ -395,6 +386,7 @@ import { VueGoodTable } from 'vue-good-table'
                 this.stockValueList = stockvaluelist
                 this.stockValueByTeam = stockvaluebyteam
                 this.stockValueByBrand = stockvaluebybrand
+                this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
             }
