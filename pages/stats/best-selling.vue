@@ -1,16 +1,14 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
-                        <h1 class="sc-top-bar-title uk-display-inline">Bäst säljande</h1>
+                        <h1 class="sc-top-bar-title uk-display-inline">Bäst säljande senaste 7 dagarna</h1>
                     </div>
                 </div>
             </div>
@@ -64,7 +62,7 @@
                                                 <td v-if="index == 1 || index == 2" class="border-bottom border-left border-right" style="text-align: left; ">{{ item.Name }}</td>
                                                 <td v-else class="border-bottom border-left border-right" style="text-align: left; ">{{ item.Team }}</td>
                                                 <td class="border-bottom border-left" style="text-align: right; ">{{ item.NumberOfItems | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ item.Value | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ Math.round(item.Value) | thousandsDelimiter }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
