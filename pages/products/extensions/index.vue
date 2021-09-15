@@ -1,7 +1,6 @@
 <template>
     <div>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
