@@ -420,6 +420,7 @@
                                         <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Editera produkt</h3>
                                         <span class="closeicon" @click="updateEditorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
                                     </div>
+                                    <div v-if="orderItem.ErrorList != null" class="uk-badge">Produkten är slutsåld!</div>
                                     <!-- Pris -->
                                     <div class="uk-margin">
                                         <ScInput v-model="orderItem.Price" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -436,6 +437,7 @@
                                                 v-model="orderItem.StockId"
                                                 :options="orderItem.StockList.map(({ StockId, SizeDisplay }) => ({ id: StockId, text: SizeDisplay }))"
                                                 :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                                :disabled="orderItem.ErrorList != null"
                                             >
                                             </Select2>
                                         </client-only>
@@ -926,14 +928,10 @@ export default {
 			await this.$axios.$get('/webapi/OrderHandling/GetOrderItem?itemId=' + itemId)
 			.then(function (response) {
                 try {
-                    if (response.ErrorList != null ) {
-                        _this.$store.dispatch('setBusyOff')
-                    } else {
-                        _this.orderItem = response
-                        _this.updateEditorVisible = true
-                        _this.addEditorVisible = false
-                        _this.$store.dispatch('setBusyOff')
-                    }
+                    _this.orderItem = response
+                    _this.updateEditorVisible = true
+                    _this.addEditorVisible = false
+                    _this.$store.dispatch('setBusyOff')
                 } catch(err) {
                     console.log(err)
                 }
