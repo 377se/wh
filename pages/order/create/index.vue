@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ this.$store.dispatch('setBusyOn') }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ this.$store.dispatch('setBusyOff') }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -625,16 +623,9 @@ export default {
                 _this.$store.dispatch('setBusyOff')
 			})
 		},
-		hidePageOverlaySpinner () {
-			this.$store.commit('toggleProgressOverlay', false);
-			this.$store.commit('togglePageOverlay', false)
-		},
-		showPageOverlaySpinner () {
-			this.$store.commit('toggleProgressOverlay', true);
-			this.$store.commit('togglePageOverlay', true)
-		},
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
 		try {
 			const [order, shops, paymentTypes, countries, cart] = await Promise.all([
 				this.$axios.$get('/webapi/OrderCreate/GetEmptyObject'),
@@ -652,7 +643,7 @@ export default {
 			this.currencyOptionsList = order.CurrencyList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.countries = countries
 			this.countriesOptionsList = countries.map(({ CountryId, Name }) => ({ id: CountryId, text: Name }))
-
+            this.$store.dispatch('setBusyOff')
         } catch (err) {
       		console.log(err);
 		}
