@@ -132,7 +132,6 @@
 
 <script>
 import PrettyCheck from 'pretty-checkbox-vue/check'
-import contentOverlay from '~/components/Overlay'
 import ScInput from '~/components/Input'
 import ScTextarea from '~/components/Textarea'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
@@ -146,7 +145,6 @@ export default {
 		ScInput,
 		ScTextarea,
 		PrettyCheck,
-		contentOverlay,
     },
     props: {
 		shopId: {
@@ -164,24 +162,17 @@ export default {
         cardMenuFullScreen: false,
 		shopInfo: [],
 		menuInfo: [],
-		isLoading: true,
 		Swedish,
-		contentOverlayActive: false,
 	}),
     watch: {
     },
     methods: {
         async updateMenuInfo(childMenuItem) {
             let _this = this
-			_this.isLoading = true
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostUpdateMenuByShop?shopId=' + _this.shopId + '&articleId=' + _this.articleId, childMenuItem)
 			.then(function (response) {
-				if(response.Message !== ''){
-					_this.$store.dispatch('setBusyOn')
-					_this.isLoading = false
-				} else {
-
-        		}
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -189,32 +180,18 @@ export default {
 		},
 		async updateArticleDescription() {
 			let _this = this
-			_this.isLoading = true
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleDescription', _this.shopInfo)
 			.then(function (response) {
-				if(response.Message !== ''){
-					_this.$store.dispatch('setBusyOn')
-					_this.isLoading = false
-				} else {
-
-        		}
-			})
+                _this.$store.dispatch('setBusyOff')
+            })
 			.catch(function (error) {
 				console.log(error)
 			})
 		},
-		showPageOverlaySpinner () {
-			this.$store.commit('togglePageOverlay', true)
-			this.$store.commit('toggleProgressOverlay', true);
-			setTimeout(() => {
-				this.$store.commit('toggleProgressOverlay', false);
-				setTimeout(() => {
-					this.$store.commit('togglePageOverlay', false)
-				})
-			}, 500)
-		},
 	},
 	async fetch () {
+        this.$store.dispatch('setBusyOn')
 		try {
 			const [shopInfo, menuInfo] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDescription?shopId=' + this.shopId + '&articleId=' + this.articleId),
@@ -222,6 +199,7 @@ export default {
       		])
 			this.shopInfo = shopInfo
 			this.menuInfo = menuInfo
+            this.$store.dispatch('setBusyOff')
 		} catch (err) {
       		console.log(err);
 		}
