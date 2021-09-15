@@ -1,7 +1,6 @@
 <template>
 <div v-if="$fetchState.pending">
 	<div id="sc-page-wrapper">
-		{{ this.$store.dispatch('setBusyOn') }}
 	</div>
 </div>
 <div v-else>
@@ -400,8 +399,7 @@ export default {
 	    },
 		async updateCustomer() {
 			let _this = this
-            _this.showPageOverlaySpinnerNew()
-			_this.isLoading = true
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Customer/PostUpdateCustomer', _this.customer)
 			.then(function (response) {
                 _this.customer = response
@@ -418,7 +416,6 @@ export default {
 					    setTimeout(() => {
 						    _this.updateTheBloodyTable = true
 					    }, 10)
-                        _this.isLoading = false
                     }
                 } catch(err) {
                     console.log(err)
@@ -431,8 +428,7 @@ export default {
 		},
 		async updateCoins() {
 			let _this = this
-            _this.showPageOverlaySpinnerNew()
-			_this.isLoading = true
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Coins/PostUpdateCoins', _this.coins)
 			.then(function (response) {
                 _this.coins = response
@@ -449,7 +445,6 @@ export default {
 					    setTimeout(() => {
 						    _this.updateTheBloodyTable = true
 					    }, 10)
-                        _this.isLoading = false
                     }
                 } catch(err) {
                     console.log(err)
@@ -461,40 +456,22 @@ export default {
 		},
 		async getResetLink() {
 			let _this = this
-			_this.isLoading = true
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Customer/GetResetLink?customerid=' + _this.customer.CustomerId )
 			.then(function (response) {
 					_this.resetLink = response
-					_this.isLoading = false
                     _this.resetLinkVisible = true
+                    _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
 		},
-        showPageOverlaySpinner () {
-            this.$store.commit('togglePageOverlay', true)
-            this.$store.commit('toggleProgressOverlay', true);
-            setTimeout(() => {
-                this.$store.commit('toggleProgressOverlay', false);
-                setTimeout(() => {
-                    this.$store.commit('togglePageOverlay', false)
-                })
-            }, 500)
-        },
-		hidePageOverlaySpinner () {
-			this.$store.commit('toggleProgressOverlay', false);
-			this.$store.commit('togglePageOverlay', false)
-		},
-		showPageOverlaySpinnerNew () {
-			this.$store.commit('toggleProgressOverlay', true);
-			this.$store.commit('togglePageOverlay', true)
-		},
     },
     watch: {
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
 		try {
 			const [customer, orderList, coins] = await Promise.all([
 				this.$axios.$get('/webapi/Customer/GetCustomer?customerid=' + this.$route.params.id),
@@ -504,6 +481,7 @@ export default {
 			this.customer = customer
 			this.orderList = orderList
 			this.coins = coins
+            this.$store.dispatch('setBusyOff')
 		} catch (err) {
       		console.log(err);
 		}
