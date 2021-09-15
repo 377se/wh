@@ -231,13 +231,17 @@
                                                 <thead>
                                                     <tr class="uk-padding-remove-bottom">
                                                         <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Tid</th>
-                                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 80%;">Händelse</th>
+                                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Händelse</th>
+                                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Värde</th>
+                                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 20%;">Admin</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="orderevent in orderLog" :key="orderevent.Id" class="uk-table-middle">
                                                         <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left; ">{{ orderevent.CreatedDate }}</td>
                                                         <td class="border-bottom border-left border-right" style="text-align: left; ">{{ orderevent.Description }}</td>
+                                                        <td class="border-bottom border-left border-right" style="text-align: left; ">{{ orderevent.Value }}</td>
+                                                        <td class="border-bottom border-left border-right" style="text-align: left; ">{{ orderevent.Admin }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -407,7 +411,7 @@
                                         <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
                                             VISA FÖLJESEDEL
                                         </button>
-                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="sendOrderConfirmation()">
+                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="deductMemberDiscount()">
                                             TILLDELA MEDLEMSRABATT
                                         </button>
                                     </div>
@@ -889,6 +893,26 @@ export default {
                     if (response.ErrorList != null ) {
                         _this.$store.dispatch('setBusyOff')
                     } else {
+                        _this.$store.dispatch('setBusyOff')
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
+        async deductMemberDiscount() {
+			let _this = this
+			_this.message = null
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/OrderHandling/DeductMemberDiscount?orderId=' + _this.orderInfo.OrderId )
+			.then(function (response) {
+                try {
+                    if (response.Message != '' ) {
+                        UIkit.modal.dialog('<p class="uk-modal-body">' + response.Message + '</p>')
                         _this.$store.dispatch('setBusyOff')
                     }
                 } catch(err) {
