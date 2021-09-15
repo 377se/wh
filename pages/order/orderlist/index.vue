@@ -1,12 +1,10 @@
 <template>
     <div v-if="$fetchState.pending">
         <div id="sc-page-wrapper">
-            {{ showPageOverlaySpinner() }}
         </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
-            {{ hidePageOverlaySpinner() }}
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
@@ -131,6 +129,31 @@
             </div>
         </div>
         <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
+
+        <!-- FAILED ACTIVATION MODAL -->
+        <div id="failed-activation-modal" class="uk-modal-full uk-modal" data-uk-modal>
+            <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
+                <!-- sticky -->
+                <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">WOOOPS!</h4>
+                <button
+                    class="uk-offcanvas-close uk-icon uk-close"
+                    style="color:#fff;top:14px;right:12px;"
+                    type="button"
+                    uk-close
+                    uk-toggle="target: #failed-activation-modal"/>
+            </div>
+            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+
+                <div class="uk-width-1-1 uk-overflow-auto">
+
+
+Some serious shit!
+
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -158,14 +181,12 @@ export default {
     },
     watch: {
     },
-	mounted: function () {
-    },
     computed: {
         numberOfSelected: function () {
             let counter = 0;
-            for (const order of this.orderList) {
+            this.orderList.forEach(order => {
                 if (order.IsSelected === true) counter++;
-            }
+            })
             return counter
         },
     },
@@ -189,51 +210,50 @@ export default {
             }, 500)
         },
         resetIsSelected () {
-            for (const order of this.orderList) {
+            this.orderList.forEach(order => {
                 if (order.IsSelected === true) order.IsSelected = false
-            }
+            })
         },
         async setOrderAsDelivered() {
 			let _this = this
-            _this.showPageOverlaySpinner()
-			await this.$axios.$post('/webapi/OrderHandling/PostSetOrderAsDelivered', _this.orderList)
-			.then(function (response) {
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsDelivered', _this.orderList)
+			.then(function (orderlist) {
                 try {
-                    if (response.ErrorList != null ) {
-                        _this.errors = response.ErrorList
-                        _this.hidePageOverlaySpinner()
-                        _this.resetIsSelected()
-                        _this.$store.commit('setAlertVisible', 1)
+                    if (orderlist.ActivationError.OrderId != 0 ) {
+                        _this.$store.dispatch('setBusyOff')
+                        UIkit.modal('#failed-activation-modal').show()
                     } else {
-                        _this.orderList = response
+                        _this.$store.dispatch('setBusyOff')
+                        _this.orderList = orderlist.ItemList
+                        _this.activationError = orderlist.ActivationError
                         _this.message = 'Markerade ordrar är satt som levererade!'
-                        _this.hidePageOverlaySpinner()
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 2)
                     }
                 } catch(err) {
-                    console.log(err)
+                    console.log('Error i try/catchen')
                 }
 			})
 			.catch(function (error) {
-                console.log(error)
-                _this.hidePageOverlaySpinner()
+                console.log('Error i catch: ', error)
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
         async sendOrderDelayed() {
 			let _this = this
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/PostSendOrderDelayed', _this.orderList)
 			.then(function (response) {
                 try {
                     if (response.ErrorList != null ) {
                         _this.errors = response.ErrorList
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 1)
                     } else {
                         _this.message = response.Message
-                        _this.hidePageOverlaySpinner()
+                        _this.$store.dispatch('setBusyOff')
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 2)
                     }
@@ -243,35 +263,28 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
-        hidePageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', false);
-            this.$store.commit('togglePageOverlay', false)
-        },
-        showPageOverlaySpinner () {
-            this.$store.commit('toggleProgressOverlay', true);
-            this.$store.commit('togglePageOverlay', true)
-        },
         async getOrderList() {
 			let _this = this
             _this.resetIsSelected()
             _this.orders = []
-            _this.showPageOverlaySpinner()
+            _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Order/GetOrderlist?shopId=' + _this.shopId +'&orderdate=' + _this.orderDate + '&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1')
 			.then(function (orderlist) {
-                _this.orderList = orderlist
+                _this.orderList = orderlist.ItemList
                 _this.resetIsSelected()
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.hidePageOverlaySpinner()
+                _this.$store.dispatch('setBusyOff')
 			})
 		},
     },
     async fetch () {
+        this.$store.dispatch('setBusyOn')
         try {
             const [ shops ] = await Promise.all([
                 this.$axios.$get('/webapi/Shop/GetShopList'),
@@ -286,8 +299,10 @@ export default {
                 }
                 this.getOrderList()
             }
+        this.$store.dispatch('setBusyOff')
         } catch (err) {
-            console.log(err);
+            console.log(err)
+            this.$store.dispatch('setBusyOff')
         }
     },
 }
