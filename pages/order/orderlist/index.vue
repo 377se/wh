@@ -217,6 +217,8 @@ export default {
         },
         async setOrderAsDelivered() {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsDelivered', _this.orderList)
 			.then(function (orderlist) {
@@ -244,6 +246,8 @@ export default {
 		},
         async setOrderAsProcessed() {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsProcessed', _this.activationError)
 			.then(function (orderlist) {
