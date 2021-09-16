@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div id="sc-page-content">
-                <ScCard>
+                <ScCard :key="render">
                     <ScCardBody>
                         <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 45">
                                 <div class="uk-margin-medium-bottom uk-width-1-1">
@@ -140,7 +140,7 @@
                 <p>{{ activationError ? activationError.Description : '' }}</p>
                 <p class="uk-text-right">
                     <button class="sc-button sc-button-primary" type="button" @click="setOrderAsProcessed">
-                        KLART
+                        JAG HAR HANTERAT ORDERN
                     </button>
                 </p>
             </div>
@@ -170,9 +170,12 @@ export default {
             activationError: null,
             errors: null,
             message: '',
+            render: false,
         }
     },
     watch: {
+    },
+    mounted () {
     },
     computed: {
         numberOfSelected: function () {
@@ -181,6 +184,11 @@ export default {
                 if (order.IsSelected === true) counter++;
             })
             return counter
+        },
+        activationModal: function () {
+            return UIkit.modal('#failed-activation-modal', {
+                bgClose: false
+            })
         },
     },
     methods: {
@@ -216,11 +224,12 @@ export default {
                     if (orderlist.ActivationError.OrderId != 0 ) {
                         _this.activationError = orderlist.ActivationError
                         _this.$store.dispatch('setBusyOff')
-                        UIkit.modal('#failed-activation-modal').show()
+                        UIkit.modal('#failed-activation-modal', { 'bg-close': false }).show()
                     } else {
                         _this.$store.dispatch('setBusyOff')
                         _this.orderList = orderlist.ItemList
                         _this.message = 'Markerade ordrar är satt som levererade!'
+                        _this.render = !_this.render
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 2)
                     }
@@ -237,10 +246,18 @@ export default {
 			let _this = this
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsProcessed', _this.activationError)
-			.then(function (res) {
-                _this.activationError = null
-                _this.$store.dispatch('setBusyOff')
-                UIkit.modal('#failed-activation-modal').hide()
+			.then(function (orderlist) {
+                if (orderlist.ActivationError.OrderId != 0 ) {
+                    _this.activationError = orderlist.ActivationError
+                    _this.$store.dispatch('setBusyOff')
+                    _this.activationModal.show()
+                } else {
+                    _this.activationError = null
+                    _this.orderList = orderlist.ItemList
+                    _this.render = !_this.render
+                    _this.$store.dispatch('setBusyOff')
+                    _this.activationModal.hide()
+                }
 			})
 			.catch(function (error) {
                 console.log('Error i catch: ', error)
@@ -275,14 +292,22 @@ export default {
 		},
         async getOrderList() {
 			let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
             _this.resetIsSelected()
             _this.orders = []
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Order/GetOrderlist?shopId=' + _this.shopId +'&orderdate=' + _this.orderDate + '&printStatus=0&hasPrint=0&preorderStatus=2&backorder=0&comment=0&sortorder=desc&pageNum=1')
 			.then(function (orderlist) {
-                _this.orderList = orderlist.ItemList
-                _this.resetIsSelected()
-                _this.$store.dispatch('setBusyOff')
+                if (orderlist.ActivationError.OrderId != 0 ) {
+                    _this.activationError = orderlist.ActivationError
+                    _this.$store.dispatch('setBusyOff')
+                    _this.activationModal.show()
+                } else {
+                    _this.orderList = orderlist.ItemList
+                    _this.resetIsSelected()
+                    _this.$store.dispatch('setBusyOff')
+                }
 			})
 			.catch(function (error) {
                 console.log(error)

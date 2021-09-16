@@ -33,8 +33,16 @@
                         <ul class="uk-switcher tabevents">
                             <li id="orderinfo" class="uk-active">
                                 <!-- ORDERINFORMATION -->
-                                <ScCard>
+                                <ScCard :key="render">
                                     <ScCardHeader separator>
+                                        <!-- AKTIVERINGSFEL -->
+                                        <div v-if="activationError.OrderId != 0" class="uk-alert-danger uk-padding-small uk-border-rounded uk-margin-medium-bottom">
+                                            <h2 style="color:#fff; margin-bottom:0px;">{{ activationError.Title }}</h2>
+                                            <div>{{ activationError.Description }}</div>
+                                            <button class="sc-button sc-button-default uk-margin-small-top" type="button" @click="setOrderAsProcessed">
+                                                JAG HAR HANTERAT ORDERN
+                                            </button>
+                                        </div>
                                         <div class="uk-flex uk-flex-middle uk-flex-wrap">
                                             <div class="uk-flex-1">
                                                 <ScCardTitle>
@@ -682,6 +690,7 @@ export default {
             orderProcessTypeList: [],
             paymentTypeId: 0,
             orderInfo: {},
+            activationError: null,
             klarnaPurchaseIdHasData: null,
             accountIdHasData: null,
             emptyEmail: {},
@@ -1068,6 +1077,26 @@ export default {
                 _this.$store.dispatch('setBusyOff')
 			})
 		},
+        async setOrderAsProcessed() {
+			let _this = this
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsProcessedById', _this.activationError)
+			.then(function (orderinfo) {
+                if (orderinfo.ActivationError.OrderId != 0 ) {
+                    _this.activationError = orderinfo.ActivationError
+                    _this.$store.dispatch('setBusyOff')
+                } else {
+                    _this.activationError = orderinfo.ActivationError
+                    _this.orderInfo = orderinfo
+                    _this.render = !_this.render
+                    _this.$store.dispatch('setBusyOff')
+                }
+			})
+			.catch(function (error) {
+                console.log('Error i catch: ', error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
     },
     async fetch () {
         try {
@@ -1079,6 +1108,7 @@ export default {
                 this.$axios.$get('/webapi/Utility/GetOrderProcessTypeList'),
             ])
             this.orderInfo = orderInfo
+            this.activationError = orderInfo.ActivationError
             this.orderContent = orderContent
             this.orderContentInitial = orderContent
             this.countries = countries
