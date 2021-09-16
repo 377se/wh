@@ -131,26 +131,18 @@
         <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
 
         <!-- FAILED ACTIVATION MODAL -->
-        <div id="failed-activation-modal" class="uk-modal-full uk-modal" data-uk-modal>
-            <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
-                <!-- sticky -->
-                <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">WOOOPS!</h4>
-                <button
-                    class="uk-offcanvas-close uk-icon uk-close"
-                    style="color:#fff;top:14px;right:12px;"
-                    type="button"
-                    uk-close
-                    uk-toggle="target: #failed-activation-modal"/>
-            </div>
-            <div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
-                <div class="uk-width-1-1 uk-overflow-auto">
-
-
-Some serious shit!
-
-
-                </div>
+        <div id="failed-activation-modal" class="uk-modal" data-uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">
+                    {{ activationError ? activationError.Title : '' }}
+                </h2>
+                <p>{{ activationError ? activationError.Description : '' }}</p>
+                <p class="uk-text-right">
+                    <button class="sc-button sc-button-primary" type="button" @click="setOrderAsProcessed">
+                        KLART
+                    </button>
+                </p>
             </div>
         </div>
 
@@ -175,6 +167,7 @@ export default {
             shopId: null,
             orderDate: null,
             shopOptionsList: [],
+            activationError: null,
             errors: null,
             message: '',
         }
@@ -221,12 +214,12 @@ export default {
 			.then(function (orderlist) {
                 try {
                     if (orderlist.ActivationError.OrderId != 0 ) {
+                        _this.activationError = orderlist.ActivationError
                         _this.$store.dispatch('setBusyOff')
                         UIkit.modal('#failed-activation-modal').show()
                     } else {
                         _this.$store.dispatch('setBusyOff')
                         _this.orderList = orderlist.ItemList
-                        _this.activationError = orderlist.ActivationError
                         _this.message = 'Markerade ordrar är satt som levererade!'
                         _this.resetIsSelected()
                         _this.$store.commit('setAlertVisible', 2)
@@ -234,6 +227,20 @@ export default {
                 } catch(err) {
                     console.log('Error i try/catchen')
                 }
+			})
+			.catch(function (error) {
+                console.log('Error i catch: ', error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
+        async setOrderAsProcessed() {
+			let _this = this
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/OrderHandling/SetOrderAsProcessed', _this.activationError)
+			.then(function (res) {
+                _this.activationError = null
+                _this.$store.dispatch('setBusyOff')
+                UIkit.modal('#failed-activation-modal').hide()
 			})
 			.catch(function (error) {
                 console.log('Error i catch: ', error)
