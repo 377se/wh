@@ -45,37 +45,37 @@
                                         id=0
                                     />
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.MemberId" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.MemberId" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>MedlemsId</label>
                                         </ScInput>
                                     </div>
                                     <!-- Förnamn -->
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.FirstName" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.FirstName" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Förnamn</label>
                                         </ScInput>
                                     </div>
                                     <!-- Efternamn -->
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.LastName" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.LastName" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Efternamn</label>
                                         </ScInput>
                                     </div>
                                     <!-- Email -->
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.Email" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.Email" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Email</label>
                                         </ScInput>
                                     </div>
                                     <!-- Mobilnummer -->
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.CellPhone" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.CellPhone" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Mobilnummer</label>
                                         </ScInput>
                                     </div>
                                     <!-- Rabattsats -->
                                     <div class="uk-margin">
-                                        <ScInput v-model="customer.Discount" state="fixed" mode="outline" v-on:blur="updateCustomer()" extra-classes="uk-form-small">
+                                        <ScInput v-model="customer.Discount" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>Rabattsats</label>
                                         </ScInput>
                                     </div>
@@ -91,6 +91,9 @@
                                             <label>Antal inloggningar</label>
                                         </ScInput>
                                     </div>
+                                    <button v-waves.button.light class="sc-button sc-button-primary uk-margin-large-bottom" @click.prevent="updateCustomer()">
+                                        UPPDATERA
+                                    </button>
                                     <div>
                                         <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="getResetLink()">
                                             GENERERA ÅTERSTÄLLNINGSLÄNK
