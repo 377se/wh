@@ -8,7 +8,7 @@
         :group="{ name: 'g1' }
     ">
     <li v-for="el in SubItemList" :key="el.name">
-      <p @click="$store.commit('setCategoryId', el.CategoryId)">{{ el.Name }}</p>
+      <p @click="$store.commit('setCategoryId', el.CategoryId)">{{ el.Name }} <i v-if="el.IsHiddenInPublic == true" class="mdi mdi-eye-off sc-icon-18" style="line-height: 0;"></i></p>
       <nested-draggable :SubItemList="el.SubItemList" />
     </li>
   </draggable>
