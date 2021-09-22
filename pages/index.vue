@@ -513,11 +513,14 @@ import Alert from '~/components/Alert'
 export default {
 	components: {
 		ChartJsLine,
+		Alert,
 		Select2: process.client ? () => import('~/components/Select2') : null,
 	},
 	directives: { print },
 	data () {
 		return {
+			errors: null,
+			message: '',
 			render: false,
 			printInventoryNotes: {
                 id: "all-inventory-notes",
