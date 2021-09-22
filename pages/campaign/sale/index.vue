@@ -31,19 +31,21 @@
                                     <table v-if="saleList" class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 22%;">Beskrivning</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Shop</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Beskrivning</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Produkttyp</th>
                                                 <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 5%;">Rab</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 13%;">Start</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 13%;">Slut</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Admin</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; min-width:20%;"></th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 9%;">Admin</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; min-width:18%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="sale in saleList.filter(sale => { return sale.IsActive == true })" :key="sale.SaleId" class="uk-table-middle">
                                                 <td class="border-bottom border-left cursor-pointer" style="color: #048ACD; text-align: left; " @click="getSaleById(sale.SaleId)">{{ sale.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.Name }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ sale.ProductTypeName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.Discount }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.StartDate }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.ValidThru }}</td>
@@ -75,19 +77,21 @@
                                     <table v-if="saleList" class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 20%;">Shop</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 22%;">Beskrivning</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Shop</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Beskrivning</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Produkttyp</th>
                                                 <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 5%;">Rab</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 13%;">Start</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 13%;">Slut</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Admin</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; min-width:20%;"></th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Start</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 15%;">Slut</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 9%;">Admin</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; min-width:18%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="sale in saleList.filter(sale => { return sale.IsActive == false })" :key="sale.SaleId" class="uk-table-middle">
                                                 <td class="border-bottom border-left cursor-pointer" style="color: #048ACD; text-align: left; " @click="getSaleById(sale.SaleId)">{{ sale.ShopName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.Name }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ sale.ProductTypeName }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.Discount }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.StartDate }}</td>
                                                 <td class="border-bottom border-left" style="text-align: left; ">{{ sale.ValidThru }}</td>
