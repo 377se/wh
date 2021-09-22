@@ -220,6 +220,21 @@
 					<!-- RIGHT -->
 					<div>
 
+						<!-- CACHE-HANTERING -->
+						<ScCard v-if="dashboardCacheList" class="md-bg-red-a700 uk-margin-medium-bottom">
+							<ScCardBody>
+								<Alert
+                                    :errorlist="errors"
+                                    :alertClass="'uk-alert-danger'"
+                                    id=2
+                                />
+								<div class="uk-light uk-margin-medium-bottom">
+									{{ dashboardCacheList.Message }}
+								</div>
+								<button v-for="shopcacheinfo in dashboardCacheList.ItemList" :key="shopcacheinfo.ShopId" class="sc-button uk-margin-small-right uk-margin-small-bottom" @click="releaseCacheFromDashboard(shopcacheinfo)">{{ shopcacheinfo.ShopName }}</button>
+							</ScCardBody>
+						</ScCard>
+
 						<!-- PRODUKTER -->
 						<ScCard class="md-bg-cyan-800 uk-margin-medium-bottom">
 							<ScCardBody>
@@ -492,6 +507,7 @@
 import { scColors } from '~/assets/js/utils';
 import ChartJsLine from '~/components/chartjs/Line'
 import print from '~/plugins/directives/vue-print-nb'
+import Alert from '~/components/Alert'
 
 
 export default {
@@ -519,6 +535,7 @@ export default {
 			monthlySalesByShop: [],
 			shopidForMonthlyGraph: 0,
 			shopList: [],
+			dashboardCacheList: [],
 			dailySales: [],
 			dashboardInformationList: [],
 			shopName: '',
@@ -647,6 +664,28 @@ export default {
 		this.getTodaysDate()
 	},
 	methods: {
+		async releaseCacheFromDashboard(shopcacheinfo) {
+            let _this = this
+            _this.$store.dispatch('setBusyOn')
+			_this.$store.commit('setAlertHidden', 2)
+            await this.$axios.$post('/webapi/Cloudflare/ReleaseCacheFromDashboard', shopcacheinfo)
+            .then(function (releasedcache) {
+				if (releasedcache.ErrorList != null) {
+                    _this.errors = releasedcache.ErrorList
+                    _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 2)
+                } else {
+                    _this.dashboardCacheList = releasedcache
+                    _this.render = !render
+                    _this.$store.dispatch('setBusyOff')
+                    UIkit.modal.dialog('<p class="uk-modal-body">Cache är släppt!</p>')
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+            })
+		},
 		getTodaysDate() {
 			let d = new Date(),
 				month = '' + (d.getMonth() + 1),
@@ -762,13 +801,14 @@ export default {
     async fetch () {
 		this.$store.dispatch('setBusyOn')
         try {
-            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist ] = await Promise.all([
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist, dashboardcachelist ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
 				await this.$axios.$get('/webapi/Dashboard/GetMonthlySales'),
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
                 await this.$axios.$get('/webapi/Shop/GetShopList'),
+                await this.$axios.$get('/webapi/Dashboard/GetDashboardCacheList'),
             ])
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
@@ -778,6 +818,7 @@ export default {
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
 			this.shopList.push({ id: 0, text: 'Alla' })
 			this.$store.dispatch('setBusyOff')
+            this.dashboardCacheList = dashboardcachelist
 
         } catch (err) {
             console.log(err);
