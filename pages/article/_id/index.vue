@@ -776,6 +776,8 @@ export default {
 	},
 	data () {
 		return {
+			errors: null,
+			message: '',
 			coolKeyUsedToRedoRender: 0,
 			files: [],
 			cardArticleSaleFullScreen: false,
@@ -1146,18 +1148,18 @@ export default {
     	},
 		async updateStatusId(shop) {
 			let _this = this
-			_this.isLoading = true
+			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleStatus', _this.articleStatusList[shop])
 			.then(function (response) {
 				if(response.Message !== ''){
-					_this.$store.dispatch('setBusyOn')
-					_this.isLoading = false
+					_this.$store.dispatch('setBusyOff')
 				} else {
-
+					_this.$store.dispatch('setBusyOff')
         		}
 			})
 			.catch(function (error) {
 				console.log(error)
+				_this.$store.dispatch('setBusyOff')
 			})
 		},
 },
