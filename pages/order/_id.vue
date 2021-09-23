@@ -731,23 +731,27 @@ export default {
     methods: {
         async deleteItem(itemId) {
 			let _this = this
-            _this.$store.dispatch('setBusyOn')
-			await this.$axios.$post('/webapi/OrderHandling/PostDeleteItem?itemId=' + itemId)
-			.then(function (response) {
-                try {
-                    if (response.ErrorList != null ) {
-                        _this.$store.dispatch('setBusyOff')
-                    } else {
-                        _this.orderContent = response
-                        _this.$store.dispatch('setBusyOff')
+            await UIkit.modal.confirm('Vill du verkligen radera orderraden?', { labels: { ok: 'Yeah', cancel: 'Nope' } }).then(function () {
+                _this.$store.dispatch('setBusyOn')
+                _this.$axios.$post('/webapi/OrderHandling/PostDeleteItem?itemId=' + itemId)
+                .then(function (response) {
+                    try {
+                        if (response.ErrorList != null ) {
+                            _this.$store.dispatch('setBusyOff')
+                        } else {
+                            _this.orderContent = response
+                            _this.$store.dispatch('setBusyOff')
+                        }
+                    } catch(err) {
+                        console.log(err)
                     }
-                } catch(err) {
-                    console.log(err)
-                }
-			})
-			.catch(function (error) {
-                console.log(error)
-                _this.$store.dispatch('setBusyOff')
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    _this.$store.dispatch('setBusyOff')
+                })
+            }, function () {
+				_this.$store.dispatch('setBusyOff')
 			})
 		},
         printDeliveryNotes(id) {
