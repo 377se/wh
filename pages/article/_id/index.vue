@@ -562,55 +562,51 @@
 											</div>
 										</ScCardHeader>
 										<ScCardContent>
-											<ScCardBody :key="coolKeyUsedToRedoRender">
-												<VueGoodTable
-													v-if="updateTheBloodyTable == true"
-													:columns="columns_articleAssortment"
-													:rows="articleAssortmentAsChildren"
-													style-class="vgt-table"
-													:row-style-class="rowStyleClassFn"
-													:group-options="{
-														enabled: true,
-														headerPosition: 'bottom',
-													}"
-												>
-													<template slot="table-row" slot-scope="props">
-														<input  class="uk-input"
-															v-if="props.column.field === 'SizeDisplay'"
-															v-on:blur="updateArticleAssortment(props.row)"
-															v-model="props.row.SizeDisplay"
-														>
-														<span v-else-if="props.column.field === 'InitialAmount'">
-															{{ props.row.InitialAmount }}
-														</span>
-														<span v-else-if="props.column.field === 'ItemsInStock'">
-															{{ props.row.ItemsInStock }}
-														</span>
-														<input class="uk-input"
-															v-else-if="props.column.field === 'Correction'"
-															@keyup.tab="updateArticleAssortment(props.row)"
-															@keyup.enter="updateArticleAssortment(props.row)"
-															v-model="props.row.Correction"
-														>
-														<input class="uk-input"
-															v-else-if="props.column.field === 'Delivery'"
-															@keyup.tab="updateArticleAssortment(props.row)"
-															@keyup.enter="updateArticleAssortment(props.row)"
-															v-model="props.row.Delivery"
-														>
-														<span v-else-if="props.column.field === 'WaitingForDelivery'">
-															{{ props.row.WaitingForDelivery }}
-														</span>
-														<PrettyCheck v-else v-model="props.row.IsHidden" class="p-icon" @change="updateArticleAssortment(props.row)">
-														<i slot="extra" class="icon mdi mdi-check"></i>
-														</PrettyCheck>
-													</template>
-												</VueGoodTable>
+											<ScCardBody :key="render">
+												<div class="uk-overflow-auto" style="max-height:600px;">
+													<table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
+														<thead>
+															<tr class="uk-padding-remove-bottom">
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 105px; font-size:10px;">Beskrivning</th>
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 20px; font-size:10px;">Ink tot</th>
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 40px; font-size:10px;">Lagers.</th>
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Korr</th>
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Inlev</th>
+																<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">I orderl.</th>
+																<th class="sticky-headers border-top border-bottom border-left border-right" style="text-align: center; width: 8px; font-size:10px;">Dölj</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr v-for="assortment in articleAssortment" :key="assortment.StockId" class="uk-table-middle">
+																<td class="border-bottom border-left" style="text-align: left;"><input class="uk-input uk-width-1-1" v-model="assortment.SizeDisplay" :placeholder="assortment.SizeDisplay"></td>
+																<td class="border-bottom border-left" style="text-align: center; ">{{ assortment.InitialAmount }}</td>
+																<td class="border-bottom border-left" style="text-align: center; ">{{ assortment.ItemsInStock }}</td>
+																<td class="border-bottom border-left" style="text-align: center; "><input class="uk-input uk-width-1-1" v-model="assortment.Correction"></td>
+																<td class="border-bottom border-left" style="text-align: center; "><input class="uk-input uk-width-1-1" v-model="assortment.Delivery"></td>
+																<td class="border-bottom border-left" style="text-align: center; ">{{ assortment.WaitingForDelivery }}</td>
+																<td class="border-bottom border-left border-right" style="text-align: center;">
+																	<PrettyCheck v-model="assortment.IsHidden" class="p-icon">
+                                                        				<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">{{ assortment.Name }}</span>
+                                                    				</PrettyCheck>
+																</td>
+															</tr>
+															<tr>
+																<td class="border-bottom border-left">Totalt</td>
+																<td class="border-bottom border-left" style="text-align: center;">{{ sumInitialAmount() }}</td>
+																<td class="border-bottom border-left" style="text-align: center;">{{ sumItemsInStock() }}</td>
+																<td class="border-bottom border-left"></td>
+																<td class="border-bottom border-left"></td>
+																<td class="border-bottom border-left"></td>
+																<td class="border-bottom border-left border-right"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
 												<div class="uk-text-small uk-margin-medium-top">Inköpspris:</div>
 												<div>
 													<input class="uk-input uk-width-1-4" v-model="articleDetails.PurchasePrice" :placeholder="articleDetails.PurchasePrice">
 												</div>
-												<div class="uk-text-small uk-margin-medium-top">Använd TAB eller RETURN för att spara/uppdatera tabellen!</div>
+												<button class="uk-button uk-button-primary uk-margin-medium-top" @click="updateArticleAssortment">UPPDATERA</button>
 											</ScCardBody>
 										</ScCardContent>
 									</ScCard>
@@ -641,34 +637,30 @@
 													<ScCard>
 														<ScCardContent>
 															<ScCardBody style="padding: 0px;">
-																<VueGoodTable
-																	v-if="updateTheBloodyTable == true"
-																	:columns="columns_articleAssortmentHistory"
-																	:rows="articleAssortmentHistory"
-																	style-class="vgt-table"
-																	:row-style-class="rowStyleClassFn"
-																>
-																	<template slot="table-row" slot-scope="props">
-																		<span v-if="props.column.field === 'CreatedDate'">
-																			{{ props.row.CreatedDate }}
-																		</span>
-																		<span v-else-if="props.column.field === 'Description'">
-																			{{ props.row.Description }}
-																		</span>
-																		<span v-else-if="props.column.field === 'AdminName'">
-																			{{ props.row.AdminName }}
-																		</span>
-																		<span v-else-if="props.column.field === 'SizeDisplay'">
-																			{{ props.row.SizeDisplay }}
-																		</span>
-																		<span v-else-if="props.column.field === 'Items'">
-																			{{ props.row.Items }}
-																		</span>
-																		<span v-else>
-																			{{ props.row.PurchasePrice }}
-																		</span>
-																	</template>
-																</VueGoodTable>
+																<div class="uk-overflow-auto" style="max-height:600px;">
+																	<table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
+																		<thead>
+																			<tr class="uk-padding-remove-bottom">
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 100px; font-size:10px;">Tidpunkt</th>
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 20px; font-size:10px;">Typ</th>
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 40px; font-size:10px;">Admin</th>
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 30px; font-size:10px;">Storlek</th>
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 30px; font-size:10px;">Antal</th>
+																				<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 30px; font-size:10px;">Ink pris</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr v-for="assortmenthistory in articleAssortmentHistory" :key="assortmenthistory.Id" class="uk-table-middle">
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.CreatedDate }}</td>
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.Description }}</td>
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.AdminName }}</td>
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.SizeDisplay }}</td>
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.Items }}</td>
+																				<td class="border-bottom border-left" style="text-align: left; ">{{ assortmenthistory.PurchasePrice }}</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
 															</ScCardBody>
 														</ScCardContent>
 													</ScCard>
@@ -778,7 +770,7 @@ export default {
 		return {
 			errors: null,
 			message: '',
-			coolKeyUsedToRedoRender: 0,
+			render: false,
 			files: [],
 			cardArticleSaleFullScreen: false,
 			cardPrefsFullScreen: false,
@@ -810,6 +802,7 @@ export default {
 			contentOverlayActive: false,
 			rowObjectFromVueGoodTable: null,
 			updateTheBloodyTable: true,
+			articleAssortment: [],
 			articleAssortmentHistory: [],
 			shopListByArticle: [],
 			articleImages: [],
@@ -817,9 +810,6 @@ export default {
 		}
 	},
 	watch: {
-		articleAssortment(oldA, newA){
-
-		}
 	},
 	mounted () {
 		this.$nextTick(() => {
@@ -841,23 +831,9 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			articleAssortment: 'articleAssortmentState'
 		}),
 		sortableOrder () {
 			return _.orderBy(this.articleImages, 'Sortorder')
-		},
-		articleAssortmentAsChildren () {
-			return [
-				{
-          			SizeDisplay: 'Totalt',
-         			InitialAmount: 0,
-         			ItemsInStock: 0,
-         			Correction: '',
-         			WaitingForDelivery: '',
-         			IsHidden: '',
-          			children: this.articleAssortment,
-				}
-			]
 		},
 		columns_articleSale () {
 			return [
@@ -908,145 +884,19 @@ export default {
 				},
 			]
 		},
-		columns_articleAssortment () {
-			return [
-				{
-					label: 'Beskrivning',
-					field: 'SizeDisplay',
-					sortable: false,
-                    type: 'string',
-                    thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-nowrap uk-text-left',
-                    width: '105px',
-				},
-				{
-					label: 'Ink tot',
-					field: 'InitialAmount',
-					sortable: false,
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '40px',
-					headerField: this.sumInitialAmount,
-					type: 'number',
-				},
-				{
-					label: 'Lagersaldo',
-					field: 'ItemsInStock',
-					sortable: false,
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '45px',
-					headerField: this.sumItemsInStock,
-					type: 'number',
-				},
-				{
-					label: 'Korr',
-					field: 'Correction',
-					sortable: false,
-					type: 'number',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '35px',
-				},
-				{
-					label: 'Inlev',
-					field: 'Delivery',
-					sortable: false,
-					type: 'number',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '35px',
-				},
-				{
-					label: 'I orderlistan',
-					field: 'WaitingForDelivery',
-					sortable: false,
-					type: 'number',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '55px',
-				},
-				{
-					label: 'Dölj',
-					field: 'IsHidden',
-					sortable: false,
-					type: 'boolean',
-					thClass: 'uk-text-center vgt-assortment-th',
-                    tdClass: 'uk-text-center ',
-				},
-			]
-		},
-		columns_articleAssortmentHistory () {
-			return [
-				{
-					label: 'Tidpunkt',
-					field: 'CreatedDate',
-					sortable: false,
-                    type: 'string',
-                    thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-nowrap uk-text-left',
-                    width: '90px',
-				},
-				{
-					label: 'Typ',
-					field: 'Description',
-					sortable: false,
-					type: 'string',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '60px',
-				},
-				{
-					label: 'Admin',
-					field: 'AdminName',
-					sortable: false,
-					type: 'string',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '40px',
-				},
-				{
-					label: 'Storlek',
-					field: 'SizeDisplay',
-					sortable: false,
-					type: 'string',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '95px',
-				},
-				{
-					label: 'Antal',
-					field: 'Items',
-					sortable: false,
-					type: 'number',
-					thClass: 'uk-text-left vgt-assortment-th',
-					tdClass: 'uk-text-left',
-                    width: '25px',
-				},
-				{
-					label: 'Inköpspris',
-					field: 'PurchasePrice',
-					sortable: false,
-					type: 'number',
-					thClass: 'uk-text-center vgt-assortment-th',
-                    tdClass: 'uk-text-center ',
-                    width: '35px',
-				},
-			]
-		},
 	},
 	methods: {
-		sumInitialAmount(rowObj) {
+		sumInitialAmount() {
     		let sum = 0
-			for (let i = 0; i < rowObj.children.length; i++) {
-				sum += rowObj.children[i].InitialAmount
+			for (let i = 0; i < this.articleAssortment.length; i++) {
+				sum += this.articleAssortment[i].InitialAmount
 			}
     		return sum
 	    },
 		sumItemsInStock(rowObj) {
     		let sum = 0
-			for (let i = 0; i < rowObj.children.length; i++) {
-				sum += rowObj.children[i].ItemsInStock
+			for (let i = 0; i < this.articleAssortment.length; i++) {
+				sum += this.articleAssortment[i].ItemsInStock
 			}
     		return sum
 	    },
@@ -1127,25 +977,33 @@ export default {
 				console.log(error)
 			})
 		},
-		async updateArticleAssortment(articleAssortmentRow) {
+		async updateArticleAssortment() {
 			let _this = this
-			await this.$axios.$post('/webapi/Article/PostUpdateArticleAssortment?purchasePrice=' + this.articleDetails.PurchasePrice, articleAssortmentRow)
+			_this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/Article/UpdateArticleAssortment?purchasePrice=' + this.articleDetails.PurchasePrice, this.articleAssortment)
 			.then(function (response) {
-				if(response.StockId !== ''){
-					_this.$store.dispatch('setBusyOn')
-					_this.articleAssortmentHistory = response.History
-					delete response.History
-					_this.$store.commit('updateArticleAssortment', response)
-					_this.forceRerenderOfAssortmentTable()
-				}
+				_this.articleAssortment = response
+				_this.getArticleAssortmentHistory()
+				_this.render = !_this.render
+				_this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
 		},
-		forceRerenderOfAssortmentTable() {
-      		this.coolKeyUsedToRedoRender += 1
-    	},
+		async getArticleAssortmentHistory() {
+			let _this = this
+			_this.$store.dispatch('setBusyOn')
+			await this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + _this.$route.params.id)
+			.then(function (articleassortmenthistory) {
+				_this.articleAssortmentHistory = articleassortmenthistory
+				_this.render = !_this.render
+				_this.$store.dispatch('setBusyOff')
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+		},
 		async updateStatusId(shop) {
 			let _this = this
 			_this.$store.dispatch('setBusyOn')
@@ -1165,7 +1023,7 @@ export default {
 },
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleAssortment, articleAssortmentHistory, shopListByArticle, articleImages, articleSale] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleassortment, articleassortmentHistory, shopListByArticle, articleImages, articleSale] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
@@ -1206,8 +1064,8 @@ export default {
 			this.kopShopArticleStatusList = articleStatusList[2].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.supporterPrylarArticleStatusList = articleStatusList[3].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.gameDayArticleStatusList = articleStatusList[4].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
-			this.$store.commit('setArticleAssortment', articleAssortment)
-			this.articleAssortmentHistory = articleAssortmentHistory
+			this.articleAssortment = articleassortment
+			this.articleAssortmentHistory = articleassortmentHistory
 			this.shopListByArticle = shopListByArticle
 			this.articleImages = articleImages
 			this.articleSale = articleSale
@@ -1220,20 +1078,11 @@ export default {
 
 <style lang="scss">
 	@import '~scss/vue/_pretty_checkboxes';
-    table.vgt-table {
-        font-size: 0.75rem;
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px;
     }
-    table.vgt-table td {
-        vertical-align: middle;
-        border-right: 1px solid #dcdfe6;
-        padding: .35em .65em .35em .65em;
-    }
-    .vgt-assortment-th {
-        font-size: 0.6rem;
-    }
-	.vgt-table th.vgt-row-header {
-        font-size: 0.7rem;
-	}
 	.uk-input {
 		height: 30px;
 		border-radius: 0;
