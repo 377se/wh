@@ -220,6 +220,18 @@
 					<!-- RIGHT -->
 					<div>
 
+						<!-- TOMMA ORDRAR -->
+						<ScCard v-if="emptyOrders" class="md-bg-yellow-600 uk-margin-medium-bottom">
+							<ScCardBody>
+								<div>{{ emptyOrders.Message }}</div>
+								<div class="uk-text-light">
+									<ul style="padding-left: 0;">
+										<li style="list-style-type: none;" v-for="order in emptyOrders.ItemList" :key="order.OrderId"><nuxt-link :to="order.UrlOrder">{{ order.OrderId }}</nuxt-link></li>
+									</ul>
+								</div>
+							</ScCardBody>
+						</ScCard>
+
 						<!-- CACHE-HANTERING -->
 						<ScCard v-if="dashboardCacheList" class="md-bg-red-a700 uk-margin-medium-bottom">
 							<ScCardBody>
@@ -543,6 +555,7 @@ export default {
 			dashboardInformationList: [],
 			shopName: '',
 			nameAndNumberInformation: null,
+			emptyOrders: null,
 		}
 	},
 	computed: {
@@ -804,7 +817,7 @@ export default {
     async fetch () {
 		this.$store.dispatch('setBusyOn')
         try {
-            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist, dashboardcachelist ] = await Promise.all([
+            const [ dashboard, recentlyactivated, activeordersbydate, monthlysaleslatestyears, dashboardinformationlist, shoplist, dashboardcachelist, emptyorders ] = await Promise.all([
 				await this.$axios.$get('/webapi/Dashboard/GetDashboard'),
 				await this.$axios.$get('/webapi/Dashboard/GetRecentlyActivatedArticleList'),
 				await this.$axios.$get('/webapi/Dashboard/GetActiveOrdersByDate'),
@@ -812,6 +825,7 @@ export default {
 				await this.$axios.$get('/webapi/Dashboard/GetDashboardInformationList'),
                 await this.$axios.$get('/webapi/Shop/GetShopList'),
                 await this.$axios.$get('/webapi/Dashboard/GetDashboardCacheList'),
+                await this.$axios.$get('/webapi/Dashboard/GetDashboardEmptyOrders'),
             ])
             this.dashBoard = dashboard
             this.recentlyActivated = recentlyactivated
@@ -822,6 +836,7 @@ export default {
 			this.shopList.push({ id: 0, text: 'Alla' })
 			this.$store.dispatch('setBusyOff')
             this.dashboardCacheList = dashboardcachelist
+            this.emptyOrders = emptyorders
 
         } catch (err) {
             console.log(err);
