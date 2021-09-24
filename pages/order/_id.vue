@@ -33,7 +33,7 @@
                         <ul class="uk-switcher tabevents">
                             <li id="orderinfo" class="uk-active">
                                 <!-- ORDERINFORMATION -->
-                                <ScCard :key="render">
+                                <ScCard>
                                     <ScCardHeader separator>
                                         <!-- AKTIVERINGSFEL -->
                                         <div v-if="activationError.OrderId != 0" class="uk-alert-danger uk-padding-small uk-border-rounded uk-margin-medium-bottom">
@@ -265,7 +265,7 @@
                     </ScCardBody>
                 </ScCard>
                 <!-- ORDERINNEHÅLL -->
-                <ScCard class="uk-margin-medium-top">
+                <ScCard class="uk-margin-medium-top" :key="render">
                     <ScCardHeader separator>
                         <div class="uk-flex uk-flex-middle">
                             <div class="uk-width-1-3">
@@ -304,7 +304,7 @@
                          <div class="uk-flex">
                              <!-- ORDERINNEHÅLL -->
                             <div class="uk-width-1-1 uk-overflow-auto" :class="{'uk-width-2-3': updateEditorVisible || addEditorVisible }">
-                                <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small">
+                                <table class="uk-margin-remove-bottom uk-table uk-table-small uk-text-small" :key="render">
                                     <thead>
                                         <tr>
                                             <td v-if="paymentTypeId != 0" class="border-top border-bottom border-left"></td>
@@ -387,7 +387,7 @@
                                             </td>
                                             <td class="border-bottom border-right uk-text-right">
                                                 <div class="uk-flex uk-flex-middle">
-                                                    <ScInput v-model="orderInfo.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrder()">
+                                                    <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrderContent()">
                                                     </ScInput>
                                                     <div>&nbsp;{{ orderInfo.Currency }}</div>
                                                 </div>
@@ -842,6 +842,28 @@ export default {
                         _this.orderInfo.AccountId != null
                         ? _this.accountIdHasData = true
                         : _this.accountIdHasData = false
+                        _this.render = !_this.render
+                        _this.$store.dispatch('setBusyOff')
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
+        async updateOrderContent() {
+			let _this = this
+            _this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/OrderHandling/UpdateOrderContent', _this.orderContent )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.$store.dispatch('setBusyOff')
+                    } else {
+                        _this.orderContent = response
                         _this.render = !_this.render
                         _this.$store.dispatch('setBusyOff')
                     }
