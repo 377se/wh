@@ -126,7 +126,7 @@
                                     </div>
                                 </ScCardHeader>
                                 <ScCardContent>
-                                    <ScCardBody>
+                                    <ScCardBody v-if="orderList.length > 0">
                                         <VueGoodTable
                                             :columns="this.columnsOrderList"
                                             :rows="this.orderListAsChildren"
@@ -160,7 +160,7 @@
                                                     {{ props.row.Voucher }}
                                                 </span>
                                                 <span v-else>
-                                                    {{ props.row.Ordersum | thousandsDelimiter }} {{ props.row.Currency }}
+                                                    {{ props.row.Ordersum | thousandsDelimiter }} {{ props.row.Currency ? props.row.Currency : null }}
                                                 </span>
                                             </template>
                                         </VueGoodTable>
