@@ -14,7 +14,7 @@
             </div>
             <div id="sc-page-content">
                 <div class="uk-grid-column-medium" uk-grid>
-                    <div class="uk-width-1-2">
+                    <div class="uk-width-2-3">
                         <!-- VOUCHERS LIST -->
                         <ScCard>
                             <ScCardHeader separator>
@@ -24,51 +24,57 @@
                             </ScCardHeader>
                             <ScCardBody class="uk-padding-remove uk-text-small" separator>
                                 <div class="uk-flex">
-                                    <div style="width: 15%; padding: 5px 0 5px 0;" class="border-bottom">
-                                        <div class="uk-margin-small-left">Skapad</div>
+                                    <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-bottom">
+                                        <div>Skapad</div>
                                     </div>
-                                    <div style="width: 40%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                        <div class="uk-margin-small-left">Kod</div>
+                                    <div style="width: 22%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Kod</div>
                                     </div>
-                                    <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                        <div class="uk-margin-small-left">Värde</div>
+                                    <div style="width: 18%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Shop</div>
                                     </div>
-                                    <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                        <div class="uk-margin-small-left">Antal</div>
+                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Värde</div>
                                     </div>
-                                    <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                        <div class="uk-margin-small-left">Kvar</div>
+                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Antal</div>
                                     </div>
-                                    <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                        <div class="uk-margin-small-left">Giltig t.o.m</div>
+                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Kvar</div>
+                                    </div>
+                                    <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                        <div>Gilt t.o.m</div>
                                     </div>
                                 </div>
                                 <div v-for="voucherItem in voucherList" :key="voucherItem.VoucherId" >
                                     <div class="uk-flex">
-                                        <div style="width: 15%; padding: 5px 0 5px 0;" class="border-bottom">
-                                            <div class="uk-margin-small-left">{{ voucherItem.CreatedDate }}</div>
+                                        <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-bottom">
+                                            <div>{{ voucherItem.CreatedDate }}</div>
                                         </div>
-                                        <div style="width: 40%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                            <a class="uk-margin-small-left" @click.prevent="getVoucherById(voucherItem.VoucherId)"> {{ voucherItem.VoucherCode }}</a>
+                                        <div style="width: 22%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <a @click.prevent="getVoucherById(voucherItem.VoucherId)"> {{ voucherItem.VoucherCode }}</a>
                                         </div>
-                                        <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                            <div class="uk-margin-small-left">{{ voucherItem.Value }}</div>
+                                        <div style="width: 18%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <div>{{ voucherItem.ShopName }}</div>
                                         </div>
-                                        <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                            <div class="uk-margin-small-left">{{ voucherItem.InitialAmount }}</div>
+                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <div>{{ voucherItem.Value }}</div>
                                         </div>
-                                        <div style="width: 10%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                            <div class="uk-margin-small-left">{{ voucherItem.ItemsLeft }}</div>
+                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <div>{{ voucherItem.InitialAmount }}</div>
                                         </div>
-                                        <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                            <div class="uk-margin-small-left">{{ voucherItem.ValidThru }}</div>
+                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <div>{{ voucherItem.ItemsLeft }}</div>
+                                        </div>
+                                        <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
+                                            <div>{{ voucherItem.ValidThru }}</div>
                                         </div>
                                     </div>
                                 </div>
                             </ScCardBody>
                         </ScCard>
                     </div>
-                    <div v-if="!editVouchersPanel" class="uk-width-1-2">
+                    <div v-if="!editVouchersPanel" class="uk-width-1-3">
                         <!-- SKAPA NY VOUCHER -->
                         <ScCard>
                             <ScCardHeader separator>
@@ -156,7 +162,7 @@
                             </ScCardBody>
                         </ScCard>
                     </div>
-                    <div v-if="editVouchersPanel" class="uk-width-1-2">
+                    <div v-if="editVouchersPanel" class="uk-width-1-3">
                         <!-- VOUCHER DETAILS -->
                         <ScCard>
                             <ScCardHeader separator>
@@ -217,32 +223,32 @@
                             <ScCardBody class="uk-padding-remove uk-text-small" separator>
                                     <div id="orderlist" class="uk-overflow-auto uk-height-medium">
                                         <div class="uk-flex" uk-sticky="top: #orderlist">
-                                            <div style="width: 20%; padding: 5px 0 5px 0;" class="border-bottom">
-                                                <div class="uk-margin-small-left">Shop</div>
+                                            <div style="width: 20%; padding: 5px; font-size: 11px;" class="border-bottom">
+                                                <div>Shop</div>
                                             </div>
-                                            <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                <div class="uk-margin-small-left">Skapad</div>
+                                            <div style="width: 22%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                <div>Skapad</div>
                                             </div>
-                                            <div style="width: 50%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                <div class="uk-margin-small-left">Kund</div>
+                                            <div style="width: 40%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                <div>Kund</div>
                                             </div>
-                                            <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                <div class="uk-margin-small-left">OrderId</div>
+                                            <div style="width: 18%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                <div>OrderId</div>
                                             </div>
                                         </div>
                                         <div v-for="order in editedVoucher.OrderList" :key="order.OrderId">
                                             <div class="uk-flex">
-                                                <div style="width: 20%; padding: 5px 0 5px 0;" class="border-bottom">
-                                                    <div class="uk-margin-small-left">{{ editedVoucher.ShopName }}</div>
+                                                <div style="width: 20%; padding: 5px; font-size: 11px;" class="border-bottom">
+                                                    <div>{{ editedVoucher.ShopName }}</div>
                                                 </div>
-                                                <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                    <div class="uk-margin-small-left">{{ order.OrderDate }}</div>
+                                                <div style="width: 22%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                    <div>{{ order.OrderDate }}</div>
                                                 </div>
-                                                <div style="width: 50%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                    <div class="uk-margin-small-left">{{ order.CustomerName }}</div>
+                                                <div style="width: 40%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                    <div>{{ order.CustomerName }}</div>
                                                 </div>
-                                                <div style="width: 15%; padding: 5px 0 5px 0;" class="border-left border-bottom">
-                                                    <div class="uk-margin-small-left"><nuxt-link :to="order.UrlOrder">{{ order.OrderId }}</nuxt-link></div>
+                                                <div style="width: 18%; padding: 5px; font-size: 11px;" class="border-left border-bottom">
+                                                    <div><nuxt-link :to="order.UrlOrder">{{ order.OrderId }}</nuxt-link></div>
                                                 </div>
                                             </div>
                                         </div>
