@@ -28,22 +28,24 @@
                                         <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                             <thead v-if="index == 0">
                                                 <tr>
-                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="width:50%; text-align: left;">Attribut</th>
-                                                    <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="width:50%; text-align: left;">Antal</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="width:47%; text-align: left;">Attribut</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="width:47%; text-align: left;">Antal</th>
+                                                    <th class="sticky-headers border-top border-bottom border-right uk-text-small" style="width:40px; text-align: center;"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="2" class="uk-text-small border-bottom border-left border-right">
+                                                    <td colspan="3" class="uk-text-small border-bottom border-left border-right">
                                                         {{ producttype.Name }}
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" class="uk-padding-remove">
-                                                        <table class="uk-table uk-table-small uk-text-small uk-margin-remove attributelist" style="border-collapse: separate;">
+                                                    <td colspan="3" class="uk-padding-remove">
+                                                        <table class="uk-table uk-table-small uk-text-small uk-margin-remove attributelist uk-width-1-1" style="border-collapse: separate;">
                                                             <tr v-for="(attribute, index) in producttype.ItemList" :key="index" class="uk-table-middle">
-                                                                <td class="cursor-pointer link-color border-left border-bottom" style="width:50%;" @click="getAttributeById(attribute.AttributeId)"><span style="padding-left: 15px;">{{ attribute.Name }}</span></td>
-                                                                <td class="border-left border-bottom border-right" style="width:50%;">{{ attribute.NumberOfItems }}</td>
+                                                                <td class="cursor-pointer link-color border-left border-bottom" style="width:49%;" @click="getAttributeById(attribute.AttributeId)"><span style="padding-left: 15px;">{{ attribute.Name }}</span></td>
+                                                                <td class="border-left border-bottom" style="width:49%;">{{ attribute.NumberOfItems }}</td>
+                                                                <td class="border-left border-bottom border-right wastebasket" style="width:30px; text-align: center;"><i v-if="attribute.NumberOfItems == 0" @click="removeAttribute(attribute)" class="mdi mdi-delete-forever md-color-red-600 sc-icon-22" style="line-height:0; vertical-align: middle;"></i></td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -230,6 +232,35 @@ export default {
                 _this.$store.dispatch('setBusyOff')
             })
         },
+        async removeAttribute(attribute) {
+            let _this = this
+			await UIkit.modal.confirm('Vill du verkligen radera attributet?', { labels: { ok: 'Yeah', cancel: 'Nope' } }).then(function () {
+                _this.$store.dispatch('setBusyOn')
+                _this.$axios.$post('/webapi/Attribute/RemoveAttribute', attribute )
+                .then(function (attributelist) {
+                    try {
+                        if (attributelist.ErrorList != null ) {
+                            _this.errors = attributelist.ErrorList
+                            _this.$store.commit('setAlertVisible', 1)
+                            _this.$store.dispatch('setBusyOff')
+                        } else {
+                            _this.$store.commit('setAlertHidden', 1)
+                            _this.$store.dispatch('setBusyOff')
+                            _this.attributeList = attributelist
+                            _this.render = !_this.render
+                        }
+                    } catch(err) {
+                        console.log(err)
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    _this.$store.dispatch('setBusyOff')
+                })
+			}, function () {
+				_this.$store.dispatch('setBusyOff')
+			})
+        },
         async getAttributeById(attributeid) {
             let _this = this
             _this.$store.commit('setAlertHidden', 1)
@@ -310,4 +341,7 @@ export default {
         background-color: #000;
         color: #fff;
     }
+    .wastebasket {
+		cursor: pointer;
+	}
 </style>
