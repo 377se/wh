@@ -91,6 +91,10 @@
                                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.OrderDate }}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Betalningsmetod</strong></td>
+                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.PaymentMethod }}, {{ orderInfo.Currency }}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Voucherkod</strong></td>
                                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.Voucher }}</td>
                                                     </tr>
@@ -109,10 +113,6 @@
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
                                                         <td class="border-bottom uk-width-4-5">{{ orderInfo.TrackingNumber }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Betalningsmetod</strong></td>
-                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.PaymentMethod }}, {{ orderInfo.Currency }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Leveransdatum</strong></td>
@@ -145,6 +145,10 @@
                                                         <td class="uk-width-4-5 border-bottom">
                                                             <textarea v-model="orderInfo.Comment" rows="7" cols="80" class="uk-width-1-1 uk-text-small"></textarea>
                                                         </td>
+                                                    </tr>
+                                                    <tr v-if="orderInfo.ParentOrderUrl">
+                                                        <td class="border-bottom border-right uk-width-1-5"><strong>Ursprungsorder</strong></td>
+                                                        <td class="border-bottom uk-width-4-5"><nuxt-link :to="orderInfo.ParentOrderUrl ? orderInfo.ParentOrderUrl : '/'">{{ orderInfo.ParentOrderId }}</nuxt-link></td>
                                                     </tr>
                                                     <tr>
                                                         <td></td>
