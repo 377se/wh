@@ -96,7 +96,11 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Voucherkod</strong></td>
-                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.Voucher }}</td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <button v-if="orderInfo.VoucherId == 0" class="sc-button sc-button-small sc-button-icon sc-button-primary uk-margin-small-left" type="button" @click.prevent="showVoucherModal">
+                                                                Aktivera voucher
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Merchant-id</strong></td>
@@ -659,6 +663,59 @@
             </div>
         </div>
 
+			<!-- VOUCHER MODAL -->
+			<div id="voucher-modal" class="uk-modal-full uk-modal" data-uk-modal>
+				<div class="uk-modal-header basket-ribbon uk-animation-slide-right">
+					<!-- sticky -->
+					<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Aktivera voucher</h4>
+					<button
+						class="uk-offcanvas-close uk-icon uk-close"
+						style="color:#fff;top:14px;right:12px;"
+						type="button"
+						uk-close
+						uk-toggle="target: #voucher-modal"/>
+				</div>
+				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
+
+					<div class="uk-width-1-1 uk-overflow-auto">
+						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+							<thead>
+								<tr>
+									<td class="border-bottom border-right uk-text-left" style="width:180px;"><strong>Skapad</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:80px;"><strong>Kod</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:130px;"><strong>Shop</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:50px;"><strong>Värde</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:50px;"><strong>Antal</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:50px;"><strong>Kvar</strong></td>
+									<td class="border-bottom border-right uk-text-left" style="width:180px;"><strong>Gilt. t.o.m</strong></td>
+                                    <td class="border-bottom border-right uk-text-left" style="width:80px;"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="voucher in voucherList.ItemList" :key="voucher.VoucherId" class="uk-table-middle">
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.CreatedDate }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.VoucherCode }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.ShopName }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.Value }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.InitialAmount }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.ItemsLeft }}</div></td>
+									<td class="border-bottom border-right uk-width-auto uk-text-left"><div>{{ voucher.ValidThru }}</div></td>
+									<td class="border-bottom border-right uk-text-left">
+                                        <button class="sc-button sc-button-mini sc-button-icon sc-button-primary uk-margin-small-left" type="button" @click.prevent="deductVoucherDiscount(voucher.VoucherId, voucher.Value)">
+                                            Aktivera
+                                        </button>
+                                    </td>
+								</tr>
+							</tbody>
+						</table>
+                        <Alert
+                            :errorlist="errors"
+                            :alertClass="'uk-alert-danger'"
+                            id=2
+                        />
+					</div>
+				</div>
+			</div>
 
     </div>
 </template>
@@ -711,6 +768,7 @@ export default {
             sizeOptionsList: [],
             countries: [],
             showDeliveryNote: false,
+            voucherList: [],
         }
     },
     watch: {
@@ -1124,6 +1182,53 @@ export default {
 			})
 			.catch(function (error) {
                 console.log('Error i catch: ', error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
+        async showVoucherModal() {
+			let _this = this
+            _this.$store.commit('setAlertHidden', 2)
+            _this.$store.dispatch('setBusyOn')
+            try {
+                const voucherlist = await this.$axios.$post('/webapi/Voucher/VoucherListByOrder', _this.orderInfo)
+                if (voucherlist.ErrorList != null ) {
+                    _this.errors = voucherlist.ErrorList
+                    _this.$store.dispatch('setBusyOff')
+                } else {
+                    _this.voucherList = voucherlist
+                    _this.$store.dispatch('setBusyOff')
+                    UIkit.modal('#voucher-modal').show()
+                }
+            } catch(err) {
+                console.log(err)
+            }
+		},
+        async deductVoucherDiscount(voucherid, discountvalue) {
+			let _this = this
+			_this.message = null
+			_this.errors = null
+            _this.$store.commit('setAlertHidden', 2)
+            _this.$store.dispatch('setBusyOn')
+            _this.voucherList.VoucherId = voucherid
+            _this.voucherList.Discount = discountvalue
+			await this.$axios.$post('/webapi/Voucher/deductVoucherDiscount', _this.voucherList )
+			.then(function (response) {
+                try {
+                    if (response.ErrorList != null ) {
+                        _this.errors = response.ErrorList
+                        _this.$store.dispatch('setBusyOff')
+                        _this.$store.commit('setAlertVisible', 2)
+                    } else {
+                        _this.$fetch()
+                        _this.$store.dispatch('setBusyOff')
+                        UIkit.modal.dialog('<p class="uk-modal-body">Voucher är aktiverad!</p>')
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
                 _this.$store.dispatch('setBusyOff')
 			})
 		},
