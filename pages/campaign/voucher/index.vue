@@ -369,6 +369,7 @@ export default {
                         _this.$store.dispatch('setBusyOff')
                         _this.$store.commit('setAlertVisible', 2)
                     }
+                    _this.$fetch()
                 } catch(err) {
                     console.log(err)
                 }
