@@ -9,6 +9,8 @@
       <button class="sc-button sc-button-primary" v-on:click="submitFiles()" :disabled="files.length == 0">
         {{ actionButtonTitle }}
       </button>
+    </div>
+    <div>
       <button class="sc-button uk-margin-medium-top" v-on:click="addFiles()">{{ fileChooserButtonTitle }}</button>
     </div>
     <div v-if="files.length > 0" class="uk-margin-medium-top">
