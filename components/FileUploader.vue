@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="uk-card uk-card-default uk-padding-small">
     <div>
       <label>
         <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
@@ -11,7 +11,7 @@
       </button>
       <button class="sc-button uk-margin-medium-top" v-on:click="addFiles()">{{ fileChooserButtonTitle }}</button>
     </div>
-    <div class="uk-margin-medium-top">
+    <div v-if="files.length > 0" class="uk-margin-medium-top">
       <div class="uk-flex uk-flex-center uk-margin-small-bottom uk-text-small" v-for="(file, key) in files" :key="key">
           <span class="uk-badge md-bg-blue-600">{{ file.name }}</span>
           <span v-if="showRemoveFileButton" class="uk-label uk-label-danger uk-margin-small-left" v-on:click="removeFile(key)">TA BORT</span>
