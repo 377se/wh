@@ -100,6 +100,7 @@
                                                             <button v-if="orderInfo.VoucherId == 0" class="sc-button sc-button-small sc-button-icon sc-button-primary uk-margin-small-left" type="button" @click.prevent="showVoucherModal">
                                                                 Aktivera voucher
                                                             </button>
+                                                            <div v-if="orderInfo.VoucherId > 0" class="uk-badge md-bg-blue-600">{{ orderInfo.Voucher }}</div>
                                                         </td>
                                                     </tr>
                                                     <tr>
