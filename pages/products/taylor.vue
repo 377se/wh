@@ -371,6 +371,11 @@
                 taylorDetails: [],
             }
         },
+        watch: {
+            latestImport(newValue, oldValue) {
+                this.render = !this.render
+            }
+        },
         mounted () {
             this.$nextTick(() => {
                 let _this = this
@@ -479,6 +484,7 @@
                     _this.errors = response.ErrorList
                     _this.$store.commit('setAlertVisible', 1)
                 } else {
+                    _this.latestImport = response
                     UIkit.modal.dialog('<p class="uk-modal-body">Filen är importerad!</p>')
                 }
             },
