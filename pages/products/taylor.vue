@@ -74,7 +74,7 @@
                                                         <th class="sticky-headers-row2 border-bottom border-left"></th>
                                                         <th class="sticky-headers-row2 border-bottom border-left"></th>
                                                         <th class="sticky-headers-row2 border-bottom border-left" style="font-size: 11px; text-align: left;">
-                                                            <ScInput v-model="teamName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                            <ScInput v-model="teamName" state="fixed" mode="outline" placeholder="Filtrera på lag..." xtra-classes="uk-form-small">
                                                             </ScInput>
                                                         </th>
                                                         <th class="sticky-headers-row2 border-bottom border-left"></th>
