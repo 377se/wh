@@ -110,14 +110,17 @@
                     <ScCardBody>
                         <ul class="uk-padding-remove-left">
 							<li  class="uk-list uk-list-collapse" v-for="menuitem in menuInfo" :key="menuitem.CategoryId">
-								{{ menuitem.Name }}
-                                <ul v-if="menuitem.HasChildren">
+                                <div class="uk-flex uk-flex-middle">
+                                    <PrettyCheck v-if="!menuitem.IsDisabled" v-model="menuitem.IsSelected" class="p-icon" @change="updateMenuInfo(menuitem)">
+                                        <i slot="extra" class="icon mdi mdi-check"></i>
+                                    </PrettyCheck>
+                                    <div :class="{'uk-margin-small-left' : !menuitem.IsDisabled }">{{ menuitem.Name }}</div>
+                                </div>
+                                <ul v-if="menuitem.HasChildren" class="uk-margin-small-bottom">
                                     <li class="uk-list uk-list-collapse" v-for="childMenuItem in menuitem.SubItemList" :key="childMenuItem.CategoryId">
                                         <PrettyCheck v-model="childMenuItem.IsSelected" class="p-icon" @change="updateMenuInfo(childMenuItem)">
 											<i slot="extra" class="icon mdi mdi-check"></i>
-                                        <span :class="{ 'uk-text-danger': childMenuItem.IsHiddenInPublic }">
                                             {{ childMenuItem.Name }}
-                                        </span>
 										</PrettyCheck>
                                     </li>
                                 </ul>
