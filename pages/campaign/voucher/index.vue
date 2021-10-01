@@ -15,62 +15,76 @@
             <div id="sc-page-content">
                 <div class="uk-grid-column-medium" uk-grid>
                     <div class="uk-width-2-3">
-                        <!-- VOUCHERS LIST -->
+                        <!-- VOUCHERS LIST AKTIVA -->
                         <ScCard>
                             <ScCardHeader separator>
                                 <ScCardTitle>
-                                    Voucherlist
+                                    Voucherlist - Aktiva
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody class="uk-padding-remove uk-text-small" separator>
-                                <div class="uk-flex">
-                                    <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-bottom">
-                                        <div>Skapad</div>
+                                    <div class="uk-overflow-auto" style="max-height:800px;">
+                                        <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate; table-layout: fixed;">
+                                            <thead style="z-index: 10000">
+                                                <tr class="uk-padding-remove-bottom">
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 80px;">Skapad</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 110px;">Kod</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 110px;">Shop</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Värde</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Antal</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Kvar</th>
+                                                    <th class="sticky-headers border-bottom border-left border-right" style="font-size: 11px; text-align: left; width: 80px;">Gilt t.o.m</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="voucherItem in voucherList.filter(voucher => { return voucher.IsActive == true })" :key="voucherItem.VoucherId" class="uk-table-middle link" @click="getVoucherById(voucherItem.VoucherId)">
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.CreatedDate }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">  <a @click.prevent="getVoucherById(voucherItem.VoucherId)"> {{ voucherItem.VoucherCode }}</a></td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.ShopName }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.Value }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.InitialAmount }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.ItemsLeft }}</td>
+                                                    <td class="border-bottom border-left border-right" style="text-align: left; ">{{ voucherItem.ValidThru }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div style="width: 22%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Kod</div>
+                            </ScCardBody>
+                        </ScCard>
+                        <!-- VOUCHERS LIST INAKTIVA -->
+                        <ScCard class="uk-margin-large-top">
+                            <ScCardHeader separator>
+                                <ScCardTitle>
+                                    Voucherlist - Inaktiva
+                                </ScCardTitle>
+                            </ScCardHeader>
+                            <ScCardBody class="uk-padding-remove uk-text-small" separator>
+                                    <div class="uk-overflow-auto" style="max-height:800px;">
+                                        <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate; table-layout: fixed;">
+                                            <thead style="z-index: 10000">
+                                                <tr class="uk-padding-remove-bottom">
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 80px;">Skapad</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 110px;">Kod</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 110px;">Shop</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Värde</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Antal</th>
+                                                    <th class="sticky-headers border-bottom border-left" style="font-size: 11px; text-align: left; width: 40px;">Kvar</th>
+                                                    <th class="sticky-headers border-bottom border-left border-right" style="font-size: 11px; text-align: left; width: 80px;">Gilt t.o.m</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="voucherItem in voucherList.filter(voucher => { return voucher.IsActive == false })" :key="voucherItem.VoucherId" class="uk-table-middle link" @click="getVoucherById(voucherItem.VoucherId)">
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.CreatedDate }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">  <a @click.prevent="getVoucherById(voucherItem.VoucherId)"> {{ voucherItem.VoucherCode }}</a></td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.ShopName }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.Value }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.InitialAmount }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ voucherItem.ItemsLeft }}</td>
+                                                    <td class="border-bottom border-left border-right" style="text-align: left; ">{{ voucherItem.ValidThru }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div style="width: 18%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Shop</div>
-                                    </div>
-                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Värde</div>
-                                    </div>
-                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Antal</div>
-                                    </div>
-                                    <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Kvar</div>
-                                    </div>
-                                    <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                        <div>Gilt t.o.m</div>
-                                    </div>
-                                </div>
-                                <div v-for="voucherItem in voucherList" :key="voucherItem.VoucherId" >
-                                    <div class="uk-flex">
-                                        <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-bottom">
-                                            <div>{{ voucherItem.CreatedDate }}</div>
-                                        </div>
-                                        <div style="width: 22%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <a @click.prevent="getVoucherById(voucherItem.VoucherId)"> {{ voucherItem.VoucherCode }}</a>
-                                        </div>
-                                        <div style="width: 18%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <div>{{ voucherItem.ShopName }}</div>
-                                        </div>
-                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <div>{{ voucherItem.Value }}</div>
-                                        </div>
-                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <div>{{ voucherItem.InitialAmount }}</div>
-                                        </div>
-                                        <div style="width: 10%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <div>{{ voucherItem.ItemsLeft }}</div>
-                                        </div>
-                                        <div style="width: 15%; padding: 5px; font-size: 12px;" class="border-left border-bottom">
-                                            <div>{{ voucherItem.ValidThru }}</div>
-                                        </div>
-                                    </div>
-                                </div>
                             </ScCardBody>
                         </ScCard>
                     </div>
@@ -429,6 +443,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .sticky-headers {
+        background: white;
+        position: sticky;
+        top: 0px; /* Don't forget this, required for the stickiness */
+    }
 	.border-all {
         border: 1px solid #ccc;
     }
