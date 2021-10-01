@@ -47,10 +47,10 @@
                                         <div class="uk-flex uk-flex-between uk-flex-bottom">
                                             <div>
                                                 <ScCardTitle>Senaste import</ScCardTitle>
-                                                <div class="uk-text-small">Admin: {{ latestImport.Admin }}</div>
-                                                <div class="uk-text-small">Datum: {{ latestImport.CreatedDate }}</div>
-                                                <div class="uk-text-small">Filnamn: {{ latestImport.FileName }}</div>
-                                                <div class="uk-text-small">Antal: {{ latestImport.NumberOfItems }}</div>
+                                                <div class="uk-text-small uk-margin-small-left">Admin: {{ latestImport.Admin }}</div>
+                                                <div class="uk-text-small uk-margin-small-left">Datum: {{ latestImport.CreatedDate }}</div>
+                                                <div class="uk-text-small uk-margin-small-left">Filnamn: {{ latestImport.FileName }}</div>
+                                                <div class="uk-text-small uk-margin-small-left">Antal: {{ latestImport.NumberOfItems }}</div>
                                             </div>
                                             <button :disabled="disabledOrderFileButton" v-waves.button.light class="sc-button sc-button-primary uk-flex-right" @click.prevent="uploadOrderDetails()">
                                                 SKAPA ORDERFIL
@@ -149,25 +149,27 @@
                     </li>
                     <!-- ARTIKELHISTORIK -->
                     <li id="articlehistory">
-                        <div class="uk-grid uk-grid-medium" uk-grid uk-margin :key="render">
 
                             <!-- LISTA ARTIKELHISTORIK -->
-                            <div class="uk-width-1-1 uk-width-2-3@m">
+                            <div class="uk-width-1-1">
                                 <ScCard v-if="articleHistory" class="uk-card-small">
                                     <ScCardHeader separator>
                                         <ScCardTitle>
-                                            Artikelhistorik
+                                            <div class="uk-flex uk-flex-between uk-flex-middle">
+                                                <div>Artikelhistorik</div>
+                                                <div class="uk-badge md-bg-green-600">{{ articleHistory.length }}</div>
+                                            </div>
                                         </ScCardTitle>
                                     </ScCardHeader>
                                     <ScCardBody>
                                         <div class="uk-overflow-auto" style="max-height:800px;">
-                                            <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate;">
+                                            <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate; table-layout: fixed;">
                                                 <thead style="z-index: 10000">
                                                     <tr class="uk-padding-remove-bottom">
-                                                        <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 200px;">Datum</th>
+                                                        <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 100px;">Datum</th>
                                                         <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 130px;">Filnamn</th>
                                                         <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 130px;">Antal</th>
-                                                        <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 130px;">Admin</th>
+                                                        <th class="sticky-headers border-top border-bottom border-left border-right" style="font-size: 11px; text-align: left; width: 130px;">Admin</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -175,7 +177,7 @@
                                                         <td class="border-bottom border-left" style="text-align: left; ">{{ file.CreatedDate }}</td>
                                                         <td class="border-bottom border-left" style="text-align: left; ">{{ file.FileName }}</td>
                                                         <td class="border-bottom border-left" style="text-align: left; ">{{ file.NumberOfItems }}</td>
-                                                        <td class="border-bottom border-left" style="text-align: left; ">{{ file.Admin }}</td>
+                                                        <td class="border-bottom border-left border-right" style="text-align: left; ">{{ file.Admin }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -184,50 +186,46 @@
                                 </ScCard>
                             </div>
 
-                            <ScCard>
+                    </li>
+
+                    <!-- ORDERHISTORIK -->
+                    <li id="orderhistory">
+
+                        <!-- LIST ORDERHISTORY -->
+                        <div class="uk-width-1-1">
+                            <ScCard v-if="orderHistory" class="uk-card-small">
+                                <ScCardHeader separator>
+                                    <ScCardTitle>
+                                        <div class="uk-flex uk-flex-between uk-flex-middle">
+                                            <div>Orderhistorik</div>
+                                            <div class="uk-badge md-bg-green-600">{{ orderHistory.length }}</div>
+                                        </div>
+                                    </ScCardTitle>
+                                </ScCardHeader>
                                 <ScCardBody>
-                                    <div class="uk-width-1-1 uk-text-center">
-                                        <Alert
-                                            :errorlist="errors"
-                                            :alertClass="'uk-alert-danger'"
-                                            id=1
-                                        />
-                                        <!-- UPPLADDNING ARTIKELLISTA -->
-                                        <div class="uk-padding-small uk-padding-remove-horizontal">
-                                            <FileUploader
-                                                postUrl="/webapi/Taylor/UploadArticleList"
-                                                actionButtonTitle="IMPORTERA ARTIKELLISTA"
-                                                :showRemoveFileButton="false"
-                                                fileChooserButtonTitle="VÄLJ FIL"
-                                                @postUpload="afterUploadProcessing"
-                                            />
-                                        </div>
-                                        <!-- UPPLADDNING ORDERFIL -->
-                                        <div class="uk-padding-small uk-padding-remove-horizontal">
-                                            <FileUploader
-                                                postUrl="/webapi/Taylor/UploadOrderDetails"
-                                                actionButtonTitle="IMPORTERA ORDERFIL"
-                                                :showRemoveFileButton="false"
-                                                fileChooserButtonTitle="VÄLJ FIL"
-                                                @postUpload="afterUploadProcessing"
-                                            />
-                                        </div>
-                                        <div class="uk-text-small uk-text-left uk-margin-large-top">
-                                            <div><strong>Importera artikellista</strong></div>
-                                            <div class="uk-margin-medium-bottom">Denna fil hämtas från Taylor och den innehåller alla produkter som finns inne för beställning i dagsläget (från deras lager) och dessa matchas mot vårt eget lagersaldo för motsvarande artikelnummer.</div>
-                                            <div><strong>Importera order-fil</strong></div>
-                                            <div>Denna csv-fil exporterar du från Taylor och trycker in i vårt system. Antingen uppdateras redan befintlig produkt eller så skapas en ny.</div>
-                                        </div>
-
-
+                                    <div class="uk-overflow-auto" style="max-height:800px;">
+                                        <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate; table-layout: fixed;">
+                                            <thead style="z-index: 10000">
+                                                <tr class="uk-padding-remove-bottom">
+                                                    <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 100px;">Datum</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 130px;">Filnamn</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left" style="font-size: 11px; text-align: left; width: 130px;">Antal</th>
+                                                    <th class="sticky-headers border-top border-bottom border-left border-right" style="font-size: 11px; text-align: left; width: 130px;">Admin</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="file in orderHistory" :key="file.TaylorOrderId" class="uk-table-middle link" @click="getOrderById(file.TaylorOrderId)">
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ file.CreatedDate }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ file.FileName }}</td>
+                                                    <td class="border-bottom border-left" style="text-align: left; ">{{ file.NumberOfItems }}</td>
+                                                    <td class="border-bottom border-left border-right" style="text-align: left; ">{{ file.Admin }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </ScCardBody>
                             </ScCard>
-
                         </div>
-                    </li>
-                    <!-- ORDERHISTORIK -->
-                    <li id="orderhistory">
 
                     </li>
                 </ul>
@@ -298,6 +296,52 @@
         </div>
 
 
+        <!-- ORDERHISTORY MODAL -->
+        <div id="orderhistory-modal" class="uk-modal-full uk-modal uk-overflow-hidden" data-uk-modal>
+
+            <div class="uk-modal-header-2 basket-ribbon uk-animation-slide-right">
+                <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:0px 0 0 12px; padding:16px 0 0 0;">Orderdetaljer</h4>
+                <button
+                    class="uk-offcanvas-close uk-icon uk-close"
+                    style="color:#fff;top:14px;right:12px;"
+                    type="button"
+                    uk-close
+                    uk-toggle="target: #orderhistory-modal"/>
+            </div>
+            <div class="uk-modal-full uk-modal-body uk-overflow-auto uk-animation-slide-right" style="padding:0px; background:#ffffff; height:calc(100% - 50px);">
+
+
+                    <table class="uk-table uk-table-small uk-table-striped uk-text-small uk-margin-remove" style="border-collapse: separate; table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:100px;"><strong>Produktmodell</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:230px;"><strong>Produktnamn</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:140px;"><strong>Kategori</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:150px;"><strong>Lag</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:80px;"><strong>Enhetspris</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:60px;"><strong>Antal</strong></th>
+                                <th class="sticky-headers border-bottom border-right uk-text-left" style="font-size: 11px; text-align: left; width:70px;"><strong>Radtotal</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="taylordetail in taylorDetails.ItemList" :key="taylordetail.TaylorOrderId" class="uk-table-middle">
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.ProductModel }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.ProductName }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.Category }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.Team }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.UnitPrice }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.Quantity }}</td>
+                                <td class="border-bottom border-right uk-width-auto uk-text-left">{{ taylordetail.LineTotal }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+            </div>
+
+        </div>
+
+
 
     </div>
 </template>
@@ -324,6 +368,7 @@
                 csvIsPopulated: false,
                 articleHistory: [],
                 orderHistory: [],
+                taylorDetails: [],
             }
         },
         mounted () {
@@ -372,6 +417,23 @@
                     } else {
                         _this.orderHistory = orderhistory
                         _this.$store.dispatch('setBusyOff')
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+            },
+            async getOrderById(taylorid) {
+                let _this = this
+                _this.$store.dispatch('setBusyOn')
+                try {
+                    const taylordetails = await this.$axios.$get('/webapi/Taylor/GetOrderById?taylorOrderId=' + taylorid)
+                    if (taylordetails.ErrorList != null ) {
+                        _this.$store.dispatch('setBusyOff')
+                        _this.errors = taylordetails.ErrorList
+                    } else {
+                        _this.$store.dispatch('setBusyOff')
+                        _this.taylorDetails = taylordetails
+                        UIkit.modal('#orderhistory-modal').show()
                     }
                 } catch(err) {
                     console.log(err)
@@ -486,11 +548,24 @@
         }
 	}
     .uk-modal-header {
-		min-height: 50px;
+        min-height: 50px;
 		height: auto;
 		padding: 0px;
 	}
+    .uk-modal-header-2 {
+        width:100vw !important;
+        min-height: 50px;
+        height: auto;
+        padding: 0px;
+        @media only screen and (max-width: 600px) {
+            width:100vw !important;
+        }
+    }
 	.basket-ribbon{
 		background: #00838F;
 	}
+    .link {
+        color: #0088CC;
+        cursor: pointer;
+    }
 </style>
