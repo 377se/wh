@@ -122,6 +122,7 @@
 											<i slot="extra" class="icon mdi mdi-check"></i>
                                             {{ childMenuItem.Name }}
 										</PrettyCheck>
+                                            <i v-if="childMenuItem.IsHiddenInPublic == true" class="mdi mdi-eye-off sc-icon-18" style="line-height: 0; margin-left:20px; padding-top:5px;"></i>
                                     </li>
                                 </ul>
   							</li>
