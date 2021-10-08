@@ -44,6 +44,19 @@
                                         <label>Produktnamn</label>
                                     </ScInput>
                                 </div>
+                                <!-- Märke -->
+                                <div class="uk-margin-medium-top sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                    <label class="select-label" for="select-shopOptionsList">Märke</label>
+                                    <client-only>
+                                        <Select2
+                                            id="select-brandList"
+                                            v-model="currentArticle.BrandId"
+                                            :options="brandList"
+                                            :settings="{ 'width': '100%', 'placeholder': 'Märke', 'closeOnSelect': true, 'allowClear': true }"
+                                        >
+                                        </Select2>
+                                    </client-only>
+                                </div>
                                 <!-- Storlekstyp -->
                                 <div class="uk-margin uk-width-1-1">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
@@ -160,6 +173,7 @@
                 foundCopyArticle: {},
                 sizeTypeList: [],
                 teamList: [],
+                brandList: [],
                 errors: '',
                 message: '',
                 searchedArticleNumber: '',
@@ -244,11 +258,12 @@
         async fetch () {
             this.$store.dispatch('setBusyOn')
             try {
-                const [emptyarticle, emptycopyarticle, sizetypelist, teamlist ] = await Promise.all([
+                const [emptyarticle, emptycopyarticle, sizetypelist, teamlist, brandlist ] = await Promise.all([
                     this.$axios.$get('/webapi/Article/GetArticleCreate'),
                     this.$axios.$get('/webapi/Article/GetArticleCopy'),
                     this.$axios.$get('/webapi/Metadata/GetSizeTypeList'),
                     this.$axios.$get('/webapi/Metadata/GetTeamList'),
+                    this.$axios.$get('/webapi/metadata/GetBrandList'),  
                 ])
                 this.emptyArticle = emptyarticle
                 this.currentArticle = emptyarticle
@@ -256,6 +271,7 @@
                 this.currentCopyArticle = emptycopyarticle
                 this.sizeTypeList = sizetypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
                 this.teamList = teamlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+                this.brandList = brandlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
                 this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
