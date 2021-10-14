@@ -111,6 +111,7 @@
                 <td class="description">
                     <span class="articleCategory">{{ article.TeamName }}</span>
                     {{ article.ProductName }}<br />
+                    {{ article.AddonValue ? article.AddonValue : '' }}<br v-if="article.AddonValue">
                     {{ article.BrandName }}
                 </td>
                 <td class="item-name">{{ article.ArticleNumber }}</td>

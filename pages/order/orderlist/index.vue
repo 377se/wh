@@ -130,7 +130,10 @@
                 </ScCard>
             </div>
         </div>
-        <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
+
+        <div style="visibility: hidden;">
+            <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
+        </div>
 
         <!-- FAILED ACTIVATION MODAL -->
 
