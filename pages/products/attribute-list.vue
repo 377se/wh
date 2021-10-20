@@ -83,9 +83,9 @@ export default {
     async getAttributeList() {
 			let _this = this
       _this.$store.dispatch('setBusyOn')
-        await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId' + _this.productType)
-        .then(function (attributeList) {
-          _this.attributeList = attributeList
+        await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId=' + _this.productType)
+        .then(function (attributelist) {
+            _this.attributeList = attributelist
           _this.$store.dispatch('setBusyOff')
         }
       )
@@ -102,8 +102,8 @@ export default {
                 this.$axios.$get('/webapi/Shop/GetShopList'),
                 this.$axios.$get('/webapi/Attribute/GetAttributeListForProductTypes')
             ])
-            this.producttypes = producttypes.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
+            this.producttypes = producttypes.map(({ ProductTypeId, Name }) => ({ id: ProductTypeId, text: Name }))
             if (this.$route.query.shopid || this.$route.query.producttype) {
                 if (this.$route.query.shopid) {
                     this.shopId = this.$route.query.shopid
