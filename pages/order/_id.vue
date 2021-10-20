@@ -678,7 +678,16 @@
 				</div>
 				<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" uk-overflow-auto="" style="padding:0px;height:100vh;background:#ffffff;">
 
-					<div class="uk-width-1-1 uk-overflow-auto">
+
+                        <div class="uk-margin-small-left uk-margin-small-right">
+                            <Alert
+                                :errorlist="errors"
+                                :alertClass="'uk-alert-danger'"
+                                id=2
+                            />
+                        </div>
+
+					<div v-if="!errors" class="uk-width-1-1 uk-overflow-auto">
 						<table class="border-all uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
 							<thead>
 								<tr>
@@ -709,11 +718,6 @@
 								</tr>
 							</tbody>
 						</table>
-                        <Alert
-                            :errorlist="errors"
-                            :alertClass="'uk-alert-danger'"
-                            id=2
-                        />
 					</div>
 				</div>
 			</div>
@@ -1195,6 +1199,8 @@ export default {
                 if (voucherlist.ErrorList != null ) {
                     _this.errors = voucherlist.ErrorList
                     _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 2)
+                    UIkit.modal('#voucher-modal').show()
                 } else {
                     _this.voucherList = voucherlist
                     _this.$store.dispatch('setBusyOff')
