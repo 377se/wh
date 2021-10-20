@@ -155,7 +155,7 @@
                                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 10%;">Ursprung</th>
                                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 9%;">Pris/st</th>
                                                                 <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 9%;">Totalt pris</th>
-                                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 9%;">Total vikt</th>
+                                                                <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 9%;">Vikt</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -166,7 +166,7 @@
                                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: left; ">{{ product.Origin }}</td>
                                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: right; ">{{ product.Price }}</td>
                                                                 <td class="border-bottom border-left uk-overflow-hidden" style="text-align: right; ">{{ product.Amount }}</td>
-                                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: right; ">{{ product.TotalWeight }}</td>
+                                                                <td class="border-bottom border-left border-right uk-overflow-hidden" style="text-align: right; ">{{ product.Weight }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
