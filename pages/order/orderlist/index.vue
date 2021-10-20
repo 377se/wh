@@ -180,7 +180,8 @@ export default {
     },
     watch: {
     },
-    mounted () {
+    mounted() {
+        if (!this.loaded) this.$fetch()
     },
     computed: {
         numberOfSelected: function () {
