@@ -22,7 +22,7 @@
                             <client-only>
                                 <Select2
                                     id="select-shopOptionsList"
-                                    v-model.number="currentStatsObject.shopId"
+                                    v-model.number="currentStatsObject.ShopId"
                                     :options="shopOptionsList"
                                     :settings="{ 'width': '100%', 'placeholder': 'Shop', 'closeOnSelect': true, 'allowClear': true }"
                                 >

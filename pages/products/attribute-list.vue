@@ -15,7 +15,7 @@
             <div id="sc-page-content">
                 <ScCard :key="render">
                     <ScCardBody>
-                        <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 45">
+                        <div class="uk-padding-small actionpanel">
                             <div class="uk-margin-medium-bottom uk-width-1-1">
                               <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
                               <client-only>
@@ -49,6 +49,67 @@
                         </div>
                     </ScCardBody>
                 </ScCard>
+
+                <ScCard
+                    class="uk-margin-top">
+                    <ScCardBody>
+                        <VueGoodTable
+                            v-if="attributeList.length>0"
+                            :columns="columns"
+                            :rows="attributeList"
+                            style-class="vgt-table"
+                            :search-options="{ 
+                                enabled: false,
+                                trigger: 'enter',
+                            }"
+                            :pagination-options="{
+                                enabled: true,
+                                mode: 'pages',
+                                perPage: 50,
+                                position: 'top',
+                                perPageDropdown: [10, 20, 30, 40, 50],
+                                dropdownAllowAll: true,
+                                setCurrentPage: 1,
+                                nextLabel: 'nästa',
+                                prevLabel: 'föregående',
+                                rowsPerPageLabel: 'Produkter per sida',
+                                ofLabel: 'av',
+                                pageLabel: 'sida', // for 'pages' mode
+                                allLabel: 'Alla',
+                            }"
+                        >
+                        <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
+                            {{ attributeList.length }}
+                        </div>
+                            <template slot="table-row" slot-scope="props">
+                                <img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
+                                <span v-if="props.column.field === 'ArticleName'">
+                                    {{ props.row.ArticleName }}
+                                </span>
+                                <div 
+                                    v-if="props.column.field === 'AttributeList'"
+                                    class="uk-flex uk-flex-top">
+                                    <span
+                                        v-for="attrib in props.row.AttributeList"
+                                        :key="attrib.AttributeId"
+                                        class="uk-margin-right-small">
+                                        <input 
+                                            type="checkbox" 
+                                            :checked="attrib.IsSelected"
+                                            v-model="attrib.IsSelected"
+                                            :value="attrib.IsSelected"
+                                            v-on:input="attrib.IsSelected=!attrib.IsSelected;updateAttributes(props.row)"
+                                        />
+                                        <br>
+                                        <img :src="attrib.ImageName"><br>
+                                        {{ attrib.Name }}
+                                    </span>
+                                </div>
+                                
+                            </template>
+                        </VueGoodTable>
+                    </ScCardBody>
+                </ScCard>
             </div>
         </div>
 
@@ -57,10 +118,13 @@
 
 <script>
 import Alert from '~/components/Alert'
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table'
 
 export default {
 	components: {
 		Alert,
+        VueGoodTable,
 		Select2: process.client ? () => import('~/components/Select2') : null
     },
     data () {
@@ -74,19 +138,68 @@ export default {
           render: false,
         }
     },
-    watch: {
-    },
+    computed: {
+		columns () {
+			return [
+                {
+					label: '',
+					field: 'ImageName',
+					sortable: false,
+					tdClass: 'uk-text-center uk-text-nowrap',
+                    width: '33px',
+				},
+                {
+					label: 'Produktnamn',
+					field: 'ArticleName',
+					sortable: true,
+					type: 'string',
+					filterOptions: {
+						enabled: true
+					},
+                    width: '25%',
+				},
+				{
+					label: 'Attribut',
+					field: 'AttributeList',
+					sortable: false,
+					type: 'array',
+					filterOptions: {
+						enabled: true
+					},
+                    width: '20%',
+				}
+			]
+		},
+	},
     mounted() {
         if (!this.loaded) this.$fetch()
     },
     methods: {
+    async updateAttributes(m){
+        let _this = this
+            _this.$store.dispatch('setBusyOn')
+            try {
+                const [ response ] = await Promise.all([
+                    this.$axios.$post('/webapi/Attribute/UpdateArticleAttribute', m)
+                ])
+                if(response.ErrorList != null) {
+                    _this.$store.dispatch('setBusyOff')
+                    console.log('Something fucked up!')
+				} else {
+                    console.log("Something didn't fuck up!")
+        		}
+                _this.$store.dispatch('setBusyOff')
+            } catch (error) {
+                console.log(error)
+            }
+    },
     async getAttributeList() {
 			let _this = this
       _this.$store.dispatch('setBusyOn')
         await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId=' + _this.productType)
         .then(function (attributelist) {
-            _this.attributeList = attributelist
-          _this.$store.dispatch('setBusyOff')
+            _this.attributeList = attributelist.ArticleList
+            _this.$store.dispatch('setBusyOff')
         }
       )
       .catch(function (error) {
