@@ -254,7 +254,7 @@
                                 <td class="description"><br />{{ article.Description }}</td>
                                 <td class="country">{{ article.Origin }}</td>
                                 <td class="tariff">{{ article.Tariff }}</td>
-                                <td class="weight">{{ article.TotalWeight }}</td>
+                                <td class="weight">{{ article.Weight }}</td>
                                 <td class="qty">{{ article.NumberOfItems }}</td>
                                 <td class="price">{{ article.Price }}</td>
                                 <td class="amount">{{ article.Amount }}</td>
