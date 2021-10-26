@@ -51,64 +51,60 @@
                 </ScCard>
 
                 <ScCard
+                    v-if="articleList.length>0"
                     class="uk-margin-top">
-                    <ScCardBody>
-                        <VueGoodTable
-                            v-if="attributeList.length>0"
-                            :columns="columns"
-                            :rows="attributeList"
-                            style-class="vgt-table"
-                            :search-options="{ 
-                                enabled: false,
-                                trigger: 'enter',
-                            }"
-                            :pagination-options="{
-                                enabled: true,
-                                mode: 'pages',
-                                perPage: 50,
-                                position: 'top',
-                                perPageDropdown: [10, 20, 30, 40, 50],
-                                dropdownAllowAll: true,
-                                setCurrentPage: 1,
-                                nextLabel: 'nästa',
-                                prevLabel: 'föregående',
-                                rowsPerPageLabel: 'Produkter per sida',
-                                ofLabel: 'av',
-                                pageLabel: 'sida', // for 'pages' mode
-                                allLabel: 'Alla',
-                            }"
-                        >
-                        <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
-                            {{ attributeList.length }}
-                        </div>
-                            <template slot="table-row" slot-scope="props">
-                                <img v-if="props.column.field === 'ImageName'" :src="props.row.ImageName">
-                                <span v-if="props.column.field === 'ArticleName'">
-                                    {{ props.row.ArticleName }}
-                                </span>
-                                <div 
-                                    v-if="props.column.field === 'AttributeList'"
-                                    class="uk-flex uk-flex-top">
-                                    <span
-                                        v-for="attrib in props.row.AttributeList"
-                                        :key="attrib.AttributeId"
-                                        class="uk-margin-right-small">
-                                        <input 
-                                            type="checkbox" 
-                                            :checked="attrib.IsSelected"
-                                            v-model="attrib.IsSelected"
-                                            :value="attrib.IsSelected"
-                                            v-on:input="attrib.IsSelected=!attrib.IsSelected;updateAttributes(props.row)"
-                                        />
-                                        <br>
-                                        <img :src="attrib.ImageName"><br>
-                                        {{ attrib.Name }}
-                                    </span>
-                                </div>
-                                
-                            </template>
-                        </VueGoodTable>
-                    </ScCardBody>
+                    <div class="uk-label uk-label-success uk-margin-small-right" slot="table-actions">
+                        {{ articleList.length }}
+                    </div>
+                    <div class="uk-overflow-auto">
+                        <table 
+                            class="attribute-list-table uk-table"
+                            style="position:relative">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Produktnamn</th>
+                                    <th
+                                        v-for="ah in attributeHeaders"
+                                        :key="ah.AttributeId"><img width="50" height="50" :src="ah.ImageName"><br>
+                                        {{ ah.Name }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    v-for="article in articleList"
+                                    :key="article.Id">
+                                    <td>
+                                        <span>
+                                            <img 
+                                                :src="article.ImageName"
+                                                style="width:50px;height:50px;"
+                                                width="50"
+                                                height="50">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{ article.ArticleName }}
+                                    </td>
+                                    <td 
+                                        v-for="al in article.AttributeList"
+                                        :key="al.AttributeId"
+                                        class="uk-text-center">
+                                        <span>
+                                            <input 
+                                                type="checkbox" 
+                                                :checked="al.IsSelected"
+                                                v-model="al.IsSelected"
+                                                :value="al.IsSelected"
+                                                v-on:input="al.IsSelected=!al.IsSelected;updateAttributes(article)"
+                                            /><br>
+                                            <span style="font-size:10px">{{ al.Name }}</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </ScCard>
             </div>
         </div>
@@ -118,18 +114,16 @@
 
 <script>
 import Alert from '~/components/Alert'
-import 'vue-good-table/dist/vue-good-table.css'
-import { VueGoodTable } from 'vue-good-table'
 
 export default {
 	components: {
 		Alert,
-        VueGoodTable,
 		Select2: process.client ? () => import('~/components/Select2') : null
     },
     data () {
 		return {
-          attributeList: [],
+          articleList: [],
+          attributeHeaders: [],
           producttypes: [],
           shopId: null,
           productType: null,
@@ -138,39 +132,6 @@ export default {
           render: false,
         }
     },
-    computed: {
-		columns () {
-			return [
-                {
-					label: '',
-					field: 'ImageName',
-					sortable: false,
-					tdClass: 'uk-text-center uk-text-nowrap',
-                    width: '33px',
-				},
-                {
-					label: 'Produktnamn',
-					field: 'ArticleName',
-					sortable: true,
-					type: 'string',
-					filterOptions: {
-						enabled: true
-					},
-                    width: '25%',
-				},
-				{
-					label: 'Attribut',
-					field: 'AttributeList',
-					sortable: false,
-					type: 'array',
-					filterOptions: {
-						enabled: true
-					},
-                    width: '20%',
-				}
-			]
-		},
-	},
     mounted() {
         if (!this.loaded) this.$fetch()
     },
@@ -197,8 +158,9 @@ export default {
 			let _this = this
       _this.$store.dispatch('setBusyOn')
         await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId=' + _this.productType)
-        .then(function (attributelist) {
-            _this.attributeList = attributelist.ArticleList
+        .then(function (attrib) {
+            _this.articleList = attrib.ArticleList
+            _this.attributeHeaders = attrib.AttributeList
             _this.$store.dispatch('setBusyOff')
         }
       )
@@ -236,6 +198,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+table thead,
+table tfoot {
+  position: sticky;
+  top:0;
+}
     .border-all {
         border: 1px solid #ccc;
     }
@@ -266,4 +233,5 @@ export default {
         right: 20px;
         z-index: 1;
     }
+
 </style>
