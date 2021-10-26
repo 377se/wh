@@ -2,7 +2,7 @@
   <div class="delivery-note-container">
 
 
-    <div id="all-delivery-notes" class="all-delivery-notes">
+    <div v-if="orders" id="all-delivery-notes" class="all-delivery-notes">
 
         <!-- PLOCKLISTA -->
         <div v-if="isUnifaunTrue && orderInfo.PickingList" class="delivery-note" style="clear: both; page-break-after: always;">
@@ -229,7 +229,7 @@ export default {
     },
     watch: {
         orders() {
-            this.orders !== [] ? this.$fetch() : null
+            this.orders.length != 0 ? this.$fetch() : null
         }
     },
     directives: { print },
@@ -240,6 +240,11 @@ export default {
         orderInfo: {},
         articleCount: true,
     }),
+    mounted () {
+      // this.$nextTick(() => {
+
+      // })
+    },
     methods: {
     },
     async fetch () {
