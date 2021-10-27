@@ -58,7 +58,7 @@
                     </div>
                     <div class="uk-overflow-auto">
                         <table 
-                            class="attribute-list-table uk-table"
+                            class="attribute-list-table uk-table uk-table-divider"
                             style="position:relative">
                             <thead>
                                 <tr>
@@ -74,16 +74,24 @@
                                 <tr
                                     v-for="article in articleList"
                                     :key="article.Id"
-                                    :class="article.HasAttributes?'uk-background-primary':''">
-                                    <td>
-                                        <img 
-                                            :src="article.ImageName"
-                                            style="width:50px;height:50px;display:inline-block"
-                                            width="50"
-                                            height="50"/>
+                                    :class="!article.HasAttributes?'uk-alert-danger':''">
+                                    <td class="uk-preserve-width">
+                                        <nuxt-link
+                                            :to="article.Url"
+                                            class="uk-link-reset">
+                                            <img 
+                                                :src="article.ImageName"
+                                                style="width:50px;height:50px;"
+                                                width="50"
+                                                height="50"/>
+                                        </nuxt-link>
                                     </td>
                                     <td>
-                                        {{ article.ArticleName }}
+                                        <nuxt-link
+                                            :to="article.Url"
+                                            class="uk-link-reset">
+                                            {{ article.ArticleName }}
+                                        </nuxt-link>
                                     </td>
                                     <td 
                                         v-for="al in article.AttributeList"
@@ -197,40 +205,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-table thead,
-table tfoot {
-  position: sticky;
-  top:0;
-}
-    .border-all {
-        border: 1px solid #ccc;
+    table thead,
+    table tfoot {
+    position: sticky;
+    top:0;
     }
-    .border-left {
-        border-left: 1px solid #ccc;
+    .uk-alert-danger{
+        background: rgba(198, 40, 40, 0.4) !important;
     }
-    .border-right {
-        border-right: 1px solid #ccc;
-    }
-    .border-top {
-        border-top: 1px solid #ccc;
-    }
-    .border-bottom {
-        border-bottom: 1px solid #ccc;
-    }
-    .hide {
-        display: none;
-    }
-    .actionpanel {
-        background-color: #fff;
-    }
-    .orderlist {
-        table-layout: fixed;
-    }
-    .sticky-down-right {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1;
-    }
+    
 
 </style>
