@@ -76,13 +76,11 @@
                                     :key="article.Id"
                                     :class="article.HasAttributes?'uk-background-primary':''">
                                     <td>
-                                        <span>
-                                            <img 
-                                                :src="article.ImageName"
-                                                style="width:50px;height:50px;"
-                                                width="50"
-                                                height="50">
-                                        </span>
+                                        <img 
+                                            :src="article.ImageName"
+                                            style="width:50px;height:50px;display:inline-block"
+                                            width="50"
+                                            height="50"/>
                                     </td>
                                     <td>
                                         {{ article.ArticleName }}
