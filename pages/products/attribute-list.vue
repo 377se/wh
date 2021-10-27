@@ -73,7 +73,8 @@
                             <tbody>
                                 <tr
                                     v-for="article in articleList"
-                                    :key="article.Id">
+                                    :key="article.Id"
+                                    :class="article.HasAttributes?'uk-background-primary':''">
                                     <td>
                                         <span>
                                             <img 
