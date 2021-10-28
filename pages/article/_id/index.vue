@@ -183,6 +183,22 @@
 															SÄTT ATTRIBUT
 														</button>
 													</div>
+																										<!-- Modell -->
+													<div class="uk-margin uk-width-1-1">
+														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+														<label class="select-label" for="select-model">Modell</label>
+														<client-only>
+															<Select2
+																id="select-models"
+																v-model="articleDetails.ModelId"
+																:options="modelList"
+																:settings="{ 'width': '100%', 'placeholder': 'Välj modell...', 'closeOnSelect': true }"
+															>
+																<option v-if="isLoading = false" :value="articleDetails.ModelId">{{ modelList.find(x => x.id === articleDetails.ModelId).text }}</option>
+															</Select2>
+														</client-only>
+														</div>
+													</div>
 													<!-- Färg(er) -->
 													<div class="uk-margin-small-bottom uk-margin-small-top uk-width-1-1 uk-height-auto">
 														<label class="uk-text-small">Färg(er)</label>
@@ -195,22 +211,6 @@
 
 																</div>
 															</div>
-													</div>
-													<!-- Modell -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-														<label class="select-label" for="select-model">Modell</label>
-														<client-only>
-															<Select2
-																id="select-gender"
-																v-model="articleDetails.ModelId"
-																:options="modelList"
-																:settings="{ 'width': '100%', 'placeholder': 'Välj kön...', 'closeOnSelect': true }"
-															>
-																<option v-if="isLoading = false" :value="articleDetails.ModelId">{{ modelList.find(x => x.id === articleDetails.ModelId).text }}</option>
-															</Select2>
-														</client-only>
-														</div>
 													</div>
 													<!-- Kön -->
 													<div class="uk-margin uk-width-1-1">
@@ -1170,6 +1170,7 @@ export default {
 			this.productTypeInfo = producttypes.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.genderInfo = genders.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.modelList = models.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.modelList.push({id:0,text:'Ingen modell vald'})
 			this.sizeGuideInfo = sizeguides.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.washingGuideInfo = washingguides.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.tariffsInfo = tariffs.map(({ Id, Name }) => ({ id: Id, text: Name }))
