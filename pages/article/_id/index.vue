@@ -196,6 +196,22 @@
 																</div>
 															</div>
 													</div>
+													<!-- Modell -->
+													<div class="uk-margin uk-width-1-1">
+														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+														<label class="select-label" for="select-model">Modell</label>
+														<client-only>
+															<Select2
+																id="select-gender"
+																v-model="articleDetails.ModelId"
+																:options="modelList"
+																:settings="{ 'width': '100%', 'placeholder': 'Välj kön...', 'closeOnSelect': true }"
+															>
+																<option v-if="isLoading = false" :value="articleDetails.ModelId">{{ modelList.find(x => x.id === articleDetails.ModelId).text }}</option>
+															</Select2>
+														</client-only>
+														</div>
+													</div>
 													<!-- Kön -->
 													<div class="uk-margin uk-width-1-1">
 														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
@@ -847,6 +863,7 @@ export default {
 			materialInfo: [],
 			productTypeInfo: [],
 			genderInfo: [],
+			modelList: [],
 			sizeGuideInfo: [],
 			washingGuideInfo: [],
 			tariffsInfo: [],
@@ -1121,13 +1138,15 @@ export default {
 },
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, sizeguides, washingguides, tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleassortment, articleassortmentHistory, shopListByArticle, articleImages, articleSale, attributelist] = await Promise.all([
+			const [articleDetails, teams, brands, materials, producttypes, genders, models, sizeguides, washingguides, 
+			tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleassortment, articleassortmentHistory, shopListByArticle, articleImages, articleSale, attributelist] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
 				this.$axios.$get('/webapi/Metadata/GetBrandList'),
 				this.$axios.$get('/webapi/Metadata/GetMaterialList'),
 				this.$axios.$get('/webapi/Metadata/GetProductTypeList'),
 				this.$axios.$get('/webapi/Metadata/GetGenderList'),
+				this.$axios.$get('/webapi/Metadata/GetModelTypeList'),
 				this.$axios.$get('/webapi/Metadata/GetSizeGuideList'),
 				this.$axios.$get('/webapi/Metadata/GetWashingList'),
 				this.$axios.$get('/webapi/Metadata/GetTariffList'),
@@ -1150,6 +1169,7 @@ export default {
 			this.materialInfo = materials.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.productTypeInfo = producttypes.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.genderInfo = genders.map(({ Id, Name }) => ({ id: Id, text: Name }))
+			this.modelList = models.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.sizeGuideInfo = sizeguides.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.washingGuideInfo = washingguides.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.tariffsInfo = tariffs.map(({ Id, Name }) => ({ id: Id, text: Name }))
