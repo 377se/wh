@@ -186,7 +186,7 @@
 																										<!-- Modell -->
 													<div class="uk-margin uk-width-1-1">
 														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-														<label class="select-label" for="select-model">Modell</label>
+														<label class="select-label" for="select-models">Modell</label>
 														<client-only>
 															<Select2
 																id="select-models"
