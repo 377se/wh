@@ -27,6 +27,8 @@
                                 <tr>
                                     <th></th>
                                     <th>Produktnamn</th>
+                                    <th>ArtikelId</th>
+                                    <th>Lag</th>
                                     <th>Modell</th>
                                 </tr>
                             </thead>
@@ -54,10 +56,17 @@
                                         </nuxt-link>
                                     </td>
                                     <td>
+                                        {{ article.ArticleId }}
+                                    </td>
+                                    <td style="white-space:nowrap">
+                                        {{ article.TeamName }}
+                                    </td>
+                                    <td>
                                         <select
                                             v-model="article.ModelId"
                                             class="uk-select"
-                                            @change="updateModels(article)">
+                                            @change="updateModels(article)"
+                                            style="min-width:200px;">
                                             <option
                                                 value="0">Ingen modell vald</option>
                                             <option
