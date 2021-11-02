@@ -86,7 +86,7 @@
             this.$store.commit('setAlertHidden', 1)
             try {
                 const [ emptyresetobject ] = await Promise.all([
-                    this.$axios.$get('/webapi/Account/GetEmptyResetObject?guid=' + this.$route.params.guid),
+                    this.$axios.$get('/webapi/Account/GetEmptyResetObject?guid=' + this.$route.query.guid),
                 ])
                     if (emptyresetobject.ErrorList != null) {
                         this.errors = emptyresetobject.ErrorList
