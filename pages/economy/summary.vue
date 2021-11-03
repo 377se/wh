@@ -19,7 +19,7 @@
                         <ScCard class="uk-card-small">
                             <ScCardHeader separator>
                                 <ScCardTitle>
-                                    Försäljning per månad ex moms ink frakt
+                                    Försäljning per månad ex moms ink frakt <span v-if="shopId != null">- {{ shopList.find(shop => { return shop.id == shopId }).text }}</span>
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
@@ -149,11 +149,11 @@
                         <ScCardBody v-if="economyMonthlyReview" class="uk-text-center md-bg-cyan-800">
                             <div class="uk-width-1-1 uk-flex uk-flex-around uk-flex-wrap uk-padding-small">
                                 <div class="uk-padding-small">
-                                    <div class="summary uk-light">{{ parseInt(economyMonthlyReview.Ordersum | thousandsDelimiter) }}</div>
+                                    <div class="summary uk-light">{{ parseInt(economyMonthlyReview.Ordersum) | thousandsDelimiter }}</div>
                                     <div class="uk-light">ex. moms</div>
-                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Shipping | thousandsDelimiter) }}</div>
+                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Shipping) | thousandsDelimiter }}</div>
                                     <div class="uk-light">frakt ex. moms</div>
-                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Total | thousandsDelimiter) }}</div>
+                                    <div class="summary uk-light uk-margin-medium-top">{{ parseInt(economyMonthlyReview.Total) | thousandsDelimiter }}</div>
                                     <div class="uk-light">totalt ex. moms</div>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@ export default {
             economySummary: null,
             economyMonthlyReview: null,
             shopList: [],
-            shopId: null,
+            shopId: 0,
             yearList: [],
             yearId: null,
             monthList: [],
@@ -235,7 +235,7 @@ export default {
     watch: {
         shopId(newValue, oldValue) {
             this.economyMonthlyReview = null
-            this.getEconomySummary(this.shopId)
+            this.getEconomySummary(newValue)
         },
         yearId(newValue, oldValue) {
             this.getEconomyMonthlyReview(this.yearId, this.monthId)
@@ -245,6 +245,12 @@ export default {
         },
     },
 	mounted: function () {
+		this.$nextTick(() => {
+            this.getEconomySummary()
+		})
+    },
+    beforeDestroy () {
+        this.economySummary = null
     },
     computed: {
     },
@@ -257,16 +263,16 @@ export default {
 			let _this = this
             _this.yearId = null
             _this.monthId = null
-            try {
             _this.$store.dispatch('setBusyOn')
-            const [ economysummary ] = await Promise.all([
-                this.$axios.$get('/webapi/Economy/GetEconomySummary?shopId=' + _this.shopId ),
-            ])
-			    _this.economySummary = economysummary
+            await this.$axios.$get('/webapi/Economy/GetEconomySummary?shopId=' + _this.shopId )
+            .then(economysummary => {
                 _this.$store.dispatch('setBusyOff')
-            } catch (err) {
-                console.log(err);
-            }
+                _this.economySummary = economysummary
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+
 		},
         async getEconomyMonthlyReview(year, month) {
 			let _this = this
@@ -320,7 +326,6 @@ export default {
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.monthList = monthlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-            this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
             this.$store.dispatch('setBusyOff')
