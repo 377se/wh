@@ -289,17 +289,17 @@ export default {
             let _this = this
             _this.$store.commit('setAlertHidden', 1)
             _this.$store.commit('setAlertHidden', 2)
-			_this.$store.dispatch('setBusyOn')
+			// _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Widget/UpdateWidgetList', _this.widgetList)
 			.then(function (updatedwidgetlist) {
                 if (updatedpassword.ErrorList != null) {
                     _this.errors = updatedwidgetlist.ErrorList
-                    _this.$store.dispatch('setBusyOff')
+                    // _this.$store.dispatch('setBusyOff')
                     _this.$store.commit('setAlertVisible', 1)
                 } else {
                     _this.message = updatedwidgetlist.Message
                     _this.widgetList = updatedwidgetlist
-                    _this.$store.dispatch('setBusyOff')
+                    // _this.$store.dispatch('setBusyOff')
                     _this.$store.commit('setAlertVisible', 2)
                 }
 			})
@@ -323,15 +323,15 @@ export default {
 		},
 		async updateMenuPermissions(item) {
 			let _this = this
-            _this.$store.dispatch('setBusyOn')
+            // _this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Menu/PostUpdateMenuPermission?adminId='  + this.$route.params.id, item)
 			.then(function (menupermissions) {
                 _this.menuPermissions = menupermissions
-                _this.$store.dispatch('setBusyOff')
+                // _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
                 console.log(error)
-                _this.$store.dispatch('setBusyOff')
+                // _this.$store.dispatch('setBusyOff')
 			})
 		},
     },
