@@ -21,6 +21,12 @@
                             :alertClass="'uk-alert-danger'"
                             id=1
                         />
+                        <Alert
+                            :errorlist="errors"
+                            message="Återställningslänk har mailats till dig!"
+                            :alertClass="'uk-alert-success'"
+                            id=2
+                        />
                         <!-- Email -->
                         <div class="uk-margin-medium-top uk-margin-medium-bottom">
                             <ScInput v-model="email" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in din email">
@@ -56,8 +62,9 @@
             async getResetLink() {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
+                _this.$store.commit('setAlertHidden', 2)
                 _this.$store.dispatch('setBusyOn')
-                await this.$axios.$post('/webapi/Account/GetResetLink?email=' + _this.email)
+                await this.$axios.$get('/webapi/Account/GetResetLink?email=' + _this.email)
                 .then(function (resetinfo) {
                     if (resetinfo.ErrorList != null) {
                         _this.errors = resetinfo.ErrorList
@@ -65,6 +72,7 @@
                         _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.$store.dispatch('setBusyOff')
+                        _this.$store.commit('setAlertVisible', 2)
                     }
                 })
                 .catch(function (error) {
@@ -72,19 +80,6 @@
                     _this.$store.dispatch('setBusyOff')
                 })
             },
-        },
-        async fetch () {
-            this.$store.dispatch('setBusyOn')
-            try {
-                const [ emptyresetobject ] = await Promise.all([
-                    this.$axios.$get('/webapi/Account/GetResetLink?email=' + this.guid),
-                ])
-                this.emptyResetObject = emptyresetobject
-                this.$store.dispatch('setBusyOff')
-            } catch (err) {
-                console.log(err);
-                this.$store.dispatch('setBusyOff')
-            }
         },
     }
 </script>
