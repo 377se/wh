@@ -121,7 +121,7 @@
                                                     id="select-shopList"
                                                     v-model.number="shopId"
                                                     :options="shopList"
-                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj shop...', 'closeOnSelect': true, 'allowClear': true }"
+                                                    :settings="{ 'width': '100%', 'placeholder': 'Välj shop...', 'closeOnSelect': true }"
                                                 >
                                                 </Select2>
                                             </client-only>
@@ -316,6 +316,7 @@ export default {
                 this.$axios.$get('/webapi/Utility/GetYearList'),
                 this.$axios.$get('/webapi/Utility/GetMonthList'),
             ])
+            shoplist.unshift({ ShopId: 0, ShopName: 'Alla' })
             this.shopList = shoplist.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.yearList = yearlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.monthList = monthlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
