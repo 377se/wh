@@ -17,8 +17,8 @@
 			<div id="sc-page-content">
 				<ScCard>
 					<ScCardBody>
-						<div class="uk-flex uk-margin-medium-bottom">
-							<div class="uk-margin-medium-bottom uk-width-1-1">
+						<div class="uk-flex uk-flex-between uk-margin-medium-bottom">
+							<div class="uk-margin-medium-bottom uk-width-1-2">
 								<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled uk-position-z-index">
 								<client-only>
 									<Select2
@@ -31,9 +31,14 @@
 								</client-only>
 								</div>
 							</div>
-							<button v-if="domainId != null" v-waves.button.light class="uk-margin-medium-left sc-button sc-button-primary" @click.prevent="deleteExceptionsByDomainId()">
-								RADERA
-							</button>
+							<div>
+								<button v-if="domainId != null" v-waves.button.light class="uk-margin-medium-left sc-button sc-button-primary sc-button-small" @click.prevent="deleteExceptionsByDomainId()">
+									RADERA
+								</button>
+								<button v-if="domainId != null" v-waves.button.light class="uk-margin-medium-left sc-button sc-button-primary sc-button-small" @click.prevent="getExceptionsByDomain()">
+									HÄMTA
+								</button>
+							</div>
 						</div>
 						<Alert
 							:message="message"
@@ -76,7 +81,7 @@
 										{{ props.row.Message }}
 									</span>
 									<span v-else-if="props.column.field === 'show-more'">
-										<button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="getExceptionDetails(props.row.ErrorId)" href="#modal-moreinfo" data-uk-toggle>
+										<button v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="getExceptionDetails(props.row.ErrorId)" href="#modal-moreinfo" data-uk-toggle>
 											MER
 										</button>
 									</span>
@@ -276,7 +281,7 @@ export default {
         font-size: 0.75rem;
     }
     table.vgt-table td {
-        vertical-align: top;
+        vertical-align: middle;
         border-right: 1px solid #dcdfe6;
         padding: .3em .75em .3em .75em;
     }
