@@ -31,9 +31,10 @@
                 />
               </div>
               <div class="uk-margin uk-margin-remove-top uk-text-center uk-text-small">
-                <nuxt-link
-                  :to="localePath('/forgotten-password')"
-                  style="color:#8c8c8c">Glömt ditt lösenord?</nuxt-link></div>
+                <nuxt-link :to="localePath('/forgotten-password')" style="color:#8c8c8c">
+                  Glömt ditt lösenord?
+                </nuxt-link>
+              </div>
             </div>
 
             <div class="uk-margin uk-text-center">
