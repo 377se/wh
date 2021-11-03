@@ -32,6 +32,11 @@
                                     MENYRÄTTIGHETER
                                 </a>
                             </li>
+                            <li>
+                                <a href="javascript:void(0)">
+                                    WIDGETS
+                                </a>
+                            </li>
                         </ul>
                         <!-- TAB-CONTENT -->
                         <ul class="uk-switcher">
@@ -193,6 +198,30 @@
                                     </ScCard>
                                 </div>
                             </li>
+                            <!-- WIDGETS -->
+                            <li>
+                                <div v-if="widgetList" class="uk-overflow-auto" style="max-height:600px;">
+                                    <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
+                                        <thead>
+                                            <tr class="uk-padding-remove-bottom">
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 97%;">Namn</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: left; width: 50px;">Aktiv</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="widget in widgetList" :key="widget.WidgetId" class="uk-table-middle">
+                                                <td class="border-bottom border-left cursor-pointer" style="text-align: left;">{{ widget.Name }}</td>
+                                                <td class="border-bottom border-left border-right" style="text-align: left; ">
+                                                    <PrettyCheck v-model="widget.IsActive" class="p-icon" @change="updateWidgetList()">
+                                                        <i slot="extra" class="icon mdi mdi-check"></i>
+                                                    </PrettyCheck>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </li>
                         </ul>
                     </ScCardBody>
                 </ScCard>
@@ -222,6 +251,7 @@ export default {
             adminDetails: null,
             menuPermissions: null,
             emptyUpdateObject: null,
+            widgetList: null,
         }
     },
     computed: {
@@ -246,6 +276,29 @@ export default {
                     _this.$store.commit('setAlertVisible', 1)
                 } else {
                     _this.message = updatedpassword.Message
+                    _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 2)
+                }
+			})
+			.catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+			})
+		},
+		async updateWidgetList() {
+            let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
+			_this.$store.dispatch('setBusyOn')
+			await this.$axios.$post('/webapi/Widget/UpdateWidgetList', _this.widgetList)
+			.then(function (updatedwidgetlist) {
+                if (updatedpassword.ErrorList != null) {
+                    _this.errors = updatedwidgetlist.ErrorList
+                    _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 1)
+                } else {
+                    _this.message = updatedwidgetlist.Message
+                    _this.widgetList = updatedwidgetlist
                     _this.$store.dispatch('setBusyOff')
                     _this.$store.commit('setAlertVisible', 2)
                 }
@@ -285,14 +338,16 @@ export default {
     async fetch () {
         this.$store.dispatch('setBusyOn')
         try {
-            const [ admindetails, menupermissions, emptyupdateobject ] = await Promise.all([
+            const [ admindetails, menupermissions, emptyupdateobject, widgetlist ] = await Promise.all([
                 this.$axios.$get('/webapi/Admin/GetAdminDetails?adminId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Menu/GetMenuPermission?adminId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Account/GetEmptyUpdateObject'),
+                this.$axios.$get('/webapi/Widget/GetWidgetList?adminId=' + this.$route.params.id),
             ])
             this.adminDetails = admindetails
             this.menuPermissions = menupermissions
             this.emptyUpdateObject = emptyupdateobject
+            this.widgetList = widgetlist
             this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
