@@ -1,9 +1,5 @@
 <template>
-    <div v-if="$fetchState.pending">
-        <div id="sc-page-wrapper">
-        </div>
-    </div>
-    <div v-else>
+    <div>
         <div id="sc-page-wrapper">
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
