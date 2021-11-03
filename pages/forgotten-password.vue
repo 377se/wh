@@ -1,41 +1,30 @@
 <template>
-    <div>
-        <div id="sc-page-wrapper">
-            <div id="sc-page-top-bar" class="sc-top-bar">
-                <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
-                    <div class="uk-flex-1">
-					    <h1 class="sc-top-bar-title uk-display-inline">Glömt lösenordet?</h1>
-				    </div>
+    <div id="sc-page-content">
+        <ScCard>
+            <ScCardBody>
+                <h2 class="uk-margin-medium-botten">Glömt lösenordet?</h2>
+                <Alert
+                    :errorlist="errors"
+                    message=""
+                    :alertClass="'uk-alert-danger'"
+                    id=1
+                />
+                <Alert
+                    :errorlist="errors"
+                    message="Återställningslänk har mailats till dig!"
+                    :alertClass="'uk-alert-success'"
+                    id=2
+                />
+                <!-- Email -->
+                <div class="uk-margin-medium-top uk-margin-medium-bottom">
+                    <ScInput v-model="email" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in din email">
+                    </ScInput>
                 </div>
-            </div>
-            <div id="sc-page-content">
-                <ScCard>
-                    <ScCardBody>
-                        <Alert
-                            :errorlist="errors"
-                            message=""
-                            :alertClass="'uk-alert-danger'"
-                            id=1
-                        />
-                        <Alert
-                            :errorlist="errors"
-                            message="Återställningslänk har mailats till dig!"
-                            :alertClass="'uk-alert-success'"
-                            id=2
-                        />
-                        <!-- Email -->
-                        <div class="uk-margin-medium-top uk-margin-medium-bottom">
-                            <ScInput v-model="email" state="fixed" mode="outline" extra-classes="uk-form-small" placeholder="Skriv in din email">
-                                <label>Email</label>
-                            </ScInput>
-                        </div>
-                        <button v-waves.button.light class="sc-button sc-button-primary uk-margin-small-top" @click="getResetLink">
-                            SKICKA ÅTERSTÄLLNINGSINFORMATION
-                        </button>
-                    </ScCardBody>
-                </ScCard>
-            </div>
-        </div>
+                <button v-waves.button.light class="sc-button sc-button-primary uk-margin-small-top" @click="getResetLink">
+                    SKICKA ÅTERSTÄLLNINGSINFORMATION
+                </button>
+            </ScCardBody>
+        </ScCard>
     </div>
 </template>
 
@@ -44,6 +33,7 @@
     import Alert from '~/components/Alert'
 
     export default {
+        layout: 'auth-admin',
         components: {
             Alert,
             ScInput,
