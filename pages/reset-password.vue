@@ -1,20 +1,10 @@
 <template>
-    <div v-if="$fetchState.pending">
-        <div id="sc-page-wrapper">
-        </div>
-    </div>
-    <div v-else>
-        <div id="sc-page-wrapper">
-            <div id="sc-page-top-bar" class="sc-top-bar">
-                <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
-                    <div class="uk-flex-1">
-					    <h1 class="sc-top-bar-title uk-display-inline">Återställ lösenord</h1>
-				    </div>
-                </div>
-            </div>
+    <div>
+
             <div id="sc-page-content">
                 <ScCard>
                     <ScCardBody>
+                        <h2 class="uk-margin-medium-botten">Återställ lösenord</h2>
                         <Alert
                             :errorlist="errors"
                             message=""
@@ -41,7 +31,7 @@
                     </ScCardBody>
                 </ScCard>
             </div>
-        </div>
+
     </div>
 </template>
 
@@ -50,6 +40,7 @@
     import Alert from '~/components/Alert'
 
     export default {
+        layout: 'auth-admin',
         components: {
             Alert,
 		    ScInput,
