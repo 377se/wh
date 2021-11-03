@@ -126,13 +126,19 @@
                                         <ScCardBody>
                                             <Alert
                                                 :errorlist="errors"
-                                                message=""
+                                                :message="message"
                                                 :alertClass="'uk-alert-danger'"
                                                 id=1
                                             />
+                                            <Alert
+                                                :errorlist="errors"
+                                                :message="message"
+                                                :alertClass="'uk-alert-success'"
+                                                id=2
+                                            />
                                             <!-- Nuvarande lösenord -->
                                             <div class="uk-margin uk-margin-medium-top">
-                                                <ScInput v-model="emptyUpdateObject.CurrentPassword" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <ScInput v-model="emptyUpdateObject.CurrentPassword" type="password" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                     <label>Nuvarande lösenord</label>
                                                 </ScInput>
                                             </div>
@@ -211,6 +217,7 @@ export default {
     data () {
 		return {
     		errors: null,
+    		message: null,
             render: false,
             adminDetails: null,
             menuPermissions: null,
@@ -219,21 +226,28 @@ export default {
     },
     computed: {
     },
+    mounted () {
+        this.$store.commit('setAlertHidden', 1)
+        this.$store.commit('setAlertHidden', 2)
+    },
     watch: {
     },
     methods: {
 		async updatePassword() {
             let _this = this
             _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
 			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Account/UpdatePassword', _this.emptyUpdateObject)
 			.then(function (updatedpassword) {
                 if (updatedpassword.ErrorList != null) {
                     _this.errors = updatedpassword.ErrorList
+                    _this.$store.dispatch('setBusyOff')
                     _this.$store.commit('setAlertVisible', 1)
-                    _this.$store.dispatch('setBusyOff')
                 } else {
+                    _this.message = updatedpassword.Message
                     _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 2)
                 }
 			})
 			.catch(function (error) {
