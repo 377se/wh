@@ -27,7 +27,7 @@
 			<!-- TOP-AREA FULL WIDTH -->
 
 				<!-- FÖRSÄLJINGSGRAF TOTAL -->
-				<ScCard class="uk-margin-medium-bottom">
+				<ScCard v-if="monthlySalesLatestYears != null" class="uk-margin-medium-bottom">
 					<ScCardHeader separator>
 						<div class="uk-flex uk-flex-middle">
 							<div class="uk-flex-1">
@@ -564,30 +564,30 @@ export default {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [
 				{
-					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[3],
 					borderColor: scColors.multi[3],
-					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[0].MonthlySale : '',
 					fill: false,
 				},
 				{
-					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[1].MonthlySale : '',
 					fill: false,
 				},
 				{
-					label: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					data: this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesLatestYears[this.monthlySalesLatestYears.findIndex(shop => { return shop.ShopId == this.shopidForMonthlyGraph })].ItemList[2].MonthlySale : '',
 					fill: false,
 				},
 				]
@@ -598,30 +598,30 @@ export default {
 				labels: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
 				datasets: [
 				{
-					label: this.monthlySalesByShop[0].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesByShop[0].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[3],
 					borderColor: scColors.multi[3],
-					data: this.monthlySalesByShop[0].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesByShop[0].MonthlySale : '',
 					fill: false,
 				},
 				{
-					label: this.monthlySalesByShop[1].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesByShop[1].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[4],
 					borderColor: scColors.multi[4],
-					data: this.monthlySalesByShop[1].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesByShop[1].MonthlySale : '',
 					fill: false,
 				},
 				{
-					label: this.monthlySalesByShop[2].Year,
+					label: this.monthlySalesLatestYears ? this.monthlySalesByShop[2].Year : '',
 					steppedLine: false,
 					lineTension: 0.3,
 					backgroundColor: scColors.multi[5],
 					borderColor: scColors.multi[5],
-					data: this.monthlySalesByShop[2].MonthlySale,
+					data: this.monthlySalesLatestYears ? this.monthlySalesByShop[2].MonthlySale : '',
 					fill: false,
 				},
 				]
