@@ -179,11 +179,11 @@
 														<ScInput v-model="articleDetails.NumberOfAttributes" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled class="uk-width-1-3">
 															<label>Antal attribut</label>
 														</ScInput>
-														<button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-left uk-width-2-3" uk-toggle="target: #attributes-modal">
+														<button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-left uk-width-2-3" @click="openAttributesModal">
 															SÄTT ATTRIBUT
 														</button>
 													</div>
-																										<!-- Modell -->
+													<!-- Modell -->
 													<div class="uk-margin uk-width-1-1">
 														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
 														<label class="select-label" for="select-models">Modell</label>
@@ -775,9 +775,16 @@
 					uk-toggle="target: #attributes-modal"/>
 			</div>
 			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" style="padding:0px;height:100vh;background:#ffffff;">
+				<Alert
+					:errorlist="errors"
+					message=""
+					:alertClass="'uk-alert-danger'"
+					id=1
+					class="uk-margin-small-left uk-margin-small-right"
+				/>
 
 				<div class="uk-overflow-auto">
-					<div v-for="(producttype, index) in attributeList" :key="index">
+					<div v-for="(producttype, index) in attributeList.ItemList" :key="index">
 						<table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
 							<thead v-if="index == 0">
 								<tr>
@@ -819,6 +826,7 @@
 </template>
 
 <script>
+import Alert from '~/components/Alert'
 import {mapGetters} from 'vuex'
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table'
@@ -838,6 +846,7 @@ if(process.client) {
 export default {
 	components: {
 		ScInput,
+		Alert,
 		VueGoodTable,
 		contentOverlay,
 		Select2: process.client ? () => import('~/components/Select2') : null,
@@ -909,6 +918,8 @@ export default {
 				self.updateImageSorting()
 			})
 		})
+		this.$store.commit('setAlertHidden', 1)
+		this.$store.commit('setAlertHidden', 2)
 	},
 	computed: {
 		...mapGetters({
@@ -967,6 +978,11 @@ export default {
 		},
 	},
 	methods: {
+		openAttributesModal() {
+			this.attributeList.ErrorList != null ? this.errors = this.attributeList.ErrorList : ''
+			this.$store.commit('setAlertVisible', 1)
+			UIkit.modal('#attributes-modal').show()
+		},
 		sumInitialAmount() {
     		let sum = 0
 			for (let i = 0; i < this.articleAssortment.length; i++) {
