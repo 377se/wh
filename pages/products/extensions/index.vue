@@ -62,18 +62,20 @@
                                 <table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
                                     <thead>
                                         <tr>
-                                            <td class="border-bottom border-right uk-text-center" style="width:4%;"><strong>Aktiv</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:5%;"><strong>Bild</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnummer</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:15%;"><strong>Artikelnamn</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:13%;"><strong>Kopplad mot</strong></td>
-                                            <td class="border-bottom border-right uk-text-right" style="width:4%;"><strong>Pris</strong></td>
-                                            <td class="border-bottom border-right uk-text-right" style="width:5%;"><strong>Ant sålda</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
+                                            <td class="border-bottom border-right uk-text-center" style="min-width:30px;"></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:30px;"><strong>Aktiv</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:50px;"><strong>Bild</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:200px;"><strong>Artikelnummer</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:200px;"><strong>Artikelnamn</strong></td>
+                                            <td class="border-bottom border-right uk-text-left" style="width:100px;"><strong>Kopplad mot</strong></td>
+                                            <td class="border-bottom border-right uk-text-right" style="width:30px;"><strong>Pris</strong></td>
+                                            <td class="border-bottom border-right uk-text-right" style="width:40px;"><strong>Ant sålda</strong></td>
+                                            <td class="border-bottom border-right uk-text-center" style="width:60px;" colspan="2"></td>
                                         </tr>
                                     </thead>
                                         <draggable tag="tbody" v-model="extensionList.ItemList" @start="drag = true" @end="drag = false" @change="sortExtensionList" v-bind="dragOptions">
                                             <tr v-for="extension in extensionList.ItemList" :key="extension.ExtensionId" class="uk-table-middle">
+                                                <td class="border-bottom uk-text-center" style="text-align: center; cursor: pointer;"><span class="handle" uk-icon="icon: table"></span></td>
                                                 <td class="border-bottom border-left border-right uk-text-center">
                                                     <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
                                                 </td>
@@ -263,7 +265,8 @@ export default {
                 animation: 200,
                 group: "description",
                 disabled: false,
-                ghostClass: "ghost"
+                ghostClass: "ghost",
+                handle: ".handle",
             }
         },
     },
@@ -272,25 +275,26 @@ export default {
     },
     methods: {
 		async getExtensionListByExtensionTypeId() {
-			{{ this.$store.dispatch('setBusyOn') }}
-            this.extensionList = []
+            let _this = this
+			_this.$store.dispatch('setBusyOn')
+            _this.extensionList = []
             // !this.isNewExtension ? this.extensionItem = null : null
             // !this.isNewExtension ? this.editorVisible = false : null
-			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + this.extensionTypeId + '&shopId=' + this.shopId )
+			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + _this.extensionTypeId + '&shopId=' + _this.shopId )
 			.then( extensionlist => {
-				this.extensionList = extensionlist
-                {{ this.$store.dispatch('setBusyOff') }}
+				_this.extensionList = extensionlist
+                _this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
-				console.log(error)
+                console.log(error)
 			})
     	},
 		async getExtensionTypeList() {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
 			.then( extensiontypelist => {
 				this.extensionTypeOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
