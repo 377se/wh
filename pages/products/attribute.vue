@@ -44,7 +44,7 @@
                                                         <table class="uk-table uk-table-small uk-text-small uk-margin-remove attributelist uk-width-1-1" style="border-collapse: separate;">
                                                             <tr v-for="(attribute, index) in producttype.ItemList" :key="index" class="uk-table-middle">
                                                                 <td class="cursor-pointer link-color border-left border-bottom" style="width:49%;" @click="getAttributeById(attribute.AttributeId)"><span style="padding-left: 15px;">{{ attribute.Name }}</span></td>
-                                                                <td class="border-left border-bottom" style="width:49%;">{{ attribute.NumberOfItems }}</td>
+                                                                <td class="cursor-pointer link-color border-left border-bottom" style="width:49%;" @click="openAttributeAssignedProductsModal(attribute.AttributeId)">{{ attribute.NumberOfItems }}</td>
                                                                 <td class="border-left border-bottom border-right wastebasket" style="width:30px; text-align: center;"><i v-if="attribute.NumberOfItems == 0" @click="removeAttribute(attribute)" class="mdi mdi-delete-forever md-color-red-600 sc-icon-22" style="line-height:0; vertical-align: middle;"></i></td>
                                                             </tr>
                                                         </table>
@@ -141,6 +141,54 @@
                 </div>
             </div>
         </div>
+
+
+		<!-- ATTRIBUT-ASSIGNED PRODUCTS MODAL -->
+		<div id="attribute-assigned-products-modal" class="uk-modal-full uk-modal" data-uk-modal>
+
+			<div class="uk-modal-header basket-ribbon uk-animation-slide-right">
+				<!-- sticky -->
+				<h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:3px 0 0 12px; padding:10px;">Artikellista per attribut</h4>
+				<button
+					class="uk-offcanvas-close uk-icon uk-close"
+					style="color:#fff;top:14px;right:12px;"
+					type="button"
+					uk-close
+					uk-toggle="target: #attribute-assigned-products-modal"/>
+			</div>
+			<div class="uk-modal-dialog uk-modal-body uk-overflow-auto uk-animation-slide-right" style="padding:0px;height:100vh;background:#ffffff;">
+				<Alert
+					:errorlist="errors"
+					message=""
+					:alertClass="'uk-alert-danger'"
+					id=1
+					class="uk-margin-small-left uk-margin-small-right"
+				/>
+
+				<div class="uk-overflow-auto">
+					<div>
+						<table class="uk-table uk-table-small uk-table-middle uk-text-small uk-margin-remove borde-all" style="border-collapse: separate;">
+							<thead>
+                                <th class="border-bottom border-left border-right uk-text-center"><div class="uk-badge md-bg-green-600">{{ articleListByAttributeId ? articleListByAttributeId.length : '' }}</div></th>
+                                <th class="border-bottom border-right"></th>
+							</thead>
+							<tbody>
+								<tr v-for="(article, index) in articleListByAttributeId" :key="index">
+                                    <td class="border-bottom border-right uk-width-auto" style="width: 60px;"><img :src="article.ImageName"></td>
+                                    <td class="border-bottom border-right uk-width-auto uk-text-left cursor-pointer link-color" style="width: 90%;" @click="closeAttributeAssignedProductsModal(article.Url)">
+                                            <div>{{ article.TeamName | toUppercase }}</div>
+                                            <div>{{ article.ArticleName }}</div>
+                                    </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
     </div>
 </template>
 
@@ -172,6 +220,7 @@ export default {
             productTypeList: [],
             attributeById: [],
             attributeImage: null,
+            articleListByAttributeId: null,
         }
     },
     computed: {
@@ -185,6 +234,36 @@ export default {
     watch: {
     },
     methods: {
+        async openAttributeAssignedProductsModal(attributeid) {
+            let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.dispatch('setBusyOn')
+            await this.$axios.$get('/webapi/Article/GetArticleListByAttributeId?attributeId=' + attributeid)
+            .then(function (articlelistbyattributeid) {
+                try {
+                    if (articlelistbyattributeid.ErrorList != null ) {
+                        _this.$store.dispatch('setBusyOff')
+                    } else {
+                        _this.articleListByAttributeId = articlelistbyattributeid
+                        _this.$store.dispatch('setBusyOff')
+                    }
+                } catch(err) {
+                    console.log(err)
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+            })
+
+            UIkit.modal('#attribute-assigned-products-modal').show()
+        },
+        closeAttributeAssignedProductsModal(url) {
+            UIkit.modal('#attribute-assigned-products-modal').hide()
+            setTimeout(() => {
+                this.$router.push(url)
+            }, 500)
+        },
         async createAttribute() {
             let _this = this
             _this.currentAttributeObject = _this.emptyAttributeObject
@@ -344,4 +423,28 @@ export default {
     .wastebasket {
 		cursor: pointer;
 	}
+	.uk-offcanvas-bar {
+		color:#333;
+	}
+	.uk-modal-full {
+		background: rgba(0, 0, 0, 0.6);
+	}
+	.uk-modal-dialog, .uk-modal-header {
+		margin-left: auto !important;
+		width:55vw !important;
+		max-width: 800px !important;
+			@media only screen and (max-width: 600px) {
+				width:85vw !important;
+				max-width: 800px !important;
+			}
+	}
+	.uk-modal-header {
+		min-height: 50px;
+		height: auto;
+		padding: 0px;
+	}
+	.basket-ribbon{
+		background: #00838F;
+	}
+
 </style>
