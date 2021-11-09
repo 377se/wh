@@ -69,12 +69,12 @@
                                     </ScInput>
                                 </div>
                                 <!-- Typ -->
-                                <div class="uk-margin uk-width-1-1 uk-margin-medium-top">
+                                <div v-if="!currentSizeObject.Id" class="uk-margin uk-width-1-1 uk-margin-medium-top">
                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                        <label class="select-label" for="select-team">Typ</label>
+                                        <label class="select-label" for="select-sizeGuideTypeList">Typ</label>
                                             <client-only>
                                                 <Select2
-                                                    id="select-leagueList"
+                                                    id="select-sizeGuideTypeList"
                                                     v-model.number="currentSizeObject.SizeTypeId"
                                                     :options="sizeGuideTypeList"
                                                     :settings="{ 'width': '100%', 'closeOnSelect': true }"
@@ -84,7 +84,7 @@
                                     </div>
                                 </div>
                                 <div v-if="currentSizeObject.Id != 0" class="uk-overflow-auto uk-margin-medium-bottom">
-                                    <table :ref="render" class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="border-collapse: separate;">
+                                    <table v-if="currentSizeObject.ItemList.length > 0" :ref="render" class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
                                                 <th v-for="(header, index) in currentSizeObject.HeaderList" :key="index" class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50%;">{{ header.Name }}</th>
@@ -92,28 +92,32 @@
                                             </tr>
                                         </thead>
                                         <draggable v-model="currentSizeObject.ItemList" tag="tbody">
-                                            <tr v-for="size in currentSizeObject.ItemList" :key="size.Sortorder" class="uk-table-middle" style="height: 50px;">
-                                                <td v-if="size.Size" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
+                                            <tr v-for="(size, index) in currentSizeObject.ItemList" :key="size.Sortorder" class="uk-table-middle" style="height: 50px;">
+                                                <td v-if="size.Size != null" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
                                                     <ScInput v-model="size.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
-                                                <td v-if="size.Length" class="border-bottom border-left" style="text-align: left;">
+                                                <td v-if="size.Length != null" class="border-bottom border-left" style="text-align: left;">
                                                     <ScInput v-model.number="size.Length" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
-                                                <td v-if="size.Width" class="border-bottom border-left" style="text-align: left; ">
+                                                <td v-if="size.Width != null" class="border-bottom border-left" style="text-align: left; ">
                                                     <ScInput v-model.number="size.Width" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
-                                                <td v-if="size.EU" class="border-bottom border-left" style="text-align: left;">
+                                                <td v-if="size.Volume != null" class="border-bottom border-left" style="text-align: left; ">
+                                                    <ScInput v-model.number="size.Volume" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
+                                                    </ScInput>
+                                                </td>
+                                                <td v-if="size.EU != null" class="border-bottom border-left" style="text-align: left;">
                                                     <ScInput v-model="size.EU" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
-                                                <td v-if="size.UK" class="border-bottom border-left" style="text-align: left;">
+                                                <td v-if="size.UK != null" class="border-bottom border-left" style="text-align: left;">
                                                     <ScInput v-model="size.UK" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
-                                                <td v-if="size.US" class="border-bottom border-left" style="text-align: left;">
+                                                <td v-if="size.US != null" class="border-bottom border-left" style="text-align: left;">
                                                     <ScInput v-model="size.US" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
@@ -124,7 +128,7 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
+                                            <!-- <tr>
                                                 <template v-for="(size, index) in currentSizeObject.HeaderList">
                                                     <td v-if="size.Name == 'Storlek'" class="border-bottom border-left" style="text-align: left;" :key="index">
                                                         <ScInput v-model="currentNewSize.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
@@ -152,13 +156,16 @@
                                                     </td>
                                                 </template>
                                                 <td class="cursor-pointer border-bottom border-left border-right" style="text-align: center; ">
-                                                    <div @click="addSize(currentNewSize)">
-                                                            <i class="mdi mdi-plus-circle-outline md-color-green-600 sc-icon-24"></i>
-                                                    </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
+
                                         </draggable>
                                     </table>
+
+                                    <div class="uk-width-1-1 uk-flex uk-flex-center uk-margin-small-top">
+                                            <i class="mdi mdi-plus-circle-outline md-color-green-600 sc-icon-24 cursor-pointer" @click="addSize(currentNewSize)"></i>
+                                    </div>
+
                                 </div>
                                 <div class="uk-flex uk-flex-around">
                                     <div v-if="!currentSizeObject.Id">
@@ -166,7 +173,7 @@
                                         </button>
                                     </div>
                                     <div v-else>
-                                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateSize()">
+                                        <button v-waves.button.light class="sc-button sc-button-primary uk-margin-small-top" @click.prevent="updateSize()">
                                             UPPDATERA
                                         </button>
                                     </div>
@@ -206,26 +213,15 @@
                     Depth: null,
                     EU: null,
                     ItemId: 0,
-                    Length: "",
-                    Size: "",
+                    Length: null,
+                    Size: null,
                     Sortorder: 0,
                     UK: null,
                     US: null,
                     Volume: null,
-                    Width: "",
+                    Width: null,
                 },
-                currentNewSize: {
-                    Depth: null,
-                    EU: null,
-                    ItemId: 0,
-                    Length: "",
-                    Size: "",
-                    Sortorder: 0,
-                    UK: null,
-                    US: null,
-                    Volume: null,
-                    Width: "",
-                },
+                currentNewSize: null,
             }
         },
         computed: {
@@ -245,6 +241,33 @@
                         _this.$store.dispatch('setBusyOff')
                     } else {
                         _this.currentSizeObject = res
+                        _this.emptyNewSize = res.StarterKit
+                        _this.currentNewSize = _this.emptyNewSize
+
+
+                        // switch (_this.currentSizeObject.SizeTypeId) {
+                        //     case 1:
+                        //         _this.currentSizeObject.ItemList[0].Size = '-'
+                        //         _this.currentSizeObject.ItemList[0].Length = '-'
+                        //         _this.currentSizeObject.ItemList[0].Width = '-'
+                        //         break
+                        //     case 3:
+                        //         _this.currentSizeObject.ItemList[0].EU = '-'
+                        //         _this.currentSizeObject.ItemList[0].UK = '-'
+                        //         _this.currentSizeObject.ItemList[0].US = '-'
+                        //         break
+                        //     case 5:
+                        //         _this.currentSizeObject.ItemList[0].Width = '-'
+                        //         _this.currentSizeObject.ItemList[0].Length = '-'
+                        //         _this.currentSizeObject.ItemList[0].Depth = '-'
+                        //         break
+                        //     case 6:
+                        //         _this.currentSizeObject.ItemList[0].Size = '-'
+                        //         _this.currentSizeObject.ItemList[0].Width = '-'
+                        //         break
+                        //     default:
+                        //         break
+                        // }
                         _this.sizeList.push(_this.currentSizeObject)
                         _this.$store.dispatch('setBusyOff')
                     }
