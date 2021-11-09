@@ -7,11 +7,15 @@
                         <h2 class="uk-margin-medium-botten">Återställ lösenord</h2>
                         <Alert
                             :errorlist="errors"
-                            message=""
                             :alertClass="'uk-alert-danger'"
                             id=1
                         />
-                        <div v-if="emptyResetObject">
+                        <Alert
+                            :message="message"
+                            :alertClass="'uk-alert-success'"
+                            id=2
+                        />
+                        <div v-if="emptyResetObject" class="uk-margin-small-top">
                             <!-- Nytt lösenord -->
                             <div class="uk-margin">
                                 <ScInput v-model="emptyResetObject.Password" type="password" state="fixed" mode="outline" extra-classes="uk-form-small">
@@ -48,6 +52,7 @@
         data() {
             return {
                 errors: null,
+                message: null,
                 emptyResetObject: null,
             }
         },
@@ -55,6 +60,7 @@
             async updatePassword() {
                 let _this = this
                 _this.$store.commit('setAlertHidden', 1)
+                _this.$store.commit('setAlertHidden', 2)
                 _this.$store.dispatch('setBusyOn')
                 await this.$axios.$post('/webapi/Account/ResetPassword', _this.emptyResetObject)
                 .then(function (updatedpassword) {
@@ -63,6 +69,8 @@
                         _this.$store.commit('setAlertVisible', 1)
                         _this.$store.dispatch('setBusyOff')
                     } else {
+                        _this.message = updatedpassword.Message
+                        _this.$store.commit('setAlertVisible', 2)
                         _this.$store.dispatch('setBusyOff')
                     }
                 })
