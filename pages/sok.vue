@@ -53,6 +53,16 @@
                                             <label>Söksträng</label>
                                         </ScInput>
                                     </div>
+                                    <Alert
+                                        :errorlist="this.errors ? this.errors : null"
+                                        :alertClass="'uk-alert-danger'"
+                                        id=1
+                                    />
+                                    <Alert
+                                        :message="this.message ? this.message : null"
+                                        :alertClass="'uk-alert-success'"
+                                        id=2
+                                    />
                                     <div>
                                         <a v-waves.button.light class="sc-button sc-button-primary" @click.prevent="getSearchResult(criteriaShit)">
                                             SÖK
@@ -121,9 +131,11 @@ import { VueGoodTable } from 'vue-good-table'
 import ScInput from '~/components/Input'
 import contentOverlay from '~/components/Overlay'
 import PrettyRadio from 'pretty-checkbox-vue/radio';
+import Alert from '~/components/Alert'
 
 export default {
 	components: {
+        Alert,
 		ScInput,
 		PrettyRadio,
 		VueGoodTable,
@@ -131,6 +143,8 @@ export default {
 	},
 	data () {
 		return {
+            errors: null,
+            message: null,
 			criteriaShit: {
                 searchCriteria: '',
 			    criteriaId: 1,
@@ -159,18 +173,22 @@ export default {
 	methods: {
         async getSearchResult(criteriaShit) {
             let _this = this
+            _this.$store.commit('setAlertHidden', 1)
+            _this.$store.commit('setAlertHidden', 2)
             _this.$store.dispatch('setBusyOn')
             await this.$axios.$post('/webapi/Search/PostSearch', _this.criteriaShit )
-            .then(function (response) {
-                if(response.Message !== ''){
-                    _this.searchResult = response
-                    _this.searchList = response.SearchList
-                    _this.searchHeaders = _this.buildHeaderObject(response.Headers)
-                    _this.numberOfHits = response.NumberOfHits
+            .then(function (searchresult) {
+                if(searchresult.ErrorList != null) {
+                    _this.$store.dispatch('setBusyOff')
+                    _this.$store.commit('setAlertVisible', 1)
+                    _this.errors = searchresult.ErrorList
+                } else {
+                    _this.searchResult = searchresult
+                    _this.searchList = searchresult.SearchList
+                    _this.searchHeaders = _this.buildHeaderObject(searchresult.Headers)
+                    _this.numberOfHits = searchresult.NumberOfHits
                     _this.isSearchPerformed = true
                     _this.$store.dispatch('setBusyOff')
-                } else {
-
                 }
             })
             .catch(function (error) {
@@ -268,4 +286,12 @@ export default {
 		padding: 8px 8px 7px;
 		font-size: 0.75rem;
 	}
+    .close-button {
+        width: auto !important;
+        height: 30px;
+        line-height: 1 !important;
+    }
+    .uk-position-top-right {
+        right: -2px;
+    }
 </style>
