@@ -128,37 +128,6 @@
                                                 </td>
                                             </tr>
 
-                                            <!-- <tr>
-                                                <template v-for="(size, index) in currentSizeObject.HeaderList">
-                                                    <td v-if="size.Name == 'Storlek'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                    <td v-if="size.Name == 'Längd'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.Length" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                    <td v-if="size.Name == 'Bredd'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.Width" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                    <td v-if="size.Name == 'EU'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.EU" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                    <td v-if="size.Name == 'UK'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.UK" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                    <td v-if="size.Name == 'US'" class="border-bottom border-left" style="text-align: left;" :key="index">
-                                                        <ScInput v-model="currentNewSize.US" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
-                                                        </ScInput>
-                                                    </td>
-                                                </template>
-                                                <td class="cursor-pointer border-bottom border-left border-right" style="text-align: center; ">
-                                                </td>
-                                            </tr> -->
-
                                         </draggable>
                                     </table>
 
@@ -244,30 +213,6 @@
                         _this.emptyNewSize = res.StarterKit
                         _this.currentNewSize = _this.emptyNewSize
 
-
-                        // switch (_this.currentSizeObject.SizeTypeId) {
-                        //     case 1:
-                        //         _this.currentSizeObject.ItemList[0].Size = '-'
-                        //         _this.currentSizeObject.ItemList[0].Length = '-'
-                        //         _this.currentSizeObject.ItemList[0].Width = '-'
-                        //         break
-                        //     case 3:
-                        //         _this.currentSizeObject.ItemList[0].EU = '-'
-                        //         _this.currentSizeObject.ItemList[0].UK = '-'
-                        //         _this.currentSizeObject.ItemList[0].US = '-'
-                        //         break
-                        //     case 5:
-                        //         _this.currentSizeObject.ItemList[0].Width = '-'
-                        //         _this.currentSizeObject.ItemList[0].Length = '-'
-                        //         _this.currentSizeObject.ItemList[0].Depth = '-'
-                        //         break
-                        //     case 6:
-                        //         _this.currentSizeObject.ItemList[0].Size = '-'
-                        //         _this.currentSizeObject.ItemList[0].Width = '-'
-                        //         break
-                        //     default:
-                        //         break
-                        // }
                         _this.sizeList.push(_this.currentSizeObject)
                         _this.$store.dispatch('setBusyOff')
                     }
