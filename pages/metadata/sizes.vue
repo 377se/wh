@@ -132,7 +132,7 @@
                                     </table>
 
                                     <div class="uk-width-1-1 uk-flex uk-flex-center uk-margin-small-top">
-                                            <i class="mdi mdi-plus-circle-outline md-color-green-600 sc-icon-24 cursor-pointer" @click="addSize(currentNewSize)"></i>
+                                            <i class="mdi mdi-plus-circle-outline md-color-green-600 sc-icon-24 cursor-pointer" @click="addSize()"></i>
                                     </div>
 
                                 </div>
@@ -178,18 +178,7 @@
                 currentSizeObject: {},
                 sizeList: [],
                 sizeGuideTypeList: [],
-                emptyNewSize: {
-                    Depth: null,
-                    EU: null,
-                    ItemId: 0,
-                    Length: null,
-                    Size: null,
-                    Sortorder: 0,
-                    UK: null,
-                    US: null,
-                    Volume: null,
-                    Width: null,
-                },
+                emptyNewSize: null,
                 currentNewSize: null,
             }
         },
@@ -262,6 +251,8 @@
                             _this.$store.dispatch('setBusyOff')
                         } else {
                             _this.currentSizeObject = response
+                            _this.emptyNewSize = response.StarterKit
+                            _this.currentNewSize = response.StarterKit
                             _this.$store.dispatch('setBusyOff')
                         }
                     } catch(err) {
@@ -273,9 +264,9 @@
                     _this.$store.dispatch('setBusyOff')
                 })
             },
-            addSize(newsize) {
-                this.currentSizeObject.ItemList.push(newsize)
-                this.currentNewSize = this.emptyNewSize
+            addSize() {
+                this.currentSizeObject.ItemList.push(this.currentNewSize)
+                this.currentNewSize = Object.assign({}, this.emptyNewSize)
             },
         },
         async fetch () {
