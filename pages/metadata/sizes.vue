@@ -92,7 +92,7 @@
                                             </tr>
                                         </thead>
                                         <draggable v-model="currentSizeObject.ItemList" tag="tbody">
-                                            <tr v-for="(size, index) in currentSizeObject.ItemList" :key="size.Sortorder" class="uk-table-middle" style="height: 50px;">
+                                            <tr v-for="(size, index) in currentSizeObject.ItemList" :key="index" class="uk-table-middle" style="height: 50px;">
                                                 <td v-if="size.Size != null" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
                                                     <ScInput v-model="size.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
