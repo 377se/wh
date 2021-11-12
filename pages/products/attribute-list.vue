@@ -76,22 +76,10 @@
                                     :key="article.Id"
                                     :class="!article.HasAttributes?'uk-alert-danger':''">
                                     <td class="uk-preserve-width">
-                                        <nuxt-link
-                                            :to="article.Url"
-                                            class="uk-link-reset">
-                                            <img 
-                                                :src="article.ImageName"
-                                                style="width:50px;height:50px;"
-                                                width="50"
-                                                height="50"/>
-                                        </nuxt-link>
+                                        <img id="articlelightbox" :src="article.ImageName" style="width:50px;height:50px; cursor:pointer;" width="50" height="50" @click="getArticleImages(article.ArticleId)"/>
                                     </td>
                                     <td>
-                                        <nuxt-link
-                                            :to="article.Url"
-                                            class="uk-link-reset">
-                                            {{ article.ArticleName }}
-                                        </nuxt-link>
+                                        {{ article.ArticleName }}
                                     </td>
                                     <td 
                                         v-for="al in article.AttributeList"
@@ -143,39 +131,59 @@ export default {
         if (!this.loaded) this.$fetch()
     },
     methods: {
-    async updateAttributes(m){
-        let _this = this
-            _this.$store.dispatch('setBusyOn')
-            try {
-                const [ response ] = await Promise.all([
-                    this.$axios.$post('/webapi/Attribute/UpdateArticleAttribute', m)
-                ])
-                if(response.ErrorList != null) {
+        async updateAttributes(m){
+            let _this = this
+                _this.$store.dispatch('setBusyOn')
+                try {
+                    const [ response ] = await Promise.all([
+                        this.$axios.$post('/webapi/Attribute/UpdateArticleAttribute', m)
+                    ])
+                    if(response.ErrorList != null) {
+                        _this.$store.dispatch('setBusyOff')
+                        console.log('Something fucked up!')
+                    } else {
+                        console.log("Something didn't fuck up!")
+                    }
                     _this.$store.dispatch('setBusyOff')
-                    console.log('Something fucked up!')
-				} else {
-                    console.log("Something didn't fuck up!")
-        		}
+                } catch (error) {
+                    console.log(error)
+                }
+        },
+        async getAttributeList() {
+                let _this = this
+        _this.$store.dispatch('setBusyOn')
+            await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId=' + _this.productType)
+            .then(function (attrib) {
+                _this.articleList = attrib.ArticleList
+                _this.attributeHeaders = attrib.AttributeList
                 _this.$store.dispatch('setBusyOff')
-            } catch (error) {
-                console.log(error)
             }
-    },
-    async getAttributeList() {
-			let _this = this
-      _this.$store.dispatch('setBusyOn')
-        await this.$axios.$get('/webapi/Attribute/GetArticleListByProductType?shopId=' + _this.shopId +'&productTypeId=' + _this.productType)
-        .then(function (attrib) {
-            _this.articleList = attrib.ArticleList
-            _this.attributeHeaders = attrib.AttributeList
+        )
+        .catch(function (error) {
+            console.log(error)
             _this.$store.dispatch('setBusyOff')
-        }
-      )
-      .catch(function (error) {
-        console.log(error)
-        _this.$store.dispatch('setBusyOff')
-      })
-		},
+        })
+        },
+        async getArticleImages(articleid) {
+            let _this = this
+            _this.$store.dispatch('setBusyOn')
+            await this.$axios.$get('/webapi/Article/GetArticleImages?articleId=' + articleid)
+            .then(function (articleimages) {
+                const articleImages = articleimages.map(({ Url }) => ({ source: Url }))
+                _this.$store.dispatch('setBusyOff')
+
+                const panel = UIkit.lightboxPanel({
+                    items: articleImages
+                })
+
+                panel.show()
+
+            })
+            .catch(function (error) {
+                console.log(error)
+                _this.$store.dispatch('setBusyOff')
+            })
+        },
     },
     async fetch () {
         this.$store.dispatch('setBusyOn')
