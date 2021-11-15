@@ -392,9 +392,15 @@
                                             </td>
                                             <td class="border-bottom border-right uk-text-right">
                                                 <div class="uk-flex uk-flex-middle">
-                                                    <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right" @blur="updateOrderContent()">
+                                                    <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" @focus="isShippingFocused = true" @blur="isShippingFocused = false" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right">
                                                     </ScInput>
                                                     <div>&nbsp;{{ orderInfo.Currency }}</div>
+                                                </div>
+                                                <div v-if="isShippingFocused" class="uk-text-right uk-margin-small-top">
+                                                    <div>
+                                                        (Beloppet skall alltid anges i SEK)
+                                                    </div>
+                                                    <button @click="updateOrderContent" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-top">UPPDATERA</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -750,6 +756,7 @@ export default {
             errors: null,
             message: null,
             render: false,
+            isShippingFocused: false,
             adressEditorVisible: false,
             updateEditorVisible: false,
             addEditorVisible: false,
