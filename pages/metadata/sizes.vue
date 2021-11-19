@@ -87,13 +87,15 @@
                                     <table v-if="currentSizeObject.ItemList.length > 0" :ref="render" class="uk-table uk-table-small uk-text-small uk-margin-remove paymentproviderlist" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
+                                                <th class="border-bottom border-left border-top uk-text-center" style="min-width:30px;"></th>
                                                 <th v-for="(header, index) in currentSizeObject.HeaderList" :key="index" class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50%;">{{ header.Name }}</th>
                                                 <th class="border-left border-top border-right border-bottom"></th>
                                             </tr>
                                         </thead>
-                                        <draggable v-model="currentSizeObject.ItemList" tag="tbody">
+                                        <draggable v-model="currentSizeObject.ItemList" tag="tbody" handle=".handle">
                                             <tr v-for="(size, index) in currentSizeObject.ItemList" :key="index" class="uk-table-middle" style="height: 50px;">
-                                                <td v-if="size.Size != null" class="cursor-pointer link-color border-bottom border-left" style="text-align: left;" key="1">
+                                                <td class="border-bottom border-left uk-text-center handle" style="text-align: center; cursor: pointer;"><span class="handle" uk-icon="icon: table"></span></td>
+                                                <td v-if="size.Size != null" class="border-bottom border-left" style="text-align: left;" key="1">
                                                     <ScInput v-model="size.Size" state="fixed" mode="outline" extra-classes="uk-form-small" style="min-width:40px;">
                                                     </ScInput>
                                                 </td>
@@ -230,6 +232,7 @@
                             })
                             _this.render = !_this.render
                             _this.$store.dispatch('setBusyOff')
+                            UIkit.modal.dialog('<p class="uk-modal-body">Storleksguiden är uppdaterad!</p>')
                         }
                     } catch(err) {
                         console.log(err)
