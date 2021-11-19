@@ -204,12 +204,12 @@ export default {
 	},
 	methods: {
 		async getExceptionsByDomain(domainId) {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			this.$store.commit('setAlertHidden', 1)
 			await this.$axios.$get('/webapi/Exception/GetExceptionsByDomainId?domainId=' + this.domainId )
 			.then( logs => {
 				this.logs = logs
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -217,37 +217,37 @@ export default {
     	},
 		async getExceptionDetails(errorId) {
 			this.exceptionDetails = {}
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Exception/GetExceptionDetails?ErrorId=' + errorId )
 			.then( exceptionDetails => {
 				this.exceptionDetails = exceptionDetails
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async getDomainList() {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Exception/GetDomainList')
 			.then( domainList => {
 				this.domainList = domainList
 				this.domainOptionsList = domainList.map(({ DomainId, DomainName }) => ({ id: DomainId, text: DomainName }))
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async deleteExceptionsByDomainId(domainId) {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Exception/PostDeleteExceptionsByDomainId?domainId=' + this.domainId )
 			.then( response => {
 				this.message = response.Message
 				this.$store.commit('setAlertVisible', 1)
 				this.logs = []
 				this.getDomainList()
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)

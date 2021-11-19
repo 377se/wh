@@ -182,24 +182,24 @@ export default {
     },
     methods: {
 		async getBannerListByDomainId() {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Banner/GetBannerListByDomainId?domainId=' + this.domainId )
 			.then( bannerlist => {
 				this.bannerList = bannerlist
                 this.currentBannerObject.DomainId = this.domainId
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
 			})
     	},
 		async getDomainList() {
-			{{ this.$store.dispatch('setBusyOn') }}
+			this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Metadata/GetDomainList')
 			.then( domainlist => {
 				this.domainList = domainlist
 				this.domainOptionsList = domainlist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				{{ this.$store.dispatch('setBusyOff') }}
+				this.$store.dispatch('setBusyOff')
 			})
 			.catch(function (error) {
 				console.log(error)
