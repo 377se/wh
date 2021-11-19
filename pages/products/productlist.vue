@@ -223,6 +223,7 @@ export default {
                 this.$axios.$get('/webapi/Metadata/GetProductStatusList'),
             ])
             this.currentStatsObject = emptystatsobject
+            this.currentStatsObject.StatusId = 1
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             this.productStatusList = productstatuslist.map(({ Id, Name }) => ({ id: Id, text: Name }))
             this.$store.dispatch('setBusyOff')
