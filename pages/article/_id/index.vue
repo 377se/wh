@@ -237,7 +237,7 @@
 																id="select-sizeguide"
 																v-model="articleDetails.SizeGuideId"
 																:options="sizeGuideInfo"
-																:settings="{ 'width': '100%', 'placeholder': 'Välj storleksguide...', 'closeOnSelect': true }"
+																:settings="{ 'width': '100%', 'placeholder': 'Välj storleksguide...', 'closeOnSelect': true, 'allowClear': true }"
 															>
 																<option v-if="isLoading = false" :value="articleDetails.SizeGuideId">{{ genderInfo.find(x => x.id === articleDetails.SizeGuideId).text }}</option>
 															</Select2>
@@ -1005,13 +1005,8 @@ export default {
 			_this.$store.dispatch('setBusyOn')
 			await this.$axios.$post('/webapi/Article/PostUpdateArticle', _this.articleDetails)
 			.then(function (response) {
-				if(response.Message !== ''){
-					_this.$store.dispatch('setBusyOn')
-					_this.isLoading = false
-					_this.$store.dispatch('setBusyOff')
-				} else {
-					_this.$store.dispatch('setBusyOff')
-        		}
+				_this.$store.dispatch('setBusyOff')
+				UIkit.modal.dialog('<p class="uk-modal-body">Artikeln är uppdaterad!</p>')
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -1083,6 +1078,7 @@ export default {
 				_this.getArticleAssortmentHistory()
 				_this.render = !_this.render
 				_this.$store.dispatch('setBusyOff')
+				UIkit.modal.dialog('<p class="uk-modal-body">Lagerhanteringen är uppdaterad!</p>')
 			})
 			.catch(function (error) {
 				console.log(error)
@@ -1154,7 +1150,7 @@ export default {
 },
 	async fetch () {
 		try {
-			const [articleDetails, teams, brands, materials, producttypes, genders, models, sizeguides, washingguides, 
+			const [articleDetails, teams, brands, materials, producttypes, genders, models, sizeguides, washingguides,
 			tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleassortment, articleassortmentHistory, shopListByArticle, articleImages, articleSale, attributelist] = await Promise.all([
 				this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
 				this.$axios.$get('/webapi/Metadata/GetTeamList'),
