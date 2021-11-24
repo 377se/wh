@@ -392,11 +392,12 @@
                                             </td>
                                             <td class="border-bottom border-right uk-text-right">
                                                 <div class="uk-flex uk-flex-middle">
-                                                    <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" @focus="isShippingFocused = true" @blur="isShippingFocused = false" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right">
+                                                    <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" @focus="isShippingFocused = true" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right">
+                                                    <!-- <ScInput v-model="orderContent.OrderSummary.ShippingAndHandling" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-right"> -->
                                                     </ScInput>
                                                     <div>&nbsp;{{ orderInfo.Currency }}</div>
                                                 </div>
-                                                <div v-if="isShippingFocused" class="uk-text-right uk-margin-small-top">
+                                                <div v-show="isShippingFocused" class="uk-text-right uk-margin-small-top">
                                                     <div>
                                                         (Beloppet skall alltid anges i SEK)
                                                     </div>
@@ -936,6 +937,7 @@ export default {
                         _this.orderContent = response
                         _this.render = !_this.render
                         _this.$store.dispatch('setBusyOff')
+                        _this.isShippingFocused = false
                     }
                 } catch(err) {
                     console.log(err)
