@@ -117,7 +117,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
-                                                        <td class="border-bottom uk-width-4-5">{{ orderInfo.TrackingNumber }}</td>
+                                                        <td class="border-bottom uk-width-4-5">
+                                                            <div class="uk-height-1-1 uk-flex uk-flex-middle"><a :href="orderInfo.TrackingNumber" target="_new">Visa tracking <i class="mdi mdi-open-in-new sc-icon-18"></i></a>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Leveransdatum</strong></td>
