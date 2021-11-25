@@ -28,26 +28,37 @@
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
                                                 <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 50px;"></th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Lag</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 100px;">Produktnamn</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 80px;">Märke</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: left; width: 120px;">Art. nummer</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: center; width: 40px;">Ant sålda</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Försälj. ex.moms</th>
-                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small" style="text-align: right; width: 40px;">Bruttom kr</th>
-                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 40px;">Bruttom %</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: left; width: 100px;">Lag</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: left; width: 100px;">Produktnamn</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: left; width: 80px;">Märke</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: left; width: 120px;">Art. nummer</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: right; width: 100px;">Ant sålda</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: right; width: 100px;">Försälj. ex.moms</th>
+                                                <th class="sticky-headers border-top border-bottom border-left uk-text-small uk-table-middle" style="text-align: right; width: 100px;">Bruttom kr</th>
+                                                <th class="sticky-headers border-top border-bottom border-left border-right uk-text-small uk-table-middle" style="text-align: right; width: 100px;">Bruttom %</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: left; width: 50px; background-color:#888;"></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: left; width: 100px; background-color:#888;"></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: left; width: 100px; background-color:#888;"></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: left; width: 80px; background-color:#888;"></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: left; width: 120px; background-color:#888;"></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: right; width: 100px; background-color:#888;"><strong>{{ articleSaleStats.TotalItems | thousandsDelimiter }} st</strong></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: right; width: 100px; background-color:#888;"><strong>{{ articleSaleStats.TotalValue | thousandsDelimiter }} kr</strong></th>
+                                                <th class="sticky-headers-2 border-bottom border-left uk-table-middle" style="color: #fff; text-align: right; width: 100px; background-color:#888;"><strong>{{ articleSaleStats.TotalGrossMargin | thousandsDelimiter }} kr</strong></th>
+                                                <th class="sticky-headers-2 border-bottom border-left border-right uk-table-middle" style="color: #fff; text-align: right; background-color:#888; width: 100px;"><strong>{{ articleSaleStats.GrossMarginPercent }} %</strong></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="article in articleSaleStats.ArticleList" :key="article.ArticleId" class="uk-table-middle">
-                                                <td class="border-bottom border-left border-right" style="text-align: left; "><img :src="article.ImageName"></td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.Category }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ProductName }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.BrandName }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: left; ">{{ article.ArticleNumber }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: center; ">{{ article.Quantity | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.TotalSale | thousandsDelimiter }}</td>
-                                                <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.GrossMargin | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; "><img :src="article.ImageName"></td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ article.Category }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ article.ProductName }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ article.BrandName }}</td>
+                                                <td class="border-bottom border-left" style="text-align: left; ">{{ article.ArticleNumber }}</td>
+                                                <td class="border-bottom border-left" style="text-align: right; ">{{ article.Quantity | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left" style="text-align: right; ">{{ article.TotalSale | thousandsDelimiter }}</td>
+                                                <td class="border-bottom border-left" style="text-align: right; ">{{ article.GrossMargin | thousandsDelimiter }}</td>
                                                 <td class="border-bottom border-left border-right" style="text-align: right; ">{{ article.GrossMarginPercent }}</td>
                                             </tr>
                                         </tbody>
@@ -323,6 +334,11 @@ export default {
         background: white;
         position: sticky;
         top: 0px; /* Don't forget this, required for the stickiness */
+    }
+    .sticky-headers-2 {
+        background: white;
+        position: sticky;
+        top: 36px; /* Don't forget this, required for the stickiness */
     }
     .border-all {
         border: 1px solid #ccc;
