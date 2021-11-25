@@ -23,7 +23,7 @@
                                 </ScCardTitle>
                             </ScCardHeader>
                             <ScCardBody>
-                                <div class="uk-overflow-auto" style="max-height:800px;">
+                                <div v-if="articleSaleStats" class="uk-overflow-auto" style="max-height:800px;">
                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove returnstatslist" style="border-collapse: separate;">
                                         <thead>
                                             <tr class="uk-padding-remove-bottom">
@@ -69,7 +69,7 @@
                     </div>
                     <!-- FILTERMENUS -->
                     <div class="uk-width-1-1 uk-width-1-4@m uk-flex-first uk-flex-last@m" uk-margin>
-                        <ScCard class="uk-card-small">
+                        <ScCard v-if="currentStatsObject" class="uk-card-small">
                             <ScCardHeader separator>
                                 <ScCardTitle>
                                     Filtrera
@@ -208,7 +208,7 @@
                                 </div>
                             </ScCardBody>
                         </ScCard>
-                        <ScCard v-if="articleSaleStats.TotalValue">
+                        <ScCard v-if="articleSaleStats">
                             <ScCardBody class="uk-text-center md-bg-cyan-800">
                                 <div class="uk-width-1-1">
                                     <div class="summary uk-light">{{ articleSaleStats.TotalValue | thousandsDelimiter }}</div>
@@ -247,7 +247,7 @@ export default {
             shopId: 0,
             emptyStatsObject: {},
             currentStatsObject: {},
-            articleSaleStats: {},
+            articleSaleStats: null,
             countryList: [],
             countryId: 0,
             yearList: [],
