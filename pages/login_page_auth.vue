@@ -10,9 +10,10 @@
 
             <div
               class="uk-margin">
-              <label class="uk-form-label">Email</label>
+              <label class="uk-form-label" for="user-wh">Email</label>
               <div class="uk-form-controls">
                 <input
+                  id="user-wh"
                   v-model="form.email"
                   class="uk-input"
                   type="text"
@@ -21,9 +22,10 @@
             </div>
             <div
               class="uk-margin" >
-              <label class="uk-form-label">Lösenord</label>
+              <label class="uk-form-label" for="password-wh">Lösenord</label>
               <div class="uk-form-controls">
                 <input
+                  id="password-wh"
                   v-model="form.password"
                   class="uk-input"
                   type="password"
