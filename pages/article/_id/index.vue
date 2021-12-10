@@ -588,17 +588,17 @@
 											</ScCardHeader>
 											<ScCardContent>
 												<ScCardBody :key="render">
-													<div class="uk-overflow-auto" style="max-height:600px;">
+													<div class="uk-overflow-auto">
 														<table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
 															<thead>
 																<tr class="uk-padding-remove-bottom">
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: left; width: 105px; font-size:10px;">Beskrivning</th>
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 20px; font-size:10px;">Ink tot</th>
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 40px; font-size:10px;">Lagers.</th>
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Korr</th>
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Inlev</th>
-																	<th class="sticky-headers border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">I orderl.</th>
-																	<th class="sticky-headers border-top border-bottom border-left border-right" style="text-align: center; width: 8px; font-size:10px;">Dölj</th>
+																	<th class="border-top border-bottom border-left" style="text-align: left; width: 105px; font-size:10px;">Beskrivning</th>
+																	<th class="border-top border-bottom border-left" style="text-align: center; width: 20px; font-size:10px;">Ink tot</th>
+																	<th class="border-top border-bottom border-left" style="text-align: center; width: 40px; font-size:10px;">Lagers.</th>
+																	<th class="border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Korr</th>
+																	<th class="border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">Inlev</th>
+																	<th class="border-top border-bottom border-left" style="text-align: center; width: 45px; font-size:10px;">I orderl.</th>
+																	<th class="border-top border-bottom border-left border-right" style="text-align: center; width: 8px; font-size:10px;">Dölj</th>
 																</tr>
 															</thead>
 															<tbody>
