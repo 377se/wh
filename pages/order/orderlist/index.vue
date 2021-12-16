@@ -339,7 +339,7 @@ export default {
                 if (this.$route.query.orderDate) {
                     this.orderDate = this.$route.query.orderDate
                 }
-                this.getOrderList()
+                await this.getOrderList()
             }
         this.$store.dispatch('setBusyOff')
         } catch (err) {
