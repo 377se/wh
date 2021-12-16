@@ -39,6 +39,16 @@
                                     </div>
                                     <div class="uk-width-auto uk-grid-small uk-flex-right" uk-grid>
                                         <div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="resetIsSelected">
+                                                NOLLSTÄLL VAL
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="selectTwentyOldest">
+                                                VÄLJ 20 ÄLDSTA
+                                            </button>
+                                        </div>
+                                        <div>
                                             <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="printDeliveryNotes('all-delivery-notes')">
                                                 SKRIV UT FÖLJESEDEL
                                             </button>
@@ -215,6 +225,19 @@ export default {
                     }
                 })
             }, 500)
+        },
+        selectTwentyOldest() {
+            this.resetIsSelected()
+            this.orderList
+            .filter(order => {
+                return !order.HasBeenPrinted && !order.ContainsPrintedItem
+            })
+            .filter((order, index) => {
+                return index < 20
+            })
+            .forEach(order => {
+                order.IsSelected = true
+            })
         },
         resetIsSelected () {
             this.orderList.forEach(order => {
