@@ -5,7 +5,6 @@
     </div>
     <div v-else>
                     <client-only>
-
         <div id="sc-page-wrapper">
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -15,6 +14,7 @@
                 </div>
             </div>
             <div id="sc-page-content">
+
                 <ScCard :key="render">
                     <ScCardBody>
                         <div class="uk-margin-medium-bottom uk-padding-small uk-padding-remove-horizontal actionpanel" uk-sticky="offset: 45">
@@ -51,7 +51,7 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                            <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="getPrintout">
                                                 SKRIV UT FÖLJESEDEL
                                             </button>
                                         </div>
@@ -111,7 +111,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="uk-table-middle">
-                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected" ></td>
+                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected" @change="getSelectedOrders"></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.HasBeenPrinted" uk-tooltip="title: Utskriven"><i class="mdi mdi-printer sc-icon-18 md-color-green-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPrintedItem" uk-tooltip="title: Innehåller tryck"><i class="mdi mdi-tshirt-crew sc-icon-18 md-color-blue-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPreorder" uk-tooltip="title: Preorder"><i class="mdi mdi-pause-circle sc-icon-18 md-color-indigo-600"></i></span></td>
@@ -144,8 +144,7 @@
         </div>
 
         <div style="visibility: hidden;">
-                <Deliverynotes :orders="orders" :isUnifaunTrue="true" />
-
+                <Deliverynotes :orders="orders" :isUnifaunTrue="true" @finishedprinting="resetIsSelected" ref="form" />
         </div>
 
         <!-- FAILED ACTIVATION MODAL -->
@@ -170,7 +169,6 @@
 <script>
 import Alert from '~/components/Alert'
 import Deliverynotes from '~/components/Deliverynotes'
-import Print from '~/plugins/directives/vue-print-nb/printarea.js'
 
 export default {
 	components: {
@@ -211,6 +209,9 @@ export default {
         },
     },
     methods: {
+        getPrintout() {
+            this.$refs.form.getPrintout()
+        },
         getSelectedOrders() {
             let selectedOrders = []
             for (const order of this.orderList) {
@@ -218,18 +219,6 @@ export default {
             }
             this.orders = selectedOrders
         },
-        printDeliveryNotes(id) {
-            new Print({
-                ids: id, // * Partial printing must pass in id
-                standard: '', // Document type, default is html5, optional html5, loose, strict
-                extraHead: '', // Additional tags attached to the head tag, separated by commas
-                extraCss: '', // Additional CSS, separated by multiple commas
-                popTitle: '', // iframe title
-                endCallback () { // Callback event after printing
-                }
-            })
-        },
-
         selectTwentyOldest() {
             this.resetIsSelected()
             this.orderList

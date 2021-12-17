@@ -1,12 +1,11 @@
 <template>
   <div class="delivery-note-container">
 
-
     <div v-if="orders" id="all-delivery-notes" class="all-delivery-notes">
 
         <!-- PLOCKLISTA -->
         <div v-if="isUnifaunTrue && orderInfo.PickingList" class="delivery-note" style="clear: both; page-break-after: always;">
-            <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
+            <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer" ref="printButton"></a></div>
             <h2>Plocklista</h2>
             <table class="items">
                 <thead>
@@ -228,9 +227,6 @@ export default {
         },
     },
     watch: {
-        orders() {
-            this.orders.length != 0 ? this.$fetch() : null
-        }
     },
     directives: { print },
     data: () => ({
@@ -241,23 +237,27 @@ export default {
         articleCount: true,
     }),
     mounted () {
-      // this.$nextTick(() => {
-
-      // })
     },
     methods: {
-    },
-    async fetch () {
-        this.$store.dispatch('setBusyOn')
-        try {
-            const [ orderInfo ] = await Promise.all([
-                this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.orders + '&createUnifaunXml=' + this.isUnifaunTrue ),
-            ])
-            this.orderInfo = orderInfo
-        } catch (err) {
-          console.log(err);
-        }
-        this.$store.dispatch('setBusyOff')
+      async getPrintout() {
+          let _this = this
+          _this.$store.dispatch('setBusyOn')
+          await this.$axios.$get('/webapi/OrderPrint/GetPrintout?orderlist=' + this.orders + '&createUnifaunXml=' + this.isUnifaunTrue )
+          .then(function (orderinfo) {
+              _this.orderInfo = orderinfo
+          })
+          .then(function () {
+              const elem = _this.$refs.printButton
+              elem.click()
+              _this.$emit('finishedprinting')
+              _this.$store.dispatch('setBusyOff')
+          }
+          )
+          .catch(function (error) {
+              console.log(error)
+              _this.$store.dispatch('setBusyOff')
+          })
+      },
     },
 }
 </script>
