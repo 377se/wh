@@ -4,6 +4,8 @@
         </div>
     </div>
     <div v-else>
+                    <client-only>
+
         <div id="sc-page-wrapper">
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -142,7 +144,8 @@
         </div>
 
         <div style="visibility: hidden;">
-            <Deliverynotes :orders="orders" :isUnifaunTrue="true" />
+                <Deliverynotes :orders="orders" :isUnifaunTrue="true" />
+
         </div>
 
         <!-- FAILED ACTIVATION MODAL -->
@@ -160,7 +163,7 @@
                 </p>
             </div>
         </div>
-
+</client-only>
     </div>
 </template>
 
