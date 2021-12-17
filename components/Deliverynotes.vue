@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                        <tr v-for="article in orderInfo.PickingList" :key="article.ArticleNumber" style="border-bottom: 1px solid #000">
+                        <tr v-for="(article, index) in orderInfo.PickingList" :key="index" style="border-bottom: 1px solid #000">
                             <td style="width: 80px; text-align: left;">{{ article.Shelf }}</td>
                             <td style="width: 80px; text-align: left;"><img class="productImage" :src="article.ImageName" alt="Product image"></td>
                             <td style="width: 100px; text-align: left;">{{ article.ArticleNumber }}</td>

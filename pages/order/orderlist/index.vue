@@ -109,7 +109,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="uk-table-middle">
-                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected"></td>
+                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected" @change="getSelectedOrders"></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.HasBeenPrinted" uk-tooltip="title: Utskriven"><i class="mdi mdi-printer sc-icon-18 md-color-green-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPrintedItem" uk-tooltip="title: Innehåller tryck"><i class="mdi mdi-tshirt-crew sc-icon-18 md-color-blue-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPreorder" uk-tooltip="title: Preorder"><i class="mdi mdi-pause-circle sc-icon-18 md-color-indigo-600"></i></span></td>
@@ -142,7 +142,7 @@
         </div>
 
         <div style="visibility: hidden;">
-            <Deliverynotes :orders="this.orders" :isUnifaunTrue="true" />
+            <Deliverynotes :orders="orders" :isUnifaunTrue="true" />
         </div>
 
         <!-- FAILED ACTIVATION MODAL -->
@@ -208,24 +208,25 @@ export default {
         },
     },
     methods: {
-        printDeliveryNotes(id) {
+        getSelectedOrders() {
             let selectedOrders = []
             for (const order of this.orderList) {
                 if (order.IsSelected === true) selectedOrders.push(order.OrderId)
             }
             this.orders = selectedOrders
-            setTimeout(() => {
-                new Print({
-                    ids: id, // * Partial printing must pass in id
-                    standard: '', // Document type, default is html5, optional html5, loose, strict
-                    extraHead: '', // Additional tags attached to the head tag, separated by commas
-                    extraCss: '', // Additional CSS, separated by multiple commas
-                    popTitle: '', // iframe title
-                    endCallback () { // Callback event after printing
-                    }
-                })
-            }, 500)
         },
+        printDeliveryNotes(id) {
+            new Print({
+                ids: id, // * Partial printing must pass in id
+                standard: '', // Document type, default is html5, optional html5, loose, strict
+                extraHead: '', // Additional tags attached to the head tag, separated by commas
+                extraCss: '', // Additional CSS, separated by multiple commas
+                popTitle: '', // iframe title
+                endCallback () { // Callback event after printing
+                }
+            })
+        },
+
         selectTwentyOldest() {
             this.resetIsSelected()
             this.orderList
@@ -238,11 +239,13 @@ export default {
             .forEach(order => {
                 order.IsSelected = true
             })
+            this.getSelectedOrders()
         },
         resetIsSelected () {
             this.orderList.forEach(order => {
                 if (order.IsSelected === true) order.IsSelected = false
             })
+            this.getSelectedOrders()
         },
         async setOrderAsDelivered() {
 			let _this = this
