@@ -111,7 +111,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="uk-table-middle">
-                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected" @change="getSelectedOrders"></td>
+                                        <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><input type="checkbox" v-model="order.IsSelected" ></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.HasBeenPrinted" uk-tooltip="title: Utskriven"><i class="mdi mdi-printer sc-icon-18 md-color-green-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPrintedItem" uk-tooltip="title: Innehåller tryck"><i class="mdi mdi-tshirt-crew sc-icon-18 md-color-blue-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPreorder" uk-tooltip="title: Preorder"><i class="mdi mdi-pause-circle sc-icon-18 md-color-indigo-600"></i></span></td>
