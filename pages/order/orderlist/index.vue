@@ -47,7 +47,7 @@
                                         </div>
                                         <div>
                                             <button v-waves.button.light class="sc-button sc-button-primary sc-button-small" @click.prevent="selectTwentyOldest">
-                                                VÄLJ 20 ÄLDSTA
+                                                VÄLJ 15 ÄLDSTA
                                             </button>
                                         </div>
                                         <div>
@@ -226,7 +226,7 @@ export default {
                 return !order.HasBeenPrinted && !order.ContainsPrintedItem
             })
             .filter((order, index) => {
-                return index < 20
+                return index < 15
             })
             .forEach(order => {
                 order.IsSelected = true
