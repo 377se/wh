@@ -625,7 +625,7 @@
                 </ScCard>
             </div>
             <div style="visibility: hidden; height: 0px; overflow: hidden;">
-                <Deliverynotes  :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" :isPrintPickingList="false" :isDirectPrintout="true" ref="form" />
+                <Deliverynotes  :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" :isPrintPickingList="false" ref="form" />
             </div>
         </div>
 

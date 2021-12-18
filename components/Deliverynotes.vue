@@ -231,7 +231,7 @@ export default {
         isDirectPrintout: {
             type: Boolean,
             default: () => true,
-            required: true
+            required: false
         },
     },
     watch: {

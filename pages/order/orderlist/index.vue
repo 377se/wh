@@ -144,7 +144,7 @@
         </div>
 
         <div style="visibility: hidden; height: 0px; overflow: hidden;">
-                <Deliverynotes :orders="orders" :isUnifaunTrue="true" @finishedprinting="getOrderList" :isPrintPickingList="true" :isDirectPrintout="true" ref="form" />
+                <Deliverynotes :orders="orders" :isUnifaunTrue="true" @finishedprinting="getOrderList" :isPrintPickingList="true" ref="form" />
         </div>
 
         <!-- FAILED ACTIVATION MODAL -->
