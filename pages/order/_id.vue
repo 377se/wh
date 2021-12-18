@@ -51,7 +51,7 @@
                                             </div>
                                             <div class="uk-padding-small uk-padding-remove-horizontal">
                                                 <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
-                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="printDeliveryNotes('all-delivery-notes')">
+                                                    <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="getPrintout">
                                                         SKRIV UT
                                                     </button>
                                                     <button v-if="orderInfo.StatusId == 2" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right uk-margin-small-top uk-margin-remove-top@s" @click.prevent="setOrderAsDeliveredByOrderId()">
@@ -625,7 +625,7 @@
                 </ScCard>
             </div>
         </div>
-        <Deliverynotes v-if="showDeliveryNote" :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" />
+        <Deliverynotes  :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" ref="form" />
 
         <!-- MAIL-EDITOR -->
         <div id="mail-editor" class="uk-modal-full uk-modal" data-uk-modal>
@@ -807,6 +807,10 @@ export default {
 		},
     },
     methods: {
+        getPrintout() {
+            this.showDeliveryNote = true
+            this.$refs.form.getPrintout()
+        },
         async deleteItem(itemId) {
 			let _this = this
             await UIkit.modal.confirm('Vill du verkligen radera orderraden?', { labels: { ok: 'Yeah', cancel: 'Nope' } }).then(function () {
