@@ -624,8 +624,10 @@
                     </ScCardBody>
                 </ScCard>
             </div>
+            <div style="visibility: hidden; height: 0px; overflow: hidden;">
+                <Deliverynotes  :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" :isPrintPickingList="false" :isDirectPrintout="true" ref="form" />
+            </div>
         </div>
-        <Deliverynotes  :orders="[orderInfo.OrderId]" :isUnifaunTrue="true" ref="form" />
 
         <!-- MAIL-EDITOR -->
         <div id="mail-editor" class="uk-modal-full uk-modal" data-uk-modal>

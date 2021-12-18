@@ -1,11 +1,9 @@
 <template>
   <div class="delivery-note-container">
-
+    <div class="uk-padding-small no-print uk-flex uk-flex-right" style="visibility: hidden; height: 0px;"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer" ref="printButton"></a></div>
     <div v-if="orders" id="all-delivery-notes" class="all-delivery-notes">
-
         <!-- PLOCKLISTA -->
-        <div v-if="isUnifaunTrue" class="delivery-note" style="clear: both; page-break-after: always;">
-            <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer" ref="printButton"></a></div>
+        <div v-if="isPrintPickingList" class="delivery-note" style="clear: both; page-break-after: always;">
             <h2>Plocklista</h2>
             <table class="items">
                 <thead>
@@ -35,7 +33,7 @@
             </table>
         </div>
 
-    <!-- FÖLJESEDLAR -->
+      <!-- FÖLJESEDLAR -->
       <div v-for="deliveryNote in orderInfo.OrderList" :key="deliveryNote.OrderDetails.OrderId" class="delivery-note" style="clear: both; page-break-after: always;">
       <div class="uk-padding-small no-print uk-flex uk-flex-right"><a v-print="printDeliverynotes" href="javascript:void(0)" class="sc-actions-icon mdi mdi mdi-printer"></a></div>
       <div class="identity">
@@ -225,6 +223,16 @@ export default {
             default: () => false,
             required: true
         },
+        isPrintPickingList: {
+            type: Boolean,
+            default: () => false,
+            required: true
+        },
+        isDirectPrintout: {
+            type: Boolean,
+            default: () => true,
+            required: true
+        },
     },
     watch: {
     },
@@ -247,9 +255,11 @@ export default {
               _this.orderInfo = orderinfo
           })
           .then(function () {
-              const elem = _this.$refs.printButton
-              elem.click()
-              _this.$emit('finishedprinting')
+              if (_this.isDirectPrintout === true) {
+                  const elem = _this.$refs.printButton
+                  elem.click()
+                  _this.$emit('finishedprinting')
+              }
               _this.$store.dispatch('setBusyOff')
           }
           )
@@ -271,7 +281,7 @@ export default {
 }
 
 .delivery-note-container {
-    margin: 60px 0 0 0px;
+    margin: 0px 0 0 0px;
     font-size: 12px;
     font-family: 'Roboto', sans-serif;
     font-weight:400;
