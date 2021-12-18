@@ -435,9 +435,9 @@
                                         <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="sendOrderConfirmation()">
                                             SKICKA ORDERBEKRÄFTELSE
                                         </button>
-                                        <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
+                                        <!-- <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-medium-right" @click.prevent="$router.push('/deliverynote/' + orderInfo.OrderId)">
                                             VISA FÖLJESEDEL
-                                        </button>
+                                        </button> -->
                                         <button v-if="paymentTypeId == 0" v-waves.button.light class="sc-button sc-button-primary sc-button-mini" @click.prevent="deductMemberDiscount()">
                                             TILLDELA MEDLEMSRABATT
                                         </button>
