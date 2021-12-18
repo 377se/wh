@@ -678,6 +678,7 @@ export default {
 	},
 	mounted () {
 		this.getTodaysDate()
+        if (!this.loaded) this.$fetch()
 	},
 	methods: {
 		async releaseCacheFromDashboard(shopcacheinfo) {
