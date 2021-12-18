@@ -143,8 +143,8 @@
             </div>
         </div>
 
-        <div style="visibility: hidden;">
-                <Deliverynotes :orders="orders" :isUnifaunTrue="true" @finishedprinting="resetIsSelected" ref="form" />
+        <div style="visibility: hidden; height: 0px;">
+                <Deliverynotes :orders="orders" :isUnifaunTrue="true" @finishedprinting="getOrderList" ref="form" />
         </div>
 
         <!-- FAILED ACTIVATION MODAL -->
