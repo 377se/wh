@@ -141,6 +141,7 @@
                                                                         v-model="orderInfo.StatusId"
                                                                         :options="orderInfo.StatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
                                                                         :settings="{ 'width': '100%', 'closeOnSelect': true }"
+                                                                        :disabled="orderInfo.StatusId == -1"
                                                                     >
                                                                     </Select2>
                                                                 </client-only>
