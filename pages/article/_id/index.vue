@@ -17,22 +17,22 @@
 					<ScCardBody>
 						<!-- TAB-HEADLINES - ARTICLE DETAILS -->
 						<ul data-uk-tab>
-							<li class="uk-active">
+							<li id="global" class="uk-active">
 								<a href="javascript:void(0)">
 									GLOBAL INFO
 								</a>
 							</li>
-							<li>
+							<li id="shopinfo">
 								<a href="javascript:void(0)">
 									SHOP INFO
 								</a>
 							</li>
-							<li>
+							<li id="sorting">
 								<a href="javascript:void(0)">
 									SORTERING
 								</a>
 							</li>
-							<li>
+							<li id="stats">
 								<a href="javascript:void(0)">
 									FÖRSÄLJNINGSSTATISTIK
 								</a>
@@ -917,16 +917,15 @@ export default {
 				_this.articleImages = _this.sortableOrder
 				_this.updateImageSorting()
 			})
-			// GET STUFF FOR SORTERING
-			UIkit.util.on(document, 'beforeshow', function (event, area) {
-				event.target.id == 'sorting' ? _this.getArticleAssortment() : ''
-				event.target.id == 'sorting' ? _this.getArticleAssortmentHistory() : ''
-			})
 			// GET STUFF FOR SHOPINFO
-			UIkit.util.on(document, 'beforeshow', function (event, area) {
+			UIkit.util.on(document, 'stop', function (event, area) {
 				event.target.id == 'shopinfo' ? _this.getShopListByArticle() : ''
 			})
-
+			// GET STUFF FOR SORTERING
+			UIkit.util.on(document, 'beforeshow', '#sorting', function (e) {
+				_this.getArticleAssortment()
+				_this.getArticleAssortmentHistory()
+			})
 		})
 		this.$store.commit('setAlertHidden', 1)
 		this.$store.commit('setAlertHidden', 2)
@@ -1094,17 +1093,39 @@ export default {
 				console.log(error)
 			})
 		},
-		async getArticleAssortmentHistory() {
+		async getArticleAssortment() {
 			let _this = this
 			_this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + _this.$route.params.id)
-			.then(function (articleassortmenthistory) {
-				_this.articleAssortmentHistory = articleassortmenthistory
-				_this.render = !_this.render
-				_this.$store.dispatch('setBusyOff')
+			await this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id)
+			.then(function (articleassortment) {
+				if(articleassortment.ErrorList != null){
+					_this.$store.dispatch('setBusyOff')
+				} else {
+					_this.articleAssortment = articleassortment
+					_this.$store.dispatch('setBusyOff')
+        		}
 			})
 			.catch(function (error) {
 				console.log(error)
+				_this.$store.dispatch('setBusyOff')
+			})
+		},
+		async getArticleAssortmentHistory() {
+			let _this = this
+			_this.$store.dispatch('setBusyOn')
+			await this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id)
+			.then(function (articleassortmentHistory) {
+				if(articleassortmentHistory.ErrorList != null){
+					_this.$store.dispatch('setBusyOff')
+				} else {
+					_this.articleAssortmentHistory = articleassortmentHistory
+					_this.render = !_this.render
+					_this.$store.dispatch('setBusyOff')
+        		}
+			})
+			.catch(function (error) {
+				console.log(error)
+				_this.$store.dispatch('setBusyOff')
 			})
 		},
 		async updateStatusId(shop) {
@@ -1157,40 +1178,6 @@ export default {
 				_this.$store.dispatch('setBusyOff')
 			})
 		},
-		async getArticleAssortment() {
-			let _this = this
-			_this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id)
-			.then(function (articleassortment) {
-				if(articleassortment.ErrorList != null){
-					_this.$store.dispatch('setBusyOff')
-				} else {
-					_this.articleAssortment = articleassortment
-					_this.$store.dispatch('setBusyOff')
-        		}
-			})
-			.catch(function (error) {
-				console.log(error)
-				_this.$store.dispatch('setBusyOff')
-			})
-		},
-		async getArticleAssortmentHistory() {
-			let _this = this
-			_this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id)
-			.then(function (articleassortmentHistory) {
-				if(articleassortmentHistory.ErrorList != null){
-					_this.$store.dispatch('setBusyOff')
-				} else {
-					_this.articleAssortmentHistory = articleassortmentHistory
-					_this.$store.dispatch('setBusyOff')
-        		}
-			})
-			.catch(function (error) {
-				console.log(error)
-				_this.$store.dispatch('setBusyOff')
-			})
-		},
 		async getShopListByArticle() {
 			let _this = this
 			_this.$store.dispatch('setBusyOn')
@@ -1233,31 +1220,6 @@ export default {
 				this.$axios.$get('/webapi/Attribute/GetAttributeListByArticleId?articleId=' + this.$route.params.id),
 
       		])
-			// const [articleDetails, teams, brands, materials, producttypes, genders, models, sizeguides, washingguides,
-			// tariffs, vattypes, landsoforigin, memberpackages, printtypes, articleStatusList, articleassortment, articleassortmentHistory, shopListByArticle, articleImages, articleSale, attributelist] = await Promise.all([
-			// 	this.$axios.$get('/webapi/Article/GetArticleDetails?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Metadata/GetTeamList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetBrandList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetMaterialList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetProductTypeList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetGenderList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetModelTypeList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetSizeGuideList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetWashingList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetTariffList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetVatTypeList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetLandOfOriginList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetMembershipPackageList'),
-			// 	this.$axios.$get('/webapi/Metadata/GetPrintTypeList'),
-			// 	this.$axios.$get('/webapi/Article/GetArticleStatusList?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Article/GetArticleAssortment?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Article/GetArticleAssortmentHistory?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Shop/GetShopListByArticle?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Article/GetArticleImages?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Article/GetArticleSale?articleId=' + this.$route.params.id),
-			// 	this.$axios.$get('/webapi/Attribute/GetAttributeListByArticleId?articleId=' + this.$route.params.id),
-
-      		// ])
 			this.articleDetails = articleDetails
 			this.teamInfo = teams.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.brandInfo = brands.map(({ Id, Name }) => ({ id: Id, text: Name }))
@@ -1279,9 +1241,6 @@ export default {
 			this.kopShopArticleStatusList = articleStatusList[2].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.supporterPrylarArticleStatusList = articleStatusList[3].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
 			this.gameDayArticleStatusList = articleStatusList[4].ArticleStatusList.map(({ Id, Name }) => ({ id: Id, text: Name }))
-			// this.articleAssortment = articleassortment
-			// this.articleAssortmentHistory = articleassortmentHistory
-			// this.shopListByArticle = shopListByArticle
 			this.articleImages = articleImages
 			this.articleSale = articleSale
 			this.attributeList = attributelist
