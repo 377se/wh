@@ -17,22 +17,22 @@
 					<ScCardBody>
 						<!-- TAB-HEADLINES - ARTICLE DETAILS -->
 						<ul data-uk-tab>
-							<li id="global" class="uk-active">
+							<li class="uk-active">
 								<a href="javascript:void(0)">
 									GLOBAL INFO
 								</a>
 							</li>
-							<li id="shopinfo">
+							<li @click="getShopListByArticle">
 								<a href="javascript:void(0)">
 									SHOP INFO
 								</a>
 							</li>
-							<li id="sorting">
+							<li @click="getAssortmentStuff">
 								<a href="javascript:void(0)">
 									SORTERING
 								</a>
 							</li>
-							<li id="stats">
+							<li>
 								<a href="javascript:void(0)">
 									FÖRSÄLJNINGSSTATISTIK
 								</a>
@@ -917,15 +917,6 @@ export default {
 				_this.articleImages = _this.sortableOrder
 				_this.updateImageSorting()
 			})
-			// GET STUFF FOR SHOPINFO
-			UIkit.util.on(document, 'stop', function (event, area) {
-				event.target.id == 'shopinfo' ? _this.getShopListByArticle() : ''
-			})
-			// GET STUFF FOR SORTERING
-			UIkit.util.on(document, 'beforeshow', '#sorting', function (e) {
-				_this.getArticleAssortment()
-				_this.getArticleAssortmentHistory()
-			})
 		})
 		this.$store.commit('setAlertHidden', 1)
 		this.$store.commit('setAlertHidden', 2)
@@ -1077,6 +1068,10 @@ export default {
 			.catch(function (error) {
 				console.log(error)
 			})
+		},
+		getAssortmentStuff() {
+			this.getArticleAssortment()
+			this.getArticleAssortmentHistory()
 		},
 		async updateArticleAssortment() {
 			let _this = this
