@@ -205,10 +205,13 @@
                                     <ScCardContent>
                                         <ScCardBody>
                                             <!-- ArtikelNr -->
-                                            <div class="uk-margin">
-                                                <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(articleNumber)">
+                                            <div class="uk-margin uk-flex uk-flex-between uk-flex-middle">
+                                                <ScInput v-model="articleNumber" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                     <label>ArtikelNr</label>
                                                 </ScInput>
+                                                <button v-waves.button.light class="sc-button sc-button-primary sc-button-mini uk-margin-small-left" @click.prevent="getArticleDetailsByArticleNumber(articleNumber)">
+                                                    SÖK
+                                                </button>
                                             </div>
                                             <Alert
                                                 :message="errorsArticleDetails ? errorsArticleDetails[0].Value : ''"
