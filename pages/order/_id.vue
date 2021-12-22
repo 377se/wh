@@ -370,7 +370,7 @@
                                                 </div>
                                             </td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-center">{{ orderItemInList.Quantity }}</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderItemInList.PriceToPay | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderInfo.Currency == 'EUR' ? orderItemInList.PriceToPay.toFixed(2) : orderItemInList.PriceToPay | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -382,7 +382,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Ordersumma</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.OrderSum | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderInfo.Currency == 'EUR' ? orderContent.OrderSummary.OrderSum.toFixed(2) : orderContent.OrderSummary.OrderSum | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -417,7 +417,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2"><strong>Totalt</strong></td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderContent.OrderSummary.Total | thousandsDelimiter }} {{ orderInfo.Currency }}</strong></td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right"><strong>{{ orderInfo.Currency == 'EUR' ? orderContent.OrderSummary.Total.toFixed(2) : orderContent.OrderSummary.Total | thousandsDelimiter }} {{ orderInfo.Currency }}</strong></td>
                                         </tr>
                                         <tr class="uk-table-middle">
                                             <td v-if="paymentTypeId != 0"></td>
@@ -427,7 +427,7 @@
                                             <td></td>
                                             <td class="border-right"></td>
                                             <td class="border-bottom border-right uk-width-auto uk-text-right" colspan="2">Varav moms</td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderContent.OrderSummary.Vat | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
+                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ orderInfo.Currency == 'EUR' ? orderContent.OrderSummary.Vat.toFixed(2) : orderContent.OrderSummary.Vat | thousandsDelimiter }} {{ orderInfo.Currency }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
