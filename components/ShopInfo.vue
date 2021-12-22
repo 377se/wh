@@ -207,6 +207,7 @@ export default {
 			this.menuInfo = menuInfo
             this.$store.dispatch('setBusyOff')
 		} catch (err) {
+            this.$store.dispatch('setBusyOff')
       		console.log(err);
 		}
     },
