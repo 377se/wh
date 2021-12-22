@@ -184,13 +184,14 @@ export default {
 		},
 		async updateArticleDescription() {
 			let _this = this
-            _this.shopInfo.PriceOnSale.includes("%") ? _this.shopInfo.PriceOnSale = (_this.shopInfo.Price * ( 1 - (_this.shopInfo.PriceOnSale.split("%")[0] / 100) )).toFixed(1) : ''
             _this.$store.dispatch('setBusyOn')
+            _this.shopInfo.PriceOnSale.includes("%") ? _this.shopInfo.PriceOnSale = (_this.shopInfo.Price * ( 1 - (_this.shopInfo.PriceOnSale.split("%")[0] / 100) )).toFixed(0) : _this.shopInfo.PriceOnSale
 			await this.$axios.$post('/webapi/Article/PostUpdateArticleDescription', _this.shopInfo)
 			.then(function (response) {
                 _this.$store.dispatch('setBusyOff')
             })
 			.catch(function (error) {
+                _this.$store.dispatch('setBusyOff')
 				console.log(error)
 			})
 		},
