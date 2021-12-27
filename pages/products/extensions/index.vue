@@ -1,5 +1,9 @@
 <template>
-    <div>
+    <div v-if="$fetchState.pending">
+        <div id="sc-page-wrapper">
+        </div>
+    </div>
+    <div v-else>
         <div id="sc-page-wrapper">
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
@@ -48,7 +52,7 @@
                                         </client-only>
                                         </div>
                                     </div>
-                                    <div class="uk-width-1-2 uk-margin-medium-bottom uk-margin-medium-top" v-if="extensionList.length != 0">
+                                    <div class="uk-width-1-2 uk-margin-medium-bottom uk-margin-medium-top" v-if="extensionList">
                                         <div v-for="(item, index) in extensionList.Summary" :key="index">
                                             {{ item.Name }}: {{ item.ItemsSold }}
                                         </div>
@@ -56,155 +60,326 @@
                                 </div>
 							</div>
 						</div>
-                        <div v-if="extensionTypeId" class="uk-flex">
-                            <!-- EXTENSIONS -->
-                            <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
-                                <table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
-                                    <thead>
-                                        <tr>
-                                            <td class="border-bottom border-right uk-text-center" style="min-width:30px;"></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:30px;"><strong>Aktiv</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:50px;"><strong>Bild</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:200px;"><strong>Artikelnummer</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:200px;"><strong>Artikelnamn</strong></td>
-                                            <td class="border-bottom border-right uk-text-left" style="width:100px;"><strong>Kopplad mot</strong></td>
-                                            <td class="border-bottom border-right uk-text-right" style="width:30px;"><strong>Pris</strong></td>
-                                            <td class="border-bottom border-right uk-text-right" style="width:40px;"><strong>Ant sålda</strong></td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:60px;" colspan="2"></td>
-                                        </tr>
-                                    </thead>
-                                        <draggable tag="tbody" v-model="extensionList.ItemList" @start="drag = true" @end="drag = false" @change="sortExtensionList" v-bind="dragOptions">
-                                            <tr v-for="extension in extensionList.ItemList" :key="extension.ExtensionId" class="uk-table-middle">
-                                                <td class="border-bottom uk-text-center" style="text-align: center; cursor: pointer;"><span class="handle" uk-icon="icon: table"></span></td>
-                                                <td class="border-bottom border-left border-right uk-text-center">
-                                                    <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
-                                                </td>
-                                                <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
-                                                <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleNumber }}</td>
-                                                <td class="border-bottom border-right uk-width-auto">{{ extension.ArticleName }}</td>
-                                                <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-left">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
-                                                <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
-                                                <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
-                                                <td class="border-bottom border-right uk-text-center">
-                                                    <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
-                                                    <i class="mdi mdi-file-edit md-color-green-600"></i>
-                                                    </div>
-                                                </td>
-                                                <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
-                                                    <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
-                                                        <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
-                                                    </div>
-                                                    <div v-else>
-                                                        <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </draggable>
-                                    <tfoot>
-                                        <tr
-                                            v-for="(summary, index) in extensionList.Summary" :key="index">
-                                            <td class="border-bottom border-right uk-text-right" colspan="6"><strong>{{ summary.Name }}</strong></td>
-                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
-                                            <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!-- EDIT EXTENSION -->
-                            <div v-if="editorVisible && extensionItem" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
-                                <div class="uk-flex uk-flex-between">
-                                    <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera extension</h3>
-                                    <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
-                                </div>
-                                <div>
-                                <!-- BILD -->
-                                    <img :src="extensionItem.ImageName">
-                                </div>
-                                <Alert
-                                    :errorlist="errors"
-                                    message=""
-                                    :alertClass="'uk-alert-danger'"
-                                    id=1
-                                />
-                                <!-- Shop -->
-                                <div v-if="extensionItem.ExtensionTypeId != 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <label class="select-label" for="select-shopOptionsList">Shop</label>
-                                    <client-only>
-                                        <Select2
-                                            id="select-shopOptionsList"
-                                            v-model="shopId"
-                                            :options="shopOptionsList"
-                                            :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true,  'allowClear': true }"
-                                            @select="getExtensionListByExtensionTypeId"
-                                        >
-                                        </Select2>
-                                    </client-only>
+                            <!-- TAB-HEADLINES - EXTENSIONS -->
+                            <ul data-uk-tab>
+                                <li class="uk-active">
+                                    <a href="javascript:void(0)">
+                                        AKTIVA
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        INAKTIVA
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- TAB-CONTENT - FIXTURE -->
+                            <ul class="uk-switcher">
+                                <!-- AKTIVA -->
+                                <li>
+                                    <div v-if="extensionList" class="uk-flex">
+                                        <!-- EXTENSIONS EXTENSIONS -->
+                                        <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
+                                            <table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+                                                <thead>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-text-center" style="max-width:30px;"></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:30px;"><strong>Aktiv</strong></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:50px;"><strong>Bild</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="min-width:200px; width: auto;"><strong>Artikelnummer</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="min-width:200px; width: auto;"><strong>Artikelnamn</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="width:100px;"><strong>Kopplad mot</strong></td>
+                                                        <td class="border-bottom border-right uk-text-right" style="width:30px;"><strong>Pris</strong></td>
+                                                        <td class="border-bottom border-right uk-text-right" style="width:40px;"><strong>Ant sålda</strong></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="max-width:60px;" colspan="2"></td>
+                                                    </tr>
+                                                </thead>
+                                                    <draggable tag="tbody" v-model="extensionList.ItemList" @start="drag = true" @end="drag = false" @change="sortExtensionList" v-bind="dragOptions">
+                                                        <tr v-for="extension in extensionList.ItemList.filter(item => { return item.IsActive == true })" :key="extension.ExtensionId" class="uk-table-middle">
+                                                            <td class="border-bottom uk-text-center" style="text-align: center; cursor: pointer;"><span class="handle" uk-icon="icon: table"></span></td>
+                                                            <td class="border-bottom border-left border-right uk-text-center">
+                                                                <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
+                                                            </td>
+                                                            <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
+                                                            <td class="border-bottom border-right uk-width-auto linkandpointer" @click="$router.push(extension.Url)">{{ extension.ArticleNumber }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto linkandpointer" @click="$router.push(extension.Url)">{{ extension.ArticleName }}</td>
+                                                            <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-left">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
+                                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
+                                                            <td class="border-bottom border-right uk-text-center">
+                                                                <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
+                                                                <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                                </div>
+                                                            </td>
+                                                            <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
+                                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
+                                                                    <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </draggable>
+                                                <tfoot>
+                                                    <tr
+                                                        v-for="(summary, index) in extensionList.Summary" :key="index">
+                                                        <td class="border-bottom border-right uk-text-right" colspan="6"><strong>{{ summary.Name }}</strong></td>
+                                                        <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!-- EDIT EXTENSION AKTIVA -->
+                                        <div v-if="editorVisible && extensionItem" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                                            <div class="uk-flex uk-flex-between">
+                                                <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera extension</h3>
+                                                <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                            </div>
+                                            <div>
+                                            <!-- BILD -->
+                                                <img :src="extensionItem.ImageName">
+                                            </div>
+                                            <Alert
+                                                :errorlist="errors"
+                                                message=""
+                                                :alertClass="'uk-alert-danger'"
+                                                id=1
+                                            />
+                                            <!-- Shop -->
+                                            <div v-if="extensionItem.ExtensionTypeId != 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                <label class="select-label" for="select-shopOptionsList">Shop</label>
+                                                <client-only>
+                                                    <Select2
+                                                        id="select-shopOptionsList"
+                                                        v-model="shopId"
+                                                        :options="shopOptionsList"
+                                                        :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true,  'allowClear': true }"
+                                                        @select="getExtensionListByExtensionTypeId"
+                                                    >
+                                                    </Select2>
+                                                </client-only>
+                                                </div>
+                                            </div>
+                                            <!-- Koppla mot -->
+                                            <div v-if="extensionItem.ExtensionTypeId == 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                <label class="select-label" for="select-MemberPackageList">Koppla mot</label>
+                                                <client-only>
+                                                    <Select2
+                                                        id="select-MemberPackageList"
+                                                        v-model="extensionItem.ParentProductId"
+                                                        :options="extensionItem.MemberPackageList.map(({ ArticleId, ArticleName }) => ({ id: ArticleId, text: ArticleName }))"
+                                                        :settings="{ 'width': '100%', 'placeholder': 'Välj artikel att koppla mot', 'closeOnSelect': true }"
+                                                    >
+                                                    </Select2>
+                                                </client-only>
+                                                </div>
+                                            </div>
+                                            <!-- Artikelnummer -->
+                                            <div class="uk-margin">
+                                                <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(extensionItem.ArticleNumber)">
+                                                    <label>Artikelnummer</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Artikelnamn -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Artikelnamn</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Pris -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Startdatum -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Startdatum</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Slutdatum -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Slutdatum</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Aktiv -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin uk-width-1-1">
+                                                <div>
+                                                    <ul class="uk-list uk-margin-remove-top">
+                                                        <li class="uk-text-small">
+                                                            <PrettyCheck v-model="extensionItem.IsActive" class="p-icon">
+                                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
+                                                            </PrettyCheck>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button v-if="extensionItem.ExtensionId" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
+                                                SPARA/UPPDATERA
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Koppla mot -->
-                                <div v-if="extensionItem.ExtensionTypeId == 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
-                                    <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-                                    <label class="select-label" for="select-MemberPackageList">Koppla mot</label>
-                                    <client-only>
-                                        <Select2
-                                            id="select-MemberPackageList"
-                                            v-model="extensionItem.ParentProductId"
-                                            :options="extensionItem.MemberPackageList.map(({ ArticleId, ArticleName }) => ({ id: ArticleId, text: ArticleName }))"
-                                            :settings="{ 'width': '100%', 'placeholder': 'Välj artikel att koppla mot', 'closeOnSelect': true }"
-                                        >
-                                        </Select2>
-                                    </client-only>
+                                </li>
+                                <!-- INAKTIVA -->
+                                <li>
+                                    <div v-if="extensionList" class="uk-flex">
+                                        <!-- EXTENSIONS EXTENSIONS -->
+                                        <div class="uk-width-1-1 extensionlist-container uk-overflow-auto" :class="{'uk-width-2-3': editorVisible }">
+                                            <table class="border-all extensionlist uk-card uk-box-shadow-small uk-margin-remove-bottom uk-table uk-table-small uk-table-middle uk-text-small">
+                                                <thead>
+                                                    <tr>
+                                                        <td class="border-bottom border-right uk-text-center" style="max-width:30px;"></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:30px;"><strong>Aktiv</strong></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:50px;"><strong>Bild</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="min-width:200px; width: auto;"><strong>Artikelnummer</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="min-width:200px; width: auto;"><strong>Artikelnamn</strong></td>
+                                                        <td class="border-bottom border-right uk-text-left" style="width:100px;"><strong>Kopplad mot</strong></td>
+                                                        <td class="border-bottom border-right uk-text-right" style="width:30px;"><strong>Pris</strong></td>
+                                                        <td class="border-bottom border-right uk-text-right" style="width:40px;"><strong>Ant sålda</strong></td>
+                                                        <td class="border-bottom border-right uk-text-center" style="max-width:60px;" colspan="2"></td>
+                                                    </tr>
+                                                </thead>
+                                                    <draggable tag="tbody" v-model="extensionList.ItemList" @start="drag = true" @end="drag = false" @change="sortExtensionList" v-bind="dragOptions">
+                                                        <tr v-for="extension in extensionList.ItemList.filter(item => { return item.IsActive == false })" :key="extension.ExtensionId" class="uk-table-middle">
+                                                            <td class="border-bottom uk-text-center" style="text-align: center; cursor: pointer;"><span class="handle" uk-icon="icon: table"></span></td>
+                                                            <td class="border-bottom border-left border-right uk-text-center">
+                                                                <i v-if="extension.IsActive" class="mdi mdi-checkbox-marked-circle md-color-green-600"></i>
+                                                            </td>
+                                                            <td class="border-bottom border-right uk-width-auto"><img class="uk-preserve-width" :src="extension.ImageName"></td>
+                                                            <td class="border-bottom border-right uk-width-auto linkandpointer" @click="$router.push(extension.Url)">{{ extension.ArticleNumber }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto linkandpointer" @click="$router.push(extension.Url)">{{ extension.ArticleName }}</td>
+                                                            <td v-if="extensionTypeId == 3" class="border-bottom border-right uk-width-auto uk-text-left">{{ shopOptionsList.find( ({ id }) => id == extension.ShopId).text }}</td>
+                                                            <td v-else class="border-bottom border-right uk-width-auto uk-text-left">{{ extension.ParentName }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ExtensionPrice }}</td>
+                                                            <td class="border-bottom border-right uk-width-auto uk-text-right">{{ extension.ItemsSold }}</td>
+                                                            <td class="border-bottom border-right uk-text-center">
+                                                                <div class="editicon" @click="getExtensionToEdit(extension.ExtensionId)"> <!-- EDITERA EXTENSION -->
+                                                                <i class="mdi mdi-file-edit md-color-green-600"></i>
+                                                                </div>
+                                                            </td>
+                                                            <td class="border-bottom border-right uk-text-center"> <!-- TA BORT EXTENSION -->
+                                                                <div v-if="extension.IsDeleteable" class="wastebasket" @click="deleteExtension(extension.ExtensionId, extension.ShopId)">
+                                                                    <i class="mdi mdi-delete-forever md-color-red-600 sc-icon-28"></i>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <i class="mdi mdi-delete-off md-color-gray-600 sc-icon-28"></i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </draggable>
+                                                <tfoot>
+                                                    <tr
+                                                        v-for="(summary, index) in extensionList.Summary" :key="index">
+                                                        <td class="border-bottom border-right uk-text-right" colspan="6"><strong>{{ summary.Name }}</strong></td>
+                                                        <td class="border-bottom border-right uk-width-auto uk-text-right">{{ summary.ItemsSold }}</td>
+                                                        <td class="border-bottom border-right uk-text-center" style="width:10%;" colspan="2"></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!-- EDIT EXTENSION AKTIVA -->
+                                        <div v-if="editorVisible && extensionItem" :class="{'uk-width-1-3': editorVisible }" class="uk-card uk-padding-small uk-margin-medium-left md-bg-grey-200">
+                                            <div class="uk-flex uk-flex-between">
+                                                <h3 class="uk-card-title uk-padding-remove-vertical uk-padding-remove-horizontal">Skapa/Editera extension</h3>
+                                                <span class="closeicon" @click="editorVisible = false"><i class="mdi mdi-close-circle md-color-grey-600"></i></span>
+                                            </div>
+                                            <div>
+                                            <!-- BILD -->
+                                                <img :src="extensionItem.ImageName">
+                                            </div>
+                                            <Alert
+                                                :errorlist="errors"
+                                                message=""
+                                                :alertClass="'uk-alert-danger'"
+                                                id=1
+                                            />
+                                            <!-- Shop -->
+                                            <div v-if="extensionItem.ExtensionTypeId != 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                <label class="select-label" for="select-shopOptionsList">Shop</label>
+                                                <client-only>
+                                                    <Select2
+                                                        id="select-shopOptionsList"
+                                                        v-model="shopId"
+                                                        :options="shopOptionsList"
+                                                        :settings="{ 'width': '100%', 'placeholder': 'Välj shop', 'closeOnSelect': true,  'allowClear': true }"
+                                                        @select="getExtensionListByExtensionTypeId"
+                                                    >
+                                                    </Select2>
+                                                </client-only>
+                                                </div>
+                                            </div>
+                                            <!-- Koppla mot -->
+                                            <div v-if="extensionItem.ExtensionTypeId == 1" class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
+                                                <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+                                                <label class="select-label" for="select-MemberPackageList">Koppla mot</label>
+                                                <client-only>
+                                                    <Select2
+                                                        id="select-MemberPackageList"
+                                                        v-model="extensionItem.ParentProductId"
+                                                        :options="extensionItem.MemberPackageList.map(({ ArticleId, ArticleName }) => ({ id: ArticleId, text: ArticleName }))"
+                                                        :settings="{ 'width': '100%', 'placeholder': 'Välj artikel att koppla mot', 'closeOnSelect': true }"
+                                                    >
+                                                    </Select2>
+                                                </client-only>
+                                                </div>
+                                            </div>
+                                            <!-- Artikelnummer -->
+                                            <div class="uk-margin">
+                                                <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(extensionItem.ArticleNumber)">
+                                                    <label>Artikelnummer</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Artikelnamn -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Artikelnamn</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Pris -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Pris</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Startdatum -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Startdatum</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Slutdatum -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin">
+                                                <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                    <label>Slutdatum</label>
+                                                </ScInput>
+                                            </div>
+                                            <!-- Aktiv -->
+                                            <div v-if="extensionItem.ExtensionId" class="uk-margin uk-width-1-1">
+                                                <div>
+                                                    <ul class="uk-list uk-margin-remove-top">
+                                                        <li class="uk-text-small">
+                                                            <PrettyCheck v-model="extensionItem.IsActive" class="p-icon">
+                                                                <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
+                                                            </PrettyCheck>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <button v-if="extensionItem.ExtensionId" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
+                                                SPARA/UPPDATERA
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Artikelnummer -->
-                                <div class="uk-margin">
-                                    <ScInput v-model="extensionItem.ArticleNumber" state="fixed" mode="outline" extra-classes="uk-form-small" v-on:blur="getArticleDetailsByArticleNumber(extensionItem.ArticleNumber)">
-                                        <label>Artikelnummer</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Artikelnamn -->
-                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
-                                    <ScInput v-model="extensionItem.ArticleName" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Artikelnamn</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Pris -->
-                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
-                                    <ScInput v-model="extensionItem.ExtensionPrice" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Pris</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Startdatum -->
-                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
-                                    <ScInput v-model="extensionItem.StartDate" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Startdatum</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Slutdatum -->
-                                <div v-if="extensionItem.ExtensionId" class="uk-margin">
-                                    <ScInput v-model="extensionItem.ValidThru" v-flatpickr="{ 'locale': Swedish }" state="fixed" mode="outline" extra-classes="uk-form-small">
-                                        <label>Slutdatum</label>
-                                    </ScInput>
-                                </div>
-                                <!-- Aktiv -->
-                                <div v-if="extensionItem.ExtensionId" class="uk-margin uk-width-1-1">
-                                    <div>
-                                        <ul class="uk-list uk-margin-remove-top">
-                                            <li class="uk-text-small">
-                                                <PrettyCheck v-model="extensionItem.IsActive" class="p-icon">
-                                                    <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Aktiv?</span>
-                                                </PrettyCheck>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <button v-if="extensionItem.ExtensionId" v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateExtension()">
-                                    SPARA/UPPDATERA
-                                </button>
-                            </div>
-                        </div>
+                                </li>
+                            </ul>
                     </ScCardBody>
                 </ScCard>
             </div>
@@ -238,7 +413,7 @@ export default {
             extensionId: null,
             extensionTypeId: null,
             extensionTypeOptionsList: null,
-            extensionList: [],
+            extensionList: null,
             extensionItem: null,
             editorVisible: false,
             isNewExtension: false,
@@ -252,7 +427,6 @@ export default {
     },
 	watch: {
 		extensionTypeId: function () {
-			this.extensionList = []
 			this.getExtensionListByExtensionTypeId(this.extensionTypeId, this.shopId)
 		},
 		shopId: function () {
@@ -270,16 +444,11 @@ export default {
             }
         },
     },
-	mounted () {
-        this.getExtensionTypeList()
-    },
     methods: {
 		async getExtensionListByExtensionTypeId() {
             let _this = this
 			_this.$store.dispatch('setBusyOn')
-            _this.extensionList = []
-            // !this.isNewExtension ? this.extensionItem = null : null
-            // !this.isNewExtension ? this.editorVisible = false : null
+            _this.extensionList = null
 			await this.$axios.$get('/webapi/Extension/GetExtensionList?extensionTypeId=' + _this.extensionTypeId + '&shopId=' + _this.shopId )
 			.then( extensionlist => {
 				_this.extensionList = extensionlist
@@ -287,17 +456,6 @@ export default {
 			})
 			.catch(function (error) {
                 console.log(error)
-			})
-    	},
-		async getExtensionTypeList() {
-			this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
-			.then( extensiontypelist => {
-				this.extensionTypeOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
-				this.$store.dispatch('setBusyOff')
-			})
-			.catch(function (error) {
-				console.log(error)
 			})
     	},
         async getExtensionToEdit(extensionId) {
@@ -501,6 +659,21 @@ export default {
 			})
 		},
     },
+    async fetch () {
+        try {
+			this.$store.dispatch('setBusyOn')
+			await this.$axios.$get('/webapi/Metadata/GetExtensionTypeList')
+			.then( extensiontypelist => {
+				this.extensionTypeOptionsList = extensiontypelist.map(({ Id, Name }) => ({ id: Id, text: Name }))
+				this.$store.dispatch('setBusyOff')
+			})
+			.catch(function (error) {
+				console.log(error)
+			})
+        } catch (err) {
+            console.log(err);
+        }
+    },
 }
 </script>
 
@@ -535,4 +708,9 @@ export default {
         opacity: 0.5;
         background: #c8ebfb;
     }
+    .linkandpointer {
+        cursor: pointer;
+        color: #61AFEF;
+    }
+
 </style>
