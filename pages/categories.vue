@@ -81,6 +81,12 @@
 													@updateMenuImage="getMenuItemById(editMenuItem.CategoryId)"
 													/>
 												</div>
+                                                <!-- Id -->
+                                                <div class="uk-margin">
+                                                    <ScInput v-model="editMenuItem.CategoryId" state="fixed" mode="outline" extra-classes="uk-form-small" disabled>
+                                                        <label>Id</label>
+                                                    </ScInput>
+                                                </div>
                                                 <!-- Sortering -->
                                                 <div class="uk-margin-medium-bottom uk-margin-medium-top uk-width-1-1">
                                                     <div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
