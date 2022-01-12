@@ -167,9 +167,8 @@
                                                         </div>
                                                     </div>
                                                     <hr v-if="index+1 < editMenuItem.SeoList.length">
-                                                    <button class="uk-button uk-button-primary uk-margin-medium-top" @click="updateMenuItem">UPPDATERA</button>
-
                                                 </div>
+                                                <button class="uk-button uk-button-primary uk-margin-medium-top" @click="updateMenuItem">UPPDATERA</button>
                                             </li>
                                             <li>
                                                 <!-- ARTIKLAR / DRAG & DROP -->
@@ -294,7 +293,7 @@ export default {
         async getMenuByShopId() {
 			let _this = this
             _this.currentMenu = []
-            _this.editMenuItem = null
+            // _this.editMenuItem = null
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Menu/GetMenuByShopId?shopId=' + _this.shopId)
 			.then(function (menu) {
