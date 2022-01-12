@@ -91,7 +91,6 @@
                                                             v-model="editMenuItem.DefaultSorting"
                                                             :options="editMenuItem.SortingList.map(({ Id, Name }) => ({ id: Id, text: Name }))"
                                                             :settings="{ 'width': '100%', 'placeholder': 'Välj sorteringsordning', 'closeOnSelect': true }"
-                                                            @select="updateMenuItem"
                                                         >
                                                         </Select2>
                                                     </client-only>
@@ -102,7 +101,7 @@
                                                     <div class="">
                                                         <ul class="uk-list uk-margin-remove-top">
                                                             <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
-                                                                <PrettyCheck v-model="editMenuItem.IsHiddenInPublic" class="p-icon" @change="updateMenuItem()">
+                                                                <PrettyCheck v-model="editMenuItem.IsHiddenInPublic" class="p-icon">
                                                                     <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dold publikt</span>
                                                                 </PrettyCheck>
                                                             </li>
@@ -115,43 +114,43 @@
                                                     <img :src="seoItem.FlagImage"> {{ seoItem.Language }}
                                                     <!-- Namn -->
                                                     <div class="uk-margin">
-                                                        <ScInput v-model="seoItem.Name" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                        <ScInput v-model="seoItem.Name" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                             <label>Namn</label>
                                                         </ScInput>
                                                     </div>
                                                     <!-- Meta-title -->
                                                     <div class="uk-margin">
-                                                        <ScTextarea v-model="seoItem.MetaTitle" :rows="2" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                        <ScTextarea v-model="seoItem.MetaTitle" :rows="2" placeholder="" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-small">
                                                             <label>Meta-title</label>
                                                         </ScTextarea>
                                                     </div>
                                                     <!-- Meta-description -->
                                                     <div class="uk-margin">
-                                                        <ScTextarea v-model="seoItem.MetaDescription" :rows="2" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                        <ScTextarea v-model="seoItem.MetaDescription" :rows="2" placeholder="" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-small">
                                                             <label>Meta-description</label>
                                                         </ScTextarea>
                                                     </div>
                                                     <!-- Meta-keywords -->
                                                     <div class="uk-margin">
-                                                        <ScInput v-model="seoItem.MetaKeywords" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                        <ScInput v-model="seoItem.MetaKeywords" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                             <label>Meta-keywords</label>
                                                         </ScInput>
                                                     </div>
                                                     <!-- SEO-titel -->
                                                     <div class="uk-margin">
-                                                        <ScInput v-model="seoItem.SeoTitle" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                        <ScInput v-model="seoItem.SeoTitle" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                             <label>SEO-titel</label>
                                                         </ScInput>
                                                     </div>
                                                     <!-- SEO-subtitel -->
                                                     <div class="uk-margin">
-                                                        <ScInput v-model="seoItem.SeoSubTitle" state="fixed" mode="outline" v-on:blur="updateMenuItem()" extra-classes="uk-form-small">
+                                                        <ScInput v-model="seoItem.SeoSubTitle" state="fixed" mode="outline" extra-classes="uk-form-small">
                                                             <label>SEO-subtitel</label>
                                                         </ScInput>
                                                     </div>
                                                     <!-- SEO-beskrivning -->
                                                     <div class="uk-margin">
-                                                        <ScTextarea v-model="seoItem.SeoText" :rows="6" placeholder="" state="fixed" mode="outline" @blur="updateMenuItem()" extra-classes="uk-form-small uk-text-small">
+                                                        <ScTextarea v-model="seoItem.SeoText" :rows="6" placeholder="" state="fixed" mode="outline" extra-classes="uk-form-small uk-text-small">
                                                             <label>SEO-beskrivning</label>
                                                         </ScTextarea>
                                                     </div>
@@ -160,7 +159,7 @@
                                                         <div class="">
                                                             <ul class="uk-list uk-margin-remove-top">
                                                                 <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
-                                                                    <PrettyCheck v-model="seoItem.IsHidden" class="p-icon" @change="updateMenuItem()">
+                                                                    <PrettyCheck v-model="seoItem.IsHidden" class="p-icon">
                                                                         <i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">Dölj</span>
                                                                     </PrettyCheck>
                                                                 </li>
@@ -168,6 +167,8 @@
                                                         </div>
                                                     </div>
                                                     <hr v-if="index+1 < editMenuItem.SeoList.length">
+                                                    <button class="uk-button uk-button-primary uk-margin-medium-top" @click="updateMenuItem">UPPDATERA</button>
+
                                                 </div>
                                             </li>
                                             <li>
