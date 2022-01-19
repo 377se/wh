@@ -48,6 +48,7 @@
                                                 height="50"/>
                                         </nuxt-link>
                                     </td>
+                                    
                                     <td>
                                         <nuxt-link
                                             :to="article.Url"
