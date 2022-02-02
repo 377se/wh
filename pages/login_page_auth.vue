@@ -95,7 +95,7 @@ export default {
         let logmein = await this.$axios.post('/webapi/Login/PostLogin', {
           UserName: this.form.email,
           Password: this.form.password,
-          Domain: window.location.hostname
+          Domain: location.hostname
         })
         this.isSubmitting=false
         if(logmein.data.ErrorList){

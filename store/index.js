@@ -172,7 +172,7 @@ export const actions = {
 		return this.$axios.$post('/webapi/Logout/PostLogout')
 		.then(() => {
 			commit('setIsLoggedIn', false)
-			this.$cookies.remove('wh-377', {domain: window.location.hostname})
+			this.$cookies.remove('wh-377', {domain: location.hostname})
 			return true
 		})
 		.catch(function (error) {
