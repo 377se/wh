@@ -5,9 +5,9 @@
 	"author": "tzd",
 	"private": true,
 	"engines": {
-		"node": "16.13.2"
-	  },
-	"scripts": {
+		"node": "14.x"
+	},
+		"scripts": {
 		"dev": "nuxt",
 		"build": "nuxt build",
 		"start": "nuxt start",
