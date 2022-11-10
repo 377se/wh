@@ -60,6 +60,7 @@
           </div>
       </div>
       <div class="orderdetails">
+          <div class="shippingmethod">{{ deliveryNote.OrderDetails.SupplierName }}</div>
           <div class="header">{{ deliveryNote.Dictionary.Title }}</div>
           <table class="meta">
           <tbody>
@@ -325,6 +326,13 @@ table td,
 table th {
   border: 0;
   padding: 10px;
+}
+
+.shippingmethod{
+  font-weight:700;
+  color:#000;
+  text-transform:uppercase;
+  text-align:right;
 }
 
 .header {

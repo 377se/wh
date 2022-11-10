@@ -9,7 +9,7 @@
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
                         <img :src="this.orderInfo.ImageName" alt="Produktbild" class="uk-margin-medium-right">
-                        <h1 class="sc-top-bar-title uk-display-inline">Order # {{ this.orderInfo.OrderId }}</h1>
+                        <h1 class="sc-top-bar-title uk-display-inline">Order # {{ this.orderInfo.OrderId }} - <span class="uk-label uk-label-success">{{ orderInfo.SupplierName }}</span></h1>
                     </div>
                 </div>
             </div>
@@ -48,6 +48,7 @@
                                                 <ScCardTitle>
                                                     Orderinformation
                                                 </ScCardTitle>
+                                                <div class="uk-label uk-label-success">{{ orderInfo.SupplierName }}</div>
                                             </div>
                                             <div class="uk-padding-small uk-padding-remove-horizontal">
                                                 <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
@@ -118,7 +119,11 @@
                                                     <tr>
                                                         <td class="border-bottom border-right uk-width-1-5"><strong>Trackingnummer</strong></td>
                                                         <td class="border-bottom uk-width-4-5">
-                                                            <div class="uk-height-1-1 uk-flex uk-flex-middle"><a :href="orderInfo.TrackingNumber" target="_new">Visa tracking <i class="mdi mdi-open-in-new sc-icon-18"></i></a>
+                                                            <div class="uk-height-1-1 uk-flex uk-flex-middle">
+                                                                <a  
+                                                                    :href="orderInfo.TrackingNumber" target="_new">
+                                                                    Visa tracking <i class="mdi mdi-open-in-new sc-icon-18"></i>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                     </tr>
