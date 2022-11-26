@@ -229,7 +229,7 @@ module.exports = {
 	  },
 	  proxy: {
 		'/webapi': {
-		  target: process.env.NODE_ENV !== 'production'?'https://beta-api.377.se':'https://api.377.se'
+		  target: process.env.NODE_ENV !== 'production'?'https://api.377.se':'https://api.377.se'
 		}
 	  },
 	/*
