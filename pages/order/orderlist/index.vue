@@ -117,7 +117,7 @@
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.ContainsPreorder" uk-tooltip="title: Preorder"><i class="mdi mdi-pause-circle sc-icon-18 md-color-indigo-600"></i></span></td>
                                         <td class="border-top border-left" style="width: 30px; padding: 0; text-align: center;"><span v-if="order.IsBackorder" uk-tooltip="title: Restnoterad"><i class="mdi mdi-clock sc-icon-18 md-color-orange-600"></i></span></td>
                                         <td class="border-top border-left" style="text-align: left; width: 35px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
-                                        <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}<br><div class="uk-label uk-label-success">{{ order.SupplierName }}</div></td>
+                                        <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}<br><div class="uk-label" :class="{'uk-label-success':!order.SupplierName.includes('Hämta'),'uk-label-warning':order.SupplierName.includes('Hämta')}">{{ order.SupplierName }}</div></td>
                                         <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}</td>
                                         <td class="border-top border-left" style="width: 70px;">{{ order.Currency }}</td>
                                         <td class="border-top border-left" style="width: 70px;">{{ order.Voucher }}</td>

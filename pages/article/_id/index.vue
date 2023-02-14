@@ -110,6 +110,12 @@
 															<label>Publiceringsdatum</label>
 														</ScInput>
 													</div>
+													<!-- Publiceringsdatum -->
+													<div class="uk-margin">
+														<PrettyCheck v-model="articleDetails.OnDemand" class="p-icon">
+															<i slot="extra" class="icon mdi mdi-check"></i><span class="uk-text-small">On demand? (klickas i om produkten produceras först efter beställning)</span>
+														</PrettyCheck>
+													</div>
 													<!-- Lag -->
 													<div class="uk-margin uk-width-1-1">
 														<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
