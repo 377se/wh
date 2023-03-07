@@ -517,7 +517,7 @@
 																		v-model="articleStatusList[5].StatusId"
 																		:options="supporterPrylarArticleStatusList"
 																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(3)"
+																		@select="updateStatusId(5)"
 																	>
 																		<option v-if="isLoading = false" :value="articleStatusList[5].StatusId">{{ supporterPrylarArticleStatusList.find(x => x.id === articleStatusList[5].StatusId).text }}</option>
 																	</Select2>
