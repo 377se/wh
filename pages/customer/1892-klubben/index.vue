@@ -8,7 +8,7 @@
             <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                 <div class="uk-flex-1">
                     <h1 class="sc-top-bar-title">
-                        Kundlista - Företag
+                        1892-klubben
                     </h1>
                 </div>
             </div>
