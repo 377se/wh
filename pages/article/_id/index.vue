@@ -506,6 +506,26 @@
 															<i v-if="articleStatusList[4].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 														</div>
 													</div>
+													<!-- StreetWeek -->
+													<div class="uk-margin uk-width-1-1">
+														<div class="uk-width-1-1 uk-flex uk-flex-middle">
+															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
+																<label class="select-label" for="select-status-gameday">StreetWeek</label>
+																<client-only>
+																	<Select2
+																		id="select-status-gameday"
+																		v-model="articleStatusList[5].StatusId"
+																		:options="supporterPrylarArticleStatusList"
+																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
+																		@select="updateStatusId(3)"
+																	>
+																		<option v-if="isLoading = false" :value="articleStatusList[5].StatusId">{{ supporterPrylarArticleStatusList.find(x => x.id === articleStatusList[5].StatusId).text }}</option>
+																	</Select2>
+																</client-only>
+															</div>
+															<i v-if="articleStatusList[5].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+														</div>
+													</div>
 												</ScCardBody>
 											</ScCardContent>
 										</ScCard>
