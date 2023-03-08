@@ -407,123 +407,24 @@
 											<ScCardContent>
 												<ScCardBody>
 												<!-- Supporters Place -->
-													<div class="uk-margin uk-width-1-1">
+													<div
+														class="uk-margin uk-width-1-1"
+														v-for="articlestatus, index in articleStatusList">
 														<div class="uk-width-1-1 uk-flex uk-flex-middle">
 															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-supporters-place">Supporters Place</label>
+																<label class="select-label" :for="'select-status-'+articlestatus.ShopId">{{ articlestatus.ShopName }}</label>
 																<client-only>
 																		<Select2
-																			id="select-status-supporters-place"
-																			v-model="articleStatusList[0].StatusId"
+																			:id="'select-status-'+articlestatus.ShopId"
+																			v-model="articlestatus.StatusId"
 																			:options="supportersPlaceArticleStatusList"
 																			:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																			@select="updateStatusId(0)"
+																			@select="updateStatusId(index)"
 																		>
-																			<option v-if="isLoading = false" :value="articleStatusList[0].StatusId">{{ supportersPlaceArticleStatusList.find(x => x.id === articleStatusList[0].StatusId).text }}</option>
 																		</Select2>
 																</client-only>
 															</div>
-															<i v-if="articleStatusList[0].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
-														</div>
-													</div>
-												<!-- Sam Dodds -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="uk-width-1-1 uk-flex uk-flex-middle">
-															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-sam-dodds">Sam Dodds</label>
-																<client-only>
-																	<Select2
-																		id="select-status-sam-dodds"
-																		v-model="articleStatusList[1].StatusId"
-																		:options="samDoddsArticleStatusList"
-																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(1)"
-																	>
-																		<option v-if="isLoading = false" :value="articleStatusList[1].StatusId">{{ samDoddsArticleStatusList.find(x => x.id === articleStatusList[1].StatusId).text }}</option>
-																	</Select2>
-																</client-only>
-															</div>
-															<i v-if="articleStatusList[1].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
-														</div>
-													</div>
-												<!-- KopShop -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="uk-width-1-1 uk-flex uk-flex-middle">
-															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-kop-shop">KopShop</label>
-																<client-only>
-																	<Select2
-																		id="select-status-kop-shop"
-																		v-model="articleStatusList[2].StatusId"
-																		:options="kopShopArticleStatusList"
-																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(2)"
-																	>
-																		<option v-if="isLoading = false" :value="articleStatusList[2].StatusId">{{ kopShopArticleStatusList.find(x => x.id === articleStatusList[2].StatusId).text }}</option>
-																	</Select2>
-																</client-only>
-															</div>
-															<i v-if="articleStatusList[2].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
-														</div>
-													</div>
-												<!-- Gameday -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="uk-width-1-1 uk-flex uk-flex-middle">
-															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-gameday">Gameday</label>
-																<client-only>
-																	<Select2
-																		id="select-status-gameday"
-																		v-model="articleStatusList[3].StatusId"
-																		:options="supporterPrylarArticleStatusList"
-																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(3)"
-																	>
-																		<option v-if="isLoading = false" :value="articleStatusList[3].StatusId">{{ supporterPrylarArticleStatusList.find(x => x.id === articleStatusList[3].StatusId).text }}</option>
-																	</Select2>
-																</client-only>
-															</div>
-															<i v-if="articleStatusList[3].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
-														</div>
-													</div>
-												<!-- Supporterprylar -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="uk-width-1-1 uk-flex uk-flex-middle">
-															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-supporterprylar">Supporterprylar</label>
-																<client-only>
-																	<Select2
-																		id="select-status-supporterprylar"
-																		v-model="articleStatusList[4].StatusId"
-																		:options="gameDayArticleStatusList"
-																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(4)"
-																	>
-																		<option v-if="isLoading = false" :value="articleStatusList[4].StatusId">{{ gameDayArticleStatusList.find(x => x.id === articleStatusList[4].StatusId).text }}</option>
-																	</Select2>
-																</client-only>
-															</div>
-															<i v-if="articleStatusList[4].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
-														</div>
-													</div>
-													<!-- StreetWeek -->
-													<div class="uk-margin uk-width-1-1">
-														<div class="uk-width-1-1 uk-flex uk-flex-middle">
-															<div class="sc-input-wrapper sc-input-wrapper-outline sc-input-filled">
-																<label class="select-label" for="select-status-gameday">StreetWeek</label>
-																<client-only>
-																	<Select2
-																		id="select-status-gameday"
-																		v-model="articleStatusList[5].StatusId"
-																		:options="supporterPrylarArticleStatusList"
-																		:settings="{ 'width': '100%', 'placeholder': 'Välj status...', 'closeOnSelect': true }"
-																		@select="updateStatusId(5)"
-																	>
-																		<option v-if="isLoading = false" :value="articleStatusList[5].StatusId">{{ supporterPrylarArticleStatusList.find(x => x.id === articleStatusList[5].StatusId).text }}</option>
-																	</Select2>
-																</client-only>
-															</div>
-															<i v-if="articleStatusList[5].StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
+															<i v-if="articlestatus.StatusId == 1" class="uk-margin-small-left mdi mdi mdi-checkbox-marked md-color-green-600 sc-icon-18"></i>
 														</div>
 													</div>
 												</ScCardBody>
