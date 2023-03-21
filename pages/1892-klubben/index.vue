@@ -276,7 +276,7 @@
             this.$store.dispatch('setBusyOn')
             try {
                 const [ businesslist ] = await Promise.all([
-                    this.$axios.$get('/webapi/companyinvoice/GetList'),
+                    this.$axios.$get('/webapi/companyinvoice/GetAll'),
                 ])
                 this.businessList = businesslist
                 this.$store.dispatch('setBusyOff')
