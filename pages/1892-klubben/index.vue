@@ -72,10 +72,10 @@
         <div id="edit-1892-modal" class="uk-modal-full uk-modal uk-overflow-hidden" data-uk-modal>
   
           <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
-              <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:0px 0 0 12px; padding:16px 0 0 0;">Redigera 1892-medlem</h4>
+              <h4 class="uk-modal-title" style="color:#000; line-height:1; margin:0px 0 0 12px; padding:16px 0 0 0;">Redigera 1892-medlem</h4>
               <button
                   class="uk-offcanvas-close uk-icon uk-close"
-                  style="color:#fff;top:14px;right:12px;"
+                  style="color:#000;top:14px;right:12px;"
                   type="button"
                   uk-close
                   uk-toggle="target: #edit-1892-modal"/>
@@ -276,7 +276,7 @@
             this.$store.dispatch('setBusyOn')
             try {
                 const [ businesslist ] = await Promise.all([
-                    this.$axios.$get('/webapi/companyinvoice/GetAll'),
+                    this.$axios.$get('/webapi/CompanyInvoice/GetAll'),
                 ])
                 this.businessList = businesslist
                 this.$store.dispatch('setBusyOff')
