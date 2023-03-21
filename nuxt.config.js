@@ -230,6 +230,9 @@ module.exports = {
 	  proxy: {
 		'/webapi': {
 		  target: process.env.NODE_ENV !== 'production'?'https://api.377.se':'https://api.377.se'
+		},
+		'/webapi-lfc': {
+			target: process.env.NODE_ENV !== 'production'?'https://api-crm.lfc.se':'https://api-crm.lfc.se'
 		}
 	  },
 	/*

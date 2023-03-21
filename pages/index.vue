@@ -27,6 +27,7 @@
 			<!-- TOP-AREA FULL WIDTH -->
 
 				<!-- FÖRSÄLJINGSGRAF TOTAL -->
+				<!--
 				<ScCard v-if="monthlySalesLatestYears != null" class="uk-margin-medium-bottom">
 					<ScCardHeader separator>
 						<div class="uk-flex uk-flex-middle">
@@ -55,6 +56,7 @@
 						<ChartJsLine :key="render" chart-id="cjsLineChartDataTotal" :data="cjsLineChartDataTotal" :options="lineChart.options"></ChartJsLine>
 					</ScCardBody>
 				</ScCard>
+				-->
 
 				<!-- DASHBOARD - STATISTIK -->
 				<ScCard v-if="dashBoard" class="uk-margin-medium-bottom">
