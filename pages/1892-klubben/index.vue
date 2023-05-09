@@ -51,14 +51,17 @@
                                 }"
                             >
                                 <template slot="table-row" slot-scope="props">
-                                    <span v-if="props.column.field === 'CompanyInvoiceId'">
-                                        {{ props.row.CompanyInvoiceId }}
+                                    <span v-if="props.column.field === 'companyInvoiceId'">
+                                        {{ props.row.companyInvoiceId }}
                                     </span>
-                                    <span v-if="props.column.field === 'Name'">
-                                        <div class="cursor-pointer link-color" @click="get1892Details(props.row.CompanyInvoiceId)">{{ props.row.Name }}</div>
+                                    <span v-if="props.column.field === 'name'">
+                                        <div class="cursor-pointer link-color" @click="get1892Details(props.row.companyInvoiceId)">{{ props.row.name }}</div>
                                     </span>
-                                    <span v-else-if="props.column.field === 'CreatedDate'">
-                                        {{ props.row.CreatedDate }}
+                                    <span v-else-if="props.column.field === 'createdDate'">
+                                        {{ props.row.createdDate }}
+                                    </span>
+                                    <span v-else-if="props.column.field === 'payment'">
+                                        {{ props.row.payment }}
                                     </span>
                                 </template>
                             </VueGoodTable>
@@ -72,7 +75,7 @@
         <div id="edit-1892-modal" class="uk-modal-full uk-modal uk-overflow-hidden" data-uk-modal>
   
           <div class="uk-modal-header basket-ribbon uk-animation-slide-right">
-              <h4 class="uk-modal-title" style="color:#000; line-height:1; margin:0px 0 0 12px; padding:16px 0 0 0;">Redigera 1892-medlem</h4>
+              <h4 class="uk-modal-title" style="color:#fff; line-height:1; margin:0px 0 0 12px; padding:16px 0 0 0;">Redigera 1892-medlem</h4>
               <button
                   class="uk-offcanvas-close uk-icon uk-close"
                   style="color:#000;top:14px;right:12px;"
@@ -97,7 +100,104 @@
   
                     <!-- REDIGERA 1892-MEDLEM -->
   
-  
+                    <!-- Id -->
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.companyInvoiceId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                            <label>Id</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.organizationNumber" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                            <label>Organisationsnummer</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.name" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Namn</label>
+                        </ScInput>
+                    </div>
+                    <div
+                      v-if="current1892Object.companyLogo"
+                      class="uk-width-1-1">
+                      <img
+                          :src="'https://res.cloudinary.com/supportersplace/image/upload/w_250,fl_lossy,f_auto,fl_progressive/files_lfc_nu/lfc-company-logos/'+current1892Object.companyLogo" />
+                    </div>
+                    <div class="uk-width-1-1">
+                        <ScInput state="fixed" mode="outline"  :placeholder="file ? file.name : 'Du har inte valt en fil!'" extra-classes="uk-form-small" disabled>
+                            <label>Logotyp</label>
+                        </ScInput>
+                    </div>
+                    <form class="uk-width-1-1">
+                        <fieldset class="uk-fieldset">
+                            <div class="uk-margin uk-flex">
+                                <div uk-form-custom>
+                                    <div class="uk-flex uk-flex-nowrap">
+                                        <input ref="file" type="file" id="file" @change="updateImage()"/>
+                                    </div>
+                                    <button class="sc-button sc-button sc-button-mini uk-margin-small-left" type="button" tabindex="-1">VÄLJ FIL</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="uploadImage()">
+                        UPPDATERA LOGO
+                    </button>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.address" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Adress</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.postalCode" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Postnummer</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.city" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Stad</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.contactPerson" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Kontaktperson</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.phone" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Telefon</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.email" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Email</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.website" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Website</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                      <label>Företagsinformation</label>
+                      <client-only>
+                      <Redactorx v-model="current1892Object.companyInformation" :config="configOptions" />
+                      </client-only>
+                    </div>
+                    <div class="uk-margin">
+                      <ScTextarea :rows="3" v-model="current1892Object.extra" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
+                            <label>Extra</label>
+                      </ScTextarea>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.createdDate" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Skapad</label>
+                        </ScInput>
+                    </div>
+                    <div class="uk-margin">
+                        <ScInput v-model="current1892Object.expirationDate" state="fixed" mode="outline"  extra-classes="uk-form-small">
+                            <label>Expiration Date</label>
+                        </ScInput>
+                    </div>
                     <Alert
                         :errorlist="this.errors ? this.errors : null"
                         :alertClass="'uk-alert-danger'"
@@ -108,76 +208,9 @@
                         :alertClass="'uk-alert-success'"
                         id=2
                     />
-                    <!-- Image 
-                    <div class="uk-margin">
-                        <img :src="editedAdmin.ImageName"/>
-                        <div class="uk-padding-small uk-padding-remove-horizontal">
-                            <FileUpload
-                            :adminId="editedAdmin.AdminId"
-                            @updateAvatar="getAdminDetails(editedAdmin.AdminId)"
-                            />
-                        </div>
-                    </div>
-                    -->
-                    <!-- Id -->
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.CompanyInvoiceId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Id</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.OrganizationNumber" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Organisationsnummer</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.Name" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Namn</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.Address" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Adress</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.PostalCode" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Postnummer</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.City" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Stad</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.ContactPerson" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Kontaktperson</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.Phone" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Telefon</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.Email" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Email</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.CreatedDate" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Skapad</label>
-                        </ScInput>
-                    </div>
-                    <div class="uk-margin">
-                        <ScInput v-model="current1892Object.ExpirationDate" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
-                            <label>Expiration Date</label>
-                        </ScInput>
-                    </div>
-                    <!--button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateAdmin()">
+                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateCompany()">
                         UPPDATERA
-                    </button-->
+                    </button>
                 </li>
               </ul>
   
@@ -189,24 +222,43 @@
   
   <script>
     import 'vue-good-table/dist/vue-good-table.css'
+    import Redactorx from '~/components/RedactorX'
     import { VueGoodTable } from 'vue-good-table'
     import ScInput from '~/components/Input'
+    import ScTextarea from '~/components/Textarea'
     import Alert from '~/components/Alert'
   
     export default {
         components: {
+        Redactorx,
         Alert,
         ScInput,
+        ScTextarea,
         VueGoodTable,
         Select2: process.client ? () => import('~/components/Select2') : null,
         },
         data () {
             return {
-                errors: null,
-                message: null,
-                render: false,
-                businessList: [],
-                current1892Object: null
+              file: null,
+              errors: null,
+              message: null,
+              render: false,
+              businessList: [],
+              current1892Object: null,
+              configOptions: {
+                  format: ['p', 'h1', 'h2', 'h3', 'h4', 'ul', 'ol'],
+                  quote: {
+                  template: '<blockquote>Citat...</blockquote>'
+                  },
+                  toolbar: {
+                  stickyTopOffset: 50
+                  },
+                  context: true,
+                  embed: {
+                  script: true,
+                  checkbox: false,
+                  },
+              },
             }
         },
         computed: {
@@ -214,7 +266,7 @@
                 return [
                   { 
                         label: 'Id',
-                        field: 'CompanyInvoiceId',
+                        field: 'companyInvoiceId',
                         sortable: false,
                         type: 'string',
                         filterOptions: {
@@ -224,7 +276,7 @@
                     },
                     {
                         label: 'Namn',
-                        field: 'Name',
+                        field: 'name',
                         sortable: true,
                         type: 'string',
                         filterOptions: {
@@ -234,7 +286,7 @@
                     },
                     {
                         label: 'Skapad',
-                        field: 'CreatedDate',
+                        field: 'createdDate',
                         sortable: true,
                         type: 'string',
                         filterOptions: {
@@ -242,15 +294,94 @@
                         },
                         width: '40%',
                     },
+                    {
+                        label: 'Betalat',
+                        field: 'payment',
+                        sortable: true,
+                        type: 'Boolean',
+                        filterOptions: {
+                            enabled: true
+                        },
+                        width: '10%',
+                    },
                 ]
             },
         },
         methods: {
+          async updateImage(){
+              this.file = this.$refs.file.files[0]
+          },
+          async uploadImage(){
+              var _this = this
+              let formData = new FormData()
+              formData.append('file', _this.file);
+              _this.$store.commit('setAlertHidden', 1)
+              _this.$store.commit('setAlertHidden', 2)
+              _this.errors = null
+              _this.message = null
+              _this.$store.dispatch('setBusyOn')
+              await this.$axios.$post('/companyinvoice/UploadImage?id='+_this.current1892Object.companyInvoiceId, formData,  { headers: { 'Content-Type': 'multipart/form-data' }})
+              .then(function (response) {
+                  try {
+                      if (response.ErrorList != null ) {
+                          _this.errors = response.ErrorList
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 1)
+                      }
+                      if (response.Message != null) {
+                          _this.message = response.Message
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 2)
+                      }
+                  } catch(err) {
+                      console.log(err)
+                  }
+                  _this.$store.dispatch('setBusyOff')
+                  _this.file = null
+                  _this.get1892Details(_this.current1892Object.companyInvoiceId)
+              })
+              .catch(function (error) {
+                  console.log(error)
+                  _this.$store.dispatch('setBusyOff')
+              })
+          },
+          async updateCompany(){
+              let _this = this
+              _this.$store.commit('setAlertHidden', 1)
+              _this.$store.commit('setAlertHidden', 2)
+              _this.errors = null
+              _this.message = null
+              _this.$store.dispatch('setBusyOn')
+              await this.$axios.$put('/companyinvoice/update', _this.current1892Object)
+              .then(function (response) {
+                  try {
+                      if (response.ErrorList != null ) {
+                          _this.errors = response.ErrorList
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 1)
+                      }
+                      if (response.Message != null) {
+                          _this.message = response.Message
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 2)
+                      }
+                  } catch(err) {
+                      console.log(err)
+                  }
+                  _this.$store.dispatch('setBusyOff')
+                  _this.get1892Details(_this.current1892Object.companyInvoiceId)
+              })
+              .catch(function (error) {
+                  console.log(error)
+                  _this.$store.dispatch('setBusyOff')
+              })
+          },
           async get1892Details(id) {
+              this.current1892Object = null
               let _this = this
               _this.$store.commit('setAlertHidden', 1)
               _this.$store.dispatch('setBusyOn')
-              await this.$axios.$get('/webapi/CompanyInvoice/Get?id=' + id)
+              await this.$axios.$get('/companyinvoice/'+ id)
               .then(function (response) {
                   try {
                       if (response.ErrorList != null ) {
@@ -276,7 +407,7 @@
             this.$store.dispatch('setBusyOn')
             try {
                 const [ businesslist ] = await Promise.all([
-                    this.$axios.$get('/webapi/CompanyInvoice/GetAll'),
+                    this.$axios.$get('/companyinvoice/get-all'),
                 ])
                 this.businessList = businesslist
                 this.$store.dispatch('setBusyOff')
