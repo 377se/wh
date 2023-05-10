@@ -370,6 +370,21 @@
 														</client-only>
 														</div>
 													</div>
+													<!--Tryckpriser-->
+													<div
+														class="uk-margin"
+														v-if="articleDetails.PrintTypeId>0">
+														<ScInput v-model="articleDetails.PrintNamePrice" placeholder="0" state="fixed" mode="outline" extra-classes="uk-form-small">
+															<label>Pris tryck, namn</label>
+														</ScInput>
+													</div>
+													<div
+														v-if="articleDetails.PrintTypeId>0"
+														class="uk-margin">
+														<ScInput v-model="articleDetails.PrintNumberPrice" placeholder="0" state="fixed" mode="outline" extra-classes="uk-form-small">
+															<label>Pris tryck, nummer</label>
+														</ScInput>
+													</div>
 													<!-- Releasedate preorder -->
 													<div class="uk-margin">
 														<ScInput v-model="articleDetails.ReleaseDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj releasedate preorder..." state="fixed" mode="outline" extra-classes="uk-form-small">
