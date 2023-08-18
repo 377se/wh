@@ -211,6 +211,10 @@
                     <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateCompany()">
                         UPPDATERA
                     </button>
+                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="toggleActive(current1892Object.companyInvoiceId,!current1892Object.payment)">
+                        <span v-if="current1892Object.payment">Inaktivera</span>
+                        <span v-else>Aktivera</span>
+                    </button>
                 </li>
               </ul>
   
@@ -402,6 +406,40 @@
                   _this.$store.dispatch('setBusyOff')
               })
           },
+        },
+        async toggleActive(id, b){
+            let _this = this
+              _this.$store.commit('setAlertHidden', 1)
+              _this.$store.commit('setAlertHidden', 2)
+              _this.errors = null
+              _this.message = null
+              _this.$store.dispatch('setBusyOn')
+              await this.$axios.$put('/companyinvoice/update-payment', {
+                'companyInvoiceId':id,
+                'payment':b
+              })
+              .then(function (response) {
+                  try {
+                      if (response.ErrorList != null ) {
+                          _this.errors = response.ErrorList
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 1)
+                      }
+                      if (response.Message != null) {
+                          _this.message = response.Message
+                          _this.$store.dispatch('setBusyOff')
+                          _this.$store.commit('setAlertVisible', 2)
+                      }
+                  } catch(err) {
+                      console.log(err)
+                  }
+                  _this.$store.dispatch('setBusyOff')
+                  _this.get1892Details(_this.current1892Object.companyInvoiceId)
+              })
+              .catch(function (error) {
+                  console.log(error)
+                  _this.$store.dispatch('setBusyOff')
+              })
         },
         async fetch () {
             this.$store.dispatch('setBusyOn')
