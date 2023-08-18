@@ -407,8 +407,7 @@
                   _this.$store.dispatch('setBusyOff')
               })
           },
-        },
-        async toggleActive(id, b){
+          async toggleActive(id, b){
             let _this = this
               _this.$store.commit('setAlertHidden', 1)
               _this.$store.commit('setAlertHidden', 2)
@@ -441,7 +440,9 @@
                   console.log(error)
                   _this.$store.dispatch('setBusyOff')
               })
+            },
         },
+        
         async fetch () {
             this.$store.dispatch('setBusyOn')
             try {
