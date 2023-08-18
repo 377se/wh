@@ -99,7 +99,12 @@
                 <li v-if="current1892Object" class="uk-active">
   
                     <!-- REDIGERA 1892-MEDLEM -->
-  
+                    <div>
+                        <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="toggleActive(current1892Object.companyInvoiceId,current1892Object.payment?false:true)">
+                        <span v-if="current1892Object.payment">Inaktivera</span>
+                        <span v-else>Aktivera</span>
+                    </button>
+                    </div>
                     <!-- Id -->
                     <div class="uk-margin">
                         <ScInput v-model="current1892Object.companyInvoiceId" state="fixed" mode="outline"  extra-classes="uk-form-small" disabled>
@@ -210,10 +215,6 @@
                     />
                     <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="updateCompany()">
                         UPPDATERA
-                    </button>
-                    <button v-waves.button.light class="sc-button sc-button-primary" @click.prevent="toggleActive(current1892Object.companyInvoiceId,!current1892Object.payment)">
-                        <span v-if="current1892Object.payment">Inaktivera</span>
-                        <span v-else>Aktivera</span>
                     </button>
                 </li>
               </ul>
