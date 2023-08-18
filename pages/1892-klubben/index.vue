@@ -414,10 +414,7 @@
               _this.errors = null
               _this.message = null
               _this.$store.dispatch('setBusyOn')
-              await this.$axios.$put('/companyinvoice/update-payment', {
-                'companyInvoiceId':id,
-                'payment':b
-              })
+              await this.$axios.$put('/companyinvoice/update-payment?companyInvoiceId='+id+'&payment='+b)
               .then(function (response) {
                   try {
                       if (response.ErrorList != null ) {
