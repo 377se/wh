@@ -98,6 +98,12 @@
 															<label>Artikelnummer</label>
 														</ScInput>
 													</div>
+													<!-- GTIN -->
+													<div class="uk-margin">
+														<ScInput v-model="articleDetails.Gtin" state="fixed" mode="outline"  extra-classes="uk-form-small">
+															<label>GTIN</label>
+														</ScInput>
+													</div>
 													<!-- Hyllplats -->
 													<div class="uk-margin">
 														<ScInput v-model="articleDetails.Shelf" state="fixed" mode="outline"  extra-classes="uk-form-small">
