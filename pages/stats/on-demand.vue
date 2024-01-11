@@ -8,7 +8,7 @@
             <div id="sc-page-top-bar" class="sc-top-bar">
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
-                        <h1 class="sc-top-bar-title uk-display-inline">Bäst säljande senaste 7 dagarna</h1>
+                        <h1 class="sc-top-bar-title uk-display-inline">On Demand Beställningar</h1>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                                         <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.ProductName }}</td>
                                         <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.ArticleNumber }}</td>
                                         <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.SizeDisplay }}</td>
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.NumberOfItems }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: right;">{{ item.NumberOfItems }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -58,7 +58,7 @@
             this.$store.dispatch('setBusyOn')
             try {
                 const [onDemand] = await Promise.all([
-                    this.$axios.$get('/webapi/Stats/GetTopSelling'),
+                    this.$axios.$get('/webapi/Stats/OnDemandStats'),
                 ])
                 this.onDemand = onDemand
                 this.$store.dispatch('setBusyOff')
