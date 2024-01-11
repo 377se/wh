@@ -199,7 +199,7 @@
                                 </div>
                             </li>
                             <!-- WIDGETS -->
-                            <li>
+                            <!--li>
                                 <div v-if="widgetList" class="uk-overflow-auto" style="max-height:600px;">
                                     <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
                                         <thead>
@@ -221,7 +221,7 @@
                                     </table>
                                 </div>
 
-                            </li>
+                            </li-->
                         </ul>
                     </ScCardBody>
                 </ScCard>
@@ -342,12 +342,12 @@ export default {
                 this.$axios.$get('/webapi/Admin/GetAdminDetails?adminId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Menu/GetMenuPermission?adminId=' + this.$route.params.id),
                 this.$axios.$get('/webapi/Account/GetEmptyUpdateObject'),
-                this.$axios.$get('/webapi/Widget/GetWidgetList?adminId=' + this.$route.params.id),
+                //this.$axios.$get('/webapi/Widget/GetWidgetList?adminId=' + this.$route.params.id),
             ])
             this.adminDetails = admindetails
             this.menuPermissions = menupermissions
             this.emptyUpdateObject = emptyupdateobject
-            this.widgetList = widgetlist
+            //this.widgetList = widgetlist
             this.$store.dispatch('setBusyOff')
         } catch (err) {
             console.log(err);
