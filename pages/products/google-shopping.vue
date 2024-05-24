@@ -9,6 +9,7 @@
                 <div class="sc-top-bar-content sc-padding-medium-top sc-padding-medium-bottom uk-flex-1">
                     <div class="uk-flex-1">
                         <h1 class="sc-top-bar-title uk-display-inline">Google Shopping - supportersplace.se</h1>
+                        <a :href="file">{{ file }}</a>
                     </div>
                 </div>
             </div>
@@ -115,7 +116,8 @@
                     this.$axios.$get('/webapi/google/GetGoogleContentData'),
                 ])
                 this.onDemand = onDemand
-                
+                const [file] = await Promise.all([this.$axios.$get('/webapi/google/GetFile')])
+                this.file = file
                 this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
