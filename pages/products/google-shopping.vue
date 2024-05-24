@@ -1,7 +1,7 @@
 <template>
-     <div v-if="$fetchState.pending">
-            <div id="sc-page-wrapper">
-            </div>
+    <div v-if="$fetchState.pending">
+        <div id="sc-page-wrapper">
+        </div>
     </div>
     <div v-else>
         <div id="sc-page-wrapper">
@@ -17,23 +17,74 @@
                     <ScCardBody>
                         <!-- TAB-CONTENT - Google Shopping -->
                         <div class="uk-overflow-auto">
-                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove" style="border-collapse: separate;">
+                            <table class="uk-table uk-table-small uk-text-small uk-margin-remove"
+                                style="border-collapse: separate;">
                                 <thead>
                                     <tr class="uk-padding-remove-bottom">
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 10%;">Orderdatum</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: left; width: 28%;">Produkt</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 20%;">Artikelnummer</th>
-                                        <th class="border-top border-bottom border-left uk-text-small" style="text-align: right; width: 20%;">Storlek</th>
-                                        <th class="border-top border-bottom border-left border-right uk-text-small" style="text-align: right; width: 28%;">Antal</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Id</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Gtin</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Title</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Description</th>
+                                        <th class="border-top border-bottom border-left uk-text-small"
+                                            style="text-align: left;">Availability</th>
+                                        <th class="border-top border-bottom border-left uk-text-small"
+                                            style="text-align: left;">Brand</th>
+                                        <th class="border-top border-bottom border-left uk-text-small"
+                                            style="text-align: right;">Condition</th>
+                                        <th class="border-top border-bottom border-left uk-text-small"
+                                            style="text-align: right;">CustomLabel0</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">CustomLabel1</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Image Link</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Link</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Product Type</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">SKU</th>
+                                        <th class="border-top border-bottom border-left border-right uk-text-small"
+                                            style="text-align: right;">Price</th>
+
+
+
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="item in onDemand" :key="item.ArticleNumber" class="uk-table-middle">
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.OrderDate }}</td>
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.ProductName }}</td>
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.ArticleNumber }}</td>
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: left;">{{ item.SizeDisplay }}</td>
-                                        <td class="border-bottom border-left border-right uk-preserve-width" style="text-align: right;">{{ item.NumberOfItems }}</td>
+                                    <tr v-for="item in onDemand" :key="item.Id" class="uk-table-middle">
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: left;">{{ item.Id }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: left;">{{ item.Gtin }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: left;">{{ item.Title }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: left;">{{ item.Description }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: left;">{{ item.Availability }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.Brand }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.Condition }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.CustomLabel0 }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.CustomLabel1 }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.ImageLink }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.Link }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.ProductType }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.Sku }}</td>
+                                        <td class="border-bottom border-left border-right uk-preserve-width"
+                                            style="text-align: right;">{{ item.Price }}</td>
                                     </tr>
                                 </tbody>
                             </table>
