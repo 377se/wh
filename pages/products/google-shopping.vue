@@ -102,7 +102,10 @@
             return {
                 onDemand: [],
             }
-        },
+    },
+    async mounted() { 
+        await this.$axios.$get('/webapi/google/GetFile')
+    },
         methods: {
         },
         async fetch () {
@@ -112,7 +115,7 @@
                     this.$axios.$get('/webapi/google/GetGoogleContentData'),
                 ])
                 this.onDemand = onDemand
-                await this.$axios.$get('/webapi/google/GetFile')
+                
                 this.$store.dispatch('setBusyOff')
             } catch (err) {
                 console.log(err);
