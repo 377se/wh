@@ -102,10 +102,11 @@
         data () {
             return {
                 onDemand: [],
+                file:''
             }
     },
     async mounted() { 
-        await this.$axios.$get('/webapi/google/GetFile')
+        //await this.$axios.$get('/webapi/google/GetFile')
     },
         methods: {
         },
