@@ -44,6 +44,18 @@
                                         :alertClass="alertClass"
                                         id=0
                                     />
+                                    <!--Bad customer-->
+                                    <div class="uk-margin uk-width-1-1">
+                                        <div>
+                                            <ul class="uk-list uk-margin-remove-top">
+                                                <li class="uk-text-small" style="padding: 3px 3px 3px 2px">
+                                                    <PrettyCheck v-model="customer.CustomerAlert" class="p-icon">
+                                                        <i slot="extra" class="icon mdi mdi-check"></i><span>Kund varnad?</span>
+                                                    </PrettyCheck>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div class="uk-margin">
                                         <ScInput v-model="customer.MemberId" state="fixed" mode="outline" extra-classes="uk-form-small">
                                             <label>MedlemsId</label>
@@ -253,6 +265,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import ScInput from '~/components/Input'
 import Alert from '~/components/Alert'
 import { VueGoodTable } from 'vue-good-table'
+import PrettyCheck from 'pretty-checkbox-vue/check'
 import 'vue-good-table/dist/vue-good-table.css'
 import { Swedish } from "flatpickr/dist/l10n/sv.js"
 
@@ -265,6 +278,7 @@ export default {
 		ScInput,
 		VueGoodTable,
 		Alert,
+        PrettyCheck
     },
 	data () {
 		return {
