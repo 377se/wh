@@ -172,33 +172,22 @@ module.exports = {
 	*/
 	build: {
 		// analyze: true,
-		transpile: ['ufo'],
 		progress: true,
 		babel: {
-			plugins: [
-				"@babel/plugin-syntax-dynamic-import",
-				"@babel/plugin-transform-spread"
-			],
-			ignore: [
-				"assets/js/vendor"
-			]
+			plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/plugin-transform-spread'],
+			ignore: ['node_modules', 'assets/js/vendor'],
 		},
-		extend (config, ctx) {
-			config.module.rules.push({
-				test: /\.mjs$/,
-				include: /node_modules/,
-				type: 'javascript/auto',
-			  });
+		extend(config, ctx) {
 			if (ctx.isDev && ctx.isClient) {
-				config.module.rules.push(
-					// Run ESLint on save
-					{
-						enforce: 'pre',
-						test: /\.(js|vue)$/,
-						loader: 'eslint-loader',
-						exclude: /(node_modules)/
-					}
-				);
+				// config.module.rules.push(
+				// 	// Run ESLint on save
+				// 	{
+				// 		enforce: 'pre',
+				// 		test: /\.(js|vue)$/,
+				// 		loader: 'eslint-loader',
+				// 		exclude: /(node_modules)/
+				// 	}
+				// );
 			}
 			// aliases
 			config.resolve.alias['scss'] = path.resolve(__dirname, './assets/scss');
@@ -209,6 +198,6 @@ module.exports = {
 			config.optimization.minimize = false;
 
 			return config;
-		}
-	}
+		},
+	},
 };
