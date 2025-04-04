@@ -4,10 +4,6 @@
 	"description": "377 Warehouse",
 	"author": "tzd",
 	"private": true,
-	"engines": {
-    "node": "14.19.0",
-    "npm": "8.19.2"
-  },
 		"scripts": {
 		"dev": "nuxt",
 		"build": "nuxt build",
