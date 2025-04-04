@@ -172,6 +172,7 @@ module.exports = {
 	*/
 	build: {
 		// analyze: true,
+		transpile: ['ufo'],
 		progress: true,
 		babel: {
 			plugins: [
@@ -179,11 +180,15 @@ module.exports = {
 				"@babel/plugin-transform-spread"
 			],
 			ignore: [
-				"node_modules",
 				"assets/js/vendor"
 			]
 		},
 		extend (config, ctx) {
+			config.module.rules.push({
+				test: /\.mjs$/,
+				include: /node_modules/,
+				type: 'javascript/auto',
+			  });
 			if (ctx.isDev && ctx.isClient) {
 				config.module.rules.push(
 					// Run ESLint on save
@@ -201,6 +206,8 @@ module.exports = {
 			if (!ctx.isDev && serveFromSubFolder) {
 				config.output.publicPath = '/' + dist + '/_nuxt/';
 			}
+			config.optimization.minimize = false;
+
 			return config;
 		}
 	}
