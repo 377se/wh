@@ -49,6 +49,7 @@
                                                     Orderinformation
                                                 </ScCardTitle>
                                                 <div class="uk-label uk-label-success">{{ orderInfo.SupplierName }}</div>
+                                                <div class="uk-label uk-label-default">{{ orderInfo.ClickId }}</div>
                                             </div>
                                             <div class="uk-padding-small uk-padding-remove-horizontal">
                                                 <div class="uk-flex uk-flex-left uk-flex-wrap uk-width-1-1">
