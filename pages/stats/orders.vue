@@ -114,7 +114,6 @@ export default {
 			let _this = this
             _this.$store.commit('setAlertHidden', 1)
             _this.$store.commit('setAlertHidden', 2)
-            _this.resetIsSelected()
             _this.orders = []
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate=2025-05-18')
