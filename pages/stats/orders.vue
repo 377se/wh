@@ -31,6 +31,12 @@
                                             </Select2>
                                         </client-only>
                                         </div>
+                                        <!-- DATUM -->
+                                        <div class="uk-margin">
+                                            <ScInput v-model="orderDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj datum..." state="fixed" mode="outline" extra-classes="uk-form-small">
+                                                <label>Datum</label>
+                                            </ScInput>
+                                        </div>
                                     </div>
                                 <Alert
                                     :errorlist="this.errors ? this.errors : []"
@@ -90,10 +96,13 @@
 
 <script>
 import Alert from '~/components/Alert'
+import { Swedish } from "flatpickr/dist/l10n/sv.js"
+import ScInput from '~/components/Input'
 
 export default {
 	components: {
 		Alert,
+        ScInput,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
@@ -101,7 +110,7 @@ export default {
             orderList: [],
             orders: [],
             shopId: null,
-            orderDate: null,
+            orderDate: new Date().toLocaleDateString('sv-SE'),
             shopOptionsList: [],
             activationError: null,
             errors: null,
@@ -116,7 +125,7 @@ export default {
             _this.$store.commit('setAlertHidden', 2)
             _this.orders = []
             _this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate=2025-05-18')
+			await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate='+_this.orderDate)
 			.then(function (orderlist) {
             _this.orderList = orderlist.ItemList
             _this.$store.dispatch('setBusyOff')
