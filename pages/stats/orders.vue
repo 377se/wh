@@ -109,10 +109,6 @@ export default {
             render: false,
         }
     },
-    async mounted(){
-        alert()
-        await this.fetchClient()
-    },
     methods: {
         async getOrderList() {
 			let _this = this
@@ -132,7 +128,9 @@ export default {
                 _this.$store.dispatch('setBusyOff')
 			})
 		},
-        async fetchClient () {
+        
+    },
+    async fetch () {
         this.$store.dispatch('setBusyOn')
         try {
             const [ shops ] = await Promise.all([
@@ -153,7 +151,6 @@ export default {
             console.log(err)
             this.$store.dispatch('setBusyOff')
         }
-    },
     },
     
 }
