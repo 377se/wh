@@ -110,9 +110,9 @@ export default {
             render: false,
         }
     },
-    mounted(){
+    async mounted(){
         alert()
-        this.fetchClient()
+        await this.fetchClient()
     },
     methods: {
         async getOrderList() {
@@ -137,7 +137,7 @@ export default {
         this.$store.dispatch('setBusyOn')
         try {
             const [ shops ] = await Promise.all([
-                this.$axios.$get('/webapi/Shop/GetShopList'),
+                await this.$axios.$get('/webapi/Shop/GetShopList'),
             ])
             this.shopOptionsList = shops.map(({ ShopId, ShopName }) => ({ id: ShopId, text: ShopName }))
             if (this.$route.query.shopId || this.$route.query.orderDate) {
