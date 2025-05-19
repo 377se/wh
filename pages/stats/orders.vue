@@ -94,7 +94,6 @@ import Alert from '~/components/Alert'
 export default {
 	components: {
 		Alert,
-		Deliverynotes,
 		Select2: process.client ? () => import('~/components/Select2') : null,
     },
     data () {
