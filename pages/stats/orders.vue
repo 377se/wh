@@ -26,7 +26,6 @@
                                                 v-model="shopId"
                                                 :options="shopOptionsList"
                                                 :settings="{ 'width': '100%', 'placeholder': 'Välj shop för att få ut orderlista', 'closeOnSelect': true }"
-                                                @select="getOrderList"
                                             >
                                             </Select2>
                                         </client-only>
@@ -36,6 +35,9 @@
                                             <ScInput v-model="orderDate" v-flatpickr="{ 'locale': Swedish }" placeholder="Välj datum..." state="fixed" mode="outline" extra-classes="uk-form-small">
                                                 <label>Datum</label>
                                             </ScInput>
+                                        </div>
+                                        <div class="uk-margin">
+                                            <button type="button" @click="getOrderList()">Hämta</button>
                                         </div>
                                     </div>
                                 <Alert
@@ -120,21 +122,25 @@ export default {
     },
     methods: {
         async getOrderList() {
-			let _this = this
-            _this.$store.commit('setAlertHidden', 1)
-            _this.$store.commit('setAlertHidden', 2)
-            _this.orders = []
-            _this.$store.dispatch('setBusyOn')
-			await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate='+_this.orderDate)
-			.then(function (orderlist) {
-            _this.orderList = orderlist.ItemList
-            _this.$store.dispatch('setBusyOff')
-                
-			})
-			.catch(function (error) {
-                console.log(error)
+            if(!this.orderDate || !this.shopId){
+                alert('Välj shop och datum!')
+            }else{
+                let _this = this
+                _this.$store.commit('setAlertHidden', 1)
+                _this.$store.commit('setAlertHidden', 2)
+                _this.orders = []
+                _this.$store.dispatch('setBusyOn')
+                await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate='+_this.orderDate)
+                .then(function (orderlist) {
+                _this.orderList = orderlist.ItemList
                 _this.$store.dispatch('setBusyOff')
-			})
+                    
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    _this.$store.dispatch('setBusyOff')
+                })
+            }
 		},
         
     },
