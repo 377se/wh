@@ -126,15 +126,9 @@ export default {
             _this.$store.dispatch('setBusyOn')
 			await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate=' + _this.orderDate)
 			.then(function (orderlist) {
-                if (orderlist.ActivationError.OrderId != 0 ) {
-                    _this.activationError = orderlist.ActivationError
-                    _this.$store.dispatch('setBusyOff')
-                    _this.activationModal.show()
-                } else {
-                    _this.orderList = orderlist.ItemList
-                    _this.resetIsSelected()
-                    _this.$store.dispatch('setBusyOff')
-                }
+            _this.orderList = orderlist.ItemList
+            _this.$store.dispatch('setBusyOff')
+                
 			})
 			.catch(function (error) {
                 console.log(error)
