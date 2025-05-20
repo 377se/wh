@@ -57,21 +57,21 @@
                                 <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
                                     <thead :class="{ 'hide': index !== 0 }">
                                         <tr class="uk-padding-remove-bottom">
+                                            <th class="border-top border-left uk-text-small" style="text-align: left; width: 100px;">ClickId</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 35px;">OrderId</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 150px;">Orderdatum</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: right; width: 70px;">Summa</th>
                                             <th class="border-top border-left uk-text-small" style="width: 70px;">Valuta</th>
-                                            <th class="border-top border-left uk-text-small" style="width: 70px;">Voucher</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 200px;">Kund</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="uk-table-middle">
+                                            <td class="border-top border-left" style="text-align: left; width: 100px;">{{ order.ClickId }}</td>
                                             <td class="border-top border-left" style="text-align: left; width: 35px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
                                             <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}<br><div class="uk-label" :class="{'uk-label-success':!order.SupplierName.includes('Hämta'),'uk-label-warning':order.SupplierName.includes('Hämta')}">{{ order.SupplierName }}</div><br><div class="uk-label uk-label-default">{{ order.ClickId }}</div></td>
                                             <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}</td>
                                             <td class="border-top border-left" style="width: 70px;">{{ order.Currency }}</td>
-                                            <td class="border-top border-left" style="width: 70px;">{{ order.Voucher }}</td>
                                             <td class="border-top border-left" style="width: 200px;"><a :href="order.UrlCustomer">{{ order.CustomerName }}</a></td>
                                         </tr>
                                         <!--tr v-for="article in order.OrderItemList" :key="article.ItemId">
@@ -132,7 +132,7 @@ export default {
                 _this.$store.dispatch('setBusyOn')
                 await this.$axios.$get('/webapi/Stats/GetOrderStatistics?shopId=' + _this.shopId +'&orderdate='+_this.orderDate)
                 .then(function (orderlist) {
-                _this.orderList = orderlist.ItemList
+                _this.orderList = orderlist
                 _this.$store.dispatch('setBusyOff')
                     
                 })
