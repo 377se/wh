@@ -54,8 +54,8 @@
                                 />
                             </div>
                             <div v-if="shopId" class="uk-overflow-auto">
-                                <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
-                                    <thead :class="{ 'hide': index !== 0 }">
+                                <table class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
+                                    <thead>
                                         <tr class="uk-padding-remove-bottom">
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 50px;">OrderId</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 150px;">Orderdatum</th>
@@ -64,23 +64,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="uk-table-middle">
+                                        <tr class="uk-table-middle" v-for="(order) in orderList" :key="order.OrderId">
                                             <td class="border-top border-left" style="text-align: left; width: 50px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
                                             <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}</td>
                                             <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.OrderSum }}{{ order.Currency }}</td>
                                             <td class="border-top border-left" style="text-align: left; width: auto;">{{ order.ClickId }}</td>
                                         </tr>
-                                        <!--tr v-for="article in order.OrderItemList" :key="article.ItemId">
-                                            <td class="border-top border-left" colspan="5"></td>
-                                            <td class="border-top border-left" style="width: 50px;">
-                                                <img :src="article.ImageName">
-                                            </td>
-                                            <td class="border-top border-left border-right" colspan="6">
-                                                <div>{{ article.TeamName }}</div>
-                                                <div>{{ article.ProductName }}</div>
-                                                <div>{{ article.AddonValue }}</div>
-                                            </td>
-                                        </tr-->
                                     </tbody>
                                 </table>
                             </div>
