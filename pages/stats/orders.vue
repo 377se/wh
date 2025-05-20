@@ -37,7 +37,7 @@
                                             </ScInput>
                                         </div>
                                         <div class="uk-margin">
-                                            <button type="button" @click="getOrderList()">Hämta</button>
+                                            <button type="button" class="uk-button uk-button-small uk-align-center" @click="getOrderList()">Hämta</button>
                                         </div>
                                     </div>
                                 <Alert
@@ -69,7 +69,7 @@
                                         <tr class="uk-table-middle">
                                             <td class="border-top border-left" style="text-align: left; width: 100px;">{{ order.ClickId }}</td>
                                             <td class="border-top border-left" style="text-align: left; width: 35px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
-                                            <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}<br><div class="uk-label" :class="{'uk-label-success':!order.SupplierName.includes('Hämta'),'uk-label-warning':order.SupplierName.includes('Hämta')}">{{ order.SupplierName }}</div><br><div class="uk-label uk-label-default">{{ order.ClickId }}</div></td>
+                                            <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}</td>
                                             <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}</td>
                                             <td class="border-top border-left" style="width: 70px;">{{ order.Currency }}</td>
                                             <td class="border-top border-left" style="width: 200px;"><a :href="order.UrlCustomer">{{ order.CustomerName }}</a></td>
