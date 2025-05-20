@@ -67,7 +67,7 @@
                                         <tr class="uk-table-middle">
                                             <td class="border-top border-left" style="text-align: left; width: 50px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
                                             <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}</td>
-                                            <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}{{ order.Currency }}</td>
+                                            <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.OrderSum }}{{ order.Currency }}</td>
                                             <td class="border-top border-left" style="text-align: left; width: auto;">{{ order.ClickId }}</td>
                                         </tr>
                                         <!--tr v-for="article in order.OrderItemList" :key="article.ItemId">
