@@ -57,20 +57,18 @@
                                 <table v-for="(order, index) in orderList" :key="order.OrderId" class="uk-table uk-table-small uk-text-small uk-margin-remove orderlist">
                                     <thead :class="{ 'hide': index !== 0 }">
                                         <tr class="uk-padding-remove-bottom">
-                                            <th class="border-top border-left uk-text-small" style="text-align: left; width: 35px;">OrderId</th>
+                                            <th class="border-top border-left uk-text-small" style="text-align: left; width: 50px;">OrderId</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: left; width: 150px;">Orderdatum</th>
                                             <th class="border-top border-left uk-text-small" style="text-align: right; width: 70px;">Summa</th>
-                                            <th class="border-top border-left uk-text-small" style="text-align: left;">ClickId</th>
-                                            <th class="border-top border-left uk-text-small" style="text-align: left; width: 200px;">Kund</th>
+                                            <th class="border-top border-left uk-text-small" style="text-align: left;width:auto;">ClickId</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="uk-table-middle">
-                                            <td class="border-top border-left" style="text-align: left; width: 35px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
+                                            <td class="border-top border-left" style="text-align: left; width: 50px;"><Nuxt-Link :to="order.UrlOrder">{{ order.OrderId }}</Nuxt-Link></td>
                                             <td class="border-top border-left" style="text-align: left; width: 150px;">{{ order.OrderDate }}</td>
                                             <td class="border-top border-left" style="text-align: right; width: 70px;">{{ order.Ordersum }}{{ order.Currency }}</td>
-                                            <td class="border-top border-left" style="text-align: left; width: 100px;">{{ order.ClickId }}</td>
-                                            <td class="border-top border-left" style="width: 200px;"><a :href="order.UrlCustomer">{{ order.CustomerName }}</a></td>
+                                            <td class="border-top border-left" style="text-align: left; width: auto;">{{ order.ClickId }}</td>
                                         </tr>
                                         <!--tr v-for="article in order.OrderItemList" :key="article.ItemId">
                                             <td class="border-top border-left" colspan="5"></td>
